@@ -1,0 +1,1 @@
+export const urlMain = "http://localhost:3000/"
