@@ -25,8 +25,8 @@ const ModalDragOpers = () => {
       <div className="flex flex-wrap gap-3">
         <Button
           onClick={()=>  handleOpen("3xl")}
-          size="sm"
-          className="w-full dark:bg-zinc-900 h-10 font-bold "
+          size="7xl"
+          className=" dark:bg-zinc-900 h-10 font-bold "
           variant="bordered">
           { opersSelect.size >= 1  ? `Operarios ${opersSelect.size}` : "Seleccionar operarios"}
 

@@ -5,6 +5,8 @@ import {allOpers} from "../../../infraestructure/states/opers_states.js";
 import {fetchGetData} from "../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../infraestructure/data/const.js";
 
+
+
 const useOpers = () => {
   const [opers, setOpers] = useRecoilState(allOpers);
 

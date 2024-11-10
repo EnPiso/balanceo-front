@@ -30,7 +30,7 @@ const InfoBoxBalancing = () => {
   }, [samSum,opersSelect]);
 
   return (
-    <div className="bg-gray-100 dark:bg-zinc-800 p-4 rounded-lg shadow-md max-w-md mx-auto space-y-3 mt-4">
+    <div className="bg-gray-100 dark:bg-zinc-800 p-4 rounded-lg shadow-md max-w-md  space-y-3 mt-4">
 
       <ModalDragOpers/>
 

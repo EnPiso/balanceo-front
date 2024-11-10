@@ -1,0 +1,136 @@
+import { Card, CardHeader, CardBody, Image, Button } from "@nextui-org/react";
+import { useRecoilState } from "recoil";
+import { orderObjBalancing, showOrderObj } from "../../../infraestructure/states/order_states.js";
+import ProductCard from "./ProductCard.jsx";
+import React, { useState, useEffect } from "react";
+import ImageLightbox from "../import/ImageLightBox.jsx";
+import { FaCalendar } from "react-icons/fa6";
+import { BalancingDashboard } from "../../balances/balancing/BalancingDashboard.jsx";
+import {FaBackward} from "react-icons/fa";
+
+const OrderDetail = () => {
+  const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
+  const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
+
+  // Estado para controlar la expansión de cada producto
+  const [expandedProductIndices, setExpandedProductIndices] = useState([]);
+
+  // Abre todas las secciones por defecto al cargar
+  useEffect(() => {
+    if (showOrder) {
+      // Inicializa el array con todos los índices de productos
+      setExpandedProductIndices(showOrder.products.map((_, index) => index));
+    }
+  }, [showOrder]);
+
+  const toggleCollapse = (index) => {
+    if (expandedProductIndices.includes(index)) {
+      // Si el índice ya está en el array, lo elimina para colapsar la sección
+      setExpandedProductIndices(expandedProductIndices.filter((i) => i !== index));
+    } else {
+      // Si el índice no está en el array, lo añade para expandir la sección
+      setExpandedProductIndices([...expandedProductIndices, index]);
+    }
+  };
+
+  if (!showOrder) return <p>Loading...</p>;
+
+  return (
+    <div className="p-8 space-y-8">
+      {objBalancing ? (
+        <>
+          <Button
+            className="mt-2"
+            onClick={() => setObjBalancing(null)}
+            color="default"
+            startContent={<FaBackward/>}
+          >
+            Regresar a {showOrder.order.code}
+          </Button>
+          <BalancingDashboard />
+        </>
+      ) : (
+        <>
+          <Button
+            className="mt-2"
+            onClick={() =>setShowOrder(null)}
+            color="default"
+            startContent={<FaBackward/>}
+          >
+            Regresar
+          </Button>
+
+          <h2 className="text-2xl font-bold uppercase">{`${showOrder.order.code}`}</h2>
+          <div className="mt-2">
+            <ImageLightbox
+              thumbnailUrl={showOrder.order.image_url}
+              fullSizeUrl={showOrder.order.image_url}
+              alt={`medida ${showOrder.order.code}`}
+              key={showOrder.order.code}
+            />
+          </div>
+
+          {/* Vista de Tabla para Pantallas Grandes */}
+          <div className="hidden lg:block">
+            {showOrder.products.map((product, index) => (
+              <div key={index} className="mb-8">
+                {/* Botón para expandir/colapsar el producto */}
+                <button
+                  onClick={() => toggleCollapse(index)}
+                  className="w-full text-left p-4 bg-zinc-200 dark:bg-zinc-700 rounded-t-lg focus:outline-none font-medium text-zinc-800 dark:text-zinc-100"
+                >
+                  {product.product.name}
+                  <span className="float-right">
+                    {expandedProductIndices.includes(index) ? '▲' : '▼'}
+                  </span>
+                </button>
+
+                {/* Tabla de operaciones, visible solo si el índice está en expandedProductIndices */}
+                {expandedProductIndices.includes(index) && (
+                  <table className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-b-lg shadow-md border border-gray-300">
+                    <thead>
+                    <tr className="bg-zinc-800 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-800">
+                      <th className="p-4 text-left font-medium border border-gray-300">Operación</th>
+                      <th className="p-4 text-left font-medium border border-gray-300">Máquina</th>
+                      <th className="p-4 text-left font-medium border border-gray-300">Sam</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {product.operations.map((operationData, opIndex) => (
+                      <tr key={opIndex}>
+                        <td className="p-4 border border-gray-300">{operationData.operation}</td>
+                        <td className="p-4 border border-gray-300">{operationData.machine}</td>
+                        <td className="p-4 border border-gray-300">{operationData.sam}</td>
+                      </tr>
+                    ))}
+                    </tbody>
+                  </table>
+                )}
+                <div className="flex justify-end">
+                  <Button
+                    className="mt-2"
+                    onClick={() => setObjBalancing(product)}
+                    color="default"
+                    endContent={<FaCalendar />}
+                  >
+                    Balancear {product.product.name}
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Vista de Tarjetas para Pantallas Pequeñas */}
+          <div className="lg:hidden space-y-4">
+            <h3 className="text-xl font-semibold">Products</h3>
+            {showOrder.products.map((product, index) => (
+              <ProductCard key={index} product={product} />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+export default OrderDetail;

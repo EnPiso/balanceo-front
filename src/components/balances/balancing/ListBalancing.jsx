@@ -8,27 +8,32 @@ import {selectProduct} from "../../../infraestructure/states/states_product.js";
 import TableOperations from "./TableOperations.jsx";
 import ExampleBalance from "./ExampleBalance.jsx";
 import BalancedOperationsTable from "./tableOperations/BalancedOperationsTable.jsx";
+import ExcelImageLoader from "../../orders/import/ExcelImageLoader.jsx";
+import {orderObjBalancing} from "../../../infraestructure/states/order_states.js";
 
 const ListBalancing = () => {
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
   const [product, setProduct] = useRecoilState(selectProduct)
 
   const [samSum, setSamSum] = useRecoilState(samSumOperation);
+  const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
 
-  const { data, loading, error } = useGetList("/products/product_operations");
+
+ // const { data, loading, error } = useGetList("/products/product_operations");
 
   // Actualizar el estado global cuando los datos estén disponibles
   useEffect(() => {
 
-    if (data) {
-      setOperationsProduct(data.operations);
-      setProduct(data.product);
-      setSamSum(data.sum_operations);
+    if (objBalancing) {
+      setOperationsProduct(objBalancing.operations);
+      setProduct(objBalancing.product);
+      setSamSum(objBalancing.total_sam);
     }
-  }, [data]);
 
-  if (loading) return <div>Cargando...</div>;
-  if (error) return <div>Error: {error}</div>;
+  }, [ objBalancing]);
+
+  // if (loading) return <div>Cargando...</div>;
+  // if (error) return <div>Error: {error}</div>;
 
   return (
     <>

@@ -16,6 +16,7 @@ const useGetList = (url) => {
         setLoading(true);
         const result = await fetchGetData(`${urlMain}/${url}`);
         setData(result);
+
         setError(null);
       } catch (error) {
         console.error('Error al obtener los datos:', error);

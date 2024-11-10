@@ -17,3 +17,21 @@ export const fetchGetData = async (url, params = {}) => {
     throw error;
   }
 };
+
+// Función en flecha para manejar la solicitud POST
+export const postData = async (url,data) => {
+  try {
+    const response = await axios.post(url, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data // Guardar los datos de la respuesta
+  } catch (err) {
+    console.log(err); // Guardar cualquier error
+  } finally {
+    // setLoading(false); // Detener el indicador de carga
+  }
+};
+
+

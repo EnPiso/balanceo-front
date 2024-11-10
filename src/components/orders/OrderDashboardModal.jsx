@@ -1,0 +1,120 @@
+import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, RadioGroup, Radio} from "@nextui-org/react";
+import React, {useState} from "react";
+import ExcelImageLoader from "./import/ExcelImageLoader.jsx";
+import CustomButton from "../../ui/CustomButton.jsx";
+import {FaEraser, FaFileExcel} from "react-icons/fa6";
+import {FaBackward, FaSave} from "react-icons/fa";
+import InputOrder from "./import/InputOrder.jsx";
+import listenEffect from "./import/listenEffect.jsx";
+import OrderSubmit from "./OrderSubmit.jsx";
+
+const OrderDashboardModal = () => {
+  const [images, setImages] = useState([]);
+  const [operationsData, setOperationsData] = useState([]);
+  const [orderProOpe, setOrderProOpe] = useState(null);
+
+
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const [scrollBehavior, setScrollBehavior] = useState("inside");
+
+  const listen = listenEffect(operationsData,setOrderProOpe,images)
+  const eraseData = () => {
+    setImages([])
+    setOperationsData([])
+  }
+  const handleOpen = () => {
+    //setSize(size)
+    onOpen();
+  }
+
+  const handleSubmit = () => {
+    console.log({operationsData, orderProOpe, images})
+  }
+
+
+  return (
+    <div className="flex flex-col gap-2">
+      <Button
+        startContent={ <FaFileExcel/>}
+        onPress={onOpen}
+        size="5xl"
+        className="w-full dark:bg-zinc-900 h-10 font-bold "
+        variant="bordered">
+        orden de producción
+
+      </Button>
+
+      <Modal
+        size="5xl"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        scrollBehavior="inside"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1 uppercase">
+                {
+                  operationsData.length < 1 && "Carga la ordén"
+                }
+                {
+                  orderProOpe && orderProOpe.order
+                }
+              </ModalHeader>
+              <ModalBody>
+                <div className="mt-2">
+
+                  <ExcelImageLoader
+                    images={images}
+                    setImages={setImages}
+                    operationsData={operationsData}
+                    setOperationsData={setOperationsData}
+                    orderProOpe={orderProOpe}
+                  />
+
+                </div>
+
+              </ModalBody>
+              <ModalFooter>
+                <div className="flex justify-end">
+                  {
+                    operationsData.length >= 1 && (
+                      <>
+                        <OrderSubmit
+                          operationsData={operationsData}
+                          orderProOpe={orderProOpe}
+                          images={images}
+                          onClose={onClose}
+                          eraseData={eraseData}
+                        />
+
+                        <CustomButton
+                          color="default"
+                          variant="bordered"
+                          startContent={<FaEraser color="red"/>}
+                          onClick={eraseData}
+                          title="Borrar"
+                        />
+                      </>
+                    )
+                  }
+
+                  <CustomButton
+                    color="default"
+                    variant="bordered"
+                    startContent={<FaBackward />}
+                    onClick={onClose}
+                    title="Regresar"
+                  />
+
+                </div>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </div>
+  );
+}
+
+export default OrderDashboardModal;
