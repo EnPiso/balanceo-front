@@ -7,6 +7,7 @@ import ImageLightbox from "../import/ImageLightBox.jsx";
 import { FaCalendar } from "react-icons/fa6";
 import { BalancingDashboard } from "../../balances/balancing/BalancingDashboard.jsx";
 import {FaBackward} from "react-icons/fa";
+import SaveBalance from "./SaveBalance.jsx";
 
 const OrderDetail = () => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
@@ -107,6 +108,7 @@ const OrderDetail = () => {
                   </table>
                 )}
                 <div className="flex justify-end">
+                 
                   <Button
                     className="mt-2"
                     onClick={() => setObjBalancing(product)}

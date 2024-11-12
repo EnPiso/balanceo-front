@@ -10,6 +10,7 @@ import ExampleBalance from "./ExampleBalance.jsx";
 import BalancedOperationsTable from "./tableOperations/BalancedOperationsTable.jsx";
 import ExcelImageLoader from "../../orders/import/ExcelImageLoader.jsx";
 import {orderObjBalancing} from "../../../infraestructure/states/order_states.js";
+import SaveBalance from "../../orders/show/SaveBalance.jsx";
 
 const ListBalancing = () => {
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
@@ -47,7 +48,7 @@ const ListBalancing = () => {
         )
       }
 
-
+    <SaveBalance/>
 
     </>
   )

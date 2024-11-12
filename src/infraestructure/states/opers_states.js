@@ -8,3 +8,8 @@ export const selectOpers = atom({
   key: 'selectOpers',
   default: [],
 });
+
+export const checkOpersPosition = atom({
+  key: 'checkOpersPosition',
+  default: [],
+});

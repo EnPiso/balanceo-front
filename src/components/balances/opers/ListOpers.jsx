@@ -1,45 +1,32 @@
-// ListOpers.jsx
 import React, { useEffect } from 'react';
 import useOpers from "../../../hooks/balances/opers/useOpers.jsx";
 import TitleDashboard from "../../../ui/TitleDashboard.jsx";
 import { FaCheck } from "react-icons/fa";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-} from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import useSelectableRows from "../../../hooks/balances/opers/useSelectableRows.jsx";
 import { useRecoilState } from "recoil";
 import { selectOpers } from "../../../infraestructure/states/opers_states.js";
 
-export const ListOpers = () => {
+export const ListOpers = ({ updateSelectedOperDetails, selectedOperDetails }) => {
   const opers = useOpers();
   const [opersSelect, setOpersSelect] = useRecoilState(selectOpers);
 
-  // Pasa opersSelect como estado inicial para el hook
   const {
     selectedItems,
     handleMouseDown,
     handleMouseUp,
     handleMouseEnter,
-    isMousePressed,
   } = useSelectableRows(opersSelect);
 
-  // Sincroniza selectedItems con el átomo de Recoil, evitando el bucle infinito
   useEffect(() => {
-    // Convertimos ambos conjuntos en arrays para comparar sus contenidos
     const opersSelectArray = Array.from(opersSelect);
     const selectedItemsArray = Array.from(selectedItems);
 
-    // Solo actualiza Recoil si hay cambios reales
     if (
       opersSelectArray.length !== selectedItemsArray.length ||
-      !opersSelectArray.every(item => selectedItems.has(item))
+      !opersSelectArray.every(id => selectedItems.has(id))
     ) {
-      setOpersSelect(selectedItems);
+      setOpersSelect(new Set(selectedItems));
     }
   }, [selectedItems, setOpersSelect, opersSelect]);
 
@@ -54,15 +41,19 @@ export const ListOpers = () => {
           {opers.map((oper) => (
             <TableRow
               key={oper.id}
-              onMouseDown={() => handleMouseDown(oper.id)}
+              onMouseDown={() => {
+                handleMouseDown(oper.id);
+                updateSelectedOperDetails(oper, !selectedItems.has(oper.id)); // Actualiza `selectedOperDetails`
+              }}
               onMouseEnter={() => handleMouseEnter(oper.id)}
-              className={`cursor-pointer select-none ${
-                selectedItems.has(oper.id) ? 'bg-primary-100' : ''
-              }`}
+              className={`cursor-pointer select-none ${selectedItems.has(oper.id) ? 'bg-primary-100' : ''}`}
             >
               <TableCell className="flex items-center gap-2 select-none">
                 {selectedItems.has(oper.id) && (
-                  <FaCheck className="text-primary" />
+                  <>
+                    <FaCheck className="text-primary" />
+                    {/* Mostrar el índice de selección */}
+                  </>
                 )}
                 {oper.name}
               </TableCell>
