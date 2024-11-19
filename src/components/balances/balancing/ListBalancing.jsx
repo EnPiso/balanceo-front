@@ -11,6 +11,8 @@ import BalancedOperationsTable from "./tableOperations/BalancedOperationsTable.j
 import ExcelImageLoader from "../../orders/import/ExcelImageLoader.jsx";
 import {orderObjBalancing} from "../../../infraestructure/states/order_states.js";
 import SaveBalance from "../../orders/show/SaveBalance.jsx";
+import {postData} from "../../../infraestructure/call_api/crud.js";
+import {urlMain} from "../../../infraestructure/data/const.js";
 
 const ListBalancing = () => {
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
@@ -18,7 +20,6 @@ const ListBalancing = () => {
 
   const [samSum, setSamSum] = useRecoilState(samSumOperation);
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
-
 
  // const { data, loading, error } = useGetList("/products/product_operations");
 
@@ -34,6 +35,11 @@ const ListBalancing = () => {
 
   }, [ objBalancing ]);
 
+
+
+
+
+
   // if (loading) return <div>Cargando...</div>;
   // if (error) return <div>Error: {error}</div>;
 
@@ -43,6 +49,7 @@ const ListBalancing = () => {
       {
         operationsProduct.length >= 1 && (
           <BalancedOperationsTable
+            key={JSON.stringify(operationsProduct)}
             data={operationsProduct}
             samSum={samSum}
           />

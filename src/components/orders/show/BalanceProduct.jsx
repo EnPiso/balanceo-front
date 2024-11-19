@@ -13,7 +13,6 @@ const BalanceProduct = ({product}) => {
   const handleBalancing = (product) => {
     // balancings/show_balance
 
-
     const order_id = showOrder.order.id
     const product_id =  product.product.id
     const prod = product
@@ -22,14 +21,12 @@ const BalanceProduct = ({product}) => {
         //setLoading(true);
         const result = await fetchGetData(`${urlMain}/balancings/show_balance?order_id=${order_id}&product_id=${product_id}`);
 
-        console.log(result)
-        console.log(prod)
-
         const data = {
           product: prod.product,
           total_sam: prod.total_sam,
           operations: result
         }
+
         setObjBalancing(data)
         //setShowOrder(result)
         //setOrders(result)

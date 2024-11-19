@@ -8,13 +8,78 @@ import TableHeaderOperations from "./TableHeaderOperations.jsx";
 import TableRowOperations from "./TableRowOperations.jsx";
 import TableFooterOperations from "./TableFooterOperations.jsx";
 import OperatorDetailsOperations from "./OperatorDetailsOperations.jsx";
+import {allOperationsProduct} from "../../../../infraestructure/states/operation_states.js";
+import {postData, updateData} from "../../../../infraestructure/call_api/crud.js";
+import {urlMain} from "../../../../infraestructure/data/const.js";
 
 const BalancedOperationsTable = ({ data, samSum }) => {
   const [balancing] = useRecoilState(balancingData);
   const [opersSelect] = useRecoilState(selectOpers);
+  const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
 
-  const { zones, operationMap } = balanceOperations(data, opersSelect.size, balancing.gol_hour);
 
+
+
+  const { zones, operationMap } = balanceOperations(operationsProduct, opersSelect.size, balancing.gol_hour);
+
+  const handleDragStart = (e, index) => {
+    e.dataTransfer.setData('text/plain', index);
+    e.target.classList.add('opacity-50');
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e, targetIndex) => {
+    e.preventDefault();
+    const sourceIndex = e.dataTransfer.getData('text/plain');
+    const newItems = [...operationsProduct];
+
+    // Swap items
+    const temp = newItems[sourceIndex];
+    newItems[sourceIndex] = newItems[targetIndex];
+    newItems[targetIndex] = temp;
+
+    setOperationsProduct(newItems);
+
+    const operationsBalancings = newItems.map((item, index) => ({
+      id: item.id,
+      position: index + 1 // Asumiendo que quieres indexar desde 1
+    }));
+
+    handleApi(operationsBalancings)
+    e.target.classList.remove('opacity-50');
+  };
+
+
+  const handleApi = (operationsBalancings) => {
+
+    const data = {
+      operationsBalancing: {
+        operations: JSON.stringify(operationsBalancings)
+      }
+    }
+    const postDataOrder = async (data) => {
+      try {
+        const result = await updateData(urlMain + "/balancings/update_operations_balancing", data)
+        console.log(result)
+        console.log(operationsProduct)
+        setOperationsProduct(result)
+        // debugger
+
+      } catch (error) {
+        console.error('Error setting data', error);
+      }
+    };
+
+    postDataOrder(data);
+  }
+
+
+  const handleDragEnd = (e) => {
+    e.target.classList.remove('opacity-50');
+  };
 
 
   return (
@@ -25,13 +90,19 @@ const BalancedOperationsTable = ({ data, samSum }) => {
           <TableHeaderOperations opersSelect={opersSelect} balancing={balancing} />
           </thead>
           <tbody>
-          {data.map((item, i) => (
+          {operationsProduct.map((item, i) => (
             <TableRowOperations
               key={i}
+              draggable
+              onDragStart={(e) => handleDragStart(e, i)}
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleDrop(e, i)}
+              onDragEnd={handleDragEnd}
               item={item}
               opersSelect={opersSelect}
               balancing={balancing}
               operatorTimes={operationMap.get(item.operation) || new Map()}
+              className="cursor-move border-l-4 border-transparent hover:border-zinc-600 dark:hover:border-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition"
             />
           ))}
           <TableFooterOperations

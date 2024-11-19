@@ -35,3 +35,15 @@ export const postData = async (url,data) => {
 };
 
 
+export const updateData = async (url,data) => {
+  try {
+    const response = await axios.patch(url, data);
+    return response.data // Guardar los datos de la respuesta
+  } catch (err) {
+    console.log(err); // Guardar cualquier error
+  } finally {
+    // setLoading(false); // Detener el indicador de carga
+  }
+};
+
+
