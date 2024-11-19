@@ -6,6 +6,7 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from 
 import useSelectableRows from "../../../hooks/balances/opers/useSelectableRows.jsx";
 import { useRecoilState } from "recoil";
 import { selectOpers } from "../../../infraestructure/states/opers_states.js";
+import useModal from "../balancing/sidebarForm/useModal.jsx";
 
 export const ListOpers = ({ updateSelectedOperDetails, selectedOperDetails }) => {
   const opers = useOpers();
@@ -28,7 +29,7 @@ export const ListOpers = ({ updateSelectedOperDetails, selectedOperDetails }) =>
     ) {
       setOpersSelect(new Set(selectedItems));
     }
-  }, [selectedItems, setOpersSelect, opersSelect]);
+  }, [selectedItems, opersSelect]);
 
   return (
     <div onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} className="select-none">

@@ -1,6 +1,6 @@
 const TableRowOperations = ({ item, opersSelect, balancing, operatorTimes }) => {
   const sam_seg = parseInt(item.sam * 60);
-
+//  {item.operation_balancing_id}
   return (
     <tr className="hover:bg-zinc-50 dark:hover:bg-zinc-700">
       <td className="px-4 py-2 border border-gray-300">{item.operation}</td>

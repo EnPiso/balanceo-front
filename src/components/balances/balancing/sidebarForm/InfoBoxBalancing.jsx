@@ -7,6 +7,7 @@ import React, {useEffect} from "react";
 import ItemBoxBalancing from "./ItemBoxBalancing.jsx";
 import {samSumOperation} from "../../../../infraestructure/states/operation_states.js";
 import {balancingData} from "../../../../infraestructure/states/states_balancing.js";
+import useModal from "./useModal.jsx";
 
 const InfoBoxBalancing = () => {
 
@@ -14,6 +15,7 @@ const InfoBoxBalancing = () => {
   const [opers, setOpers] = useRecoilState(allOpers);
   const [samSum, setSamSum] = useRecoilState(samSumOperation);
   const [balancing, setBalancing] = useRecoilState(balancingData);
+
 
 
   useEffect(() => {
@@ -27,6 +29,7 @@ const InfoBoxBalancing = () => {
       gol_day: parseInt(((opersSelect.size * 60) / samSum) * 8)
     }
     setBalancing(data)
+
   }, [samSum,opersSelect]);
 
   return (

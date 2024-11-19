@@ -29,9 +29,10 @@ const ListBalancing = () => {
       setOperationsProduct(objBalancing.operations);
       setProduct(objBalancing.product);
       setSamSum(objBalancing.total_sam);
+
     }
 
-  }, [ objBalancing]);
+  }, [ objBalancing ]);
 
   // if (loading) return <div>Cargando...</div>;
   // if (error) return <div>Error: {error}</div>;

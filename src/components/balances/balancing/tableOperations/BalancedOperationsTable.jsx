@@ -1,5 +1,5 @@
 // components/BalancedOperationsTable.jsx
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useRecoilState } from "recoil";
 import {balancingData} from "../../../../infraestructure/states/states_balancing.js";
 import {selectOpers} from "../../../../infraestructure/states/opers_states.js";
@@ -14,6 +14,8 @@ const BalancedOperationsTable = ({ data, samSum }) => {
   const [opersSelect] = useRecoilState(selectOpers);
 
   const { zones, operationMap } = balanceOperations(data, opersSelect.size, balancing.gol_hour);
+
+
 
   return (
     <div className="space-y-8">

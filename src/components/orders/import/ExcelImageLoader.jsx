@@ -51,7 +51,7 @@ const ExcelImageLoader = ({images,setImages,operationsData, setOperationsData, o
             guideType: row.getCell(6).value,
             garment: row.getCell(7).value,
             sam: row.getCell(8).value,
-            order: row.getCell(9).value,
+            order: row.getCell(9).value
           });
         }
 

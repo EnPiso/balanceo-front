@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, Image, Button } from "@nextui-org/react";
+import {Card, CardHeader, CardBody, Image, Button, Spinner} from "@nextui-org/react";
 import { useRecoilState } from "recoil";
 import { orderObjBalancing, showOrderObj } from "../../../infraestructure/states/order_states.js";
 import ProductCard from "./ProductCard.jsx";
@@ -8,13 +8,20 @@ import { FaCalendar } from "react-icons/fa6";
 import { BalancingDashboard } from "../../balances/balancing/BalancingDashboard.jsx";
 import {FaBackward} from "react-icons/fa";
 import SaveBalance from "./SaveBalance.jsx";
+import BalanceProduct from "./BalanceProduct.jsx";
+import {checkOpersPosition, selectOpers} from "../../../infraestructure/states/opers_states.js";
 
 const OrderDetail = () => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
+  const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
 
   // Estado para controlar la expansión de cada producto
   const [expandedProductIndices, setExpandedProductIndices] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+
 
   // Abre todas las secciones por defecto al cargar
   useEffect(() => {
@@ -48,7 +55,14 @@ const OrderDetail = () => {
           >
             Regresar a {showOrder.order.code}
           </Button>
-          <BalancingDashboard />
+          {
+            isLoading ? (
+              <Spinner label="Cargando" color="default" labelColor="foreground"/>
+            ) : <BalancingDashboard />
+          }
+
+
+
         </>
       ) : (
         <>
@@ -108,15 +122,10 @@ const OrderDetail = () => {
                   </table>
                 )}
                 <div className="flex justify-end">
-                 
-                  <Button
-                    className="mt-2"
-                    onClick={() => setObjBalancing(product)}
-                    color="default"
-                    endContent={<FaCalendar />}
-                  >
-                    Balancear {product.product.name}
-                  </Button>
+                 <BalanceProduct
+                   setObjBalancing={setObjBalancing}
+                   product={product}
+                 />
                 </div>
               </div>
             ))}

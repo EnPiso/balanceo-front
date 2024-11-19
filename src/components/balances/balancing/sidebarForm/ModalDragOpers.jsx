@@ -3,12 +3,21 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDi
 import { ListOpers } from "../../opers/ListOpers.jsx";
 import { useRecoilState } from "recoil";
 import {checkOpersPosition, selectOpers} from "../../../../infraestructure/states/opers_states.js";
+import {orderObjBalancing} from "../../../../infraestructure/states/order_states.js";
+import {postData} from "../../../../infraestructure/call_api/crud.js";
+import {urlMain} from "../../../../infraestructure/data/const.js";
+import useModal from "./useModal.jsx";
 
 const ModalDragOpers = () => {
-  const [opersSelect, setOpersSelect] = useRecoilState(selectOpers);
+  const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
+
+    const [opersSelect, setOpersSelect] = useRecoilState(selectOpers);
   const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [size, setSize] = useState('md');
+
+
+
 
   const handleOpen = (size) => {
     setSize(size);
@@ -29,6 +38,53 @@ const ModalDragOpers = () => {
     });
   };
 
+
+
+/*  useEffect(() => {
+    const data = {
+      opers_balancing: {
+        opers: JSON.stringify(selectedOperDetails),
+        product_id: objBalancing.product.id
+      }
+    }
+    const postDataOrder = async (data) => {
+      try {
+        const result = await postData(urlMain + "/opers_balancings/create_opers", data)
+        console.log(result)
+        debugger
+
+      } catch (error) {
+        console.error('Error setting data', error);
+      }
+    };
+    postDataOrder(data);
+
+
+  }, []);*/
+
+
+  const handleSave =  () =>{
+    console.log(selectedOperDetails)
+    console.log(objBalancing)
+
+    const data = {
+      opers_balancing: {
+        opers: JSON.stringify(selectedOperDetails),
+        product_id: objBalancing.product.id
+      }
+    }
+    const postDataOrder = async (data) => {
+      try {
+        const result = await postData(urlMain + "/opers_balancings/create_opers", data)
+        console.log(result)
+        debugger
+
+      } catch (error) {
+        console.error('Error setting data', error);
+      }
+    };
+    postDataOrder(data);
+  }
 
 
   return (
@@ -53,6 +109,10 @@ const ModalDragOpers = () => {
                   updateSelectedOperDetails={updateSelectedOperDetails}
                   selectedOperDetails={selectedOperDetails}
                 />
+                <button
+                  onClick={handleSave}>
+                  Guardar operarios
+                </button>
               </ModalBody>
               <ModalFooter>
                 <Button color="primary" onPress={onClose}>

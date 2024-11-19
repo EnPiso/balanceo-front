@@ -1,27 +1,18 @@
-import React, {useEffect, useRef} from 'react'
-import TitleDashboard from "../../../ui/TitleDashboard.jsx";
-import useOpers from "../../../hooks/balances/opers/useOpers.jsx";
-import {ListOpers} from "../opers/ListOpers.jsx";
-import ListBalancing from "./ListBalancing.jsx";
-import {useRecoilState} from "recoil";
-import {selectProduct} from "../../../infraestructure/states/states_product.js";
-import {orderObjBalancing, showOrderObj} from "../../../infraestructure/states/order_states.js";
-import InfoBoxBalancing from "./sidebarForm/InfoBoxBalancing.jsx";
-import useModal from "./sidebarForm/useModal.jsx";
-import {checkOpersPosition, selectOpers} from "../../../infraestructure/states/opers_states.js";
-import {fetchGetData} from "../../../infraestructure/call_api/crud.js";
-import {urlMain} from "../../../infraestructure/data/const.js";
+import React, { useEffect, useRef } from 'react';
+import { useRecoilState } from "recoil";
+import { orderObjBalancing } from "../../../../infraestructure/states/order_states.js";
+import { checkOpersPosition, selectOpers } from "../../../../infraestructure/states/opers_states.js";
+import { fetchGetData } from "../../../../infraestructure/call_api/crud.js";
+import { urlMain } from "../../../../infraestructure/data/const.js";
 
-export const BalancingDashboard = () => {
-
-  const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
-
+const useModal = () => {
+  const [objBalancing] = useRecoilState(orderObjBalancing);
   const [, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // No necesitas el valor actual aquí, solo el setter
   const [, setOpersSelect] = useRecoilState(selectOpers);
   const hasFetchedData = useRef(false); // Usamos useRef para verificar si ya se ha ejecutado
 
-
   useEffect(() => {
+
 
     const product_id = objBalancing.product?.id; // Usa `?.` en caso de que `product` esté inicialmente indefinido
 
@@ -53,24 +44,9 @@ export const BalancingDashboard = () => {
       getData();
 
     }
-
   }, []); // Dependencias vacías para que se ejecute solo una vez al montar
 
+  return objBalancing;
+};
 
-
-  return (
-      <>
-        {
-          objBalancing && (
-            <>
-              <TitleDashboard
-               title={objBalancing.product.name}
-              />
-              <ListBalancing/>
-            </>
-          )
-        }
-
-      </>
-  )
-}
+export default useModal;
