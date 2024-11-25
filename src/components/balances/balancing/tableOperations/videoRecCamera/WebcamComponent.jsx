@@ -2,52 +2,102 @@ import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
 
 const WebcamComponent = () => {
-  const webcamRef = useRef(null); // Referencia a la webcam
-  const [image, setImage] = useState(null); // Estado para almacenar una captura
+  const webcamRef = useRef(null); // Referencia para la webcam
+  const mediaRecorderRef = useRef(null); // Referencia para MediaRecorder
+  const [recording, setRecording] = useState(false); // Estado para saber si está grabando
+  const [videoBlob, setVideoBlob] = useState(null); // Estado para almacenar el video grabado
 
   // Opciones para la webcam
   const videoConstraints = {
-    facingMode: "user", // Cambia a "environment" para usar la cámara trasera en móviles
+    width: 1280,
+    height: 720,
+    facingMode: "environment", // Usa "environment" para la cámara trasera
   };
 
-  const capturePhoto = () => {
-    if (webcamRef.current) {
-      const imageSrc = webcamRef.current.getScreenshot(); // Captura la imagen como una base64
-      setImage(imageSrc);
+  // Inicia la grabación
+  const startRecording = () => {
+    setRecording(true);
+    const stream = webcamRef.current.video.srcObject; // Obtén el stream de la webcam
+    const mediaRecorder = new MediaRecorder(stream, {
+      mimeType: "video/webm", // Formato del video
+    });
+    mediaRecorderRef.current = mediaRecorder;
+
+    let chunks = [];
+    mediaRecorder.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        chunks.push(event.data); // Guarda las partes del video
+      }
+    };
+
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(chunks, { type: "video/webm" }); // Crea el video completo
+      setVideoBlob(blob);
+      chunks = []; // Resetea los chunks
+    };
+
+    mediaRecorder.start(); // Inicia la grabación
+  };
+
+  // Detiene la grabación
+  const stopRecording = () => {
+    setRecording(false);
+    mediaRecorderRef.current.stop(); // Detiene el MediaRecorder
+  };
+
+  // Descarga el video grabado
+  const downloadVideo = () => {
+    if (videoBlob) {
+      const url = URL.createObjectURL(videoBlob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "recorded-video.webm";
+      a.click();
+      URL.revokeObjectURL(url); // Limpia la memoria
     }
   };
 
   return (
     <div className="flex flex-col items-center">
-      {image ? (
-        <div className="flex flex-col items-center">
-          <img
-            src={image}
-            alt="Captura"
-            className="mb-4 border border-gray-300 rounded"
-          />
+      <Webcam
+        audio={true} // Incluye audio
+        ref={webcamRef}
+        videoConstraints={videoConstraints}
+        className="w-full max-w-md"
+      />
+      <div className="mt-4 flex gap-2">
+        {!recording ? (
           <button
-            onClick={() => setImage(null)}
-            className="px-4 py-2 bg-blue-500 text-white rounded"
+            onClick={startRecording}
+            className="bg-green-500 text-white py-2 px-4 rounded"
           >
-            Volver a la cámara
+            Iniciar Grabación
           </button>
-        </div>
-      ) : (
-        <div className="flex flex-col items-center">
-          <Webcam
-            audio={false} // Desactiva el audio
-            ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            videoConstraints={videoConstraints}
-            className="mb-4 rounded"
-          />
+        ) : (
           <button
-            onClick={capturePhoto}
-            className="px-4 py-2 bg-green-500 text-white rounded"
+            onClick={stopRecording}
+            className="bg-red-500 text-white py-2 px-4 rounded"
           >
-            Capturar Foto
+            Detener Grabación
           </button>
+        )}
+        {videoBlob && (
+          <button
+            onClick={downloadVideo}
+            className="bg-blue-500 text-white py-2 px-4 rounded"
+          >
+            Descargar Video
+          </button>
+        )}
+      </div>
+      {videoBlob && (
+        <div className="mt-4">
+          <h2 className="text-lg font-bold">Video Grabado:</h2>
+          <video
+            src={URL.createObjectURL(videoBlob)}
+            controls
+            className="w-full max-w-md"
+          />
         </div>
       )}
     </div>
