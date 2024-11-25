@@ -8,5 +8,8 @@ export const toastMessageCustom = {
   no_found: "Error: No se encontraron operaciones válidas en el archivo.",
   no_images: "Advertencia: No se encontraron imágenes en el archivo.",
   erase_data_modal: "Se ha eliminado los datos del archivo de excel.",
-  updatePolyvalence: "Se ha actualizado la polivalencia correctamente"
+  updatePolyvalence: "Se ha actualizado la polivalencia correctamente",
+  commentSave: "Se ha guardado el comentario",
+  videosSave: "Se han guardado los videos",
+  videoSave: "Se ha guardado el video",
 }

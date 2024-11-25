@@ -10,6 +10,7 @@ import {BalancingDashboard} from "./balances/balancing/BalancingDashboard.jsx";
 import {Toaster} from "react-hot-toast";
 import ButtonNavigationVideos from "./balances/balancing/tableOperations/videoOperations/ButtonNavigationVideos.jsx";
 
+
 const RootApp = () => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
 

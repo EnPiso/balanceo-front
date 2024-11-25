@@ -1,21 +1,42 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from "recoil";
 import {listVideosOpers, videoOperation} from "../../../../../infraestructure/states/states_videos.js";
 import {TagButton} from "../../../../../ui/TagButton.jsx";
 import {FaPlay} from "react-icons/fa6";
 import DraggableVideo from "./DraggableVideo.jsx";
 import WebcamComponent from "../videoRecCamera/WebcamComponent.jsx";
+import CustomButton from "../../../../../ui/CustomButton.jsx";
+import {FaSave} from "react-icons/fa";
+import CommentVideoInput from "./CommentVideoInput.jsx";
+import {fetchGetData} from "../../../../../infraestructure/call_api/crud.js";
+import {urlMain} from "../../../../../infraestructure/data/const.js";
+import {formatDateRails} from "../../../../../ui/utils.js";
 
 const TrDinamycVideo = () => {
   const [videoObjOperation, setVideoObjOperation] = useRecoilState(videoOperation);
   const videoRef = useRef(null); // Referencia al elemento <video>
   const [OpersTags, setOpersTags] = useRecoilState(listVideosOpers)
 
+  const [commentsVideos, setCommentsVideos] = useState([])
+
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.load(); // Recarga el video cada vez que cambia el estado
     }
+    const getData = async () => {
+      try {
+        const result = await fetchGetData(`${urlMain}/videos/${videoObjOperation.id}/comment_videos`);
+
+        setCommentsVideos(result)
+      } catch (error) {
+        console.error('Error al obtener los datos:', error);
+      }
+    };
+
+    getData();
   }, [videoObjOperation]);
+
+
 
   return (
     <tr className="border border-zinc-50 w-full">
@@ -25,7 +46,7 @@ const TrDinamycVideo = () => {
         {
           videoObjOperation ? (
             <>
-             <div className="px-2 py-2">
+             {/*<div className="px-2 py-2">
                {
                  OpersTags.map((oper, i)=> {
                    return(
@@ -38,7 +59,7 @@ const TrDinamycVideo = () => {
                  })
                }
 
-             </div>
+             </div>*/}
               {
                 videoObjOperation && <DraggableVideo
                   videoRef={videoRef}
@@ -46,32 +67,35 @@ const TrDinamycVideo = () => {
                 />
               }
 
-              <div className="bg-gray-100 p-4 rounded-lg shadow my-2">
-                <p className="text-sm text-gray-600 mt-2">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. A architecto
-                  asperiores corporis dolorum eius est ex facere in laboriosam,
-                  mollitia nihil obcaecati omnis qui quisquam quo sit temporibus veniam veritatis!</p>
-                <small>2024 Noviembre 25</small>
+              {
+                commentsVideos.map((comment, i)=> {
+                  return(
+                    <div key={i} className="bg-gray-100 p-4 rounded-lg shadow my-2">
+                      <p className="text-sm text-gray-600 mt-2">
+                        {
+                          comment.comment
+                        }
+                      </p>
+                      <p className="text-end font-bold">
+                        <small>
+                          {
+                            formatDateRails(comment.created_at)
+                          }
+                        </small>
+                      </p>
 
-              </div>
+                    </div>
+                  )
+                })
+              }
 
-              {/* Campo de comentarios */}
-              <div className="bg-gray-100 p-4 rounded-lg shadow">
-                <h2 className="text-lg font-semibold mb-2">Comentarios</h2>
-                <textarea
-                  className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  rows="3"
-                  placeholder="Escribe tu comentario aquí..."
-                  //value={comments}
-                  //onChange={(e) => setComments(e.target.value)}
-                ></textarea>
-                <button
-                  className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                  //onClick={handleCommentSubmit}
-                >
-                  Enviar Comentario
-                </button>
-              </div>
+
+             <CommentVideoInput
+               commentsVideos={commentsVideos}
+               setCommentsVideos={setCommentsVideos}
+               key={`${JSON.stringify(videoObjOperation)}`}
+
+             />
 
 
             </>

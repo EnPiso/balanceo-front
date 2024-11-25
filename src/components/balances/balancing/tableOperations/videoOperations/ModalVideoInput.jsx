@@ -3,7 +3,7 @@ import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDis
 import {FaBackward, FaSave} from "react-icons/fa";
 import CustomButton from "../../../../../ui/CustomButton.jsx";
 import {useRecoilState} from "recoil";
-import {checkOperationsBalancing} from "../../../../../infraestructure/states/states_videos.js";
+import {checkOperationsBalancing, listVideosOperations} from "../../../../../infraestructure/states/states_videos.js";
 import InputListVideos from "./inputListVideos.jsx";
 import {FaEraser} from "react-icons/fa6";
 import {postData, postDataFile, updateData} from "../../../../../infraestructure/call_api/crud.js";
@@ -14,6 +14,7 @@ import {toastMessageCustom} from "../../../../../infraestructure/data/toastMessa
 const ModalVideoInput = ({isModalInput,setIsModalInput}) => {
   const [selOpeVideos, setSelOpeVideos] = useRecoilState(checkOperationsBalancing);
   const [videos, setVideos] = useState([]); // Estado para almacenar los videos
+  const [videosOperations, setVideosOperations] = useRecoilState(listVideosOperations)
 
 
   const handleApi = () => {
@@ -27,7 +28,13 @@ const ModalVideoInput = ({isModalInput,setIsModalInput}) => {
         try {
           const result = await postDataFile(urlMain + "videos", formData)
           console.log(result)
-
+          console.log(videosOperations)
+          const videos = [...videosOperations, ...result.videos]
+          setVideosOperations(videos)
+          setSelOpeVideos(null)
+          toast.success(toastMessageCustom.videoSave)
+          setIsModalInput(false)
+          setVideos([])
         } catch (error) {
           console.error('Error setting data', error);
         }

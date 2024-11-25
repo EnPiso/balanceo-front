@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useRef} from 'react';
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
 import { fetchGetData } from "../../../infraestructure/call_api/crud.js";
 import { urlMain } from "../../../infraestructure/data/const.js";
@@ -7,10 +7,15 @@ import { orderList, showOrderObj } from "../../../infraestructure/states/order_s
 import ShowOrder from "../show/ShowOrder.jsx";
 import OrderDetail from "../show/OrderDetail.jsx";
 import ImageLightbox from "../import/ImageLightBox.jsx";
+import {videoOperation} from "../../../infraestructure/states/states_videos.js";
 
 const DashboardOrder = () => {
   const [orders, setOrders] = useRecoilState(orderList);
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
+
+  const [videoObjOperation, setVideoObjOperation] = useRecoilState(videoOperation);
+  const videoRef = useRef(null); // Referencia al elemento <video>
+
 
   useEffect(() => {
     const getData = async () => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import {FaPlay} from "react-icons/fa6";
+import {FaArrowTurnDown, FaClosedCaptioning, FaPlay} from "react-icons/fa6";
 import {fetchGetData} from "../../../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../../../infraestructure/data/const.js";
 import {useRecoilState} from "recoil";
@@ -60,7 +60,9 @@ const ButtonPlayVideos = ({item,showVideos,setShowVideos}) => {
 
   return (
     <button onClick={()=> handleOperation(item)} className="mr-5">
-      <FaPlay/>
+      {
+        showVideos && showVideos.id === item.id ? <FaArrowTurnDown/> : <FaPlay/>
+      }
     </button>
   )
 }
