@@ -7,6 +7,9 @@ import {FaBackward, FaSave} from "react-icons/fa";
 import InputOrder from "./import/InputOrder.jsx";
 import listenEffect from "./import/listenEffect.jsx";
 import OrderSubmit from "./OrderSubmit.jsx";
+import SpinnerLoaderCustom from "../../ui/SpinnerLoaderCustom.jsx";
+import toast from "react-hot-toast";
+import {toastMessageCustom} from "../../infraestructure/data/toastMessage.js";
 
 const OrderDashboardModal = () => {
   const [images, setImages] = useState([]);
@@ -19,8 +22,18 @@ const OrderDashboardModal = () => {
 
   const listen = listenEffect(operationsData,setOrderProOpe,images)
   const eraseData = () => {
+    toast(toastMessageCustom.erase_data_modal)
     setImages([])
     setOperationsData([])
+    setOrderProOpe(null)
+
+  }
+
+  const eraseDataSubmit = () => {
+    setImages([])
+    setOperationsData([])
+    setOrderProOpe(null)
+
   }
   const handleOpen = () => {
     //setSize(size)
@@ -80,12 +93,13 @@ const OrderDashboardModal = () => {
                   {
                     operationsData.length >= 1 && (
                       <>
+
                         <OrderSubmit
                           operationsData={operationsData}
                           orderProOpe={orderProOpe}
                           images={images}
                           onClose={onClose}
-                          eraseData={eraseData}
+                          eraseData={eraseDataSubmit}
                         />
 
                         <CustomButton

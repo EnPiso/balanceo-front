@@ -31,6 +31,7 @@ const TableHeaderOperations = ({ opersSelect, balancing }) => {
 
         </>
       )}
+      {/*<th className="px-4 py-2 border border-gray-300 text-left dark:text-zinc-700 text-zinc-100">Polivalencia</th>*/}
     </tr>
   )
 }

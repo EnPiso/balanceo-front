@@ -3,26 +3,56 @@ import ExcelJS from 'exceljs';
 
 import OperationListImport from "./OperationListImport.jsx";
 import ImageListImport from "./ImageListImport.jsx";
-import {FaEraser} from "react-icons/fa6";
+import { FaEraser } from "react-icons/fa6";
 import EraseButton from "../../../ui/CustomButton.jsx";
 import ShowOderProdOperations from "./ShowOderProdOper.jsx";
 import TitleDashboard from "../../../ui/TitleDashboard.jsx";
+import toast from "react-hot-toast";
+import {toastMessageCustom} from "../../../infraestructure/data/toastMessage.js";
 
-const ExcelImageLoader = ({images,setImages,operationsData, setOperationsData, orderProOpe}) => {
-
-
+const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData, orderProOpe }) => {
   const handleFileUpload = async (file) => {
     if (!file) return;
 
     const workbook = new ExcelJS.Workbook();
-    await workbook.xlsx.load(file);
 
-    const worksheet = workbook.getWorksheet(1);
-    const extractedImages = extractImages(workbook);
-    const extractedOperations = extractOperations(worksheet);
+    try {
+      // Cargar el archivo Excel
+      await workbook.xlsx.load(file);
 
-    setImages(extractedImages);
-    setOperationsData(extractedOperations);
+      // Seleccionar la primera hoja
+      const worksheet = workbook.getWorksheet(1);
+
+      // Validación: Verificar si existe la hoja
+      if (!worksheet) {
+        toast.error(toastMessageCustom.error_invalid);
+        return;
+      }
+
+      // Extraer imágenes y operaciones
+      const extractedImages = extractImages(workbook);
+      const extractedOperations = extractOperations(worksheet);
+
+      // Validación: Verificar si hay operaciones
+      if (extractedOperations.length === 0) {
+        toast.error(toastMessageCustom.no_found);
+        return;
+      }
+
+      // Validación: Advertir si no hay imágenes
+      if (extractedImages.length === 0) {
+        toast.error(toastMessageCustom.no_images);
+      }
+
+      // Actualizar estados
+      setImages(extractedImages);
+      setOperationsData(extractedOperations);
+
+      toast.success(toastMessageCustom.file_upload)
+    } catch (error) {
+      toast.error(toastMessageCustom.error_upload);
+      console.error(error);
+    }
   };
 
   const extractImages = (workbook) => {
@@ -41,20 +71,23 @@ const ExcelImageLoader = ({images,setImages,operationsData, setOperationsData, o
   const extractOperations = (worksheet) => {
     const operations = [];
     worksheet.eachRow((row, rowNumber) => {
-      if (rowNumber > 1) {
-        if(row.getCell(1).value){
+      if (rowNumber > 1) { // Saltar la fila de encabezado
+        const operation = row.getCell(1).value;
+        const machine = row.getCell(2).value;
+        const sam = row.getCell(8).value;
+
+        if (operation && machine && sam) { // Validar columnas requeridas
           operations.push({
-            operation: row.getCell(1).value,
-            machine: row.getCell(2).value,
+            operation,
+            machine,
             repetitions: row.getCell(3).value,
             observations: row.getCell(4).value,
             guideType: row.getCell(6).value,
             garment: row.getCell(7).value,
-            sam: row.getCell(8).value,
-            order: row.getCell(9).value
+            sam,
+            order: row.getCell(9).value,
           });
         }
-
       }
     });
     return operations;
@@ -72,61 +105,50 @@ const ExcelImageLoader = ({images,setImages,operationsData, setOperationsData, o
   };
 
   const eraseData = () => {
-    setImages([])
-    setOperationsData([])
-  }
+    setImages([]);
+    setOperationsData([]);
+  };
 
   return (
     <div>
-
-      {
-        operationsData.length > 0 ? (
-          <>
-
-
-
-            {
-              orderProOpe && (
-                <>
-                  <ImageListImport images={images} />
-                  <ShowOderProdOperations orderProOpe={orderProOpe}/>
-                </>
-              )
-            }
-
-
-          </>
-        ): (
-          <>
-            <div
-              className="drop-container"
-              onDrop={handleDrop}
-              onDragOver={handleDragOver}
-              style={{
-                border: '2px dashed #ccc',
-                padding: '20px',
-                borderRadius: '10px',
-                textAlign: 'center',
-                marginBottom: '20px',
-              }}
-            >
-              <span className="drop-title">Arrastra el archivo de excel aquí</span>
-              <p>o</p>
-              <input
-                id="images"
-                type="file"
-                accept=".xlsx"
-                onChange={(e) => handleFileUpload(e.target.files[0])}
-                style={{ display: 'none' }}
-              />
-              <label htmlFor="images" className="button">
-                Seleccionar archivo
-              </label>
-            </div>
-          </>
-        )
-      }
-
+      {operationsData.length > 0 ? (
+        <>
+          {orderProOpe && (
+            <>
+              <ImageListImport images={images} />
+              <ShowOderProdOperations orderProOpe={orderProOpe} />
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          <div
+            className="drop-container"
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            style={{
+              border: '2px dashed #ccc',
+              padding: '20px',
+              borderRadius: '10px',
+              textAlign: 'center',
+              marginBottom: '20px',
+            }}
+          >
+            <span className="drop-title">Arrastra el archivo de Excel aquí</span>
+            <p>o</p>
+            <input
+              id="images"
+              type="file"
+              accept=".xlsx"
+              onChange={(e) => handleFileUpload(e.target.files[0])}
+              style={{ display: 'none' }}
+            />
+            <label htmlFor="images" className="button">
+              Seleccionar archivo
+            </label>
+          </div>
+        </>
+      )}
     </div>
   );
 };

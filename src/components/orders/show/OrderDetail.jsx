@@ -61,8 +61,6 @@ const OrderDetail = () => {
             ) : <BalancingDashboard />
           }
 
-
-
         </>
       ) : (
         <>

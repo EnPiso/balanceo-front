@@ -5,10 +5,12 @@ import {useRecoilState} from "recoil";
 import {orderObjBalancing, showOrderObj} from "../../../infraestructure/states/order_states.js";
 import {fetchGetData, postData} from "../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../infraestructure/data/const.js";
+import {detailOperOperations} from "../../../infraestructure/states/states_balancing.js";
 
 const BalanceProduct = ({product}) => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
+  const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
 
   const handleBalancing = (product) => {
     // balancings/show_balance
@@ -24,10 +26,11 @@ const BalanceProduct = ({product}) => {
         const data = {
           product: prod.product,
           total_sam: prod.total_sam,
-          operations: result
+          operations: result.sorted_operations
         }
-
+        setDetailOperOpera(result.details_data)
         setObjBalancing(data)
+
         //setShowOrder(result)
         //setOrders(result)
         //setError(null);
@@ -45,7 +48,6 @@ const BalanceProduct = ({product}) => {
      //
 
   }
-
 
   return (
     <>

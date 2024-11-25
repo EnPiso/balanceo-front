@@ -1,18 +1,17 @@
 // components/TableFooter.jsx
 const TableFooterOperations = ({ samSum, opersSelect, balancing, zones }) => (
-  <tr>
-    <td className="border border-gray-300"></td>
-    <td className="border border-gray-300"></td>
-    <td className="border border-gray-300 font-bold">
-      <hr className="py-2" />
+  <tr className="border border-zinc-50">
+    <td></td>
+    <td></td>
+    <td className="font-bold bg-zinc-200 dark:bg-zinc-600 pl-4 py-2 ">
       {samSum}
     </td>
-    <td className="border border-gray-300"></td>
+    <td className=""></td>
     {opersSelect.size >= 1 && balancing && (
       <>
-        <td className="border border-gray-300"></td>
+        <td className=""></td>
         {Array.from({ length: opersSelect.size }, (_, i) => (
-          <td key={`operator-total-${i}`} className="border border-gray-300 font-bold">
+          <td key={`operator-total-${i}`} className="font-bold bg-zinc-200 dark:bg-zinc-600 pl-4 py-2">
             {zones[i]?.reduce((total, op) => total + parseFloat(op.minutes), 0).toFixed(2) || '0.00'}
           </td>
         ))}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import useOpers from "../../../hooks/balances/opers/useOpers.jsx";
 import TitleDashboard from "../../../ui/TitleDashboard.jsx";
 import { FaCheck } from "react-icons/fa";
@@ -6,18 +6,12 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from 
 import useSelectableRows from "../../../hooks/balances/opers/useSelectableRows.jsx";
 import { useRecoilState } from "recoil";
 import { selectOpers } from "../../../infraestructure/states/opers_states.js";
-import useModal from "../balancing/sidebarForm/useModal.jsx";
 
 export const ListOpers = ({ updateSelectedOperDetails, selectedOperDetails }) => {
   const opers = useOpers();
   const [opersSelect, setOpersSelect] = useRecoilState(selectOpers);
 
-  const {
-    selectedItems,
-    handleMouseDown,
-    handleMouseUp,
-    handleMouseEnter,
-  } = useSelectableRows(opersSelect);
+  const { selectedItems, handleRowSelection } = useSelectableRows(opersSelect);
 
   useEffect(() => {
     const opersSelectArray = Array.from(opersSelect);
@@ -25,14 +19,14 @@ export const ListOpers = ({ updateSelectedOperDetails, selectedOperDetails }) =>
 
     if (
       opersSelectArray.length !== selectedItemsArray.length ||
-      !opersSelectArray.every(id => selectedItems.has(id))
+      !opersSelectArray.every((id) => selectedItems.has(id))
     ) {
       setOpersSelect(new Set(selectedItems));
     }
-  }, [selectedItems, opersSelect]);
+  }, [selectedItems, opersSelect, setOpersSelect]);
 
   return (
-    <div onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} className="select-none">
+    <div className="select-none">
       <TitleDashboard />
       <Table aria-label="Tabla de operaciones">
         <TableHeader>
@@ -42,20 +36,14 @@ export const ListOpers = ({ updateSelectedOperDetails, selectedOperDetails }) =>
           {opers.map((oper) => (
             <TableRow
               key={oper.id}
-              onMouseDown={() => {
-                handleMouseDown(oper.id);
+              onClick={() => {
+                handleRowSelection(oper.id); // Solo selecciona con clic
                 updateSelectedOperDetails(oper, !selectedItems.has(oper.id)); // Actualiza `selectedOperDetails`
               }}
-              onMouseEnter={() => handleMouseEnter(oper.id)}
-              className={`cursor-pointer select-none ${selectedItems.has(oper.id) ? 'bg-primary-100' : ''}`}
+              className={`cursor-pointer select-none ${selectedItems.has(oper.id) ? "bg-primary-100" : ""}`}
             >
               <TableCell className="flex items-center gap-2 select-none">
-                {selectedItems.has(oper.id) && (
-                  <>
-                    <FaCheck className="text-primary" />
-                    {/* Mostrar el índice de selección */}
-                  </>
-                )}
+                {selectedItems.has(oper.id) && <FaCheck className="text-primary" />}
                 {oper.name}
               </TableCell>
             </TableRow>

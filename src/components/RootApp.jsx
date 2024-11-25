@@ -7,6 +7,8 @@ import {useRecoilState} from "recoil";
 import {showOrderObj} from "../infraestructure/states/order_states.js";
 import DashboardOrder from "./orders/orderList/DashboardOrder.jsx";
 import {BalancingDashboard} from "./balances/balancing/BalancingDashboard.jsx";
+import {Toaster} from "react-hot-toast";
+import ButtonNavigationVideos from "./balances/balancing/tableOperations/videoOperations/ButtonNavigationVideos.jsx";
 
 const RootApp = () => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
@@ -25,6 +27,11 @@ const RootApp = () => {
 
       </div>
       <ThemeContextProvider/>
+      <Toaster
+        position="top-center"
+        reverseOrder={true}
+      />
+
     </>
   )
 }

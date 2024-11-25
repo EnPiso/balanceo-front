@@ -1,12 +1,12 @@
 import {RecoilRoot} from "recoil";
 
-import RootApp from "./components/RootApp.jsx";
+import RouterApp from "./infraestructure/RouterApp.jsx";
 
 function App() {
 
   return (
       <RecoilRoot>
-        <RootApp/>
+        <RouterApp/>
       </RecoilRoot>
   )
 }

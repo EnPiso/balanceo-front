@@ -13,6 +13,8 @@ import {orderObjBalancing} from "../../../infraestructure/states/order_states.js
 import SaveBalance from "../../orders/show/SaveBalance.jsx";
 import {postData} from "../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../infraestructure/data/const.js";
+import {detailOperOperations} from "../../../infraestructure/states/states_balancing.js";
+import {checkOpersPosition} from "../../../infraestructure/states/opers_states.js";
 
 const ListBalancing = () => {
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
@@ -21,7 +23,11 @@ const ListBalancing = () => {
   const [samSum, setSamSum] = useRecoilState(samSumOperation);
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
 
- // const { data, loading, error } = useGetList("/products/product_operations");
+  const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
+  const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
+
+
+  // const { data, loading, error } = useGetList("/products/product_operations");
 
   // Actualizar el estado global cuando los datos estén disponibles
   useEffect(() => {
@@ -33,15 +39,9 @@ const ListBalancing = () => {
 
     }
 
+
   }, [ objBalancing ]);
 
-
-
-
-
-
-  // if (loading) return <div>Cargando...</div>;
-  // if (error) return <div>Error: {error}</div>;
 
   return (
     <>
@@ -49,14 +49,14 @@ const ListBalancing = () => {
       {
         operationsProduct.length >= 1 && (
           <BalancedOperationsTable
-            key={JSON.stringify(operationsProduct)}
+            key={`${JSON.stringify(operationsProduct)}-${JSON.stringify(detailOperOpera)}-${JSON.stringify(selectedOperDetails)}`}
             data={operationsProduct}
             samSum={samSum}
           />
         )
       }
 
-    <SaveBalance/>
+
 
     </>
   )

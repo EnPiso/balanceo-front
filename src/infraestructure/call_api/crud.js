@@ -19,7 +19,7 @@ export const fetchGetData = async (url, params = {}) => {
 };
 
 // Función en flecha para manejar la solicitud POST
-export const postData = async (url,data) => {
+export const  postData = async (url,data) => {
   try {
     const response = await axios.post(url, data, {
       headers: {
@@ -33,6 +33,22 @@ export const postData = async (url,data) => {
     // setLoading(false); // Detener el indicador de carga
   }
 };
+
+export const postDataFile = async (url, data) => {
+  try {
+    const response = await axios.post(url, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data', // Necesario para manejar archivos
+      },
+    });
+    return response.data; // Devuelve los datos de la respuesta
+  } catch (err) {
+    console.error('Error al enviar el archivo:', err.response || err); // Muestra el error
+    throw err; // Lanza el error para manejarlo en el lugar donde se llame
+  }
+};
+
+
 
 
 export const updateData = async (url,data) => {

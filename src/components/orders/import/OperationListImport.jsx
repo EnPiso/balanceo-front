@@ -33,7 +33,7 @@ const OperationListImport = ({ operationsData, minimunColumn }) => {
             {operationsData.map((op, index) => (
               <tr key={index} className="hover:bg-zinc-100 dark:text-white dark:hover:bg-zinc-700">
                 <td className="px-4 py-2 border border-gray-300 text-xs md:text-sm lowercase">{op.operation}</td>
-                <td className="px-4 py-2 border border-gray-300 text-xs md:text-sm lowercase">{op.sam.toFixed(3)}</td>
+                <td className="px-4 py-2 border border-gray-300 text-xs md:text-sm lowercase">{op.sam ? op.sam.toFixed(3) : "Error en el formato"}</td>
                 <td className="px-4 py-2 border border-gray-300 text-xs md:text-sm lowercase">{op.machine}</td>
                 {
                   !minimunColumn && (

@@ -11,6 +11,8 @@ import useModal from "./sidebarForm/useModal.jsx";
 import {checkOpersPosition, selectOpers} from "../../../infraestructure/states/opers_states.js";
 import {fetchGetData} from "../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../infraestructure/data/const.js";
+import ButtonNavigationVideos from "./tableOperations/videoOperations/ButtonNavigationVideos.jsx";
+import {listVideosOperations, listVideosOpers} from "../../../infraestructure/states/states_videos.js";
 
 export const BalancingDashboard = () => {
 
@@ -18,7 +20,8 @@ export const BalancingDashboard = () => {
 
   const [, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // No necesitas el valor actual aquí, solo el setter
   const [, setOpersSelect] = useRecoilState(selectOpers);
-  const hasFetchedData = useRef(false); // Usamos useRef para verificar si ya se ha ejecutado
+
+
 
 
   useEffect(() => {
