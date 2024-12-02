@@ -2,17 +2,24 @@
 import { useRecoilState } from "recoil";
 import { useEffect } from "react";
 import { checkOpersPosition } from "../../../../infraestructure/states/opers_states.js";
-import { zonesOpers } from "../../../../infraestructure/states/states_balancing.js";
+import {updateDragOperation, zonesOpers} from "../../../../infraestructure/states/states_balancing.js";
+import {orderObjBalancing} from "../../../../infraestructure/states/order_states.js";
 
 const OperatorDetailsOperations = ({ zone, index }) => {
   const [selectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
   const [zonesOpersData, setZonesOpersData] = useRecoilState(zonesOpers); // Array con los datos por operador
+  const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
+  const [updateDrag, setUpdateDrag] = useRecoilState(updateDragOperation);
+
+
 
   // Calcula el total de minutos
   const totalMinutes = zone.reduce((total, op) => total + parseFloat(op.minutes), 0).toFixed(2);
 
   // Efecto para actualizar los datos del operador en zonesOpersData
   useEffect(() => {
+    console.log("Ejecución del useEffect", { selectedOperDetails, totalMinutes, index, zone });
+
     const operatorData = {
       operator: selectedOperDetails[index]?.id,
       totalMinutes: parseFloat(totalMinutes),
@@ -20,13 +27,32 @@ const OperatorDetailsOperations = ({ zone, index }) => {
     };
 
     setZonesOpersData((prevData) => {
-      // Asegúrate de que prevData sea un array antes de actualizar
       const updatedData = Array.isArray(prevData) ? [...prevData] : [];
-      updatedData[index] = operatorData; // Actualiza el índice correspondiente
-      return updatedData;
-    });
+      const filteredData = updatedData.filter((data) => data.operator !== undefined);
 
-  }, [zone, selectedOperDetails, index, totalMinutes, setZonesOpersData]);
+      const operatorExists = filteredData.some((data) => data.operator === operatorData.operator);
+
+      if (!operatorExists && operatorData.operator !== undefined) {
+        filteredData.push(operatorData);
+        console.log("Nuevo operador agregado:", operatorData);
+      } else if (operatorExists) {
+        const existingIndex = filteredData.findIndex((data) => data.operator === operatorData.operator);
+        filteredData[existingIndex] = operatorData;
+        console.log("Operador actualizado:", operatorData);
+      } else {
+        console.warn(`Se intentó agregar un objeto con 'operator: undefined' en el índice ${index}`);
+      }
+
+      const result = filteredData.filter((item) =>
+        selectedOperDetails.some((obj) => obj.id === item.operator)
+      );
+      return result;
+    });
+  }, [selectedOperDetails, totalMinutes, objBalancing]);
+
+
+
+
 
 
   return (

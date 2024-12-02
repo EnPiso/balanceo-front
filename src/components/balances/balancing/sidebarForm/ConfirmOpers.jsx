@@ -3,7 +3,7 @@ import {FaBackward, FaSave} from "react-icons/fa";
 import CustomButton from "../../../../ui/CustomButton.jsx";
 import React from "react";
 
-export const  ConfirmOpen = ({isOpen, setIsOpen, handleSave}) => {
+export const  ConfirmOpen = ({isOpen, setIsOpen, handleSave, title, description}) => {
 
   const handleSaveOperator = () => {
     handleSave()
@@ -18,7 +18,7 @@ export const  ConfirmOpen = ({isOpen, setIsOpen, handleSave}) => {
             <>
               <ModalBody>
                 <div className="mt-4 p-4 text-xl text-center rounded-lg">
-                  <p> Si actualizas los operarios, <b>se actualizan todas las polivalencias</b> </p>
+                  <p> {title} <b>{description}</b> </p>
                   <h1 className="text-4xl mt-3">
                     ⚠️
                   </h1>

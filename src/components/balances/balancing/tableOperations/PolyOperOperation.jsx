@@ -1,13 +1,15 @@
 import React, {useRef, useState, useEffect} from 'react'
-import {Chip, Input, Tooltip} from "@nextui-org/react";
+import {Badge, Chip, Input, Tooltip} from "@nextui-org/react";
 import {updateData} from "../../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../../infraestructure/data/const.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../../infraestructure/data/toastMessage.js";
 import {useRecoilState} from "recoil";
-import {detailOperOperations} from "../../../../infraestructure/states/states_balancing.js";
+import {balancingData, detailOperOperations} from "../../../../infraestructure/states/states_balancing.js";
+import {assignColorsToArray} from "../../../../ui/utils.js";
+import {FaShirt} from "react-icons/fa6";
 
-const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvalenceDetail}) => {
+const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvalenceDetail, color}) => {
   const [changePolyvalence,setChangePolyvalence] = useState(false)
   const [data,setData] = useState(null)
   const [polyvalence,setPolyvalence] = useState(0)
@@ -15,6 +17,9 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
   const [isError,setIsError] = useState(false)
 
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
+
+  const [balancing, setBalancing] = useRecoilState(balancingData);
+
 
   const inputRef = useRef(null)
   const handlePolyvalence = (selectedOperDetails, item) => {
@@ -93,8 +98,8 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
           }
           return item; // Devuelve el objeto original si no coincide
         });
-
-        setDetailOperOpera(updatedArray)
+        const detail = assignColorsToArray(updatedArray)
+        setDetailOperOpera(detail)
         toast.success(toastMessageCustom.updatePolyvalence)
         setChangePolyvalence(false)
 
@@ -112,7 +117,8 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
   return (
     <td
       key={`operator-time-${i}`}
-      className="px-4 py-2 border border-gray-300"
+      className={`px-4 py-2 border border-gray-300 `}
+      style={{backgroundColor: operatorTimes.get(i)?.toFixed(2) ? color: ''}}
     >
 
       {
@@ -159,11 +165,30 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
                 }}>
                 <div>
                   {operatorTimes.get(i)?.toFixed(2) || ''}
+
                 </div>
                 <div>
                   <Tooltip content="Polivalencia %" offset={20}>
                     <Chip>{polyvalenceDetail} %</Chip>
                   </Tooltip>
+
+
+                </div>
+                <div>
+                  {item.is_repeat &&
+                    balancing && (
+                      <>
+                        <Badge
+                          color="default"
+                          content={parseFloat((balancing.gol_hour / (item.sam * balancing.gol_hour).toFixed(2)) * operatorTimes.get(i)?.toFixed(2)).toFixed(2)}
+                          shape="circle">
+                          <FaShirt
+                            className="fill-current"
+                            size={36} />
+                        </Badge>
+                      </>
+                    )
+                  }
 
                 </div>
 

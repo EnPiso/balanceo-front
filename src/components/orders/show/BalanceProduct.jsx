@@ -6,6 +6,7 @@ import {orderObjBalancing, showOrderObj} from "../../../infraestructure/states/o
 import {fetchGetData, postData} from "../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../infraestructure/data/const.js";
 import {detailOperOperations} from "../../../infraestructure/states/states_balancing.js";
+import {assignColorsToArray} from "../../../ui/utils.js";
 
 const BalanceProduct = ({product}) => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
@@ -26,9 +27,12 @@ const BalanceProduct = ({product}) => {
         const data = {
           product: prod.product,
           total_sam: prod.total_sam,
-          operations: result.sorted_operations
+          operations: result.sorted_operations,
+          balancing_id: result.balancing_id
         }
-        setDetailOperOpera(result.details_data)
+        const detail = assignColorsToArray(result.details_data)
+
+        setDetailOperOpera(detail)
         setObjBalancing(data)
 
         //setShowOrder(result)

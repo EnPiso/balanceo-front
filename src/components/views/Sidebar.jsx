@@ -5,12 +5,14 @@ import {sideBarNav} from "../../infraestructure/states/states_navigation.js";
 import InfoBoxBalancing from "../balances/balancing/sidebarForm/InfoBoxBalancing.jsx";
 import ModalDashboardOrder from "../orders/ModalDashboardOrder.jsx";
 import OrderDashboardModal from "../orders/OrderDashboardModal.jsx";
-import {orderObjBalancing} from "../../infraestructure/states/order_states.js";
+import {orderObjBalancing, showOrderObj} from "../../infraestructure/states/order_states.js";
+import ImageLightbox from "../orders/import/ImageLightBox.jsx";
 
 
 const Sidebar = () => {
 	const [sideArray,setSideArray] = useRecoilState(sideBarNav)
 	const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
+	const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
 
 
 	return (
@@ -24,7 +26,20 @@ const Sidebar = () => {
 				</span>
 			</h1>
 			{
-				objBalancing ? <InfoBoxBalancing/> : (
+				objBalancing ? (
+					<>
+						<InfoBoxBalancing/>
+						<div className="mt-2">
+							<ImageLightbox
+								thumbnailUrl={showOrder.order.image_url}
+								fullSizeUrl={showOrder.order.image_url}
+								alt={`medida ${showOrder.order.code}`}
+								key={showOrder.order.code}
+							/>
+						</div>
+
+					</>
+				) : (
 
 					<div className="bg-gray-100 dark:bg-zinc-800 p-4 rounded-lg shadow-md max-w-md mx-auto space-y-3 mt-4">
 

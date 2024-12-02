@@ -1,66 +1,75 @@
 import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
 
-const WebcamComponent = () => {
-  const webcamRef = useRef(null); // Referencia para la webcam
-  const mediaRecorderRef = useRef(null); // Referencia para MediaRecorder
-  const [recording, setRecording] = useState(false); // Estado para saber si está grabando
-  const [videoBlob, setVideoBlob] = useState(null); // Estado para almacenar el video grabado
+const WebcamRecorder = ({ setVideoBlob,videoDuration, setVideoDuration }) => {
+  const webcamRef = useRef(null);
+  const mediaRecorderRef = useRef(null);
+  const [recording, setRecording] = useState(false);
 
-  // Opciones para la webcam
   const videoConstraints = {
     width: 1280,
     height: 720,
-    facingMode: "environment", // Usa "environment" para la cámara trasera
+    facingMode: "environment",
   };
 
-  // Inicia la grabación
   const startRecording = () => {
     setRecording(true);
-    const stream = webcamRef.current.video.srcObject; // Obtén el stream de la webcam
+    const stream = webcamRef.current.video.srcObject;
     const mediaRecorder = new MediaRecorder(stream, {
-      mimeType: "video/webm", // Formato del video
+      mimeType: "video/webm",
     });
     mediaRecorderRef.current = mediaRecorder;
 
     let chunks = [];
     mediaRecorder.ondataavailable = (event) => {
       if (event.data.size > 0) {
-        chunks.push(event.data); // Guarda las partes del video
+        chunks.push(event.data);
       }
     };
 
     mediaRecorder.onstop = () => {
-      const blob = new Blob(chunks, { type: "video/webm" }); // Crea el video completo
-      setVideoBlob(blob);
-      chunks = []; // Resetea los chunks
+      const blob = new Blob(chunks, { type: "video/webm" });
+      setVideoBlob(blob); // Pasa el video grabado al componente padre
+      getVideoDuration(blob); // Calcula la duración del video
+      chunks = [];
     };
 
-    mediaRecorder.start(); // Inicia la grabación
+    mediaRecorder.start();
   };
 
-  // Detiene la grabación
   const stopRecording = () => {
     setRecording(false);
-    mediaRecorderRef.current.stop(); // Detiene el MediaRecorder
+    mediaRecorderRef.current.stop();
   };
 
-  // Descarga el video grabado
-  const downloadVideo = () => {
-    if (videoBlob) {
-      const url = URL.createObjectURL(videoBlob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "recorded-video.webm";
-      a.click();
-      URL.revokeObjectURL(url); // Limpia la memoria
-    }
+  // Función para calcular la duración del video
+  const getVideoDuration = (blob) => {
+    const video = document.createElement("video");
+    const url = URL.createObjectURL(blob);
+
+    video.preload = "metadata"; // Precarga solo los metadatos
+
+    video.onloadedmetadata = () => {
+      if (video.duration === Infinity) {
+        video.currentTime = Number.MAX_SAFE_INTEGER;
+        video.ontimeupdate = () => {
+          video.ontimeupdate = null; // Elimina el listener para evitar duplicados
+          setVideoDuration(video.duration); // Actualiza la duración
+          URL.revokeObjectURL(url); // Libera memoria
+        };
+      } else {
+        setVideoDuration(video.duration); // Actualiza la duración
+        URL.revokeObjectURL(url); // Libera memoria
+      }
+    };
+
+    video.src = url; // Asigna la URL del blob
   };
 
   return (
     <div className="flex flex-col items-center">
       <Webcam
-        audio={true} // Incluye audio
+        audio={true}
         ref={webcamRef}
         videoConstraints={videoConstraints}
         className="w-full max-w-md"
@@ -81,27 +90,14 @@ const WebcamComponent = () => {
             Detener Grabación
           </button>
         )}
-        {videoBlob && (
-          <button
-            onClick={downloadVideo}
-            className="bg-blue-500 text-white py-2 px-4 rounded"
-          >
-            Descargar Video
-          </button>
-        )}
       </div>
-      {videoBlob && (
-        <div className="mt-4">
-          <h2 className="text-lg font-bold">Video Grabado:</h2>
-          <video
-            src={URL.createObjectURL(videoBlob)}
-            controls
-            className="w-full max-w-md"
-          />
-        </div>
+      {videoDuration !== null && (
+        <p className="mt-4 text-gray-700">
+          Duración del video: {videoDuration.toFixed(2)} segundos
+        </p>
       )}
     </div>
   );
 };
 
-export default WebcamComponent;
+export default WebcamRecorder;

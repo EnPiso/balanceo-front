@@ -88,16 +88,29 @@ const TableRowOperations = ({
   return (
     <>
       <tr
-        draggable={draggable}
-        onDragStart={onDragStart}
-        onDragOver={onDragOver}
-        onDrop={onDrop}
-        onDragEnd={onDragEnd}
-        className={`hover:bg-zinc-50 dark:hover:bg-zinc-700 ${className}`}
+        // draggable={draggable}
+        // onDragStart={onDragStart}
+        // onDragOver={onDragOver}
+        // onDrop={onDrop}
+        // onDragEnd={onDragEnd}
+        className={` cursor-move  hover:border-zinc-600 dark:hover:border-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition dark:text-zinc-500
+         ${item.is_repeat ? 'border-double border-1 border-zinc-500 ' : 'border-l-4 border-transparent'}
+         
+         `}
+        style={{
+          background: item.is_repeat
+            ? `linear-gradient(to right, ${item.color[0]}, ${item.color[1]}), rgba(0, 0, 0, 0.06)`
+            : item.color,
+             backgroundBlendMode: item.is_repeat ? "multiply" : "normal", // Mezcla el degradado con el color oscuro
+        }}
       >
+
         <td className={`px-4 py-2 border border-gray-300 ${showVideos && showVideos.id === item.id && 'font-bold'}`}>
           <small>{item.operation_position}</small> - {item.operation}
           <div className="flex justify-end">
+
+
+
             <ButtonPlayVideos
               item={item}
               showVideos={showVideos}
@@ -116,6 +129,8 @@ const TableRowOperations = ({
           className={`px-4 py-2 border border-gray-300 cursor-pointer ${item.is_sam_minutes && "font-bold"}`}
         >
           {item.sam}
+
+
         </td>
         <td
           onClick={() => handleSam(item, false)}
@@ -140,17 +155,22 @@ const TableRowOperations = ({
               // Extrae `polyvalence`, o usa un valor predeterminado si no existe
               const polyvalence = operatorDetail?.detail?.polyvalence || 100;
 
+              const color = operatorDetail?.detail?.color || "";
 
 
               return (
-                <PolyOperOperation
-                  key={`poly-oper-${index}`}
-                  selectedOperDetails={selectedOperDetails}
-                  operatorTimes={operatorTimes}
-                  item={item}
-                  i={index}
-                  polyvalenceDetail={polyvalence}
-                />
+                <>
+
+                  <PolyOperOperation
+                    key={`poly-oper-${index}`}
+                    selectedOperDetails={selectedOperDetails}
+                    operatorTimes={operatorTimes}
+                    item={item}
+                    i={index}
+                    polyvalenceDetail={polyvalence}
+                    color={color}
+                  />
+                </>
               );
             })}
 

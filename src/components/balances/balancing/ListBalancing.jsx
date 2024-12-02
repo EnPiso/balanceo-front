@@ -9,12 +9,13 @@ import TableOperations from "./TableOperations.jsx";
 import ExampleBalance from "./ExampleBalance.jsx";
 import BalancedOperationsTable from "./tableOperations/BalancedOperationsTable.jsx";
 import ExcelImageLoader from "../../orders/import/ExcelImageLoader.jsx";
-import {orderObjBalancing} from "../../../infraestructure/states/order_states.js";
+import {orderObjBalancing, showOrderObj} from "../../../infraestructure/states/order_states.js";
 import SaveBalance from "../../orders/show/SaveBalance.jsx";
 import {postData} from "../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../infraestructure/data/const.js";
 import {detailOperOperations} from "../../../infraestructure/states/states_balancing.js";
 import {checkOpersPosition} from "../../../infraestructure/states/opers_states.js";
+import ImageLightbox from "../../orders/import/ImageLightBox.jsx";
 
 const ListBalancing = () => {
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
@@ -25,6 +26,7 @@ const ListBalancing = () => {
 
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
   const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
+  const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
 
 
   // const { data, loading, error } = useGetList("/products/product_operations");
@@ -39,7 +41,6 @@ const ListBalancing = () => {
 
     }
 
-
   }, [ objBalancing ]);
 
 
@@ -49,7 +50,7 @@ const ListBalancing = () => {
       {
         operationsProduct.length >= 1 && (
           <BalancedOperationsTable
-            key={`${JSON.stringify(operationsProduct)}-${JSON.stringify(detailOperOpera)}-${JSON.stringify(selectedOperDetails)}`}
+            key={`${JSON.stringify(operationsProduct)}-${JSON.stringify(detailOperOpera)}-${JSON.stringify(selectedOperDetails)}-${JSON.stringify(objBalancing)}`}
             data={operationsProduct}
             samSum={samSum}
           />

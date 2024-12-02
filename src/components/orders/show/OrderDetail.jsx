@@ -10,9 +10,15 @@ import {FaBackward} from "react-icons/fa";
 import SaveBalance from "./SaveBalance.jsx";
 import BalanceProduct from "./BalanceProduct.jsx";
 import {checkOpersPosition, selectOpers} from "../../../infraestructure/states/opers_states.js";
+import {allOperationsProduct, samSumOperation} from "../../../infraestructure/states/operation_states.js";
+import {selectProduct} from "../../../infraestructure/states/states_product.js";
+import {detailOperOperations} from "../../../infraestructure/states/states_balancing.js";
+import {checkOperationsBalancing} from "../../../infraestructure/states/states_videos.js";
+import ModalCustomProduct from "../../balances/balancing/customProduct/ModalCustomProduct.jsx";
 
 const OrderDetail = () => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
+
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
   const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
 
@@ -20,6 +26,17 @@ const OrderDetail = () => {
   const [expandedProductIndices, setExpandedProductIndices] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
+
+
+
+  const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
+  const [product, setProduct] = useRecoilState(selectProduct)
+
+  const [samSum, setSamSum] = useRecoilState(samSumOperation);
+
+  const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
+  const [selOpeVideos, setSelOpeVideos] = useRecoilState(checkOperationsBalancing);
+
 
 
 
@@ -41,6 +58,19 @@ const OrderDetail = () => {
     }
   };
 
+
+  const backward = () => {
+    setObjBalancing(null)
+    setSelectedOperDetails([])
+    setOperationsProduct([])
+    setProduct(null)
+    setSamSum(0)
+    setDetailOperOpera([])
+    setSelOpeVideos(null)
+
+  }
+
+
   if (!showOrder) return <p>Loading...</p>;
 
   return (
@@ -49,12 +79,14 @@ const OrderDetail = () => {
         <>
           <Button
             className="mt-2"
-            onClick={() => setObjBalancing(null)}
+            onClick={backward}
             color="default"
             startContent={<FaBackward/>}
           >
             Regresar a {showOrder.order.code}
           </Button>
+
+
           {
             isLoading ? (
               <Spinner label="Cargando" color="default" labelColor="foreground"/>

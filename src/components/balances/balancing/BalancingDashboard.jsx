@@ -13,6 +13,8 @@ import {fetchGetData} from "../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../infraestructure/data/const.js";
 import ButtonNavigationVideos from "./tableOperations/videoOperations/ButtonNavigationVideos.jsx";
 import {listVideosOperations, listVideosOpers} from "../../../infraestructure/states/states_videos.js";
+import ModalCustomProduct from "./customProduct/ModalCustomProduct.jsx";
+import ImageLightbox from "../../orders/import/ImageLightBox.jsx";
 
 export const BalancingDashboard = () => {
 
@@ -66,10 +68,14 @@ export const BalancingDashboard = () => {
         {
           objBalancing && (
             <>
-              <TitleDashboard
-               title={objBalancing.product.name}
+
+              <ModalCustomProduct
+                product={objBalancing.product}
               />
-              <ListBalancing/>
+
+              <ListBalancing
+                key={JSON.stringify(objBalancing)}
+              />
             </>
           )
         }

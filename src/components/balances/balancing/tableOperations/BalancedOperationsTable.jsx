@@ -1,7 +1,7 @@
 // components/BalancedOperationsTable.jsx
 import React, {useEffect, useState} from 'react';
 import { useRecoilState } from "recoil";
-import {balancingData, detailOperOperations} from "../../../../infraestructure/states/states_balancing.js";
+import {balancingData, detailOperOperations, zonesOpers} from "../../../../infraestructure/states/states_balancing.js";
 import {checkOpersPosition, selectOpers} from "../../../../infraestructure/states/opers_states.js";
 import {balanceOperations} from "../../../../infraestructure/utils/balanceOperations.js";
 import TableHeaderOperations from "./TableHeaderOperations.jsx";
@@ -17,6 +17,9 @@ import {toastMessageCustom} from "../../../../infraestructure/data/toastMessage.
 import ModalVideoInput from "./videoOperations/ModalVideoInput.jsx";
 import TrDinamycVideo from "./videoOperations/TrDinamycVideo.jsx";
 import DraggableVideo from "./videoOperations/DraggableVideo.jsx";
+import {assignColorsToArray} from "../../../../ui/utils.js";
+import useGenerateZones from "../../../../hooks/balances/useGenerateZones.jsx";
+import {orderObjBalancing} from "../../../../infraestructure/states/order_states.js";
 
 const BalancedOperationsTable = ({ data, samSum }) => {
   const [balancing] = useRecoilState(balancingData);
@@ -34,11 +37,65 @@ const BalancedOperationsTable = ({ data, samSum }) => {
 
   const [showVideos, setShowVideos]  = useState(null)
 
+  const [zonesOpersData, setZonesOpersData] = useRecoilState(zonesOpers); // Array con los detalles de cada selección
 
-useEffect(()=> {
-  //console.log(detailOperOpera)
-  //debugger
-},[detailOperOpera])
+
+  const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
+
+  // useGenerateZones({ opersSelect, balancing, zones });
+
+
+
+  // Función centralizada para actualizar zonas**
+  const updateZones = (callback) => {
+    setZonesOpersData((prevData) => {
+      const result = callback(prevData);
+      return result; // Solo actualiza si el callback cambia algo
+    });
+  };
+
+
+  useEffect(()=> {
+    const updateDetails = detailOperOpera.map((detail) => detail.detail);
+
+    const mergeOperations = mergeOperationsWithColors(operationsProduct, updateDetails);
+
+    // Compara el nuevo estado con el actual antes de actualizar
+    if (JSON.stringify(mergeOperations) !== JSON.stringify(operationsProduct)) {
+      setOperationsProduct(mergeOperations);
+    }
+  },[detailOperOpera, operationsProduct])
+
+  const mergeOperationsWithColors = (operations, attributes) => {
+    // Crear un mapa para agrupar colores por operation_id
+    const colorMap = attributes.reduce((map, attr) => {
+      if (!map[attr.operation_id]) {
+        map[attr.operation_id] = [];
+      }
+      map[attr.operation_id].push(attr.color);
+      return map;
+    }, {});
+
+    // Construir el nuevo array con los datos de operations
+    return operations.map((operation) => {
+      const operationColors = colorMap[operation.id] || []; // Colores asociados al id
+
+      return {
+        ...operation,
+        is_repeat: Array.isArray(operationColors) && operationColors.length > 1, // Confirma que es un array y evalúa la longitud
+        color: Array.isArray(operationColors)
+          ? operationColors.length > 1
+            ? operationColors // Si hay varios colores, los retorna como array
+            : operationColors[0] || null // Si hay un solo color, retorna ese color
+          : null, // Si no es un array, retorna null
+      };
+    });
+
+  };
+
+
+
+
 
   const handleDragStart = (e, index) => {
     const draggedItem = operationsProduct[index]; // Obtén el objeto seleccionado
@@ -59,7 +116,10 @@ useEffect(()=> {
 
     // Recupera el objeto arrastrado desde dataTransfer
     const draggedItem = JSON.parse(e.dataTransfer.getData('application/json'));
+
    //  console.log("Objeto arrastrado recibido en drop:", draggedItem);
+      // Recupera el elemento en la posición de destino
+    const operationBalancingBefore = operationsProduct[targetIndex].id;
 
     // Opcional: Intercambia elementos (si aplica a tu caso)
     const newItems = [...operationsProduct];
@@ -80,28 +140,34 @@ useEffect(()=> {
 
     console.log(draggedItem.operation_balancing_id, operationsBalancings);
 
-    handleApi(operationsBalancings, draggedItem.operation_balancing_id, detailOperOpera);
+    handleApi(operationsBalancings, draggedItem.operation_balancing_id, detailOperOpera, operationBalancingBefore);
   };
 
 
 
 
-  const handleApi = (operationsBalancings, operation_balancing_id, detailOperOpera) => {
+  const handleApi = (operationsBalancings, operation_balancing_id, detailOperOpera, operationBalancingBefore) => {
 
     const data = {
       operationsBalancing: {
         operations: JSON.stringify(operationsBalancings),
         operation_balancing_id: operation_balancing_id,
-        opers_select: JSON.stringify(detailOperOpera)
+        opers_select: JSON.stringify(detailOperOpera),
+        operation_balancing_before: operationBalancingBefore,
+        zones: JSON.stringify(zonesOpersData)
       }
     }
+
     const postDataOrder = async (data) => {
       try {
         const result = await updateData(urlMain + "/balancings/update_operations_balancing", data)
        //  console.log(result)
         // console.log(operationsProduct)
+
         setOperationsProduct(result.sorted_operations)
-        setDetailOperOpera(result.formatted_objects)
+        const formatted_objects = assignColorsToArray(result.formatted_objects)
+
+        setDetailOperOpera(formatted_objects)
 
         //console.log(detailOperOpera)
         toast.success(toastMessageCustom.oper_drag)
@@ -124,7 +190,8 @@ useEffect(()=> {
 
   return (
     <div className="space-y-8">
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto overflow-hidden">
+
         <table className="min-w-full border-collapse border border-gray-200 table-hover-columns">
           <thead className="dark:bg-zinc-100 bg-zinc-700">
           <TableHeaderOperations opersSelect={opersSelect} balancing={balancing} />
@@ -142,9 +209,6 @@ useEffect(()=> {
               opersSelect={opersSelect}
               balancing={balancing}
               operatorTimes={operationMap.get(item.operation) || new Map()}
-              className={`cursor-move border-l-4 border-transparent hover:border-zinc-600 dark:hover:border-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition
-                
-              `}
               setIsModalInput={setIsModalInput}
               showVideos={showVideos}
               setShowVideos={setShowVideos}
@@ -169,7 +233,7 @@ useEffect(()=> {
           <h2 className="text-xl font-bold">Detalle de Balanceo por Operador</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {zones.map((zone, index) => (
-              <OperatorDetailsOperations key={index} zone={zone} index={index} />
+              <OperatorDetailsOperations key={index} zone={zone} index={index} updateZones={updateZones}/>
             ))}
           </div>
         </div>

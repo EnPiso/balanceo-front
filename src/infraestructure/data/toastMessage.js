@@ -1,15 +1,15 @@
-
 export const toastMessageCustom = {
-  oper_drag: 'La operación ha sido reubicada exitosamente!',
-  order_create: "La orden y sus fichas técnicas se han creado exitosamente.",
-  file_upload: "El archivo ha sido cargado correctamente.",
-  error_upload: "Error: Hubo un problema al procesar el archivo.",
-  error_invalid: "Error: El archivo no contiene una hoja válida.",
-  no_found: "Error: No se encontraron operaciones válidas en el archivo.",
-  no_images: "Advertencia: No se encontraron imágenes en el archivo.",
-  erase_data_modal: "Se ha eliminado los datos del archivo de excel.",
-  updatePolyvalence: "Se ha actualizado la polivalencia correctamente",
-  commentSave: "Se ha guardado el comentario",
-  videosSave: "Se han guardado los videos",
-  videoSave: "Se ha guardado el video",
-}
+  oper_drag: 'La operación se ha movido con éxito.',
+  order_create: "La orden y sus fichas técnicas se crearon correctamente.",
+  file_upload: "El archivo se cargó exitosamente.",
+  error_upload: "Error: Ocurrió un problema al procesar el archivo. Por favor, inténtalo nuevamente.",
+  error_invalid: "Error: El archivo no contiene hojas válidas. Revisa el formato y vuelve a intentarlo.",
+  no_found: "Error: No se encontraron operaciones válidas en el archivo. Asegúrate de que cumpla con los requisitos.",
+  no_images: "Advertencia: No se detectaron imágenes en el archivo proporcionado.",
+  erase_data_modal: "Los datos del archivo de Excel se eliminaron correctamente.",
+  updatePolyvalence: "La polivalencia se actualizó con éxito.",
+  commentSave: "El comentario se guardó correctamente.",
+  videosSave: "Todos los videos se guardaron con éxito.",
+  videoSave: "El video se guardó correctamente.",
+  operationDrag: "La operación se movió correctamente."
+};
