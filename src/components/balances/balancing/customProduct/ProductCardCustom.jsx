@@ -16,7 +16,7 @@ const ProductCardCustom = ({ product }) => {
 
 
   return (
-    <Card className="rounded-lg shadow-sm p-4">
+    <Card className="rounded-lg shadow-sm p-4 ">
 
       <CardBody className="space-y-2">
 

@@ -13,7 +13,7 @@ const ImageLightbox = ({ thumbnailUrl, fullSizeUrl,alt }) => {
         src={thumbnailUrl}
         alt={alt}
         onClick={toggleLightbox}
-        className="hover:shadow-lg transition-shadow dark:hover:shadow-xl shadow-md rounded-xl"
+        className="hover:shadow-lg transition-shadow dark:hover:shadow-xl shadow-md rounded-xl "
         style={{ cursor: 'pointer', maxHeight: '15vh' }}
       />
 

@@ -1,5 +1,5 @@
 import React, {useRef, useState, useEffect} from 'react'
-import {Badge, Chip, Input, Tooltip} from "@nextui-org/react";
+import {Badge, Button, Chip, Input, Tooltip} from "@nextui-org/react";
 import {updateData} from "../../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../../infraestructure/data/const.js";
 import toast from "react-hot-toast";
@@ -178,14 +178,18 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
                   {item.is_repeat &&
                     balancing && (
                       <>
-                        <Badge
-                          color="default"
-                          content={parseFloat((balancing.gol_hour / (item.sam * balancing.gol_hour).toFixed(2)) * operatorTimes.get(i)?.toFixed(2)).toFixed(2)}
-                          shape="circle">
-                          <FaShirt
-                            className="fill-current"
-                            size={36} />
-                        </Badge>
+                        <Chip
+                          variant="flat"
+                          avatar={
+                            <FaShirt
+                              className="fill-current"
+                              size={10} />
+                          }
+                        >
+                          {parseFloat((balancing.gol_hour / (item.sam * balancing.gol_hour).toFixed(2)) * operatorTimes.get(i)?.toFixed(2)).toFixed(2)}
+
+                        </Chip>
+
                       </>
                     )
                   }

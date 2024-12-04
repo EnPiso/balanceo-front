@@ -94,19 +94,21 @@ const TableRowOperations = ({
         // onDrop={onDrop}
         // onDragEnd={onDragEnd}
         className={` cursor-move  hover:border-zinc-600 dark:hover:border-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition dark:text-zinc-500
-         ${item.is_repeat ? 'border-double border-1 border-zinc-500 ' : 'border-l-4 border-transparent'}
+         {/* item.is_repeat ? 'border-double border-1 border-zinc-500 ' : 'border-l-4 border-transparent' */}
          
          `}
         style={{
-          background: item.is_repeat
-            ? `linear-gradient(to right, ${item.color[0]}, ${item.color[1]}), rgba(0, 0, 0, 0.06)`
-            : item.color,
-             backgroundBlendMode: item.is_repeat ? "multiply" : "normal", // Mezcla el degradado con el color oscuro
+          background: item.is_repeat ? `linear-gradient(to right, ${item.color[0]}, ${item.color[1]}), rgba(0, 0, 0, 0.06)` : item.color,
+          backgroundBlendMode: item.is_repeat ? "multiply" : "normal", // Mezcla el degradado con el color oscuro
         }}
       >
 
         <td className={`px-4 py-2 border border-gray-300 ${showVideos && showVideos.id === item.id && 'font-bold'}`}>
-          <small>{item.operation_position}</small> - {item.operation}
+          <small>
+            <span className="font-bold">
+              {item.operation_position}
+            </span>
+          </small>  {item.operation}
           <div className="flex justify-end">
 
 

@@ -5,6 +5,7 @@ import React, {useEffect} from "react";
 import ProductCardCustom from "./ProductCardCustom.jsx";
 import CustomButton from "../../../../ui/CustomButton.jsx";
 import {FaBackward, FaSave} from "react-icons/fa";
+import TabOperationsCustom from "./TabOperationsCustom.jsx";
 
 const ModalCustomProduct = () => {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -54,6 +55,9 @@ const ModalCustomProduct = () => {
             <>
               <ModalHeader className="flex flex-col gap-1">{objBalancing.product.name}</ModalHeader>
               <ModalBody>
+
+                <TabOperationsCustom/>
+
                 <ProductCardCustom/>
               </ModalBody>
               <ModalFooter>
@@ -64,13 +68,7 @@ const ModalCustomProduct = () => {
                   onClick={onClose}
                   title="Regresar"
                 />
-                <CustomButton
-                  color="default"
-                  variant="bordered"
-                  startContent={<FaSave color="green" />}
-                  onClick={onClose}
-                  title="Agregar Operación"
-                />
+
               </ModalFooter>
             </>
           )}

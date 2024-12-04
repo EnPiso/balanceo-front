@@ -16,31 +16,78 @@ export const formatDateRails = (isoDateString) => {
 
 
 const generatePastelColor = () => {
-  const r = Math.floor(200 + Math.random() * 19); // Rango más cercano a blanco
-  const g = Math.floor(200 + Math.random() * 19);
-  const b = Math.floor(200 + Math.random() * 19);
+  const r = Math.floor(200 + Math.random() * 12); // Rango más cercano a blanco
+  const g = Math.floor(200 + Math.random() * 12);
+  const b = Math.floor(200 + Math.random() * 12);
   return `rgb(${r}, ${g}, ${b})`;
 };
 
 
 // Asignador de colores por ID dentro de detail
 export const assignColorsToArray = (array) => {
-  const colorMap = {}; // Mapa para almacenar colores únicos por `oper_id`
 
-  const update_array = array.map((item) => {
-    if (!colorMap[item.oper_id]) {
-      // Si no hay color asignado a este oper_id, genera uno
-      colorMap[item.oper_id] = generatePastelColor();
+  const colors_ids = [...new Set(array.map(item => item.oper_id))]
+
+  const update_colors = colors_ids.map((item)=> {
+    const data = {
+      id: item,
+      color: generatePastelColor()
     }
+    return data
+  })
 
-    return {
-      ...item,
-      detail: {
-        ...item.detail,
-        color: colorMap[item.oper_id], // Agrega el color dentro de `detail`
-      },
-    };
+  // Crear un mapa de colores para acceso rápido
+  const colorMap = Object.fromEntries(update_colors.map(item => [item.id, item.color]));
+
+// Recorrer array2 y agregar el atributo `color` al `detail` si hay coincidencia
+  const updatedArray = array.map(item => ({
+    ...item,
+    detail: {
+      ...item.detail,
+      color: colorMap[item.oper_id] || null, // Asigna el color si existe, de lo contrario null
+    },
+  }));
+
+  return updatedArray
+};
+
+
+export const isRepeatUpdate = (operationsProduct, operations_balancing_ids) => {
+  const updatedObjects = operationsProduct.map((obj) => {
+    if (operations_balancing_ids.includes(obj.operation_balancing_id)) {
+      return { ...obj, is_repeat: true }; // Si coincide, marca como true
+    } else {
+      return { ...obj, is_repeat: false }; // Si no coincide, marca como false
+    }
   });
 
-  return update_array
-};
+  return updatedObjects
+}
+
+export const isRepeatColor = (firstArray, secondArray) => {
+
+  // Crear un nuevo array con la información combinada
+  const resultArray = secondArray.map((item) => {
+    // Buscar en el primer array si hay un objeto con el mismo `operations_balancing_id`
+    const match = firstArray.find((entry) => entry.operations_balancing_id === item.operation_balancing_id);
+
+    if (match) {
+      // Si hay coincidencia, agregar `colors` e `is_repeat`
+      return {
+        ...item,
+        colors: match.colors,
+        is_repeat: match.colors.length > 1,
+      };
+    } else {
+      // Si no hay coincidencia, agregar un array vacío para `colors` y `is_repeat: false`
+      return {
+        ...item,
+        colors: [],
+        is_repeat: false,
+      };
+    }
+
+
+  });
+  return resultArray
+}

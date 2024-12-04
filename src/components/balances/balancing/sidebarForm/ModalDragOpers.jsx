@@ -22,7 +22,7 @@ import SpinnerLoaderCustom from "../../../../ui/SpinnerLoaderCustom.jsx";
 import {allOperationsProduct} from "../../../../infraestructure/states/operation_states.js";
 import {balancingData, detailOperOperations, zonesOpers} from "../../../../infraestructure/states/states_balancing.js";
 import {ConfirmOpen} from "./ConfirmOpers.jsx";
-import {assignColorsToArray} from "../../../../ui/utils.js";
+import {assignColorsToArray, isRepeatColor, isRepeatUpdate} from "../../../../ui/utils.js";
 
 const ModalDragOpers = () => {
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
@@ -47,8 +47,6 @@ const ModalDragOpers = () => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
 
   const [balancing, setBalancing] = useRecoilState(balancingData);
-
-
 
 
   const handleOpen = (size) => {
@@ -79,17 +77,28 @@ const ModalDragOpers = () => {
       opers_balancing: {
         opers: JSON.stringify(selectedOperDetails),
         product_id: objBalancing.product.id,
-        zones_opers_data: JSON.stringify(zonesOpersData),
         order_id: showOrder.order.id,
-        gol_hour: balancing.gol_hour
+        gol_hour: balancing.gol_hour,
+        operations: JSON.stringify(objBalancing.operations)
       }
+
     }
+
     const postDataOrder = async (data) => {
       try {
         const result = await postData(urlMain + "/opers_balancings/create_opers", data)
         //const detail = assignColorsToArray(result.detail_oper_operations)
         const detail = assignColorsToArray(result.data_detail_end)
         debugger
+        // const updateOperations = isRepeatUpdate(operationsProduct, result.operations_up)
+
+        // const opersUpdate = isRepeatColor(result.operations_up, operationsProduct)
+
+        //setOperationsProduct(opersUpdate)
+        // console.log(result)
+        // console.log(operationsProduct)
+
+
         setDetailOperOpera(detail)
         onClose()
         setIsLoading(false)

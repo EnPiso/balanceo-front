@@ -15,15 +15,16 @@ import {checkOpersPosition} from "../../../../infraestructure/states/opers_state
 import {assignColorsToArray} from "../../../../ui/utils.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../../infraestructure/data/toastMessage.js";
-import {FaBackward, FaRemoveFormat} from "react-icons/fa";
+import {FaBackward, FaFileArchive, FaRemoveFormat, FaStop} from "react-icons/fa";
 import CustomButton from "../../../../ui/CustomButton.jsx";
-import {FaDeleteLeft, FaTornado} from "react-icons/fa6";
+import {FaArrowDownUpAcrossLine, FaDeleteLeft, FaTornado} from "react-icons/fa6";
 import CheckDeleteCustom from "./CheckDeleteCustom.jsx";
 import {ConfirmOpen} from "../sidebarForm/ConfirmOpers.jsx";
+import {Chip} from "@nextui-org/react";
 
 const ITEM_TYPE = "operation"; // Tipo de elemento para DnD
 
-const   DraggableRow = ({ operation, index, moveRow, handleConfirmDeleteData }) => {
+const   DraggableRow = ({ operation, index, handleDragStart, handleDragOver, handleDrop, operationsUpdate }) => {
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
   const [zonesOpersData, setZonesOpersData] = useRecoilState(zonesOpers); // Array con los detalles de cada selección
   const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
@@ -31,58 +32,36 @@ const   DraggableRow = ({ operation, index, moveRow, handleConfirmDeleteData }) 
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
   const [updateDrag, setUpdateDrag] = useRecoilState(updateDragOperation);
 
-  const [isUpdate,setIsUpdate] = useState(false)
-
   const [balancing, setBalancing] = useRecoilState(balancingData);
 
 
 
 
 
-  // Configuración del drag
-  const [, dragRef] = useDrag({
-    type: ITEM_TYPE,
-    item: { index },
-    canDrag: () => !isUpdate,
-  });
+  const handleDropUpdate = (index) => {
+    const updatedList = handleDrop(index)
+    handleList(updatedList)
 
-  // Configuración del drop
-  const [, dropRef] = useDrop({
-    accept: ITEM_TYPE,
-    canDrop: () => !isUpdate,
-    hover: (draggedItem) => {
-      if (draggedItem.index !== index) {
-        moveRow(draggedItem.index, index);
-        draggedItem.index = index; // Evita múltiples reordenamientos
+  }
+
+
+  const handleList = (updatedList) => {
+    const data = {
+      operations_balancings: {
+        updated_list: JSON.stringify(updatedList),
+        balancing_id: objBalancing.balancing_id,
+        selected_oper_details: JSON.stringify(selectedOperDetails),
+        gol_hour: balancing.gol_hour
       }
-
-    },
-    drop: (item, monitor) => {
-      const draggedItem = monitor.getItem(); // Obtén el elemento arrastrado
-      const updatedList = moveRow(draggedItem.index, index); // Obtén la lista actualizada
-
-      const data = {
-        operations_balancings: {
-          updated_list: JSON.stringify(updatedList),
-          balancing_id: objBalancing.balancing_id,
-          selected_oper_details: JSON.stringify(selectedOperDetails),
-          gol_hour: balancing.gol_hour
-        }
-      }
-      debugger
-      handleApi(data, updatedList)
-    },
-  });
-
-
-
+    }
+    handleApi(data, updatedList)
+  }
   const handleApi = (data, updatedList) => {
     const udateOperationsIndex = async (data, updatedList) => {
       try {
-        setIsUpdate(true)
         const result = await postData(urlMain + "/operations_balancings/update_index", data)
         console.log(result.operations_balance)
-        debugger
+
         const detail = assignColorsToArray(result.details)
 
         setDetailOperOpera(detail)
@@ -96,7 +75,7 @@ const   DraggableRow = ({ operation, index, moveRow, handleConfirmDeleteData }) 
           ...prevState, // Copia el objeto actual
           operations: updatedList, // Copia el array actual y agrega el nuevo elemento
         }));
-        setIsUpdate(false)
+
 
 
       } catch (error) {
@@ -107,17 +86,52 @@ const   DraggableRow = ({ operation, index, moveRow, handleConfirmDeleteData }) 
     udateOperationsIndex(data,updatedList);
 
   }
+// f59e0b
+
+  const handleDelete = (e, operation) => {
+    e.preventDefault()
+    console.log(operation)
+  }
+
+  const handleDestribuye = (e, operation) => {
+    e.preventDefault()
+    console.log(operation)
+  }
+
+
 
   return (
     <tr
-      ref={(node) => dragRef(dropRef(node))} // Asigna las referencias de drag y drop
-      className={`p-2 border border-gray-300 rounded-md text-zinc-700 transition-transform transform hover:scale-105 origin-center will-change-transform hover:bg-zinc-50 font-semibold ${
-        isUpdate ? "opacity-50 cursor-not-allowed" : "cursor-grab"
-      }`}    >
-      <td className="px-4 py-2 border border-gray-300  text-right">{operation.operation_position}</td>
-      <td className="px-4 py-2 border border-gray-300 ">{operation.operation}</td>
-      <td className="px-4 py-2 border border-gray-300 ">{operation.machine}</td>
-      <td className="px-4 py-2 border border-gray-300 ">{operation.sam}</td>
+      draggable
+      onDragStart={() => handleDragStart(index)} // Inicio del drag
+      onDragOver={(e) => handleDragOver(e)} // Permitir el drop
+      onDrop={() => handleDropUpdate(index)} // Acción al soltar
+      className="cursor-move bg-white hover:bg-gray-100 transition-all"
+    >
+      <td className="px-4 py-2 border border-gray-300 text-right">
+        {operation.operation_position}
+      </td>
+      <td className="px-4 py-2 border border-gray-300 flex justify-start items-center">
+        <button className="mr-2">
+          <FaDeleteLeft
+            className="!cursor-pointer"
+            size={20}
+            onClick={(e) => e.preventDefault()}
+            color="red"
+          />
+        </button>
+        <button className="mr-2">
+          <FaFileArchive
+            className="!cursor-pointer"
+            size={20}
+            onClick={(e) => e.preventDefault()}
+            color="#f59e0b"
+          />
+        </button>
+        {operation.operation}
+      </td>
+      <td className="px-4 py-2 border border-gray-300">{operation.machine}</td>
+      <td className="px-4 py-2 border border-gray-300">{operation.sam}</td>
     </tr>
 
   );
@@ -125,6 +139,8 @@ const   DraggableRow = ({ operation, index, moveRow, handleConfirmDeleteData }) 
 
 const OperationListCustom = ({ operations }) => {
   const [operationsUpdate, setOperationsUpdate] = useState([]);
+  const [draggedIndex, setDraggedIndex] = useState(null); // Para rastrear el elemento arrastrado
+
 
   const [isOpenConfirm,setIsOpenConfirm] = useState(false)
 
@@ -134,22 +150,12 @@ const OperationListCustom = ({ operations }) => {
     setOperationsUpdate(operations)
   }, [operations])
 
+  useEffect(() => {
+    console.log(operationsUpdate)
+    debugger
 
-  // Función para mover filas
-  const moveRow = (fromIndex, toIndex) => {
-    const updatedOperations = [...operationsUpdate];
-    const [movedItem] = updatedOperations.splice(fromIndex, 1); // Elimina el elemento arrastrado
-    updatedOperations.splice(toIndex, 0, movedItem); // Inserta el elemento en la nueva posición
+  }, [operationsUpdate]);
 
-    // Actualiza la posición en cada operación
-    const updatedWithPosition = updatedOperations.map((op, idx) => ({
-      ...op,
-      operation_position: idx + 1, // Actualiza `operation_position` basado en el nuevo índice
-    }));
-
-    setOperationsUpdate(updatedWithPosition); // Actualiza el estado
-    return updatedWithPosition; // Devuelve la lista actualizada
-  };
 
   const handleConfirmDeleteData = (operation, open) => {
     setIsOpenConfirm(open)
@@ -157,29 +163,64 @@ const OperationListCustom = ({ operations }) => {
   }
 
 
+  // Inicio del drag
+  const handleDragStart = (index) => {
+    setDraggedIndex(index);
+  };
+
+  // Permitir el drop
+  const handleDragOver = (e) => {
+    e.preventDefault(); // Necesario para permitir el drop
+  };
+
+  // Manejar el drop
+  const handleDrop = (index) => {
+    if (draggedIndex === null) return;
+
+    const updatedOperations = [...operationsUpdate];
+    const [draggedItem] = updatedOperations.splice(draggedIndex, 1); // Elimina el elemento arrastrado
+    updatedOperations.splice(index, 0, draggedItem); // Inserta en la nueva posición
+
+    // Actualizar las posiciones en la lista
+    const updatedWithPosition = updatedOperations.map((op, idx) => ({
+      ...op,
+      operation_position: idx + 1, // Actualiza las posiciones
+    }));
+
+    setOperationsUpdate(updatedWithPosition); // Actualiza el estado
+    setDraggedIndex(null); // Limpia el índice arrastrado
+    return updatedWithPosition
+  };
+
 
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="space-y-4 overflow-hidden">
+      <div className="space-y-4  overflow-auto max-h-100">
 
         <table className="min-w-full border-collapse border border-gray-200">
-          <thead className="dark:bg-zinc-100 bg-zinc-700">
+          <thead className="dark:bg-zinc-100 bg-zinc-700 sticky top-0 z-10">
           <tr>
-            <th className="px-4 py-2 border text-left dark:text-zinc-700 text-zinc-100">Posición</th>
+            <th className="px-4 py-2 border text-left dark:text-zinc-700 text-zinc-100 flex justify-between items-center">
+              <FaArrowDownUpAcrossLine/>
+              <span>Posición</span>
+            </th>
             <th className="px-4 py-2 border text-left dark:text-zinc-700 text-zinc-100">Operación</th>
             <th className="px-4 py-2 border text-left dark:text-zinc-700 text-zinc-100">Máquina</th>
             <th className="px-4 py-2 border text-left dark:text-zinc-700 text-zinc-100">Sam</th>
+
           </tr>
           </thead>
-          <tbody>
+          <tbody className="rounded-md text-zinc-700  font-semibold !cursor-grabbing">
           {operationsUpdate.map((operationData, index) => (
             <DraggableRow
               key={index}
               operation={operationData}
               index={index}
-              moveRow={moveRow}
-
+              handleDragStart={handleDragStart}
+              handleDragOver={handleDragOver}
+              handleDrop={handleDrop}
+              operationsUpdate={operationsUpdate}
             />
           ))}
           </tbody>
