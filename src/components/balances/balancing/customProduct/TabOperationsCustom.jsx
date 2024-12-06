@@ -2,9 +2,10 @@ import React from "react";
 import {Tabs, Tab, Card, CardBody, CardHeader} from "@nextui-org/react";
 import FormOperationCustom from "./FormOperationCustom.jsx";
 import CloneCustom from "./CloneCustom.jsx";
+import ProductCardCustom from "./ProductCardCustom.jsx";
+import DragAndDropApp from "./dragAndDrop/DragAndDropApp.jsx";
 
-const TabOperationsCustom = () => {
-  const [selected, setSelected] = React.useState("agregar");
+const TabOperationsCustom = ({selected,setSelected, onClose}) => {
 
   return (
     <div className="flex w-full flex-col">
@@ -13,17 +14,21 @@ const TabOperationsCustom = () => {
         selectedKey={selected}
         onSelectionChange={setSelected}
       >
-        <Tab key="agregar" title="Agregar">
+        <Tab key="agregar" title="Operaciones">
           <Card>
             <CardBody>
-              <FormOperationCustom/>
+
+              <ProductCardCustom/>
+
             </CardBody>
           </Card>
         </Tab>
         <Tab key="clonar" title="Clonar">
           <Card>
             <CardBody>
-              <CloneCustom/>
+              <DragAndDropApp
+                onClose={onClose}
+              />
             </CardBody>
           </Card>
         </Tab>

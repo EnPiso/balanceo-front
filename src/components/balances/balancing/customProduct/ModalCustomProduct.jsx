@@ -6,11 +6,15 @@ import ProductCardCustom from "./ProductCardCustom.jsx";
 import CustomButton from "../../../../ui/CustomButton.jsx";
 import {FaBackward, FaSave} from "react-icons/fa";
 import TabOperationsCustom from "./TabOperationsCustom.jsx";
+import DragAndDropApp from "./dragAndDrop/DragAndDropApp.jsx";
 
 const ModalCustomProduct = () => {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
+
+
+  const [selected, setSelected] = React.useState("agregar");
 
 
   useEffect(() => {
@@ -25,7 +29,7 @@ const ModalCustomProduct = () => {
 
       <Modal
         scrollBehavior={"inside"}
-        size="5xl"
+        size={selected === "agregar" ? "5xl" : "full"}
         backdrop="opaque"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
@@ -55,10 +59,12 @@ const ModalCustomProduct = () => {
             <>
               <ModalHeader className="flex flex-col gap-1">{objBalancing.product.name}</ModalHeader>
               <ModalBody>
+                <TabOperationsCustom
+                  selected={selected}
+                  setSelected={setSelected}
+                  onClose={onClose}
+                />
 
-                <TabOperationsCustom/>
-
-                <ProductCardCustom/>
               </ModalBody>
               <ModalFooter>
                 <CustomButton

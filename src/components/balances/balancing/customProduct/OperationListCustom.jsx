@@ -16,13 +16,9 @@ import {assignColorsToArray} from "../../../../ui/utils.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../../infraestructure/data/toastMessage.js";
 import {FaBackward, FaFileArchive, FaRemoveFormat, FaStop} from "react-icons/fa";
-import CustomButton from "../../../../ui/CustomButton.jsx";
 import {FaArrowDownUpAcrossLine, FaDeleteLeft, FaTornado} from "react-icons/fa6";
-import CheckDeleteCustom from "./CheckDeleteCustom.jsx";
-import {ConfirmOpen} from "../sidebarForm/ConfirmOpers.jsx";
-import {Chip} from "@nextui-org/react";
 
-const ITEM_TYPE = "operation"; // Tipo de elemento para DnD
+
 
 const   DraggableRow = ({ operation, index, handleDragStart, handleDragOver, handleDrop, operationsUpdate }) => {
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
@@ -150,11 +146,7 @@ const OperationListCustom = ({ operations }) => {
     setOperationsUpdate(operations)
   }, [operations])
 
-  useEffect(() => {
-    console.log(operationsUpdate)
-    debugger
 
-  }, [operationsUpdate]);
 
 
   const handleConfirmDeleteData = (operation, open) => {
@@ -195,9 +187,7 @@ const OperationListCustom = ({ operations }) => {
 
 
   return (
-    <DndProvider backend={HTML5Backend}>
       <div className="space-y-4  overflow-auto max-h-100">
-
         <table className="min-w-full border-collapse border border-gray-200">
           <thead className="dark:bg-zinc-100 bg-zinc-700 sticky top-0 z-10">
           <tr>
@@ -226,7 +216,6 @@ const OperationListCustom = ({ operations }) => {
           </tbody>
         </table>
       </div>
-    </DndProvider>
   );
 };
 

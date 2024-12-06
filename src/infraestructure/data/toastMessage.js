@@ -11,5 +11,8 @@ export const toastMessageCustom = {
   commentSave: "El comentario se guardó correctamente.",
   videosSave: "Todos los videos se guardaron con éxito.",
   videoSave: "El video se guardó correctamente.",
-  operationDrag: "La operación se movió correctamente."
+  operationDrag: "La operación se movió correctamente.",
+  operationDragEqual: "La operación ya está seleccionada",
+  operationDragRemove: "La operación ha sido eliminada",
+  operationsDragCloneUpdate: "Las operaciones han sido actualizadas con exito",
 };

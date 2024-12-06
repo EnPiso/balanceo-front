@@ -60,6 +60,36 @@ const OrderDetail = () => {
 
 
   const backward = () => {
+    // console.log(showOrder.products)
+    const showOrderProducts = showOrder.products
+    // console.log(objBalancing.operations)
+    // console.log(product)
+    // console.log(samSum)
+
+    const data = {
+      operations: objBalancing.operations,
+      product: product,
+      total_sam: samSum
+    }
+
+    const product_id = product.id
+
+    const productsUpdate = showOrderProducts.map(item => {
+      // Compara el `product.id` del objeto actual con `product_id`
+      if (item.product.id === product_id) {
+        // Reemplaza el objeto completo con `data` si coincide
+        return { ...data };
+      }
+      // Si no coincide, devuelve el objeto original
+      return item;
+    });
+
+    const dataUpdate = {
+      order: showOrder.order,
+      products: productsUpdate
+    }
+    setShowOrder(dataUpdate)
+
     setObjBalancing(null)
     setSelectedOperDetails([])
     setOperationsProduct([])
@@ -117,8 +147,15 @@ const OrderDetail = () => {
 
           {/* Vista de Tabla para Pantallas Grandes */}
           <div className="hidden lg:block">
+
             {showOrder.products.map((product, index) => (
               <div key={index} className="mb-8">
+                <div className="flex justify-end py-2">
+                  <BalanceProduct
+                    setObjBalancing={setObjBalancing}
+                    product={product}
+                  />
+                </div>
                 {/* Botón para expandir/colapsar el producto */}
                 <button
                   onClick={() => toggleCollapse(index)}
@@ -129,6 +166,7 @@ const OrderDetail = () => {
                     {expandedProductIndices.includes(index) ? '▲' : '▼'}
                   </span>
                 </button>
+
 
                 {/* Tabla de operaciones, visible solo si el índice está en expandedProductIndices */}
                 {expandedProductIndices.includes(index) && (
@@ -151,12 +189,7 @@ const OrderDetail = () => {
                     </tbody>
                   </table>
                 )}
-                <div className="flex justify-end">
-                 <BalanceProduct
-                   setObjBalancing={setObjBalancing}
-                   product={product}
-                 />
-                </div>
+
               </div>
             ))}
           </div>

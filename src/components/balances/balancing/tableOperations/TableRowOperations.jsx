@@ -94,7 +94,7 @@ const TableRowOperations = ({
         // onDrop={onDrop}
         // onDragEnd={onDragEnd}
         className={` cursor-move  hover:border-zinc-600 dark:hover:border-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition dark:text-zinc-500
-         {/* item.is_repeat ? 'border-double border-1 border-zinc-500 ' : 'border-l-4 border-transparent' */}
+         ${item.is_repeat ? 'border-double border-1 border-zinc-500 ' : 'border-l-4 border-transparent'}
          
          `}
         style={{
