@@ -7,11 +7,13 @@ import CustomButton from "../../../../ui/CustomButton.jsx";
 import {FaBackward, FaSave} from "react-icons/fa";
 import TabOperationsCustom from "./TabOperationsCustom.jsx";
 import DragAndDropApp from "./dragAndDrop/DragAndDropApp.jsx";
+import {selectOpers} from "../../../../infraestructure/states/opers_states.js";
 
 const ModalCustomProduct = () => {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
+  const [opersSelect, setOpersSelect] = useRecoilState(selectOpers)
 
 
   const [selected, setSelected] = React.useState("agregar");
@@ -23,9 +25,14 @@ const ModalCustomProduct = () => {
 
   return (
     <>
-      <Button className="ml-4 font-bold uppercase" onPress={onOpen}>
-        Personalizar {objBalancing.product.name}
-      </Button>
+      {
+        opersSelect.size >= 1 && (
+          <Button className="ml-4 font-bold uppercase" onPress={onOpen}>
+            Personalizar {objBalancing.product.name}
+          </Button>
+        )
+      }
+
 
       <Modal
         scrollBehavior={"inside"}

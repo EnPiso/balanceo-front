@@ -1,11 +1,22 @@
 import React from "react";
-import {FaArrowAltCircleRight} from "react-icons/fa";
-import {Chip} from "@nextui-org/react";
-import {FaDeleteLeft} from "react-icons/fa6";
+import { FaArrowAltCircleRight } from "react-icons/fa";
+import { Chip } from "@nextui-org/react";
+import { FaDeleteLeft } from "react-icons/fa6";
 import toast from "react-hot-toast";
-import {toastMessageCustom} from "../../../../../infraestructure/data/toastMessage.js";
+import { toastMessageCustom } from "../../../../../infraestructure/data/toastMessage.js";
 
-const TrDrop = ({ operation, index, handleDragOver, handleDrop, operations, setOperations,operationsCreate, setOperationsCreate }) => {
+const TrDrop = ({
+                  operation,
+                  index,
+                  handleDragOver,
+                  handleDrop,
+                  operations,
+                  setOperations,
+                  operationsCreate,
+                  setOperationsCreate,
+                  draggedIndex, // Estado para identificar un reordenamiento interno
+                  setDraggedIndex, // Método para actualizar el índice arrastrado
+                }) => {
   const handleDragStart = (e) => {
     // Envía los datos arrastrados como JSON
     e.dataTransfer.setData(
@@ -13,22 +24,17 @@ const TrDrop = ({ operation, index, handleDragOver, handleDrop, operations, setO
       JSON.stringify({ operation, index })
     );
 
+    // Si es un reordenamiento interno, guarda el índice en draggedIndex
+    setDraggedIndex(index);
   };
 
-  // Verificar si la operación actual está en operationsCreate
-  const isSelected = operationsCreate.some(
-    (op) => op.id === operation.id
-  );
+  const handleDelete = (e, operation) => {
+    e.preventDefault();
 
+    const updatedArray = operationsCreate.filter((obj) => obj.id !== operation.id);
+    setOperationsCreate(updatedArray);
 
-  const handleDelete = (e,operation) => {
-    e.preventDefault()
-
-    const updatedArray = operationsCreate.filter(obj => obj.id !== operation.id);
-    setOperationsCreate(updatedArray)
-    // console.log(operation)
-
-    const updatedArrayList = operations.filter(obj => obj.id !== operation.id);
+    const updatedArrayList = operations.filter((obj) => obj.id !== operation.id);
 
     // Actualiza las posiciones
     const updatedWithPositions = updatedArrayList.map((op, idx) => ({
@@ -38,9 +44,11 @@ const TrDrop = ({ operation, index, handleDragOver, handleDrop, operations, setO
 
     setOperations(updatedWithPositions);
 
-    toast.error(toastMessageCustom.operationDragRemove)
-  }
+    toast.error(toastMessageCustom.operationDragRemove);
+  };
 
+  // Verificar si la operación actual está en operationsCreate
+  const isSelected = operationsCreate.some((op) => op.id === operation.id);
 
   return (
     <tr
@@ -53,26 +61,20 @@ const TrDrop = ({ operation, index, handleDragOver, handleDrop, operations, setO
       }`}
     >
       <td className="px-4 py-2 border border-gray-300 text-left">
-
-        <Chip>
-          {operation.operation_position}
-        </Chip>
-
+        <Chip>{operation.operation_position}</Chip>
       </td>
       <td className="px-4 py-2 border border-gray-300 flex justify-between items-center">
         <span>{operation.operation}</span>
-        {
-          isSelected && (
-            <button className="ml-2">
-              <FaDeleteLeft
-                className="!cursor-pointer"
-                size={20}
-                onClick={(e) => handleDelete(e, operation)}
-                color="red"
-              />
-            </button>
-          )
-        }
+        {isSelected && (
+          <button className="ml-2">
+            <FaDeleteLeft
+              className="!cursor-pointer"
+              size={20}
+              onClick={(e) => handleDelete(e, operation)}
+              color="red"
+            />
+          </button>
+        )}
       </td>
       <td className="px-4 py-2 border border-gray-300">{operation.machine}</td>
       <td className="px-4 py-2 border border-gray-300">{operation.sam}</td>

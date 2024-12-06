@@ -15,6 +15,7 @@ import {assignColorsToArray} from "../../../../../ui/utils.js";
 import {samSumOperation} from "../../../../../infraestructure/states/operation_states.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../../../infraestructure/data/toastMessage.js";
+import {Spinner} from "@nextui-org/react";
 
 const DragAndDropApp = ({onClose}) => {
   const [operations, setOperations] = useState([]); // Operaciones de la segunda tabla
@@ -38,6 +39,8 @@ const DragAndDropApp = ({onClose}) => {
 
   const [BalancingTemporal, setBalancingTemporal] = useState([]);
   const [sumSamTemporal, setSumSamTemporal] = useState(0);
+
+  const [isLoading, setIsLoading] = useState(false);
 
 
 
@@ -90,6 +93,7 @@ const DragAndDropApp = ({onClose}) => {
 
     }
     const postDataClone = async (data) => {
+      setIsLoading(true)
       try {
         const result = await postData(urlMain + "/operations_balancings/clone_list", data)
         //const detail = assignColorsToArray(result.detail_oper_operations)
@@ -118,7 +122,7 @@ const DragAndDropApp = ({onClose}) => {
 
         onClose()
         toast.success(toastMessageCustom.operationsDragCloneUpdate)
-
+        setIsLoading(false)
       } catch (error) {
         console.error('Error setting data', error);
       }
@@ -155,13 +159,28 @@ const DragAndDropApp = ({onClose}) => {
         </div>
       </div>
       <div className="py-3 px-1 flex justify-end">
-        <CustomButton
-          color="default"
-          variant="bordered"
-          startContent={<FaSave color="green"/>}
-          onClick={handleSave}
-          title="Actualizar operaciones"
-        />
+
+        {
+          isLoading ? <Spinner
+            color="default"
+            size="lg" /> : (
+              <>
+                {
+                  operationsCreate.length >= 1 && (
+                    <CustomButton
+                      color="default"
+                      variant="bordered"
+                      startContent={<FaSave color="green"/>}
+                      onClick={handleSave}
+                      title="Actualizar operaciones"
+                    />
+                  )
+                }
+
+              </>
+          )
+        }
+
       </div>
     </div>
   );
