@@ -17,6 +17,8 @@ import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../../infraestructure/data/toastMessage.js";
 import {FaBackward, FaFileArchive, FaRemoveFormat, FaStop} from "react-icons/fa";
 import {FaArrowDownUpAcrossLine, FaDeleteLeft, FaTornado} from "react-icons/fa6";
+import OperationDeleteCustom from "./OperationDeleteCustom.jsx";
+import {Tooltip} from "@nextui-org/react";
 
 
 
@@ -84,10 +86,7 @@ const   DraggableRow = ({ operation, index, handleDragStart, handleDragOver, han
   }
 // f59e0b
 
-  const handleDelete = (e, operation) => {
-    e.preventDefault()
-    console.log(operation)
-  }
+
 
   const handleDestribuye = (e, operation) => {
     e.preventDefault()
@@ -108,22 +107,20 @@ const   DraggableRow = ({ operation, index, handleDragStart, handleDragOver, han
         {operation.operation_position}
       </td>
       <td className="px-4 py-2 border border-gray-300 flex justify-start items-center">
-        <button className="mr-2">
-          <FaDeleteLeft
-            className="!cursor-pointer"
-            size={20}
-            onClick={(e) => e.preventDefault()}
-            color="red"
-          />
-        </button>
-        <button className="mr-2">
-          <FaFileArchive
-            className="!cursor-pointer"
-            size={20}
-            onClick={(e) => e.preventDefault()}
-            color="#f59e0b"
-          />
-        </button>
+        <OperationDeleteCustom
+          operation={operation}
+        />
+        <Tooltip content="Redistribuir">
+          <button className="mr-2">
+            <FaStop
+              className="!cursor-pointer"
+              size={20}
+              onClick={(e) => e.preventDefault()}
+              color="#3b82f6"
+            />
+          </button>
+        </Tooltip>
+
         {operation.operation}
       </td>
       <td className="px-4 py-2 border border-gray-300">{operation.machine}</td>

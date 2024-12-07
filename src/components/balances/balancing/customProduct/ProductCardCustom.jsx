@@ -21,6 +21,10 @@ const ProductCardCustom = ({ product }) => {
 
       <CardBody className="space-y-2">
 
+        <h1 className="text-right font-bold py-1 text-sm">
+          Mueve los elementos dentro de la lista para cambiar su posición de arriba
+          hacia abajo
+        </h1>
         <OperationListCustom
           operations={objBalancing.operations}
         />

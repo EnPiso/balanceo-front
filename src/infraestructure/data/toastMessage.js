@@ -15,4 +15,5 @@ export const toastMessageCustom = {
   operationDragEqual: "La operación ya está seleccionada",
   operationDragRemove: "La operación ha sido eliminada",
   operationsDragCloneUpdate: "Las operaciones han sido actualizadas con exito",
+  operationsDragDelete: "La operación ha sido eliminada con exito",
 };
