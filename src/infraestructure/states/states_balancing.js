@@ -30,3 +30,13 @@ export const updateDragOperation = atom({
 
 
 
+
+
+
+export const listRedistributions = atom({
+  key: 'listRedistributions',
+  default: [],
+});
+
+
+

@@ -158,19 +158,25 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
               <div
                 className="flex justify-around cursor-pointer"
                 onClick={()=> {
-                  if(operatorTimes.get(i)?.toFixed(2)) {
+                  if(!item.redistribution && operatorTimes.get(i)?.toFixed(2)) {
                     handlePolyvalence(selectedOperDetails[i], item)
                     // console.log(selectedOperDetails[i], item)
                   }
                 }}>
                 <div>
-                  {operatorTimes.get(i)?.toFixed(2) || ''}
+
+                  <span className={`${item.redistribution && "text-red-600"}`}>
+                    {operatorTimes.get(i)?.toFixed(2) || ''}
+                  </span>
 
                 </div>
                 <div>
-                  <Tooltip content="Polivalencia %" offset={20}>
-                    <Chip>{polyvalenceDetail} %</Chip>
-                  </Tooltip>
+                  {
+                    !item.redistribution && <Tooltip content="Polivalencia %" offset={20}>
+                      <Chip>{polyvalenceDetail} %</Chip>
+                    </Tooltip>
+                  }
+
 
 
                 </div>

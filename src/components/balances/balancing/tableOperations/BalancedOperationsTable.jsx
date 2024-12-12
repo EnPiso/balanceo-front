@@ -20,6 +20,7 @@ import DraggableVideo from "./videoOperations/DraggableVideo.jsx";
 import {assignColorsToArray} from "../../../../ui/utils.js";
 import useGenerateZones from "../../../../hooks/balances/useGenerateZones.jsx";
 import {orderObjBalancing} from "../../../../infraestructure/states/order_states.js";
+import TableRedistribution from "./TableRedistribution.jsx";
 
 const BalancedOperationsTable = ({ data, samSum }) => {
   const [balancing] = useRecoilState(balancingData);
@@ -225,6 +226,9 @@ const BalancedOperationsTable = ({ data, samSum }) => {
           />
           </tbody>
         </table>
+
+        <TableRedistribution/>
+
         <SaveBalance/>
       </div>
 

@@ -19,6 +19,7 @@ import {FaBackward, FaFileArchive, FaRemoveFormat, FaStop} from "react-icons/fa"
 import {FaArrowDownUpAcrossLine, FaDeleteLeft, FaTornado} from "react-icons/fa6";
 import OperationDeleteCustom from "./OperationDeleteCustom.jsx";
 import {Tooltip} from "@nextui-org/react";
+import OperationRedistribution from "./OperationRedistribution.jsx";
 
 
 
@@ -110,16 +111,9 @@ const   DraggableRow = ({ operation, index, handleDragStart, handleDragOver, han
         <OperationDeleteCustom
           operation={operation}
         />
-        <Tooltip content="Redistribuir">
-          <button className="mr-2">
-            <FaStop
-              className="!cursor-pointer"
-              size={20}
-              onClick={(e) => e.preventDefault()}
-              color="#3b82f6"
-            />
-          </button>
-        </Tooltip>
+        <OperationRedistribution
+          operation={operation}
+        />
 
         {operation.operation}
       </td>
