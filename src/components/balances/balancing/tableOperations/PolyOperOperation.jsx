@@ -192,7 +192,9 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
                               size={10} />
                           }
                         >
-                          {parseFloat((balancing.gol_hour / (item.sam * balancing.gol_hour).toFixed(2)) * operatorTimes.get(i)?.toFixed(2)).toFixed(2)}
+                          {
+                            Math.round(parseFloat((balancing.gol_hour / (item.sam * balancing.gol_hour).toFixed(2)) * operatorTimes.get(i)?.toFixed(2)).toFixed(2))
+                          }
 
                         </Chip>
 

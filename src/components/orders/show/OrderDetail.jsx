@@ -137,12 +137,26 @@ const OrderDetail = () => {
 
           <h2 className="text-2xl font-bold uppercase">{`${showOrder.order.code}`}</h2>
           <div className="mt-2">
-            <ImageLightbox
-              thumbnailUrl={showOrder.order.image_url}
-              fullSizeUrl={showOrder.order.image_url}
-              alt={`medida ${showOrder.order.code}`}
-              key={showOrder.order.code}
-            />
+
+            {
+              showOrder.order.image_url ? (
+                <ImageLightbox
+                thumbnailUrl={showOrder.order.image_url}
+                fullSizeUrl={showOrder.order.image_url}
+                alt={`medida ${showOrder.order.code}`}
+                key={showOrder.order.code}
+              />
+              ) : (
+                <div className="flex gap-4">
+                  <Spinner
+                    color="default"
+                    size="lg"
+                  />
+                </div>
+              )
+            }
+
+
           </div>
 
           {/* Vista de Tabla para Pantallas Grandes */}

@@ -71,7 +71,7 @@ const OperatorDetailsOperations = ({ zone, index }) => {
           </div>
         ))}
         <p className="font-medium pt-2">
-          Total minutos: {totalMinutes}
+          Total minutos: {Math.round(totalMinutes)}
         </p>
       </div>
     </div>

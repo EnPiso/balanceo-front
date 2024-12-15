@@ -12,7 +12,8 @@ const TableFooterOperations = ({ samSum, opersSelect, balancing, zones }) => (
         <td className=""></td>
         {Array.from({ length: opersSelect.size }, (_, i) => (
           <td key={`operator-total-${i}`} className="font-bold bg-zinc-200 dark:bg-zinc-600 pl-4 py-2">
-            {zones[i]?.reduce((total, op) => total + parseFloat(op.minutes), 0).toFixed(2) || '0.00'}
+              {Math.round(zones[i]?.reduce((total, op) => total + parseFloat(op.minutes), 0) || 0)}
+
           </td>
         ))}
       </>

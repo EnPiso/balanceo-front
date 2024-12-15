@@ -229,7 +229,7 @@ const BalancedOperationsTable = ({ data, samSum }) => {
 
         <TableRedistribution/>
 
-        <SaveBalance/>
+
       </div>
 
       {opersSelect.size >= 1 && balancing && (

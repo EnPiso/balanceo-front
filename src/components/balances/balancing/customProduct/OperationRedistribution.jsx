@@ -55,6 +55,7 @@ const OperationRedistribution = ({operation}) => {
 
         const detail = assignColorsToArray(result.details)
         setDetailOperOpera(detail)
+        debugger
         // console.log(detailOperOpera)
         setObjBalancing((prevState) => ({
           ...prevState, // Copia el objeto actual
@@ -63,7 +64,7 @@ const OperationRedistribution = ({operation}) => {
         }));
         setIsLoading(false)
         setRedistributions([...redistributions, result.redistribution_obj])
-        toast.error(toastMessageCustom.operationsRedistri)
+        toast.success(toastMessageCustom.operationsRedistri)
       } catch (error) {
         console.error('Error setting data', error);
       }

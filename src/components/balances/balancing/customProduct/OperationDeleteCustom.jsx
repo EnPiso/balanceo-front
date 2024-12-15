@@ -44,6 +44,7 @@ const OperationDeleteCustom = ({operation}) => {
         redistribution: false
       }
     }
+
     // delete_operation_balancing
     const deleteOperation = async (data) => {
       setIsLoading(true)

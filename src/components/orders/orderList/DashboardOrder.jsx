@@ -48,13 +48,13 @@ const DashboardOrder = () => {
               isLoading ? (
                 <>
                   <div className="flex items-center justify-center h-screen">
-                    <div className="flex gap-4">
-                      <Spinner
-                        color="default"
-                        size="lg"
-                      />
-                    </div>
+                  <div className="flex gap-4">
+                    <Spinner
+                      color="default"
+                      size="lg"
+                    />
                   </div>
+                </div>
                 </>
               ): (
                 <>
