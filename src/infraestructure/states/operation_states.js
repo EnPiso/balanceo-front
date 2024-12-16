@@ -8,3 +8,9 @@ export const samSumOperation = atom({
   key: 'samSumOperation',
   default: 0,
 });
+
+export const searchOperations = atom({
+  key: 'searchOperations',
+  default: [],
+});
+

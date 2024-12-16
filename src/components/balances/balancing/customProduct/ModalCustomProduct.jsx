@@ -8,6 +8,8 @@ import {FaBackward, FaSave} from "react-icons/fa";
 import TabOperationsCustom from "./TabOperationsCustom.jsx";
 import DragAndDropApp from "./dragAndDrop/DragAndDropApp.jsx";
 import {selectOpers} from "../../../../infraestructure/states/opers_states.js";
+import {isOperationClone} from "../../../../infraestructure/states/states_navigation.js";
+import {searchOperations} from "../../../../infraestructure/states/operation_states.js";
 
 const ModalCustomProduct = () => {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -18,16 +20,21 @@ const ModalCustomProduct = () => {
 
   const [selected, setSelected] = React.useState("agregar");
 
+  const [operationCloneIs, setOperationCloneIs] = useRecoilState(isOperationClone);
+  const [cloneOperations, setCloneOperations] = useRecoilState(searchOperations);
 
-  useEffect(() => {
 
-  }, []);
+  const handleOpen = () => {
+    onOpen()
+    setOperationCloneIs(false)
+    setCloneOperations([])
+  }
 
   return (
     <>
       {
         opersSelect.size >= 1 && (
-          <Button className="ml-4 font-bold uppercase" onPress={onOpen}>
+          <Button className="ml-4 font-bold uppercase" onPress={handleOpen}>
             Personalizar {objBalancing.product.name}
           </Button>
         )
@@ -35,6 +42,9 @@ const ModalCustomProduct = () => {
 
 
       <Modal
+
+
+
         scrollBehavior={"inside"}
         size={selected === "agregar" ? "5xl" : "full"}
         backdrop="opaque"
@@ -61,7 +71,9 @@ const ModalCustomProduct = () => {
           }
         }}
       >
-        <ModalContent>
+        <ModalContent
+
+        >
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">{objBalancing.product.name}</ModalHeader>

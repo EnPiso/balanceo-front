@@ -17,4 +17,5 @@ export const toastMessageCustom = {
   operationsDragCloneUpdate: "Las operaciones han sido actualizadas con exito",
   operationsDragDelete: "La operación ha sido eliminada con exito",
   operationsRedistri: "La operación ha sido redistribuida con exito",
+  operationsNew: "La operación ha sido creada con exito",
 };

@@ -20,17 +20,10 @@ export const detailOperOperations = atom({
 });
 
 
-
-
-
 export const updateDragOperation = atom({
   key: 'updateDragOperation',
   default: 0,
 });
-
-
-
-
 
 
 export const listRedistributions = atom({

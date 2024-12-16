@@ -197,7 +197,7 @@ const BalancedOperationsTable = ({ data, samSum }) => {
           <thead className="dark:bg-zinc-100 bg-zinc-700">
           <TableHeaderOperations opersSelect={opersSelect} balancing={balancing} />
           </thead>
-          <tbody>
+          <tbody className="uppercase">
           {operationsProduct.map((item, i) => (
             <TableRowOperations
               key={i}

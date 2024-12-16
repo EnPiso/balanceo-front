@@ -1,14 +1,22 @@
 import React from "react";
 import {normalizeOperation} from "./dragAndDrop/shared.js";
-import {FaArrowAltCircleRight} from "react-icons/fa";
+import {FaArrowAltCircleRight, FaPlusCircle} from "react-icons/fa";
+import {useRecoilState} from "recoil";
+import {dataObjClone, isOperationClone} from "../../../../infraestructure/states/states_navigation.js";
 
 const CloneObjCustom = ({ operation, addOperation }) => {
+
+  const [operationCloneIs, setOperationCloneIs] = useRecoilState(isOperationClone);
+
+  const [dataObj, setDataObjClone] = useRecoilState(dataObjClone);
+
   const handleDragStart = (e) => {
     const normalizedOperation = normalizeOperation(operation);
     e.dataTransfer.setData(
       "application/json",
       JSON.stringify(normalizedOperation)
     );
+    setOperationCloneIs(true)
   };
 
   const handleDrop = (e) => {
@@ -28,6 +36,12 @@ const CloneObjCustom = ({ operation, addOperation }) => {
           size={20}
           className="ml-3 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         />
+        <button onClick={()=> setDataObjClone(operation)}>
+          <FaPlusCircle
+            size={20}
+            className="ml-3 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          />
+        </button>
       </td>
 
       <td className="px-4 py-2  border border-gray-300">

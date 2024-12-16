@@ -3,6 +3,7 @@ import TrDrop from "./TrDrop.jsx";
 import { normalizeOperation } from "./shared.js";
 import toast from "react-hot-toast";
 import { toastMessageCustom } from "../../../../../infraestructure/data/toastMessage.js";
+import {FaArrowDownUpAcrossLine} from "react-icons/fa6";
 
 const OperationListDrag = ({
                              operations,
@@ -68,12 +69,15 @@ const OperationListDrag = ({
 
   return (
     <div className="overflow-auto max-h-[600px] bg-gray-50 p-4 rounded-md shadow-md">
-      <table className="min-w-full border-collapse">
+      <table className="min-w-full border-collapse text-small">
         <thead className="bg-gradient-to-r from-zinc-700 to-zinc-900 text-white sticky top-0 z-10">
         <tr>
-          <th className="px-4 py-2 text-left font-bold">Posición</th>
+          <th className="px-4 py-2 text-left font-bold flex justify-between items-center">
+            <FaArrowDownUpAcrossLine/>
+            Posición
+          </th>
           <th className="px-4 py-2 text-left font-bold">
-            {operations.length} - Operaciones
+            Operación
           </th>
           <th className="px-4 py-2 text-left font-bold">Máquina</th>
           <th className="px-4 py-2 text-left font-bold">Sam</th>

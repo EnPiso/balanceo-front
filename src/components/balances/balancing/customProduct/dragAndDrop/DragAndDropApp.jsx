@@ -4,7 +4,7 @@ import OperationListDrag from "./OperationListDrag.jsx";
 import { useRecoilState } from "recoil";
 import {orderObjBalancing, showOrderObj} from "../../../../../infraestructure/states/order_states.js";
 import SearchCustom from "../SearchCustom.jsx";
-import {FaArrowRightLong} from "react-icons/fa6";
+import {FaArrowDownUpAcrossLine, FaArrowRightLong} from "react-icons/fa6";
 import {FaArrowAltCircleRight, FaArrowCircleRight, FaSave} from "react-icons/fa";
 import CustomButton from "../../../../../ui/CustomButton.jsx";
 import {checkOpersPosition, selectOpers} from "../../../../../infraestructure/states/opers_states.js";
@@ -12,10 +12,13 @@ import {balancingData, detailOperOperations} from "../../../../../infraestructur
 import {postData} from "../../../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../../../infraestructure/data/const.js";
 import {assignColorsToArray} from "../../../../../ui/utils.js";
-import {samSumOperation} from "../../../../../infraestructure/states/operation_states.js";
+import {samSumOperation, searchOperations} from "../../../../../infraestructure/states/operation_states.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../../../infraestructure/data/toastMessage.js";
-import {Spinner} from "@nextui-org/react";
+import {Spinner, Tooltip} from "@nextui-org/react";
+import {dataObjClone, isOperationClone} from "../../../../../infraestructure/states/states_navigation.js";
+import ProductCardCustom from "../ProductCardCustom.jsx";
+import FormOperationCustom from "../FormOperationCustom.jsx";
 
 const DragAndDropApp = ({onClose}) => {
   const [operations, setOperations] = useState([]); // Operaciones de la segunda tabla
@@ -36,12 +39,22 @@ const DragAndDropApp = ({onClose}) => {
 
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
 
+  const [operationCloneIs, setOperationCloneIs] = useRecoilState(isOperationClone);
+
 
   const [BalancingTemporal, setBalancingTemporal] = useState([]);
   const [sumSamTemporal, setSumSamTemporal] = useState(0);
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [cloneOperations, setCloneOperations] = useRecoilState(searchOperations);
+
+  const [showFormNew, setShowFormNew] = useState(false);
+  const [dataObj, setDataObjClone] = useRecoilState(dataObjClone);
+
+  useEffect(() => {
+    dataObj && setShowFormNew(true)
+  }, [dataObj]);
 
 
   useEffect(()=> {
@@ -141,47 +154,82 @@ const DragAndDropApp = ({onClose}) => {
 
   return (
     <div>
-      <div className="py-1">
-        <SearchCustom />
-      </div>
-      <div className="flex space-x-6">
-        <div className="w-1/2">
-          <h2 className="text-xl uppercase text-right font-bold">Tabla de Clonación </h2>
-          <CloneCustom addOperation={addOperation} />
+
+      <div>
+
+        <div>
+          <div className="flex justify-between items-center">
+            <SearchCustom
+              showFormNew={showFormNew}
+              setShowFormNew={setShowFormNew}
+            />
+            {
+              cloneOperations.length >= 1 &&
+               <div>
+                 <Tooltip
+                   content="mueve los elementos de esta lista para la otra lista"
+                   showArrow={true}>
+                   <FaArrowDownUpAcrossLine size={46}/>
+                 </Tooltip>
+               </div>
+
+            }
+
+          </div>
+
+          {
+            showFormNew && <FormOperationCustom/>
+          }
+
+
+          {
+            cloneOperations.length >= 1 && <CloneCustom addOperation={addOperation} />
+          }
+
+
+          <div className="py-3 px-1 flex justify-end">
+
+            {
+              isLoading ? <Spinner
+                color="default"
+                size="lg" /> : (
+                <>
+                  {
+                    operationsCreate.length >= 1 && (
+                      <div className="sticky top-0 z-10">
+                        <CustomButton
+                          color="default"
+                          variant="bordered"
+                          startContent={<FaSave color="green"/>}
+                          onClick={handleSave}
+                          title={`Actualizar operaciones de ${objBalancing && objBalancing.operations.length} a ${operations.length}`}
+                        />
+                      </div>
+
+                    )
+                  }
+                  {
+
+                  }
+                </>
+              )
+            }
+
+          </div>
+
+
+          {
+            operationCloneIs ?  <OperationListDrag
+              operationsCreate={operationsCreate}
+              setOperationsCreate={setOperationsCreate}
+              setOperations={setOperations}
+              operations={operations} /> : <ProductCardCustom/>
+          }
+
+
         </div>
-        <div className="w-1/2">
-          <h2 className="text-xl uppercase text-right font-bold">Tabla de Operaciones</h2>
-          <OperationListDrag
-            operationsCreate={operationsCreate}
-            setOperationsCreate={setOperationsCreate}
-            setOperations={setOperations}
-            operations={operations} />
-        </div>
       </div>
-      <div className="py-3 px-1 flex justify-end">
 
-        {
-          isLoading ? <Spinner
-            color="default"
-            size="lg" /> : (
-              <>
-                {
-                  operationsCreate.length >= 1 && (
-                    <CustomButton
-                      color="default"
-                      variant="bordered"
-                      startContent={<FaSave color="green"/>}
-                      onClick={handleSave}
-                      title="Actualizar operaciones"
-                    />
-                  )
-                }
-
-              </>
-          )
-        }
-
-      </div>
     </div>
   );
 };

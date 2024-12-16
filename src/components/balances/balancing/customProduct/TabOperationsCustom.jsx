@@ -9,30 +9,16 @@ const TabOperationsCustom = ({selected,setSelected, onClose}) => {
 
   return (
     <div className="flex w-full flex-col">
-      <Tabs
-        aria-label="Options"
-        selectedKey={selected}
-        onSelectionChange={setSelected}
-      >
-        <Tab key="agregar" title="Operaciones">
-          <Card>
-            <CardBody>
+      <Card>
+        <CardBody>
 
-              <ProductCardCustom/>
+          <DragAndDropApp
+            onClose={onClose}
+          />
+        </CardBody>
+      </Card>
 
-            </CardBody>
-          </Card>
-        </Tab>
-        <Tab key="clonar" title="Clonar">
-          <Card>
-            <CardBody>
-              <DragAndDropApp
-                onClose={onClose}
-              />
-            </CardBody>
-          </Card>
-        </Tab>
-      </Tabs>
+
     </div>
   );
 }

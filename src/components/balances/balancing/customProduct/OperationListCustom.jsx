@@ -115,7 +115,9 @@ const   DraggableRow = ({ operation, index, handleDragStart, handleDragOver, han
           operation={operation}
         />
 
-        {operation.operation}
+        <div className="text-left">
+          {operation.operation}
+        </div>
       </td>
       <td className="px-4 py-2 border border-gray-300">{operation.machine}</td>
       <td className="px-4 py-2 border border-gray-300">{operation.sam}</td>
@@ -178,8 +180,8 @@ const OperationListCustom = ({ operations }) => {
 
 
   return (
-      <div className="space-y-4  overflow-auto max-h-100">
-        <table className="min-w-full border-collapse border border-gray-200">
+      <div className="space-y-4 overflow-auto max-h-100">
+        <table className="min-w-full border-collapse border border-gray-200 text-small">
           <thead className="dark:bg-zinc-100 bg-zinc-700 sticky top-0 z-10">
           <tr>
             <th className="px-4 py-2 border text-left dark:text-zinc-700 text-zinc-100 flex justify-between items-center">
@@ -192,7 +194,7 @@ const OperationListCustom = ({ operations }) => {
 
           </tr>
           </thead>
-          <tbody className="rounded-md text-zinc-700  font-semibold !cursor-grabbing">
+          <tbody className="rounded-md text-zinc-700  font-semibold !cursor-grabbing uppercase">
           {operationsUpdate.map((operationData, index) => (
             <DraggableRow
               key={index}
