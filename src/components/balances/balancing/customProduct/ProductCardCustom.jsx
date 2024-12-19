@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Card, CardHeader, CardBody } from "@nextui-org/react";
 import OperationListCustom from "./OperationListCustom.jsx";
 import {useRecoilState} from "recoil";
@@ -10,16 +10,18 @@ const ProductCardCustom = ({ product }) => {
   //const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
 
+  const [listOperations, setListOperations] = useState([])
+
   useEffect(() => {
-    console.log(objBalancing)
-  //  debugger
+    debugger
+    setListOperations(objBalancing.operations)
   }, [objBalancing]);
 
 
   return (
 
         <OperationListCustom
-          operations={objBalancing.operations}
+          operations={listOperations}
         />
 
   );

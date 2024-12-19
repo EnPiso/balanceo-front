@@ -46,10 +46,7 @@ const BalancedOperationsTable = ({ data, samSum }) => {
   // useGenerateZones({ opersSelect, balancing, zones });
 
 
-  useEffect(() => {
-    console.log(detailOperOpera)
-    debugger
-  }, [detailOperOpera]);
+
 
   // Función centralizada para actualizar zonas**
   const updateZones = (callback) => {

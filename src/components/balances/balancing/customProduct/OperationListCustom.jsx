@@ -20,6 +20,7 @@ import {FaArrowDownUpAcrossLine, FaDeleteLeft, FaTornado} from "react-icons/fa6"
 import OperationDeleteCustom from "./OperationDeleteCustom.jsx";
 import {Tooltip} from "@nextui-org/react";
 import OperationRedistribution from "./OperationRedistribution.jsx";
+import EditSamCustom from "./EditSamCustom.jsx";
 
 
 
@@ -120,7 +121,9 @@ const   DraggableRow = ({ operation, index, handleDragStart, handleDragOver, han
         </div>
       </td>
       <td className="px-4 py-2 border border-gray-300">{operation.machine}</td>
-      <td className="px-4 py-2 border border-gray-300">{operation.sam}</td>
+      <EditSamCustom
+        operation={operation}
+      />
     </tr>
 
   );
