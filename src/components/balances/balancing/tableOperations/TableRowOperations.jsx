@@ -45,9 +45,7 @@ const TableRowOperations = ({
 
 
 
-  useEffect(() => {
-    // Aquí puedes agregar lógica adicional dependiente de operatorTimes
-  }, [operatorTimes]);
+
 
   const handleSam = (item, value) => {
     const data = {
@@ -148,17 +146,16 @@ const TableRowOperations = ({
             </td>
             {[...opersSelect].map((operatorId, index) => {
               // Busca el detalle correspondiente en `detailOperOpera`
+
               const operatorDetail = detailOperOpera?.find(
                 (detail) =>
                   detail.oper_id === operatorId && // Coincidencia con `opers_balancing_id`
                   detail.detail.operations_balancing_id === item.operation_balancing_id // Coincidencia con `operations_balancing_id`
               );
-
               // Extrae `polyvalence`, o usa un valor predeterminado si no existe
               const polyvalence = operatorDetail?.detail?.polyvalence || 100;
 
               const color = operatorDetail?.detail?.color || "";
-
 
               return (
                 <>

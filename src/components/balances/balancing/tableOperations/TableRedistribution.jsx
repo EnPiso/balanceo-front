@@ -18,7 +18,7 @@ const TableRedistribution = () => {
       try {
         const result = await fetchGetData(`${urlMain}operations_balancings/list_redistributions?balancing_id=${balancing_id}`);
         setRedistributions(result.redistribution)
-        debugger
+
       } catch (error) {
         console.error('Error al obtener los datos:', error);
       }

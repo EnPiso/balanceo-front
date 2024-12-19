@@ -55,7 +55,7 @@ const OperationRedistribution = ({operation}) => {
 
         const detail = assignColorsToArray(result.details)
         setDetailOperOpera(detail)
-        debugger
+
         // console.log(detailOperOpera)
         setObjBalancing((prevState) => ({
           ...prevState, // Copia el objeto actual

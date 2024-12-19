@@ -82,14 +82,17 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
   }, [changePolyvalence]);
   const handlePolyvalenceApi = (data) => {
 
-
     const updateDataOrder = async (data) => {
       try {
           const result = await updateData(urlMain + "/detail_oper_operations/update_polyvalence", data)
 
         // Función para actualizar el array
         const updatedArray = detailOperOpera.map((item) => {
-          if (item.detail.id === result.id) {
+
+          if (
+            item.detail.operations_balancing_id === result.operations_balancing_id &&
+            item.detail.opers_balancing_id === result.opers_balancing_id
+          ) {
             // Reemplaza el detail completamente con los datos de result
             return {
               ...item,
@@ -98,11 +101,11 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
           }
           return item; // Devuelve el objeto original si no coincide
         });
+
         const detail = assignColorsToArray(updatedArray)
         setDetailOperOpera(detail)
         toast.success(toastMessageCustom.updatePolyvalence)
         setChangePolyvalence(false)
-
 
       } catch (error) {
         console.error('Error setting data', error);
@@ -142,7 +145,7 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
 
             {
               isError &&
-              <p className="text-red-600 ml-1 mt-1">
+              <p className="text-red-600 font-bold ml-1 mt-1 text-sm">
                 <small>
                   Debe ser entre 1 y 100 %
                 </small>

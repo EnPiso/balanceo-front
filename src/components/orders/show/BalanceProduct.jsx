@@ -30,6 +30,7 @@ const BalanceProduct = ({product}) => {
           operations: result.sorted_operations,
           balancing_id: result.balancing_id
         }
+
         const detail = assignColorsToArray(result.details_data)
 
         setDetailOperOpera(detail)

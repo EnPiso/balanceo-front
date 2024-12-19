@@ -21,11 +21,13 @@ const PolyvalenceOperation = ({item}) => {
   }
 
   const handleApi = (data) => {
+
     const postDataOrder = async (data) => {
       try {
         const result = await updateData(urlMain + "/balancings/update_polyvalence", data)
         // console.log(result)
         const id = result.id
+
 
         const updatedItems = operationsProduct.map((item) => ({ ...item })); // Copia profunda
         updatedItems.forEach((item) => {
@@ -34,7 +36,6 @@ const PolyvalenceOperation = ({item}) => {
           }
         });
         setOperationsProduct(updatedItems)
-        // debugger
 
       } catch (error) {
         console.error('Error setting data', error);

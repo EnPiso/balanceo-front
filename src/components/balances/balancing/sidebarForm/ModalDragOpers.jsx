@@ -48,6 +48,10 @@ const ModalDragOpers = () => {
 
   const [balancing, setBalancing] = useRecoilState(balancingData);
 
+  useEffect(() => {
+    // console.log(detailOperOpera)
+  }, [detailOperOpera]);
+
 
   const handleOpen = (size) => {
     setSize(size);
@@ -89,7 +93,8 @@ const ModalDragOpers = () => {
         const result = await postData(urlMain + "/opers_balancings/create_opers", data)
         //const detail = assignColorsToArray(result.detail_oper_operations)
         const detail = assignColorsToArray(result.data_detail_end)
-        debugger
+
+
         // const updateOperations = isRepeatUpdate(operationsProduct, result.operations_up)
 
         // const opersUpdate = isRepeatColor(result.operations_up, operationsProduct)
