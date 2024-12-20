@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { Input } from "@nextui-org/react";
+import {Input, Spinner, Tooltip} from "@nextui-org/react";
 import {useRecoilState} from "recoil";
 import {orderObjBalancing} from "../../../../infraestructure/states/order_states.js";
 import {selectOpers} from "../../../../infraestructure/states/opers_states.js";
@@ -15,6 +15,7 @@ const EditSamCustom = ({ operation }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [sam, setSam] = useState(operation.sam); // Usa el valor inicial de `operation.sam`
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [operationUpdate, setOperationUpdate] = useState(null);
 
@@ -67,6 +68,7 @@ const EditSamCustom = ({ operation }) => {
   };
 
   const handleData = (data, operation, sam) => {
+    setIsLoading(true)
     const updateSamOperation = async (data) => {
       try {
         const result = await updateData(urlMain + "/operations/operations_sam", data);
@@ -83,6 +85,7 @@ const EditSamCustom = ({ operation }) => {
 
         setObjBalancing((prevBalancingObj) => ({
           ...prevBalancingObj, // Copia todas las propiedades de balancingObj
+          total_sam: result.total_sam,
           operations: prevBalancingObj.operations.map((item) =>
             item.id === operation_update.id ? operation_update : item // Reemplaza solo el objeto que coincide
           )
@@ -90,8 +93,9 @@ const EditSamCustom = ({ operation }) => {
         }));
 
         closeInput()
-        toast.success(toastMessageCustom.updateSam)
 
+        toast.success(toastMessageCustom.updateSam)
+        setIsLoading(false)
       } catch (error) {
         console.error("Error setting data", error);
       }
@@ -111,33 +115,42 @@ const EditSamCustom = ({ operation }) => {
     <td className="px-4 py-2 border border-gray-300">
       {isEdit ? (
         <>
-          <Input
-            autoFocus
-            isClearable
-            type="text"
-            variant="bordered"
-            onChange={handleChangePol}
-            onKeyDown={handleKeyDown}
-            placeholder="Añade polivalencia"
-            value={sam} // Usa `value` para el input controlado
-            onClear={closeInput}
-            className="max-w-xs"
-          />
           {
-            isError &&
-            <p className="text-red-600 font-bold ml-1 mt-1 text-sm">
-              <small>
-                Debe ser número válido
-              </small>
-            </p>
+            isLoading ? <Spinner/> : <>
+
+              <Input
+                autoFocus
+                isClearable
+                type="text"
+                variant="bordered"
+                onChange={handleChangePol}
+                onKeyDown={handleKeyDown}
+                placeholder="Añade polivalencia"
+                value={sam} // Usa `value` para el input controlado
+                onClear={closeInput}
+                className="max-w-xs"
+              />
+              {
+                isError &&
+                <p className="text-red-600 font-bold ml-1 mt-1 text-sm">
+                  <small>
+                    Debe ser número válido
+                  </small>
+                </p>
+              }
+
+            </>
           }
+
 
         </>
 
       ) : (
-        <button onClick={handleEdit}>
-          {sam} {/* Muestra el valor actual de `sam` */}
-        </button>
+        <Tooltip content="Click para editar sam" placement="right-end">
+          <button onClick={handleEdit} className="cursor-pointer">
+            {sam} {/* Muestra el valor actual de `sam` */}
+          </button>
+        </Tooltip>
       )}
     </td>
   );

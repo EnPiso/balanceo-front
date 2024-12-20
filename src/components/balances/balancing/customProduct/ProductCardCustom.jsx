@@ -13,7 +13,6 @@ const ProductCardCustom = ({ product }) => {
   const [listOperations, setListOperations] = useState([])
 
   useEffect(() => {
-    debugger
     setListOperations(objBalancing.operations)
   }, [objBalancing]);
 
