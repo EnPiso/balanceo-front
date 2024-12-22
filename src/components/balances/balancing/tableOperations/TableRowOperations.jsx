@@ -16,6 +16,7 @@ import {
 import TrDinamycVideo from "./videoOperations/TrDinamycVideo.jsx";
 import ButtonPlayVideos from "./videoOperations/ButtonPlayVideos.jsx";
 import ButtonNavigationVideos from "./videoOperations/ButtonNavigationVideos.jsx";
+import {isPDFGenerate} from "../../../../infraestructure/states/order_states.js";
 
 const TableRowOperations = ({
                               item,
@@ -43,6 +44,7 @@ const TableRowOperations = ({
   const [videosOperations, setVideosOperations] = useRecoilState(listVideosOperations)
   const [OpersTags, setOpersTags] = useRecoilState(listVideosOpers)
 
+  const [isPDFMode, setIsPDFMode] = useRecoilState(isPDFGenerate);
 
 
 
@@ -109,17 +111,22 @@ const TableRowOperations = ({
           </small>  {item.operation}
           <div className="flex justify-end">
 
+            {
+              !isPDFMode && (
+                <>
+                  <ButtonPlayVideos
+                    item={item}
+                    showVideos={showVideos}
+                    setShowVideos={setShowVideos}
+                  />
 
+                  <button onClick={()=> handleOperationBalancing(item)}>
+                    <FaFileVideo/>
+                  </button>
+                </>
+              )
+            }
 
-            <ButtonPlayVideos
-              item={item}
-              showVideos={showVideos}
-              setShowVideos={setShowVideos}
-            />
-
-            <button onClick={()=> handleOperationBalancing(item)}>
-              <FaFileVideo/>
-            </button>
           </div>
 
         </td>

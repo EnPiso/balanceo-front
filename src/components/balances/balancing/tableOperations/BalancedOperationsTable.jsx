@@ -1,7 +1,16 @@
 // components/BalancedOperationsTable.jsx
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import { useRecoilState } from "recoil";
-import {balancingData, detailOperOperations, zonesOpers} from "../../../../infraestructure/states/states_balancing.js";
+
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
+import {
+  balancingData,
+  detailOperOperations,
+  listRedistributions,
+  zonesOpers
+} from "../../../../infraestructure/states/states_balancing.js";
 import {checkOpersPosition, selectOpers} from "../../../../infraestructure/states/opers_states.js";
 import {balanceOperations} from "../../../../infraestructure/utils/balanceOperations.js";
 import TableHeaderOperations from "./TableHeaderOperations.jsx";
@@ -19,10 +28,17 @@ import TrDinamycVideo from "./videoOperations/TrDinamycVideo.jsx";
 import DraggableVideo from "./videoOperations/DraggableVideo.jsx";
 import {assignColorsToArray} from "../../../../ui/utils.js";
 import useGenerateZones from "../../../../hooks/balances/useGenerateZones.jsx";
-import {orderObjBalancing} from "../../../../infraestructure/states/order_states.js";
+import {isPDFGenerate, orderObjBalancing, showOrderObj} from "../../../../infraestructure/states/order_states.js";
 import TableRedistribution from "./TableRedistribution.jsx";
+import {FaFilePdf} from "react-icons/fa6";
+import PdfBalancing from "../PDFBalancing.jsx";
 
-const BalancedOperationsTable = ({ data, samSum }) => {
+
+
+const BalancedOperationsTable = ({ data, samSum, componentPDF }) => {
+  const componentRef = useRef();
+
+
   const [balancing] = useRecoilState(balancingData);
   const [opersSelect] = useRecoilState(selectOpers);
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
@@ -43,10 +59,20 @@ const BalancedOperationsTable = ({ data, samSum }) => {
 
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
 
+  const [redistributions, setRedistributions] = useRecoilState(listRedistributions)
+
+  const [isPDFMode, setIsPDFMode] = useRecoilState(isPDFGenerate);
+  const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
+
+
+
   // useGenerateZones({ opersSelect, balancing, zones });
 
 
-
+  useEffect(() => {
+    console.log(selectedOperDetails)
+    debugger
+  }, [selectedOperDetails]);
 
   // Función centralizada para actualizar zonas**
   const updateZones = (callback) => {
@@ -191,8 +217,13 @@ const BalancedOperationsTable = ({ data, samSum }) => {
 
 
   return (
-    <div className="space-y-8">
-      <div className="overflow-x-auto overflow-hidden">
+    <div className="space-y-8" >
+      <div
+        ref={componentPDF}
+        className={`overflow-x-auto overflow-hidden ${isPDFMode && 'text-1xl'}`}>
+
+        {isPDFMode && <PdfBalancing/>}
+
 
         <table className="min-w-full border-collapse border border-gray-200 table-hover-columns">
           <thead className="dark:bg-zinc-100 bg-zinc-700">
@@ -228,14 +259,17 @@ const BalancedOperationsTable = ({ data, samSum }) => {
           </tbody>
         </table>
 
-        <TableRedistribution/>
+        {
+          redistributions.length >= 1 && <TableRedistribution/>
+        }
+
 
 
       </div>
 
       {opersSelect.size >= 1 && balancing && (
         <div className="space-y-6">
-          <h2 className="text-xl font-bold">Detalle de Balanceo por Operador</h2>
+          <h2 className="text-xl font-bold ml-2">Detalle de Balanceo por Operador</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {zones.map((zone, index) => (
               <OperatorDetailsOperations key={index} zone={zone} index={index} updateZones={updateZones}/>

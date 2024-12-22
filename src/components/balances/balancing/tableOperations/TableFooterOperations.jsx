@@ -1,7 +1,13 @@
 // components/TableFooter.jsx
 const TableFooterOperations = ({ samSum, opersSelect, balancing, zones }) => (
   <tr className="border border-zinc-50">
-    <td></td>
+    <td>
+       <p className="text-left">
+            <span className="font-bold ml-4">
+                Total
+            </span>
+       </p>
+    </td>
     <td></td>
     <td className="font-bold bg-zinc-200 dark:bg-zinc-600 pl-4 py-2 ">
       {samSum}

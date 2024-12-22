@@ -14,3 +14,9 @@ export const orderObjBalancing = atom({
   key: 'orderObjBalancing',
   default: null,
 });
+
+export const isPDFGenerate = atom({
+  key: 'isPDFGenerate',
+  default: false,
+});
+

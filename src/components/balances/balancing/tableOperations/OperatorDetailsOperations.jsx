@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { checkOpersPosition } from "../../../../infraestructure/states/opers_states.js";
 import {updateDragOperation, zonesOpers} from "../../../../infraestructure/states/states_balancing.js";
 import {orderObjBalancing} from "../../../../infraestructure/states/order_states.js";
+import {FaUser} from "react-icons/fa6";
 
 const OperatorDetailsOperations = ({ zone, index }) => {
   const [selectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
@@ -57,9 +58,20 @@ const OperatorDetailsOperations = ({ zone, index }) => {
 
   return (
     <div className="border rounded-lg p-4 bg-white dark:bg-zinc-800">
-      <h3 className="text-lg font-medium mb-3">
-        Operador {selectedOperDetails.length >= 1 && selectedOperDetails[index]?.name}
-      </h3>
+
+        {selectedOperDetails.length >= 1 && (
+          <>
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg mb-3 text-zinc-500 uppercase font-black">
+                {selectedOperDetails[index]?.index} - {" "}
+                {selectedOperDetails[index]?.name}
+              </h3>
+              <FaUser color="green"/>
+            </div>
+
+          </>
+      )}
+
       <div className="space-y-2">
         {zone.map((operation, opIndex) => (
           <div key={opIndex} className="border-b pb-2">

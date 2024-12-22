@@ -1,4 +1,13 @@
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+  Tooltip
+} from "@nextui-org/react";
 import {useRecoilState} from "recoil";
 import {orderObjBalancing, showOrderObj} from "../../../../infraestructure/states/order_states.js";
 import React, {useEffect} from "react";
@@ -34,9 +43,10 @@ const ModalCustomProduct = () => {
     <>
       {
         opersSelect.size >= 1 && (
-          <Button className="ml-4 font-bold uppercase" onPress={handleOpen}>
-            Personalizar {objBalancing.product.name}
-          </Button>
+            <Button className="ml-4 font-bold uppercase" onPress={handleOpen}>
+              Personalizar {objBalancing.product.name}
+            </Button>
+
         )
       }
 

@@ -1,9 +1,11 @@
 // components/TableHeader.jsx
 import {useRecoilState} from "recoil";
 import {checkOpersPosition} from "../../../../infraestructure/states/opers_states.js";
+import {isPDFGenerate} from "../../../../infraestructure/states/order_states.js";
 
 const TableHeaderOperations = ({ opersSelect, balancing }) => {
   const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
+  const [isPDFMode, setIsPDFMode] = useRecoilState(isPDFGenerate);
 
   return(
     <tr>
@@ -21,9 +23,9 @@ const TableHeaderOperations = ({ opersSelect, balancing }) => {
               return(
                 <th
                   key={`operator-${i}`}
-                  className="px-4 py-2 border border-gray-300 text-left dark:text-zinc-700 text-zinc-100"
+                  className="px-4 py-2 border border-gray-300 text-left dark:text-zinc-700 text-zinc-100 text-sm"
                 >
-                  {oper.name}
+                  {isPDFMode && `${oper.index} - `} {oper.name}
                 </th>
               )
             })

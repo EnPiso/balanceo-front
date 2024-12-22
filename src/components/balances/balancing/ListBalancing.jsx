@@ -17,7 +17,7 @@ import {detailOperOperations} from "../../../infraestructure/states/states_balan
 import {checkOpersPosition} from "../../../infraestructure/states/opers_states.js";
 import ImageLightbox from "../../orders/import/ImageLightBox.jsx";
 
-const ListBalancing = () => {
+const ListBalancing = ({componentPDF}) => {
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
   const [product, setProduct] = useRecoilState(selectProduct)
 
@@ -50,6 +50,7 @@ const ListBalancing = () => {
       {
         operationsProduct.length >= 1 && (
           <BalancedOperationsTable
+            componentPDF={componentPDF}
             key={`${JSON.stringify(operationsProduct)}-${JSON.stringify(detailOperOpera)}-${JSON.stringify(selectedOperDetails)}-${JSON.stringify(objBalancing)}`}
             data={operationsProduct}
             samSum={samSum}

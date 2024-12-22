@@ -108,10 +108,10 @@ const OrderDetail = () => {
       {objBalancing ? (
         <>
           <Button
-            className="mt-2"
+            className="mt-2 font-bold uppercase"
             onClick={backward}
             color="default"
-            startContent={<FaBackward/>}
+            startContent={<FaBackward color="gray"/>}
           >
             Regresar a {showOrder.order.code}
           </Button>
