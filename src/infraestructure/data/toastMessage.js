@@ -19,4 +19,6 @@ export const toastMessageCustom = {
   operationsRedistri: "La operación ha sido redistribuida con exito",
   operationsNew: "La operación ha sido creada con exito",
   updateSam: "El sam ha sido actualizado con exito",
+  archiveOrder: "La ordén ha sido archivada con exito",
+  noArchiveOrder: "No hay ordenes archivadas",
 };

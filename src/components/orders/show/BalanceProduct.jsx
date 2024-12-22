@@ -14,6 +14,7 @@ const BalanceProduct = ({product}) => {
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
 
   const handleBalancing = (product) => {
+    debugger
     // balancings/show_balance
 
     const order_id = showOrder.order.id

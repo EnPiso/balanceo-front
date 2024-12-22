@@ -12,7 +12,8 @@ const ShowOrder = ({order}) => {
     const getData = async () => {
       try {
         //setLoading(true);
-        const result = await fetchGetData(`${urlMain}/orders/${order.id}/show_order_details/`);
+        const result = await fetchGetData(`${urlMain}orders/${order.id}/show_order_details/`);
+
         setShowOrder(result)
         //setOrders(result)
         //setError(null);
