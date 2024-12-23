@@ -91,3 +91,22 @@ export const isRepeatColor = (firstArray, secondArray) => {
   });
   return resultArray
 }
+
+
+export const nameReferenceProduct = (garden) => {
+
+// Usar una expresión regular para capturar el texto dentro y fuera de los corchetes
+  const match = garden.match(/^(.*?)\s*\[(.*?)\]$/);
+
+  if (match) {
+    const outside = match[1]; // Texto fuera de los corchetes
+    const inside = match[2];  // Texto dentro de los corchetes
+    return {
+      name: outside,
+      reference: inside,
+    }
+  } else {
+    console.log("Formato no coincide");
+  }
+
+}

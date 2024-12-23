@@ -18,6 +18,12 @@ import ButtonPlayVideos from "./videoOperations/ButtonPlayVideos.jsx";
 import ButtonNavigationVideos from "./videoOperations/ButtonNavigationVideos.jsx";
 import {isPDFGenerate} from "../../../../infraestructure/states/order_states.js";
 
+
+const stylesBorder = {
+  borderStyle: "double", /* Equivalente a border-double */
+  borderWidth: "1px", /* Equivalente a border-1 */
+  borderColor: "#71717a"
+}
 const TableRowOperations = ({
                               item,
                               opersSelect,
@@ -85,6 +91,7 @@ const TableRowOperations = ({
   }
 
 
+
   return (
     <>
       <tr
@@ -94,12 +101,16 @@ const TableRowOperations = ({
         // onDrop={onDrop}
         // onDragEnd={onDragEnd}
         className={`hover:border-zinc-600 dark:hover:border-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition dark:text-zinc-500
-         ${item.is_repeat ? 'border-double border-1 border-zinc-500 ' : 'border-l-4 border-transparent'}
+        
          
          `}
         style={{
           background: item.is_repeat ? `linear-gradient(to right, ${item.color[0]}, ${item.color[1]}), rgba(0, 0, 0, 0.06)` : item.color,
           backgroundBlendMode: item.is_repeat ? "multiply" : "normal", // Mezcla el degradado con el color oscuro
+          borderStyle: item.is_repeat ? "double": "", /* Equivalente a border-double */
+          borderWidth: item.is_repeat ? "1px" : "", /* Equivalente a border-1 */
+          borderColor: item.is_repeat ? "#71717a" : ""
+
         }}
       >
 

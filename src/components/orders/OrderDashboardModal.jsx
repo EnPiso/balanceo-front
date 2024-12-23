@@ -68,11 +68,13 @@ const OrderDashboardModal = () => {
             <>
               <ModalHeader className="flex flex-col gap-1 uppercase">
                 {
-                  operationsData.length < 1 && "Carga la ordén"
+                  operationsData.length < 1 && "Carga la orden de producción"
                 }
-                {
-                  orderProOpe && orderProOpe.order
-                }
+                <h1 className="text-xl font-black">
+                  {
+                    orderProOpe && `Orden de producción: ${orderProOpe.order}`
+                  }
+                </h1>
               </ModalHeader>
               <ModalBody>
                 <div className="mt-2">

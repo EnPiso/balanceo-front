@@ -83,9 +83,10 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
             repetitions: row.getCell(3).value,
             observations: row.getCell(4).value,
             guideType: row.getCell(6).value,
-            garment: row.getCell(7).value,
+            garment: `${row.getCell(7).value} [${row.getCell(10).value}]`,
             sam,
             order: row.getCell(9).value,
+            reference: row.getCell(10).value
           });
         }
       }
@@ -143,7 +144,7 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
               onChange={(e) => handleFileUpload(e.target.files[0])}
               style={{ display: 'none' }}
             />
-            <label htmlFor="images" className="button">
+            <label htmlFor="images" className="button w-full font-black text-zinc-700 underline hover:text-zinc-500 cursor-pointer">
               Seleccionar archivo
             </label>
           </div>

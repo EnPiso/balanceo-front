@@ -12,6 +12,7 @@ const listenEffect = (operationsData,setOrderProOpe,images) => {
           newArray
         }
       }
+
       setOrderProOpe(newData)
 
     }
@@ -19,15 +20,17 @@ const listenEffect = (operationsData,setOrderProOpe,images) => {
 
   const groupByGarment = (array) => {
     const categoryMap = new Map();
-
     array.forEach(obj => {
       const garment = obj.garment;
+      const reference = obj.reference;
+      const item = `${garment} [${reference}]`
 
       if (!categoryMap.has(garment)) {
         categoryMap.set(garment, []);
       }
 
       categoryMap.get(garment).push(obj);
+
     });
 
     return Object.fromEntries(categoryMap);

@@ -22,6 +22,7 @@ const OrderSubmit = ({operationsData, orderProOpe, images, onClose,eraseData}) =
     formData.append('order[orderProOpe]', orderProOpe.order);
     formData.append('order[image]', images[0])
     // Llamar a `createOrder` pasando el `FormData`
+
     createOrder(formData);
 
   };

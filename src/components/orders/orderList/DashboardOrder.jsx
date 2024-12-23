@@ -61,7 +61,7 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
                 onClick={()=> setIsArchive(false)}>
                 <h3
                   className="text-md font-semibold mb-4 hover:text-zinc-500 flex justify-between hover:underline uppercase">
-                  Órdenes
+                  Ordenes
                   <FaFile className="mt-1 ml-1"/>
                 </h3>
               </button>
@@ -80,8 +80,8 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
                   <table className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-md border border-gray-300">
                     <thead>
                     <tr className="dark:bg-gray-100 bg-zinc-800 text-zinc-100 dark:text-zinc-800">
-                      <th className="p-4 text-left font-medium border border-gray-300">Ordén</th>
-                      <th className="p-4 text-left font-medium border border-gray-300">Ficha técnicas</th>
+                      <th className="p-4 text-left font-medium border border-gray-300">Orden de producción</th>
+                      <th className="p-4 text-left font-medium border border-gray-300">Referencias</th>
                       <th className="p-4 text-left font-medium border border-gray-300">Creación</th>
                     </tr>
                     </thead>
@@ -99,7 +99,7 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
                                 key={product.id}
                                 className="flex justify-between items-center hover:bg-zinc-200 py-1 px-1">
                                 <span>
-                                    {product.name}
+                                    {product.name}  <span className="font-bold">{product.reference}</span>
                                 </span>
                                 <span>
                                   {product.has_opers_balancing ? <AiFillDatabase/> : <AiTwotoneStop/> }
