@@ -94,17 +94,8 @@ const ModalDragOpers = () => {
         //const detail = assignColorsToArray(result.detail_oper_operations)
         const detail = assignColorsToArray(result.data_detail_end)
 
-
-        // const updateOperations = isRepeatUpdate(operationsProduct, result.operations_up)
-
-        // const opersUpdate = isRepeatColor(result.operations_up, operationsProduct)
-
-        //setOperationsProduct(opersUpdate)
-        // console.log(result)
-        // console.log(operationsProduct)
-
-
         setDetailOperOpera(detail)
+
         onClose()
         setIsLoading(false)
       } catch (error) {

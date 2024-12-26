@@ -101,17 +101,20 @@ const TableRowOperations = ({
         // onDrop={onDrop}
         // onDragEnd={onDragEnd}
         className={`hover:border-zinc-600 dark:hover:border-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition dark:text-zinc-500
-        
-         
+       
          `}
         style={{
-          background: item.is_repeat ? `linear-gradient(to right, ${item.color[0]}, ${item.color[1]}), rgba(0, 0, 0, 0.06)` : item.color,
-          backgroundBlendMode: item.is_repeat ? "multiply" : "normal", // Mezcla el degradado con el color oscuro
-          borderStyle: item.is_repeat ? "double": "", /* Equivalente a border-double */
-          borderWidth: item.is_repeat ? "1px" : "", /* Equivalente a border-1 */
-          borderColor: item.is_repeat ? "#71717a" : ""
-
+            background: item.is_repeat
+                ? `linear-gradient(to right, ${item.color[0]}, ${item.color[1]}), rgba(0, 0, 0, 0.06)`
+                : item.color,
+            backgroundBlendMode: item.is_repeat ? "multiply" : "normal",
+            border: (isPDFMode && item.is_repeat)
+                ? "2px solid #323232"
+                : item.is_repeat
+                    ? "1px double #71717a"
+                    : "",
         }}
+
       >
 
         <td className={`px-4 py-2 border border-gray-300 ${showVideos && showVideos.id === item.id && 'font-bold'}`}>

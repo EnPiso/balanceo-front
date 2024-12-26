@@ -13,7 +13,6 @@ const OperatorDetailsOperations = ({ zone, index }) => {
   const [updateDrag, setUpdateDrag] = useRecoilState(updateDragOperation);
 
 
-
   // Calcula el total de minutos
   const totalMinutes = zone.reduce((total, op) => total + parseFloat(op.minutes), 0).toFixed(2);
 

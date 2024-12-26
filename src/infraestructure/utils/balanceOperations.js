@@ -5,91 +5,78 @@ export const balanceOperations = (operations, numOperators, golHour) => {
   const zonesMinutes = Array.from({ length: numOperators }, () => 0);
   const operationMap = new Map();
 
+  // Distribuir las operaciones entre los operadores
   operations.forEach((operation) => {
-    let samValue = operation.is_sam_minutes ? operation.sam * 60 : operation.sam;
-
     let minutes = operation.sam * golHour;
     let currentOperator = 0;
     const operatorTimes = new Map();
 
     while (minutes > 0 && currentOperator < numOperators) {
-      if (zonesMinutes[currentOperator] + minutes <= 60) {
+      const remaining = 60 - zonesMinutes[currentOperator];
+
+      if (remaining >= minutes) {
+        // Asignar toda la operación al operador actual
         zones[currentOperator].push({
           operation: operation.operation,
           machine: operation.machine,
-          minutes: parseFloat(minutes.toFixed(2)),
+          minutes,
           sam: operation.sam,
           id: operation.id,
           operation_balancing_id: operation.operation_balancing_id,
         });
-        operatorTimes.set(currentOperator, parseFloat(minutes.toFixed(2)));
+        operatorTimes.set(currentOperator, minutes);
         zonesMinutes[currentOperator] += minutes;
         minutes = 0;
-      } else {
-        const remaining = 60 - zonesMinutes[currentOperator];
-        if (remaining > 0) {
-          zones[currentOperator].push({
-            operation: operation.operation,
-            machine: operation.machine,
-            minutes: parseFloat(remaining.toFixed(2)),
-            sam: operation.sam,
-            id: operation.id,
-            operation_balancing_id: operation.operation_balancing_id,
-          });
-          operatorTimes.set(currentOperator, parseFloat(remaining.toFixed(2)));
-        }
+      } else if (remaining > 0) {
+        // Asignar una fracción de la operación al operador actual
+        zones[currentOperator].push({
+          operation: operation.operation,
+          machine: operation.machine,
+          minutes: remaining,
+          sam: operation.sam,
+          id: operation.id,
+          operation_balancing_id: operation.operation_balancing_id,
+        });
+        operatorTimes.set(currentOperator, remaining);
         minutes -= remaining;
         zonesMinutes[currentOperator] = 60;
         currentOperator += 1;
+      } else {
+        currentOperator += 1;
       }
     }
+
     operationMap.set(operation.operation, operatorTimes);
   });
 
-  // Ajuste final para garantizar que todos los operadores tengan exactamente 60 minutos
-  const totalAssigned = zonesMinutes.reduce((sum, minutes) => sum + minutes, 0);
-  const totalExpected = numOperators * 60;
-  let adjustment = totalExpected - totalAssigned;
+  // Ajustar minutos para garantizar que cada operador tenga exactamente 60 minutos
+  zones.forEach((zone, index) => {
+    const totalMinutes = zonesMinutes[index];
 
-  if (adjustment !== 0) {
-    zones.forEach((zone, index) => {
-      if (adjustment === 0) return;
+    if (Math.abs(totalMinutes - 60) > 0.01) {
+      const difference = 60 - totalMinutes;
+      if (zone.length > 0) {
+        const lastOperation = zone[zone.length - 1];
 
-      if (adjustment > 0) {
-        // Agregar tiempo faltante
-        const missing = Math.min(adjustment, 60 - zonesMinutes[index]);
-        if (missing > 0) {
-          zone.push({
-            operation: "Adjustment",
-            machine: null,
-            minutes: parseFloat(missing.toFixed(2)),
-            sam: null,
-            id: null,
-            operation_balancing_id: null,
-          });
-          zonesMinutes[index] += missing;
-          adjustment -= missing;
+        // Ajustar sin sobrescribir si es una operación fraccionada
+        if (difference > 0) {
+          lastOperation.minutes += difference;
+        } else {
+          lastOperation.minutes = Math.max(0, lastOperation.minutes + difference);
         }
-      } else {
-        // Quitar tiempo en exceso
-        let excess = Math.min(Math.abs(adjustment), zonesMinutes[index]);
-        if (excess > 0) {
-          for (let op of zone) {
-            if (op.minutes >= excess) {
-              op.minutes -= parseFloat(excess.toFixed(2));
-              adjustment += excess;
-              break;
-            } else {
-              adjustment += op.minutes;
-              op.minutes = 0;
-            }
-          }
-          zone = zone.filter((op) => op.minutes > 0);
-          zonesMinutes[index] = zone.reduce((sum, op) => sum + op.minutes, 0);
-        }
+
+        // Actualizar el total de minutos
+        zonesMinutes[index] = 60;
       }
+    }
+  });
+
+  // Redondear minutos al final
+  zones.forEach((zone) => {
+    zone.forEach((operation) => {
+      operation.minutes = parseFloat(operation.minutes.toFixed(2));
     });
-  }
+  });
 
   return {
     zones: zones.filter((zone) => zone.length > 0),

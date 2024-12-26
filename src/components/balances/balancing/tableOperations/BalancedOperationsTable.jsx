@@ -71,7 +71,6 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF }) => {
 
   useEffect(() => {
     console.log(selectedOperDetails)
-    debugger
   }, [selectedOperDetails]);
 
   // Función centralizada para actualizar zonas**
@@ -90,7 +89,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF }) => {
 
     // Compara el nuevo estado con el actual antes de actualizar
     if (JSON.stringify(mergeOperations) !== JSON.stringify(operationsProduct)) {
-      setOperationsProduct(mergeOperations);
+        setOperationsProduct(mergeOperations);
     }
   },[detailOperOpera, operationsProduct])
 
@@ -216,6 +215,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF }) => {
   };
 
 
+
   return (
     <div className="space-y-8" >
       <div
@@ -230,6 +230,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF }) => {
           <TableHeaderOperations opersSelect={opersSelect} balancing={balancing} />
           </thead>
           <tbody className="uppercase">
+
           {operationsProduct.map((item, i) => (
             <TableRowOperations
               key={i}
@@ -263,12 +264,14 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF }) => {
           redistributions.length >= 1 && <TableRedistribution/>
         }
 
-
+        {isPDFMode &&
+            <img src={showOrder.order.image_url} alt="" className="w-full py-2"/>
+        }
 
       </div>
 
       {opersSelect.size >= 1 && balancing && (
-        <div className="space-y-6">
+          <div className="space-y-6">
           <h2 className="text-xl font-bold ml-2">Detalle de Balanceo por Operador</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {zones.map((zone, index) => (

@@ -111,15 +111,15 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
                         </td>
                         <td className="p-4 border border-gray-300">
 
-                    <span className="flex justify-between items-center">
-                      <span>
-                         {new Intl.DateTimeFormat("es-ES").format(new Date(order.created_at))}
-                      </span>
+                          <span className="flex justify-between items-center">
+                            <span>
+                               {new Intl.DateTimeFormat("es-ES").format(new Date(order.created_at))}
+                            </span>
 
-                      <FileArchiver
-                        order={order}
-                      />
-                    </span>
+                            <FileArchiver
+                              order={order}
+                            />
+                          </span>
                         </td>
                       </tr>
                     ))}

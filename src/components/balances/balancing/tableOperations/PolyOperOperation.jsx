@@ -8,6 +8,7 @@ import {useRecoilState} from "recoil";
 import {balancingData, detailOperOperations} from "../../../../infraestructure/states/states_balancing.js";
 import {assignColorsToArray} from "../../../../ui/utils.js";
 import {FaShirt} from "react-icons/fa6";
+import {isPDFGenerate} from "../../../../infraestructure/states/order_states.js";
 
 const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvalenceDetail, color}) => {
   const [changePolyvalence,setChangePolyvalence] = useState(false)
@@ -22,6 +23,9 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
 
 
   const inputRef = useRef(null)
+
+  const [isPDFMode, setIsPDFMode] = useRecoilState(isPDFGenerate);
+
   const handlePolyvalence = (selectedOperDetails, item) => {
     const itemData = {
       selectedOperDetails: selectedOperDetails,
@@ -120,10 +124,9 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
   return (
     <td
       key={`operator-time-${i}`}
-      className={`px-4 py-2 border border-gray-300 `}
+      className={`px-4 py-2  ${(item.is_repeat && operatorTimes.get(i)?.toFixed(2) && isPDFMode )? "borderClass" : "border border-gray-300"}  `}
       style={{backgroundColor: operatorTimes.get(i)?.toFixed(2) ? color: ''}}
     >
-
       {
         changePolyvalence ? (
           <>
@@ -163,7 +166,6 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
                 onClick={()=> {
                   if(!item.redistribution && operatorTimes.get(i)?.toFixed(2)) {
                     handlePolyvalence(selectedOperDetails[i], item)
-                    // console.log(selectedOperDetails[i], item)
                   }
                 }}>
                 <div>

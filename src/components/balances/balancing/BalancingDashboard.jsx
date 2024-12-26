@@ -76,17 +76,27 @@ export const BalancingDashboard = () => {
   }, []); // Dependencias vacías para que se ejecute solo una vez al montar
 
   const generatePDF = async () => {
+    const element = componentPDF.current; // Referencia al componente que quieres capturar
 
-    const element = componentPDF.current;
-    const canvas = await html2canvas(element);
-    const data = canvas.toDataURL("image/png");
+    // Capturar el componente como una imagen con html2canvas
+    const canvas = await html2canvas(element, {
+      scale: 2, // Aumenta la resolución para mejorar la calidad
+      useCORS: true, // Permite cargar imágenes remotas
+      allowTaint: true, // Permite contenido inseguro
+    });
 
+    const imgData = canvas.toDataURL("image/png"); // Convierte el canvas a una imagen PNG
+
+    // Crear un nuevo PDF con jsPDF
     const pdf = new jsPDF("p", "mm", "a4");
+
+    // Calcular dimensiones de la imagen en el PDF
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
-    // console.log(objBalancing.product.name)
+    // Agregar la imagen al PDF
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
     const name = objBalancing.product.name
     const order = showOrder.order.code
     const created_at = showOrder.order.created_at
