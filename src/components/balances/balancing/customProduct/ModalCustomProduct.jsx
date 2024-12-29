@@ -13,7 +13,7 @@ import {orderObjBalancing, showOrderObj} from "../../../../infraestructure/state
 import React, {useEffect} from "react";
 import ProductCardCustom from "./ProductCardCustom.jsx";
 import CustomButton from "../../../../ui/CustomButton.jsx";
-import {FaBackward, FaSave} from "react-icons/fa";
+import {FaBackward, FaEdit, FaSave} from "react-icons/fa";
 import TabOperationsCustom from "./TabOperationsCustom.jsx";
 import DragAndDropApp from "./dragAndDrop/DragAndDropApp.jsx";
 import {selectOpers} from "../../../../infraestructure/states/opers_states.js";
@@ -44,7 +44,7 @@ const ModalCustomProduct = () => {
       {
         opersSelect.size >= 1 && (
             <Button className="ml-4 font-bold uppercase" onPress={handleOpen}>
-              Personalizar {objBalancing.product.name}
+              Personalizar {objBalancing.product.name} <FaEdit color="green"/>
             </Button>
 
         )

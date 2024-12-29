@@ -21,4 +21,8 @@ export const toastMessageCustom = {
   updateSam: "El sam ha sido actualizado con exito",
   archiveOrder: "La ordén ha sido archivada con exito",
   noArchiveOrder: "No hay ordenes archivadas",
+  noPlantsModules: "No hay plantas ni módulos que coincidan",
+  noSelectModule: "Para cambiar de módulo, primero elimina los operarios actuales",
+  updatePlant: "se actualizó el nombre de la planta correctamente",
+  updateModule: "se actualizó el nombre del módulo correctamente",
 };

@@ -9,7 +9,11 @@ import { BalancingDashboard } from "../../balances/balancing/BalancingDashboard.
 import {FaBackward} from "react-icons/fa";
 import SaveBalance from "./SaveBalance.jsx";
 import BalanceProduct from "./BalanceProduct.jsx";
-import {checkOpersPosition, selectOpers} from "../../../infraestructure/states/opers_states.js";
+import {
+  checkOpersPosition,
+  selectOpers,
+  selectProdPlantOriginal
+} from "../../../infraestructure/states/opers_states.js";
 import {allOperationsProduct, samSumOperation} from "../../../infraestructure/states/operation_states.js";
 import {selectProduct} from "../../../infraestructure/states/states_product.js";
 import {detailOperOperations} from "../../../infraestructure/states/states_balancing.js";
@@ -37,6 +41,7 @@ const OrderDetail = () => {
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
   const [selOpeVideos, setSelOpeVideos] = useRecoilState(checkOperationsBalancing);
 
+  const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
 
 
 
@@ -107,11 +112,53 @@ const OrderDetail = () => {
     <div className="p-8 space-y-8">
       {objBalancing ? (
         <>
+          <div className="mt-4 flex justify-between items-center">
+
+
+            {
+                prodPlantOriginal && (
+                    <>
+                      <h1 className="font-bold uppercase text-zinc-700 text-2xl">
+                        {prodPlantOriginal && prodPlantOriginal["plant"].name}
+                      </h1>
+                      <h2 className="font-bold uppercase text-zinc-500 text-md">
+                        {prodPlantOriginal && prodPlantOriginal["module"].name}
+                      </h2>
+                    </>
+                )
+            }
+
+            <h3 className="font-bold uppercase text-zinc-500 text-md">
+
+              {
+                  "  " + objBalancing.product.name
+
+              }
+            </h3>
+            <h3 className="font-bold uppercase text-zinc-500 text-md">
+              Operarios
+              {
+                  "  " + selectedOperDetails.length
+              }
+            </h3>
+
+            <h3 className="font-bold uppercase text-zinc-500 text-md">
+              Operaciones
+              {
+                  "  " + operationsProduct.length
+
+              }
+            </h3>
+
+
+          </div>
+
+
           <Button
-            className="mt-2 font-bold uppercase"
-            onClick={backward}
-            color="default"
-            startContent={<FaBackward color="gray"/>}
+              className="mt-2 font-bold uppercase"
+              onClick={backward}
+              color="default"
+              startContent={<FaBackward color="gray"/>}
           >
             Regresar a {showOrder.order.code}
           </Button>

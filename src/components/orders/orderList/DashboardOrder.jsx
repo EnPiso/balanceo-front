@@ -113,11 +113,25 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
 
                           <span className="flex justify-between items-center">
                             <span>
-                               {new Intl.DateTimeFormat("es-ES").format(new Date(order.created_at))}
+                               {new Intl.DateTimeFormat("es-ES", {
+                                 year: "numeric",
+                                 month: "2-digit",
+                                 day: "2-digit"
+                               }).format(new Date(order.created_at))}
+
+                              <small className="ml-2 font-bold text-black">
+                                 {new Intl.DateTimeFormat("es-ES", {
+                                   hour: "2-digit",
+                                   minute: "2-digit",
+                                   second: "2-digit",
+                                 }).format(new Date(order.created_at))}
+                              </small>
                             </span>
 
+
+
                             <FileArchiver
-                              order={order}
+                                order={order}
                             />
                           </span>
                         </td>

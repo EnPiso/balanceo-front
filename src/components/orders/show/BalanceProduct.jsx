@@ -7,11 +7,14 @@ import {fetchGetData, postData} from "../../../infraestructure/call_api/crud.js"
 import {urlMain} from "../../../infraestructure/data/const.js";
 import {detailOperOperations} from "../../../infraestructure/states/states_balancing.js";
 import {assignColorsToArray} from "../../../ui/utils.js";
+import {selectProdPlant, selectProdPlantOriginal} from "../../../infraestructure/states/opers_states.js";
 
 const BalanceProduct = ({product}) => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
+  const [prodPlant, setProdPlant] = useRecoilState(selectProdPlant)
+  const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
 
   const handleBalancing = (product) => {
     // balancings/show_balance
@@ -36,9 +39,18 @@ const BalanceProduct = ({product}) => {
         setDetailOperOpera(detail)
         setObjBalancing(data)
 
-        //setShowOrder(result)
-        //setOrders(result)
-        //setError(null);
+        if(result.data_plant){
+          const dataPlant = {
+            plant: {
+              name: result.data_plant.production_plant.name,
+              id: result.data_plant.production_plant.id
+            },
+            module: result.data_plant.production_module
+          }
+          setProdPlantOriginal(dataPlant)
+        }
+
+
       } catch (error) {
         console.error('Error al obtener los datos:', error);
 

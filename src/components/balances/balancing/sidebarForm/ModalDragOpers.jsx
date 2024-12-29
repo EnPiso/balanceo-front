@@ -11,18 +11,24 @@ import {
 } from "@nextui-org/react";
 import { ListOpers } from "../../opers/ListOpers.jsx";
 import { useRecoilState } from "recoil";
-import {checkOpersPosition, selectOpers} from "../../../../infraestructure/states/opers_states.js";
+import {
+  checkOpersPosition, isNewModule,
+  selectOpers,
+  selectProdPlant,
+  selectProdPlantOriginal
+} from "../../../../infraestructure/states/opers_states.js";
 import {orderObjBalancing, showOrderObj} from "../../../../infraestructure/states/order_states.js";
 import {postData} from "../../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../../infraestructure/data/const.js";
 import useModal from "./useModal.jsx";
-import {FaBackward, FaSave} from "react-icons/fa";
+import {FaBackward, FaEdit, FaSave} from "react-icons/fa";
 import CustomButton from "../../../../ui/CustomButton.jsx";
 import SpinnerLoaderCustom from "../../../../ui/SpinnerLoaderCustom.jsx";
 import {allOperationsProduct} from "../../../../infraestructure/states/operation_states.js";
 import {balancingData, detailOperOperations, zonesOpers} from "../../../../infraestructure/states/states_balancing.js";
 import {ConfirmOpen} from "./ConfirmOpers.jsx";
 import {assignColorsToArray, isRepeatColor, isRepeatUpdate} from "../../../../ui/utils.js";
+import DashboardPlants from "./DashboardPlants.jsx";
 
 const ModalDragOpers = () => {
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
@@ -34,7 +40,7 @@ const ModalDragOpers = () => {
 
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [size, setSize] = useState('md');
+  const [size, setSize] = useState('5xl');
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -48,6 +54,11 @@ const ModalDragOpers = () => {
 
   const [balancing, setBalancing] = useRecoilState(balancingData);
 
+  const [prodPlant, setProdPlant] = useRecoilState(selectProdPlant)
+  const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
+
+  const [isNewInModuleTempo, setIsNewInModuleTempo] = useRecoilState(isNewModule)
+
   useEffect(() => {
     // console.log(detailOperOpera)
   }, [detailOperOpera]);
@@ -60,6 +71,7 @@ const ModalDragOpers = () => {
 
   // Función para actualizar selectedOperDetails
   const updateSelectedOperDetails = (oper, isSelected) => {
+
     setSelectedOperDetails((prevDetails) => {
       if (isSelected) {
         // Agrega el operario con el siguiente índice de selección
@@ -73,61 +85,88 @@ const ModalDragOpers = () => {
   };
 
 
-  const handleSave =  (onClose) =>{
+  const handleSave = (onClose) => {
+    setIsLoading(true);
+    console.log(isNewInModuleTempo)
+    console.log(selectedOperDetails)
+    console.log(opersSelect)
+    // Filtra los objetos en `selectedOperDetails` cuyos IDs estén presentes en `opersSelect`
+    const filteredDetails = selectedOperDetails.filter((detail) =>
+        opersSelect.has(detail.id)
+    );
 
-    setIsLoading(true)
+    // Extraer los IDs de selectedOperDetails y convertirlos en un Set
+    const updatedOpersSelect = new Set(selectedOperDetails.map((detail) => detail.id));
 
+// Actualizar el estado de opersSelect
+    setOpersSelect(updatedOpersSelect);
+
+    console.log(filteredDetails);
+
+    debugger
     const data = {
       opers_balancing: {
         opers: JSON.stringify(selectedOperDetails),
         product_id: objBalancing.product.id,
         order_id: showOrder.order.id,
         gol_hour: balancing.gol_hour,
-        operations: JSON.stringify(objBalancing.operations)
-      }
-
-    }
+        operations: JSON.stringify(objBalancing.operations),
+        module: prodPlant.module.id,
+        plant: prodPlant.plant.id,
+      },
+    };
 
     const postDataOrder = async (data) => {
       try {
-        const result = await postData(urlMain + "/opers_balancings/create_opers", data)
-        //const detail = assignColorsToArray(result.detail_oper_operations)
-        const detail = assignColorsToArray(result.data_detail_end)
-
-        setDetailOperOpera(detail)
-
-        onClose()
-        setIsLoading(false)
+        const result = await postData(urlMain + "/opers_balancings/create_opers", data);
+        const detail = assignColorsToArray(result.data_detail_end);
+        setDetailOperOpera(detail);
+        setProdPlantOriginal(prodPlant); // Actualiza el módulo original al nuevo módulo
+        onClose();
+        setIsLoading(false);
       } catch (error) {
-        console.error('Error setting data', error);
-        setIsLoading(false)
+        console.error("Error al guardar datos", error);
+        setIsLoading(false);
       }
     };
+
     postDataOrder(data);
-  }
+  };
 
   return (
     <>
       <div className="flex flex-wrap gap-3">
         <Button
-          onClick={() => handleOpen("3xl")}
+          onClick={() => {
+            handleOpen("3xl")
+            setProdPlant(prodPlantOriginal)
+          }}
           size="7xl"
           className="dark:bg-zinc-900 h-10 font-bold"
           variant="bordered"
         >
+
           {opersSelect.size >= 1 ? `Operarios ${opersSelect.size}` : "Seleccionar operarios"}
         </Button>
       </div>
-      <Modal backdrop="blur" size={size} isOpen={isOpen} onClose={onClose}>
+      <Modal scrollBehavior="inside" backdrop="blur" size={size} isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Seleccionar operarios</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                Plantas , módulos y operarios
+              </ModalHeader>
               <ModalBody>
-                <ListOpers
-                  updateSelectedOperDetails={updateSelectedOperDetails}
-                  selectedOperDetails={selectedOperDetails}
-                />
+                <DashboardPlants/>
+                {
+                  prodPlant && <ListOpers
+                        updateSelectedOperDetails={updateSelectedOperDetails}
+                        selectedOperDetails={selectedOperDetails}
+                        handleSave={handleSave}
+                        onClose={onClose}
+                    />
+                }
+
 
               </ModalBody>
               <ModalFooter>
