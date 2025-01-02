@@ -1,13 +1,18 @@
-import React from 'react'
+import React,{useState} from 'react'
 import {useRecoilState} from "recoil";
 import {showOrderObj} from "../../../infraestructure/states/order_states.js";
 import {fetchGetData} from "../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../infraestructure/data/const.js";
+import {Spinner} from "@nextui-org/react";
 
 const ShowOrder = ({order}) => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj)
 
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleShowOrder = (order) => {
+    setIsLoading(true)
     //setShowOrder(order)
     const getData = async () => {
       try {
@@ -21,7 +26,7 @@ const ShowOrder = ({order}) => {
         console.error('Error al obtener los datos:', error);
 
       } finally {
-        //setLoading(false);
+        setLoading(false);
       }
     };
 
@@ -30,15 +35,18 @@ const ShowOrder = ({order}) => {
 
   return (
     <>
+      {
+        isLoading ? <Spinner color={"default"} size={"lg"}/> : (
+            <button onClick={() => handleShowOrder(order)}>
+              <h4 className="font-bold text-large">
+                {
+                  order.code
+                }
+              </h4>
+            </button>
+        )
+      }
 
-      <button onClick={() => handleShowOrder(order)}>
-        <h4 className="font-bold text-large">
-          {
-            order.code
-          }
-        </h4>
-
-      </button>
     </>
   )
 }

@@ -1,5 +1,5 @@
-import React from 'react'
-import {Button} from "@nextui-org/react";
+import React, {useState} from 'react'
+import {Button, Spinner} from "@nextui-org/react";
 import {FaCalendar} from "react-icons/fa6";
 import {useRecoilState} from "recoil";
 import {orderObjBalancing, showOrderObj} from "../../../infraestructure/states/order_states.js";
@@ -16,7 +16,11 @@ const BalanceProduct = ({product}) => {
   const [prodPlant, setProdPlant] = useRecoilState(selectProdPlant)
   const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
 
+  const [isLoading, setIsLoading] = useState(false);
+
+
   const handleBalancing = (product) => {
+    setIsLoading(true)
     // balancings/show_balance
 
     const order_id = showOrder.order.id
@@ -55,7 +59,7 @@ const BalanceProduct = ({product}) => {
         console.error('Error al obtener los datos:', error);
 
       } finally {
-        //setLoading(false);
+        setLoading(false);
       }
     };
 
@@ -68,14 +72,19 @@ const BalanceProduct = ({product}) => {
 
   return (
     <>
-      <Button
-        className="mt-2"
-        onClick={() => handleBalancing(product)}
-        color="default"
-        endContent={<FaCalendar />}
-      >
-        Balancear <span className="uppercase">{product.product.name}</span> <span className="font-bold"> {product.product.reference} </span>
-      </Button>
+      {
+        isLoading ? <Spinner color={"default"} size={"lg"}/> : (
+            <Button
+                className="mt-2"
+                onClick={() => handleBalancing(product)}
+                color="default"
+                endContent={<FaCalendar />}
+            >
+              Balancear <span className="uppercase">{product.product.name}</span> <span className="font-bold"> {product.product.reference} </span>
+            </Button>
+        )
+      }
+
     </>
   )
 }
