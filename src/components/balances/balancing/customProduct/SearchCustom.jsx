@@ -65,7 +65,7 @@ const SearchCustom = ({setShowFormNew,showFormNew}) => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         variant="bordered"
-        placeholder="Buscar operación "
+        placeholder="Buscar operación"
         endContent={
           <button
             className="focus:outline-none"

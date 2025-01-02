@@ -4,7 +4,7 @@ import {balancingData} from "../../../infraestructure/states/states_balancing.js
 import {checkOpersPosition, selectOpers} from "../../../infraestructure/states/opers_states.js";
 import ItemBoxBalancing from "./sidebarForm/ItemBoxBalancing.jsx";
 import PdfBox from "./PdfBox.jsx";
-import {orderObjBalancing, showOrderObj} from "../../../infraestructure/states/order_states.js";
+import {imageBalancePdf, orderObjBalancing, showOrderObj} from "../../../infraestructure/states/order_states.js";
 
 const PdfBalancing = () => {
   const [balancing, setBalancing] = useRecoilState(balancingData);
@@ -12,6 +12,7 @@ const PdfBalancing = () => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
   const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
+  const [imageUrl, setImageUrl] = useRecoilState(imageBalancePdf); // Estado para almacenar la URL de la imagen
 
 
   return (
@@ -20,7 +21,7 @@ const PdfBalancing = () => {
       {
         opersSelect.size >= 1 && balancing && (
           <>
-              <div className="mb-2 mt-2 flex justify-between items-center bg-zinc-200 drop-shadow-2xl">
+              <div className="mb-2 mt-2 flex justify-between items-center bg-zinc-200 ">
 
                   <div className="mt-2 mb-2">
                     <h1 className='text-4xl font-bold uppercase ml-2 mb-2'>
@@ -104,6 +105,7 @@ const PdfBalancing = () => {
           </>
         )
       }
+
 
     </div>
   )

@@ -74,7 +74,7 @@ const BalanceProduct = ({product}) => {
         color="default"
         endContent={<FaCalendar />}
       >
-        Balancear {product.product.name}
+        Balancear <span className="uppercase">{product.product.name}</span> <span className="font-bold"> {product.product.reference} </span>
       </Button>
     </>
   )

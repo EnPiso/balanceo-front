@@ -15,3 +15,11 @@ export const base64ToBlob = (base64String, contentType) => {
 
   return new Blob(byteArrays, { type: contentType });
 };
+
+export const nameImageDateNow = () => {
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
+  return `${hours}:${minutes}:${seconds}`
+}

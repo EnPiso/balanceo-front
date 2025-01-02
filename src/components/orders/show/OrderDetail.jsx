@@ -220,10 +220,12 @@ const OrderDetail = () => {
                 {/* Botón para expandir/colapsar el producto */}
                 <button
                   onClick={() => toggleCollapse(index)}
-                  className="w-full text-left p-4 bg-zinc-200 dark:bg-zinc-700 rounded-t-lg focus:outline-none font-medium text-zinc-800 dark:text-zinc-100"
+                  className="w-full text-left p-4 bg-zinc-200 dark:bg-zinc-700 rounded-t-lg focus:outline-none text-zinc-800 dark:text-zinc-100"
                 >
-                  {product.product.name}
-                  <span className="float-right">
+                  <span className="uppercase">
+                    {product.product.name} <span className="font-black">{product.product.reference} </span>
+                  </span>
+                  <span className={`float-right ${product.product.has_opers_balancing && "text-green-600"}`}>
                     {expandedProductIndices.includes(index) ? '▲' : '▼'}
                   </span>
                 </button>

@@ -28,14 +28,20 @@ import TrDinamycVideo from "./videoOperations/TrDinamycVideo.jsx";
 import DraggableVideo from "./videoOperations/DraggableVideo.jsx";
 import {assignColorsToArray} from "../../../../ui/utils.js";
 import useGenerateZones from "../../../../hooks/balances/useGenerateZones.jsx";
-import {isPDFGenerate, orderObjBalancing, showOrderObj} from "../../../../infraestructure/states/order_states.js";
+import {
+  imageBalancePdf,
+  isPDFGenerate,
+  orderObjBalancing,
+  showOrderObj
+} from "../../../../infraestructure/states/order_states.js";
 import TableRedistribution from "./TableRedistribution.jsx";
 import {FaFilePdf} from "react-icons/fa6";
 import PdfBalancing from "../PDFBalancing.jsx";
+import {useScreenshot} from "use-react-screenshot";
 
 
 
-const BalancedOperationsTable = ({ data, samSum, componentPDF }) => {
+const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) => {
   const componentRef = useRef();
 
 
@@ -64,14 +70,13 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF }) => {
   const [isPDFMode, setIsPDFMode] = useRecoilState(isPDFGenerate);
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
 
+  const [image, takeScreenshot] = useScreenshot (); // Hook para capturar pantalla
 
+  const [imageUrl, setImageUrl] = useRecoilState(imageBalancePdf); // Estado para almacenar la URL de la imagen
 
   // useGenerateZones({ opersSelect, balancing, zones });
 
 
-  useEffect(() => {
-    console.log(selectedOperDetails)
-  }, [selectedOperDetails]);
 
   // Función centralizada para actualizar zonas**
   const updateZones = (callback) => {
@@ -217,51 +222,69 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF }) => {
 
 
   return (
-    <div className="space-y-8" >
+    <div className="space-y-8 " >
       <div
-        ref={componentPDF}
-        className={`overflow-x-auto overflow-hidden ${isPDFMode && 'text-1xl'}`}>
-
-        {isPDFMode && <PdfBalancing/>}
-
-
-        <table className="min-w-full border-collapse border border-gray-200 table-hover-columns">
-          <thead className="dark:bg-zinc-100 bg-zinc-700">
-          <TableHeaderOperations opersSelect={opersSelect} balancing={balancing} />
-          </thead>
-          <tbody className="uppercase">
-
-          {operationsProduct.map((item, i) => (
-            <TableRowOperations
-              key={i}
-              draggable
-              onDragStart={(e) => handleDragStart(e, i)}
-              onDragOver={handleDragOver}
-              onDrop={(e) => handleDrop(e, i)}
-              onDragEnd={handleDragEnd}
-              item={item}
-              opersSelect={opersSelect}
-              balancing={balancing}
-              operatorTimes={operationMap.get(item.operation) || new Map()}
-              setIsModalInput={setIsModalInput}
-              showVideos={showVideos}
-              setShowVideos={setShowVideos}
-
-            />
-          ))}
-
-
-          <TableFooterOperations
-            samSum={samSum}
-            opersSelect={opersSelect}
-            balancing={balancing}
-            zones={zones}
-          />
-          </tbody>
-        </table>
+          ref={componentPDF}
+          className={`bg-zinc-100 overflow-x-auto overflow-hidden ${isPDFMode && 'text-1xl'}`}>
 
         {
-          redistributions.length >= 1 && <TableRedistribution/>
+            isPDFMode ? (
+                <div>
+                  <PdfBalancing/>
+                  {
+                      imageUrl && (
+                          <div>
+                            <img src={imageUrl} alt="Captura" style={{ maxWidth: "100%" }} />
+                          </div>
+                      )
+
+                  }
+                </div>
+            ) : (
+                <div ref={imagePdfRef}>
+
+                  <table className="min-w-full border-collapse border border-gray-200 table-hover-columns">
+                    <thead className="dark:bg-zinc-100 bg-zinc-700">
+                    <TableHeaderOperations opersSelect={opersSelect} balancing={balancing}/>
+                    </thead>
+                    <tbody className="uppercase">
+
+                    {operationsProduct.map((item, i) => (
+                        <TableRowOperations
+                            key={i}
+                            draggable
+                            onDragStart={(e) => handleDragStart(e, i)}
+                            onDragOver={handleDragOver}
+                            onDrop={(e) => handleDrop(e, i)}
+                            onDragEnd={handleDragEnd}
+                            item={item}
+                            opersSelect={opersSelect}
+                            balancing={balancing}
+                            operatorTimes={operationMap.get(item.operation) || new Map()}
+                            setIsModalInput={setIsModalInput}
+                            showVideos={showVideos}
+                            setShowVideos={setShowVideos}
+
+                        />
+                    ))}
+
+
+                    <TableFooterOperations
+                        samSum={samSum}
+                        opersSelect={opersSelect}
+                        balancing={balancing}
+                        zones={zones}
+                    />
+                    </tbody>
+                  </table>
+
+                </div>
+            )
+        }
+
+
+        {
+            redistributions.length >= 1 && <TableRedistribution/>
         }
 
         {isPDFMode &&
@@ -272,19 +295,19 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF }) => {
 
       {opersSelect.size >= 1 && balancing && (
           <div className="space-y-6">
-          <h2 className="text-xl font-bold ml-2">Detalle de Balanceo por Operador</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {zones.map((zone, index) => (
-              <OperatorDetailsOperations key={index} zone={zone} index={index} updateZones={updateZones}/>
-            ))}
+            <h2 className="text-xl font-bold ml-2">Detalle de Balanceo por Operador</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {zones.map((zone, index) => (
+                  <OperatorDetailsOperations key={index} zone={zone} index={index} updateZones={updateZones}/>
+              ))}
+            </div>
           </div>
-        </div>
       )}
 
-   <ModalVideoInput
-     isModalInput={isModalInput}
-     setIsModalInput={setIsModalInput}
-   />
+      <ModalVideoInput
+          isModalInput={isModalInput}
+          setIsModalInput={setIsModalInput}
+      />
       <DraggableVideo/>
     </div>
   );

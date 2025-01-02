@@ -12,6 +12,8 @@ import {samSumOperation} from "../../../../infraestructure/states/operation_stat
 import {assignColorsToArray} from "../../../../ui/utils.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../../infraestructure/data/toastMessage.js";
+import {imageTableBalancing} from "../../../../infraestructure/states/states_product.js";
+import {nameImageDateNow} from "../../../../infraestructure/utils/imagesFormat.js";
 
 const OperationRedistribution = ({operation}) => {
   const [isOpenConfirm, setIsOpenConfirm] = useState(false);
@@ -26,6 +28,8 @@ const OperationRedistribution = ({operation}) => {
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
 
   const [redistributions, setRedistributions] = useRecoilState(listRedistributions)
+
+  const [imageTable, setImageTable] = useRecoilState(imageTableBalancing)
 
 
 
@@ -64,6 +68,12 @@ const OperationRedistribution = ({operation}) => {
         }));
         setIsLoading(false)
         setRedistributions([...redistributions, result.redistribution_obj])
+
+        setTimeout(()=> {
+          setImageTable(nameImageDateNow)
+        },1000)
+
+
         toast.success(toastMessageCustom.operationsRedistri)
       } catch (error) {
         console.error('Error setting data', error);

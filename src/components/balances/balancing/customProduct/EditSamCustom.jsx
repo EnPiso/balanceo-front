@@ -10,6 +10,8 @@ import {detailOperOperations} from "../../../../infraestructure/states/states_ba
 import {assignColorsToArray} from "../../../../ui/utils.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../../infraestructure/data/toastMessage.js";
+import {imageTableBalancing} from "../../../../infraestructure/states/states_product.js";
+import {nameImageDateNow} from "../../../../infraestructure/utils/imagesFormat.js";
 
 const EditSamCustom = ({ operation }) => {
   const [isEdit, setIsEdit] = useState(false);
@@ -24,6 +26,9 @@ const EditSamCustom = ({ operation }) => {
 
   const [samSum, setSamSum] = useRecoilState(samSumOperation);
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
+
+  const [imageTable, setImageTable] = useRecoilState(imageTableBalancing)
+
 
 
   useEffect(() => {
@@ -96,6 +101,10 @@ const EditSamCustom = ({ operation }) => {
 
         toast.success(toastMessageCustom.updateSam)
         setIsLoading(false)
+        setTimeout(()=> {
+          setImageTable(nameImageDateNow)
+        },1000)
+
       } catch (error) {
         console.error("Error setting data", error);
       }
@@ -125,7 +134,7 @@ const EditSamCustom = ({ operation }) => {
                 variant="bordered"
                 onChange={handleChangePol}
                 onKeyDown={handleKeyDown}
-                placeholder="Añade polivalencia"
+                placeholder="Añade sam"
                 value={sam} // Usa `value` para el input controlado
                 onClear={closeInput}
                 className="max-w-xs"

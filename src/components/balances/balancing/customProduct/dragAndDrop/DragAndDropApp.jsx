@@ -19,6 +19,8 @@ import {Spinner, Tooltip} from "@nextui-org/react";
 import {dataObjClone, isOperationClone} from "../../../../../infraestructure/states/states_navigation.js";
 import ProductCardCustom from "../ProductCardCustom.jsx";
 import FormOperationCustom from "../FormOperationCustom.jsx";
+import {imageTableBalancing} from "../../../../../infraestructure/states/states_product.js";
+import {nameImageDateNow} from "../../../../../infraestructure/utils/imagesFormat.js";
 
 const DragAndDropApp = ({onClose}) => {
   const [operations, setOperations] = useState([]); // Operaciones de la segunda tabla
@@ -51,6 +53,9 @@ const DragAndDropApp = ({onClose}) => {
 
   const [showFormNew, setShowFormNew] = useState(false);
   const [dataObj, setDataObjClone] = useRecoilState(dataObjClone);
+
+  const [imageTable, setImageTable] = useRecoilState(imageTableBalancing)
+
 
   useEffect(() => {
     dataObj && setShowFormNew(true)
@@ -136,6 +141,10 @@ const DragAndDropApp = ({onClose}) => {
         onClose()
         toast.success(toastMessageCustom.operationsDragCloneUpdate)
         setIsLoading(false)
+
+        setTimeout(()=> {
+          setImageTable(nameImageDateNow)
+        },1000)
       } catch (error) {
         console.error('Error setting data', error);
       }

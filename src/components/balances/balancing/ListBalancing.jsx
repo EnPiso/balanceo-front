@@ -17,7 +17,7 @@ import {detailOperOperations} from "../../../infraestructure/states/states_balan
 import {checkOpersPosition} from "../../../infraestructure/states/opers_states.js";
 import ImageLightbox from "../../orders/import/ImageLightBox.jsx";
 
-const ListBalancing = ({componentPDF}) => {
+const ListBalancing = ({componentPDF,imagePdfRef}) => {
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
   const [product, setProduct] = useRecoilState(selectProduct)
 
@@ -27,6 +27,7 @@ const ListBalancing = ({componentPDF}) => {
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
   const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
+
 
 
   // const { data, loading, error } = useGetList("/products/product_operations");
@@ -50,6 +51,7 @@ const ListBalancing = ({componentPDF}) => {
       {
         operationsProduct.length >= 1 && (
           <BalancedOperationsTable
+            imagePdfRef={imagePdfRef}
             componentPDF={componentPDF}
             key={`${JSON.stringify(operationsProduct)}-${JSON.stringify(detailOperOpera)}-${JSON.stringify(selectedOperDetails)}-${JSON.stringify(objBalancing)}`}
             data={operationsProduct}

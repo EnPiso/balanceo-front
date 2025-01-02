@@ -29,6 +29,8 @@ import {balancingData, detailOperOperations, zonesOpers} from "../../../../infra
 import {ConfirmOpen} from "./ConfirmOpers.jsx";
 import {assignColorsToArray, isRepeatColor, isRepeatUpdate} from "../../../../ui/utils.js";
 import DashboardPlants from "./DashboardPlants.jsx";
+import {imageTableBalancing} from "../../../../infraestructure/states/states_product.js";
+import {nameImageDateNow} from "../../../../infraestructure/utils/imagesFormat.js";
 
 const ModalDragOpers = () => {
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
@@ -58,6 +60,8 @@ const ModalDragOpers = () => {
   const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
 
   const [isNewInModuleTempo, setIsNewInModuleTempo] = useRecoilState(isNewModule)
+
+  const [imageTable, setImageTable] = useRecoilState(imageTableBalancing)
 
   useEffect(() => {
     // console.log(detailOperOpera)
@@ -103,7 +107,6 @@ const ModalDragOpers = () => {
 
     console.log(filteredDetails);
 
-    debugger
     const data = {
       opers_balancing: {
         opers: JSON.stringify(selectedOperDetails),
@@ -124,6 +127,10 @@ const ModalDragOpers = () => {
         setProdPlantOriginal(prodPlant); // Actualiza el módulo original al nuevo módulo
         onClose();
         setIsLoading(false);
+        setTimeout(()=> {
+          setImageTable(nameImageDateNow)
+        },1000)
+
       } catch (error) {
         console.error("Error al guardar datos", error);
         setIsLoading(false);

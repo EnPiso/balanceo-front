@@ -108,9 +108,7 @@ const TableRowOperations = ({
                 ? `linear-gradient(to right, ${item.color[0]}, ${item.color[1]}), rgba(0, 0, 0, 0.06)`
                 : item.color,
             backgroundBlendMode: item.is_repeat ? "multiply" : "normal",
-            border: (isPDFMode && item.is_repeat)
-                ? "2px solid #323232"
-                : item.is_repeat
+            border:  item.is_repeat
                     ? "1px double #71717a"
                     : "",
         }}

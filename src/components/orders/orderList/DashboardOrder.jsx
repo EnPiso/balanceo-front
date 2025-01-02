@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Card, CardHeader, CardBody, Image, Spinner } from "@nextui-org/react";
+import {Card, CardHeader, CardBody, Image, Spinner, Tooltip} from "@nextui-org/react";
 import CustomPaginator from "../../../ui/CustomPaginator.jsx";
 import { fetchGetData } from "../../../infraestructure/call_api/crud.js";
 import { urlMain } from "../../../infraestructure/data/const.js";
@@ -10,7 +10,15 @@ import {FaFile} from "react-icons/fa6";
 import {FaFileArchive} from "react-icons/fa";
 import ShowOrder from "../show/ShowOrder.jsx";
 import OrderDetail from "../show/OrderDetail.jsx";
-import {AiFillDatabase, AiTwotoneStop} from "react-icons/ai";
+import {AiFillCheckCircle, AiFillDatabase, AiFillStop, AiTwotoneStop} from "react-icons/ai";
+import GenerateImgPdf from "./GenerateImgPdf.jsx";
+import PdfBalancingImg from "./PdfBalancingImg.jsx";
+
+
+
+
+const totalPaginate = [10,20,30,40,50]
+
 
 const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
   const [orders, setOrders] = useRecoilState(orderList);
@@ -19,15 +27,18 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1); // Página actual
   const [totalPages, setTotalPages] = useState(1); // Total de páginas
+  const [perPage, setPerPage] = useState(10); // Total de páginas
+
+  const pdfDiv = useRef(null)
 
   useEffect(() => {
-    fetchOrders(currentPage)
+    fetchOrders(currentPage, perPage)
   }, []);
 
-  const fetchOrders = async (page) => {
+  const fetchOrders = async (page, per_page) => {
     setIsLoading(true);
     try {
-      const result = await fetchGetData(`${urlMain}orders?page=${page}&archive=${false}`);
+      const result = await fetchGetData(`${urlMain}orders?page=${page}&archive=${false}&per_page=${per_page}`);
       setOrders(result.orders);
       setTotalPages(result.total_pages);
       setCurrentPage(result.current_page);
@@ -41,7 +52,13 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    fetchOrders(page);
+    fetchOrders(page, perPage);
+  };
+
+  const handlePerPageChange = (page) => {
+
+    setPerPage(page)
+    fetchOrders(1,page);
   };
 
   return (
@@ -62,7 +79,9 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
                 <h3
                   className="text-md font-semibold mb-4 hover:text-zinc-500 flex justify-between hover:underline uppercase">
                   Ordenes
-                  <FaFile className="mt-1 ml-1"/>
+                  <FaFile
+                      color="green"
+                      className="mt-1 ml-1"/>
                 </h3>
               </button>
               <button
@@ -72,7 +91,8 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
                   className="text-md  mb-4 hover:text-zinc-500 flex justify-between hover:underline  ">
                   Archivadas
                   <FaFileArchive
-                    className="mt-1 ml-1"/>
+                      color="red"
+                      className="mt-1 ml-1"/>
                 </h3>
               </button>
             </span>
@@ -82,29 +102,47 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
                     <tr className="dark:bg-gray-100 bg-zinc-800 text-zinc-100 dark:text-zinc-800">
                       <th className="p-4 text-left font-medium border border-gray-300">Orden de producción</th>
                       <th className="p-4 text-left font-medium border border-gray-300">Referencias</th>
-                      <th className="p-4 text-left font-medium border border-gray-300">Creación</th>
+                      <th className="p-4 text-left font-medium border border-gray-300  flex justify-between items-center">
+                        <span>Creación</span>
+                        <Tooltip content="Cantidad de balanceos">
+                          <span className="flex space-x-2">
+
+                            {
+                              totalPaginate.map((page, i) => {
+                                return (
+                                    <>
+                                        <span
+                                            onClick={() => handlePerPageChange(page)}
+                                            className={`cursor-pointer ${perPage === page && 'text-green-600'}`}
+                                            key={i}>
+                                          {page}
+                                        </span>
+                                    </>
+                                )
+                              })
+                            }
+
+                          </span>
+                        </Tooltip>
+
+                      </th>
                     </tr>
                     </thead>
                     <tbody>
                     {orders.map((order) => (
-                      <tr key={order.id}>
-                        <td className="p-4 border border-gray-300">
-                          <ShowOrder order={order} />
-                        </td>
-                        <td className="p-4 border border-gray-300">
-                          {order.products.map((product) => (
-                            <>
-                              <span
-                                onClick={()=> console.log(product)}
-                                key={product.id}
-                                className="flex justify-between items-center hover:bg-zinc-200 py-1 px-1">
-                                <span>
-                                    {product.name}  <span className="font-bold">{product.reference}</span>
-                                </span>
-                                <span>
-                                  {product.has_opers_balancing ? <AiFillDatabase/> : <AiTwotoneStop/> }
-                                </span>
-                              </span>
+                        <tr key={order.id}>
+                          <td className="p-4 border border-gray-300">
+                            <ShowOrder order={order}/>
+                          </td>
+                          <td className="p-4 border border-gray-300">
+                            {order.products.map((product, i) => (
+                                <>
+                                  <GenerateImgPdf
+                                      pdfDiv={pdfDiv}
+                                      order={order}
+                                      product={product}
+                                      key={i}
+                              />
 
                             </>
                           ))}
@@ -158,6 +196,10 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
 
       </div>
 
+
+    <PdfBalancingImg
+        pdfDiv={pdfDiv}
+    />
 
     </div>
   );

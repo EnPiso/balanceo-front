@@ -4,12 +4,17 @@ import useOpers from "../../../hooks/balances/opers/useOpers.jsx";
 import {ListOpers} from "../opers/ListOpers.jsx";
 import ListBalancing from "./ListBalancing.jsx";
 import {useRecoilState} from "recoil";
-import {selectProduct} from "../../../infraestructure/states/states_product.js";
-import {isPDFGenerate, orderObjBalancing, showOrderObj} from "../../../infraestructure/states/order_states.js";
+import {imageTableBalancing, imageTableUrl, selectProduct} from "../../../infraestructure/states/states_product.js";
+import {
+  imageBalancePdf,
+  isPDFGenerate,
+  orderObjBalancing,
+  showOrderObj
+} from "../../../infraestructure/states/order_states.js";
 import InfoBoxBalancing from "./sidebarForm/InfoBoxBalancing.jsx";
 import useModal from "./sidebarForm/useModal.jsx";
 import {checkOpersPosition, selectOpers} from "../../../infraestructure/states/opers_states.js";
-import {fetchGetData} from "../../../infraestructure/call_api/crud.js";
+import {fetchGetData, updateData} from "../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../infraestructure/data/const.js";
 import ButtonNavigationVideos from "./tableOperations/videoOperations/ButtonNavigationVideos.jsx";
 import {listVideosOperations, listVideosOpers} from "../../../infraestructure/states/states_videos.js";
@@ -20,12 +25,20 @@ import {Button, Spinner, Tooltip} from "@nextui-org/react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import {FaCircleNotch, FaTruckLoading} from "react-icons/fa";
+import ScreenshotComponent from "./ScreenshotComponent.jsx";
+import {toPng} from "html-to-image";
+import * as htmlToImage from "html-to-image";
+import toast from "react-hot-toast";
+import {toastMessageCustom} from "../../../infraestructure/data/toastMessage.js";
 
 export const BalancingDashboard = () => {
 
   const iconRef = useRef();
 
   const componentPDF = useRef();
+  const imagePdfRef = useRef();
+
+
   const [isPDFMode, setIsPDFMode] = useRecoilState(isPDFGenerate);
 
 
@@ -39,10 +52,18 @@ export const BalancingDashboard = () => {
 
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
 
+  const [imageBlob, setImageBlob] = useState(null); // Estado para almacenar la imagen como Blob
+  const [imageUrl, setImageUrl] = useRecoilState(imageBalancePdf); // Estado para almacenar la URL de la imagen
+
+  const [imageTable, setImageTable] = useRecoilState(imageTableBalancing)
+
+  const [tableUrl, setTableUrl] = useRecoilState(imageTableUrl)
+
+
   useEffect(() => {
 
 
-    const product_id = objBalancing.product?.id; // Usa `?.` en caso de que `product` esté inicialmente indefinido
+    const product_id = objBalancing.product?.id; // Usa `?.` en caso de que `product` esté inicialmente indefinite
 
     if (product_id) {
       const getData = async () => {
@@ -76,6 +97,7 @@ export const BalancingDashboard = () => {
   }, []); // Dependencias vacías para que se ejecute solo una vez al montar
 
   const generatePDF = async () => {
+    setIsLoadPDF(true)
     const element = componentPDF.current; // Referencia al componente que quieres capturar
 
     // Capturar el componente como una imagen con html2canvas
@@ -105,11 +127,94 @@ export const BalancingDashboard = () => {
     pdf.save( `${order}_${name}_${created}.pdf`);
     setIsPDFMode(false); // Desactiva el modo PDF
     setIsLoadPDF(false)
+    setImageUrl('')
   };
 
   useEffect(() => {
     isPDFMode && generatePDF()
+
+    handleUpload()
   }, [isPDFMode]);
+
+
+
+  const handleScreenshot = async () => {
+
+
+    if (imagePdfRef.current) {
+      try {
+        const blob = await htmlToImage.toBlob(imagePdfRef.current, {
+          useCORS: true,
+          cacheBust: true,
+        }); // Captura el contenido como Blob
+        setImageBlob(blob); // Almacena el Blob en el estado
+        const url = URL.createObjectURL(blob); // Genera una URL temporal
+        setIsPDFMode(true)
+        setImageUrl(url); // Almacena la URL para previsualización
+
+      } catch (error) {
+        console.error("Error al capturar el componente:", error);
+      }
+    }
+  };
+
+
+  const handleUpload =  () => {
+    if (imageBlob) {
+      const formData = new FormData();
+      formData.append("file", imageBlob, "screenshot.png");
+      console.log(formData)
+
+
+    }
+  };
+
+  const handleImageTable = async () => {
+
+    if (imagePdfRef.current) {
+      try {
+        const blob = await htmlToImage.toBlob(imagePdfRef.current, {
+          useCORS: true,
+          cacheBust: true,
+        }); // Captura el contenido como Blob
+        // console.log(blob); // Almacena el Blob en el estado
+        if(blob){
+
+          fetchUpdateImageTable(blob)
+
+        }
+      } catch (error) {
+        console.error("Error al capturar el componente:", error);
+      }
+    }
+  };
+
+  const fetchUpdateImageTable = (blob) => {
+    const productId = objBalancing.product.id
+
+    const formData = new FormData();
+    formData.append('product[balancing_img]', blob); // Nota la estructura "product[...]"
+    formData.append('product[product_id]', productId);
+
+    const updatePlant = async () => {
+      try {
+        const result = await updateData(urlMain + `/products/${productId}`, formData)
+        console.log(result)
+
+        // guardar imagen de la tabla del balanceo en product
+      } catch (error) {
+        console.error('Error setting data', error);
+      }
+    };
+
+    updatePlant()
+
+  }
+
+  useEffect(() => {
+    imageTable && handleImageTable()
+
+  }, [imageTable]);
 
 
 
@@ -118,6 +223,7 @@ export const BalancingDashboard = () => {
         {
           objBalancing && (
             <>
+
 
               <ModalCustomProduct
                 product={objBalancing.product}
@@ -137,26 +243,28 @@ export const BalancingDashboard = () => {
 
                 ) : (
                   <>
+
+
                     <Tooltip content="Descargar PDF" placement="right">
                       <Button
                         className="ml-5 font-bold uppercase"
                         onPress={()=> {
-                          setIsPDFMode(true)
-                          setIsLoadPDF(true)
+                          handleScreenshot()
+
                         }}>
                         descargar
                         <FaFilePdf color="green"/>
                       </Button>
                     </Tooltip>
+
                   </>
                 )
               }
 
 
-
-
               <ListBalancing
                 componentPDF={componentPDF}
+                imagePdfRef={imagePdfRef}
                 key={JSON.stringify(objBalancing)}
               />
             </>

@@ -21,7 +21,7 @@ const Sidebar = () => {
 				<span className="underline dark:text-zinc-300 text-zinc-700">
 					Balance
 				</span>
-				<span className="  bg-zinc-800 text-zinc-200 black:text-zinc-800 px-2 py-2 rounded-3xl">
+				<span className="bg-zinc-800 text-zinc-200 black:text-zinc-800 px-2 py-2 rounded-3xl">
 					app
 				</span>
 			</h1>

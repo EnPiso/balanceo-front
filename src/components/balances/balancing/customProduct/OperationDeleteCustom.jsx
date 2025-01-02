@@ -13,6 +13,8 @@ import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../../infraestructure/data/toastMessage.js";
 import {detailOperOperations} from "../../../../infraestructure/states/states_balancing.js";
 import {samSumOperation} from "../../../../infraestructure/states/operation_states.js";
+import {imageTableBalancing} from "../../../../infraestructure/states/states_product.js";
+import {nameImageDateNow} from "../../../../infraestructure/utils/imagesFormat.js";
 
 const OperationDeleteCustom = ({operation}) => {
   const [isOpenConfirm, setIsOpenConfirm] = useState(false);
@@ -26,6 +28,9 @@ const OperationDeleteCustom = ({operation}) => {
 
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
   const [samSum, setSamSum] = useRecoilState(samSumOperation);
+
+  const [imageTable, setImageTable] = useRecoilState(imageTableBalancing)
+
 
   const handleDelete = (e, operation) => {
     e.preventDefault()
@@ -63,7 +68,13 @@ const OperationDeleteCustom = ({operation}) => {
           operations: result.updated_operations, // Copia el array actual y agrega el nuevo elemento
           total_sam: result.total_sam
         }));
+
         setIsLoading(false)
+
+        setTimeout(()=> {
+          setImageTable(nameImageDateNow)
+        },1000)
+
       } catch (error) {
         console.error('Error setting data', error);
       }

@@ -21,6 +21,8 @@ import OperationDeleteCustom from "./OperationDeleteCustom.jsx";
 import {Tooltip} from "@nextui-org/react";
 import OperationRedistribution from "./OperationRedistribution.jsx";
 import EditSamCustom from "./EditSamCustom.jsx";
+import {imageTableBalancing} from "../../../../infraestructure/states/states_product.js";
+import {nameImageDateNow} from "../../../../infraestructure/utils/imagesFormat.js";
 
 
 
@@ -33,6 +35,8 @@ const   DraggableRow = ({ operation, index, handleDragStart, handleDragOver, han
   const [updateDrag, setUpdateDrag] = useRecoilState(updateDragOperation);
 
   const [balancing, setBalancing] = useRecoilState(balancingData);
+
+  const [imageTable, setImageTable] = useRecoilState(imageTableBalancing)
 
 
 
@@ -66,6 +70,7 @@ const   DraggableRow = ({ operation, index, handleDragStart, handleDragOver, han
 
         setDetailOperOpera(detail)
         toast.success(toastMessageCustom.oper_drag)
+
         // console.log(detailOperOpera)
 
 
@@ -76,6 +81,10 @@ const   DraggableRow = ({ operation, index, handleDragStart, handleDragOver, han
           operations: updatedList, // Copia el array actual y agrega el nuevo elemento
         }));
 
+
+        setTimeout(()=> {
+          setImageTable(nameImageDateNow)
+        },1000)
 
 
       } catch (error) {

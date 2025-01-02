@@ -20,3 +20,9 @@ export const isPDFGenerate = atom({
   default: false,
 });
 
+
+export const imageBalancePdf = atom({
+  key: 'imageBalancePdf',
+  default: '',
+});
+
