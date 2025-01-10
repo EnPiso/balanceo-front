@@ -31,6 +31,8 @@ import * as htmlToImage from "html-to-image";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../infraestructure/data/toastMessage.js";
 
+import { PDFDocument } from "pdf-lib";
+
 export const BalancingDashboard = () => {
 
   const iconRef = useRef();
@@ -97,37 +99,42 @@ export const BalancingDashboard = () => {
   }, []); // Dependencias vacías para que se ejecute solo una vez al montar
 
   const generatePDF = async () => {
-    setIsLoadPDF(true)
-    const element = componentPDF.current; // Referencia al componente que quieres capturar
+    setIsLoadPDF(true);
+    const element = componentPDF.current;
 
-    // Capturar el componente como una imagen con html2canvas
     const canvas = await html2canvas(element, {
-      scale: 2, // Aumenta la resolución para mejorar la calidad
-      useCORS: true, // Permite cargar imágenes remotas
-      allowTaint: true, // Permite contenido inseguro
+      scale: 1,
+      useCORS: true,
+      allowTaint: true,
+      imageTimeout: 0,
+      backgroundColor: null,
+      logging: false
     });
 
-    const imgData = canvas.toDataURL("image/png"); // Convierte el canvas a una imagen PNG
+    const imgData = canvas.toDataURL("image/jpeg", 0.5);
 
-    // Crear un nuevo PDF con jsPDF
-    const pdf = new jsPDF("p", "mm", "a4");
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+      compress: true
+    });
 
-    // Calcular dimensiones de la imagen en el PDF
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    // Agregar la imagen al PDF
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
 
-    const name = objBalancing.product.name
-    const order = showOrder.order.code
-    const created_at = showOrder.order.created_at
-    const created = new Intl.DateTimeFormat("es-ES").format(new Date(created_at))
+    const name = objBalancing.product.name;
+    const order = showOrder.order.code;
+    const created = new Intl.DateTimeFormat("es-ES").format(
+      new Date(showOrder.order.created_at)
+    );
 
-    pdf.save( `${order}_${name}_${created}.pdf`);
-    setIsPDFMode(false); // Desactiva el modo PDF
-    setIsLoadPDF(false)
-    setImageUrl('')
+    pdf.save(`${order}_${name}_${created}.pdf`);
+    setIsPDFMode(false);
+    setIsLoadPDF(false);
+    setImageUrl('');
   };
 
   useEffect(() => {

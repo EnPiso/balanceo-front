@@ -12,6 +12,8 @@ import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../../infraestructure/data/toastMessage.js";
 import {imageTableBalancing} from "../../../../infraestructure/states/states_product.js";
 import {nameImageDateNow} from "../../../../infraestructure/utils/imagesFormat.js";
+import {FaDeleteLeft} from "react-icons/fa6";
+import {BsFileExcel} from "react-icons/bs";
 
 const EditSamCustom = ({ operation }) => {
   const [isEdit, setIsEdit] = useState(false);
@@ -127,18 +129,25 @@ const EditSamCustom = ({ operation }) => {
           {
             isLoading ? <Spinner/> : <>
 
-              <Input
-                autoFocus
-                isClearable
-                type="text"
-                variant="bordered"
-                onChange={handleChangePol}
-                onKeyDown={handleKeyDown}
-                placeholder="Añade sam"
-                value={sam} // Usa `value` para el input controlado
-                onClear={closeInput}
-                className="max-w-xs"
-              />
+              <Tooltip placement={"right-end"} content={"ENTER/ESC"}>
+                <Input
+                  endContent={
+                    <span onClick={closeInput}>
+                    <BsFileExcel color={"red"}/>
+                </span>
+                  }
+                  autoFocus
+                  isClearable
+                  type="text"
+                  variant="bordered"
+                  onChange={handleChangePol}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Añade sam"
+                  value={sam} // Usa `value` para el input controlado
+                  onClear={closeInput}
+                  className="max-w-xs"
+                />
+              </Tooltip>
               {
                 isError &&
                 <p className="text-red-600 font-bold ml-1 mt-1 text-sm">

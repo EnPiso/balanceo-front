@@ -7,6 +7,7 @@ import ModalDashboardOrder from "../orders/ModalDashboardOrder.jsx";
 import OrderDashboardModal from "../orders/OrderDashboardModal.jsx";
 import {orderObjBalancing, showOrderObj} from "../../infraestructure/states/order_states.js";
 import ImageLightbox from "../orders/import/ImageLightBox.jsx";
+import DashboardProducts from "../products/DashboardProducts.jsx";
 
 
 const Sidebar = () => {
@@ -40,12 +41,20 @@ const Sidebar = () => {
 
 					</>
 				) : (
+					<>
+						<div
+							className="bg-gray-100 dark:bg-zinc-800 p-4 rounded-lg shadow-md max-w-md mx-auto space-y-3 mt-4">
 
-					<div className="bg-gray-100 dark:bg-zinc-800 p-4 rounded-lg shadow-md max-w-md mx-auto space-y-3 mt-4">
+							<OrderDashboardModal/>
 
-						<OrderDashboardModal/>
+							<DashboardProducts/>
 
-					</div>
+						</div>
+
+
+
+					</>
+
 				)
 			}
 

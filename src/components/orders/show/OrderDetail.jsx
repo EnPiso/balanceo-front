@@ -19,6 +19,7 @@ import {selectProduct} from "../../../infraestructure/states/states_product.js";
 import {detailOperOperations} from "../../../infraestructure/states/states_balancing.js";
 import {checkOperationsBalancing} from "../../../infraestructure/states/states_videos.js";
 import ModalCustomProduct from "../../balances/balancing/customProduct/ModalCustomProduct.jsx";
+import {hourMinuteSecond, monthDayYear} from "../../../infraestructure/utils/dateFormat.js";
 
 const OrderDetail = () => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
@@ -172,99 +173,122 @@ const OrderDetail = () => {
 
         </>
       ) : (
-        <>
-          <Button
-            className="mt-2"
-            onClick={() =>setShowOrder(null)}
-            color="default"
-            startContent={<FaBackward/>}
-          >
-            Regresar
-          </Button>
+          <>
+            <Button
+                className="mt-2"
+                onClick={() => setShowOrder(null)}
+                color="default"
+                startContent={<FaBackward/>}
+            >
+              Regresar
+            </Button>
 
-          <h2 className="text-2xl font-bold uppercase">{`${showOrder.order.code}`}</h2>
-          <div className="mt-2">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold uppercase">
+                {`${showOrder.order.code}`}
+              </h2>
+              <span>
+                  {
+                      showOrder.order.created_at && monthDayYear(showOrder.order.created_at)
+                  }
+                <small className="ml-2 font-bold text-black">
+                 {
+                     showOrder.order.created_at && hourMinuteSecond(showOrder.order.created_at)
+                 }
+              </small>
+            </span>
 
-            {
-              showOrder.order.image_url ? (
-                <ImageLightbox
-                thumbnailUrl={showOrder.order.image_url}
-                fullSizeUrl={showOrder.order.image_url}
-                alt={`medida ${showOrder.order.code}`}
-                key={showOrder.order.code}
-              />
-              ) : (
-                <div className="flex gap-4">
-                  <Spinner
-                    color="default"
-                    size="lg"
-                  />
-                </div>
-              )
-            }
+            </div>
+
+            <div className="mt-2">
+
+              {
+                showOrder.order.image_url ? (
+                    <ImageLightbox
+                        thumbnailUrl={showOrder.order.image_url}
+                        fullSizeUrl={showOrder.order.image_url}
+                        alt={`medida ${showOrder.order.code}`}
+                        key={showOrder.order.code}
+                    />
+                ) : (
+                    <div className="flex gap-4">
+                      <Spinner
+                          color="default"
+                          size="lg"
+                      />
+                    </div>
+                )
+              }
 
 
-          </div>
+            </div>
 
-          {/* Vista de Tabla para Pantallas Grandes */}
-          <div className="hidden lg:block">
+            {/* Vista de Tabla para Pantallas Grandes */}
+            <div className="hidden lg:block">
 
-            {showOrder.products.map((product, index) => (
-              <div key={index} className="mb-8">
-                <div className="flex justify-end py-2">
-                  <BalanceProduct
-                    setObjBalancing={setObjBalancing}
-                    product={product}
-                  />
-                </div>
-                {/* Botón para expandir/colapsar el producto */}
-                <button
-                  onClick={() => toggleCollapse(index)}
-                  className="w-full text-left p-4 bg-zinc-200 dark:bg-zinc-700 rounded-t-lg focus:outline-none text-zinc-800 dark:text-zinc-100"
-                >
+              {showOrder.products.map((product, index) => (
+                  <div key={index} className="mb-8">
+                    <div className="flex justify-end py-2">
+                      <BalanceProduct
+                          setObjBalancing={setObjBalancing}
+                          product={product}
+                      />
+                    </div>
+                    <h1 className="uppercase">
+                      <span className="font-black">{product.product.category_product_name} </span>
+                    </h1>
+
+                    {/* Botón para expandir/colapsar el producto */}
+                    <button
+                        onClick={() => toggleCollapse(index)}
+                        className="w-full text-left p-4 bg-zinc-200 dark:bg-zinc-700 rounded-t-lg focus:outline-none text-zinc-800 dark:text-zinc-100"
+                    >
+
+
                   <span className="uppercase">
                     {product.product.name} <span className="font-black">{product.product.reference} </span>
                   </span>
-                  <span className={`float-right ${product.product.has_opers_balancing && "text-green-600"}`}>
+                      <span className={`float-right ${product.product.has_opers_balancing && "text-green-600"}`}>
                     {expandedProductIndices.includes(index) ? '▲' : '▼'}
                   </span>
-                </button>
+                    </button>
 
 
-                {/* Tabla de operaciones, visible solo si el índice está en expandedProductIndices */}
-                {expandedProductIndices.includes(index) && (
-                  <table className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-b-lg shadow-md border border-gray-300">
-                    <thead>
-                    <tr className="bg-zinc-800 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-800">
-                      <th className="p-4 text-left font-medium border border-gray-300">Operación</th>
-                      <th className="p-4 text-left font-medium border border-gray-300">Máquina</th>
-                      <th className="p-4 text-left font-medium border border-gray-300">Sam</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {product.operations.map((operationData, opIndex) => (
-                      <tr key={opIndex}>
-                        <td className="p-4 border border-gray-300">{operationData.operation}</td>
-                        <td className="p-4 border border-gray-300">{operationData.machine}</td>
-                        <td className="p-4 border border-gray-300">{operationData.sam}</td>
-                      </tr>
-                    ))}
-                    </tbody>
-                  </table>
-                )}
+                    {/* Tabla de operaciones, visible solo si el índice está en expandedProductIndices */}
+                    {expandedProductIndices.includes(index) && (
+                        <table
+                            className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-b-lg shadow-md border border-gray-300">
+                          <thead>
+                          <tr className="bg-zinc-800 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-800">
+                            <th className="p-4 text-left font-medium border border-gray-300">Operación</th>
+                            <th className="p-4 text-left font-medium border border-gray-300">Máquina</th>
+                            <th className="p-4 text-left font-medium border border-gray-300">Sam</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          {product.operations.map((operationData, opIndex) => (
+                              <tr key={opIndex}>
+                                <td className="p-4 border border-gray-300">{operationData.operation}</td>
+                                <td className="p-4 border border-gray-300">{operationData.machine}</td>
+                                <td className="p-4 border border-gray-300">{operationData.sam}</td>
+                              </tr>
+                          ))}
+                          </tbody>
+                        </table>
+                    )}
 
-              </div>
-            ))}
-          </div>
+                  </div>
+              ))}
+            </div>
 
-          {/* Vista de Tarjetas para Pantallas Pequeñas */}
-          <div className="lg:hidden space-y-4">
-            <h3 className="text-xl font-semibold">Products</h3>
-            {showOrder.products.map((product, index) => (
-              <ProductCard key={index} product={product} />
-            ))}
-          </div>
-        </>
+            {/* Vista de Tarjetas para Pantallas Pequeñas */}
+            <div className="lg:hidden space-y-4">
+              <h3 className="text-xl font-semibold">Products</h3>
+              {showOrder.products.map((product, index) => (
+                  <ProductCard key={index} product={product}/>
+              ))}
+            </div>
+          </>
       )}
     </div>
   );

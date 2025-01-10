@@ -33,6 +33,7 @@ const OrderSubmit = ({operationsData, orderProOpe, images, onClose,eraseData}) =
       try {
         const result = await postData(urlMain + "/orders/create_order", formData)
         const order = result.order_products
+
         setOrders([...orders, order])
 
         toast.success(toastMessageCustom.order_create)

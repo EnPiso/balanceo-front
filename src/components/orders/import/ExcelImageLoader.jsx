@@ -83,7 +83,7 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
             repetitions: row.getCell(3).value,
             observations: row.getCell(4).value,
             guideType: row.getCell(6).value,
-            garment: `${row.getCell(7).value} [${row.getCell(10).value}]`,
+            garment: `${row.getCell(7).value} [${row.getCell(10).value}] {${row.getCell(11).value}}`,
             sam,
             order: row.getCell(9).value,
             reference: row.getCell(10).value
@@ -91,6 +91,8 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
         }
       }
     });
+
+
     return operations;
   };
 

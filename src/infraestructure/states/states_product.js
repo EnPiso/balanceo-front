@@ -17,3 +17,22 @@ export const imageTableUrl = atom({
   key: 'imageTableUrl', // Debe ser único
   default: null, // Inicializa con createRef
 });
+
+
+export const productsAll = atom({
+  key: 'productsAll', // Debe ser único
+  default: [], // Inicializa con createRef
+});
+
+
+export const categoriesAll = atom({
+  key: 'categoriesAll', // Debe ser único
+  default: [], // Inicializa con createRef
+});
+
+
+export const categoriesAllCustom = atom({
+  key: 'categoriesAllCustom', // Debe ser único
+  default: [], // Inicializa con createRef
+});
+

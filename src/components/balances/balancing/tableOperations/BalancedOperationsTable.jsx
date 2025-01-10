@@ -233,10 +233,17 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
                   <PdfBalancing/>
                   {
                       imageUrl && (
-                          <div>
-                            <img src={imageUrl} alt="Captura" style={{ maxWidth: "100%" }} />
-                          </div>
-                      )
+                      <>
+                        <div>
+                          <img
+                            src={imageUrl}
+                            alt="Imagen responsive"
+                            className="w-full"
+                          />
+                        </div>
+                      </>
+
+          )
 
                   }
                 </div>

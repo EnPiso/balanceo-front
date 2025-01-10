@@ -25,4 +25,6 @@ export const toastMessageCustom = {
   noSelectModule: "Para cambiar de módulo, primero elimina los operarios actuales",
   updatePlant: "se actualizó el nombre de la planta correctamente",
   updateModule: "se actualizó el nombre del módulo correctamente",
+  updateProductName: "se actualizó correctamente el nombre del producto",
+  updateCategory: "se actualizó la categoría correctamente"
 };

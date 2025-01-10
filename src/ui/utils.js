@@ -93,20 +93,22 @@ export const isRepeatColor = (firstArray, secondArray) => {
 }
 
 
-export const nameReferenceProduct = (garden) => {
+export const nameReferenceProduct = (garment) => {
 
-// Usar una expresión regular para capturar el texto dentro y fuera de los corchetes
-  const match = garden.match(/^(.*?)\s*\[(.*?)\]$/);
+  // Usar una expresión regular para capturar texto dentro y fuera de corchetes y llaves
+  const match = garment.match(/^(.*?)\s*\[(.*?)\]\s*\{(.*?)\}$/);
 
   if (match) {
     const outside = match[1]; // Texto fuera de los corchetes
     const inside = match[2];  // Texto dentro de los corchetes
+    const categoryProduct = match[3]; // Texto dentro de las llaves
+
     return {
       name: outside,
       reference: inside,
-    }
+      categoryProduct: categoryProduct,
+    };
   } else {
     console.log("Formato no coincide");
   }
-
-}
+};
