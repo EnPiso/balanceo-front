@@ -60,7 +60,7 @@ const EditNameProduct = ({product}) => {
     return(
         <>
             <td
-                className="p-4 border border-gray-300 cursor-pointer">
+                className="p-1 border border-gray-300 cursor-pointer">
                 {
                     isEditName ?
                         <>

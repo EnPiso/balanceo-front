@@ -36,3 +36,9 @@ export const categoriesAllCustom = atom({
   default: [], // Inicializa con createRef
 });
 
+
+export const newFormProduct = atom({
+  key: 'newFormProduct', // Debe ser único
+  default: false, // Inicializa con createRef
+});
+

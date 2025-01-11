@@ -60,7 +60,7 @@ const EditReferenceProduct = ({product}) => {
     return(
         <>
             <td
-                className="border p-4 border-gray-300 cursor-pointer">
+                className="border p-1 border-gray-300 cursor-pointer">
                 {
                     isEditReference ?
                         <>

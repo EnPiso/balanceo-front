@@ -14,3 +14,19 @@ export const searchOperations = atom({
   default: [],
 });
 
+
+export const isOpenModalProd = atom({
+  key: 'isOpenModalProd ',
+  default: false,
+});
+
+
+
+
+export const operationsProduct = atom({
+  key: 'operationsProduct ',
+  default: [],
+});
+
+
+

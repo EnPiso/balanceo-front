@@ -42,6 +42,7 @@ const   DashboardPlants = () => {
             try {
                 //setLoading(true);
                 const result = await fetchGetData(`${urlMain}production_plants`);
+
                 if(result.error){
                     setListPlants(result.plants)
                 }

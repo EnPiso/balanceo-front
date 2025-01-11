@@ -10,6 +10,8 @@ import {toastMessageCustom} from "../../infraestructure/data/toastMessage.js";
 import AutocompleteCategories from "./AutocompleteCategories.jsx";
 import {FaDeleteLeft} from "react-icons/fa6";
 import DeleteProductCustom from "./DeleteProductCustom.jsx";
+import {FaBoxOpen} from "react-icons/fa";
+import ButtonOperProdCustom from "../operations/ButtonOperProdCustom.jsx";
 
 const EditCateroryProduct = ({product}) => {
   const [isEditCategory, setIsEditCategory] = useState(false)
@@ -66,7 +68,7 @@ const EditCateroryProduct = ({product}) => {
   return(
     <>
       <td
-        className="p-4 border border-gray-300 cursor-pointer">
+        className="p-1 border border-gray-300 cursor-pointer">
         {
           isEditCategory ?
             <>
@@ -102,9 +104,16 @@ const EditCateroryProduct = ({product}) => {
               </Tooltip>
              </span>
 
-              <DeleteProductCustom
-                product={product}
-              />
+              <span>
+                 <DeleteProductCustom
+                   product={product}
+                 />
+
+                <ButtonOperProdCustom
+                  product={product}
+                />
+
+              </span>
 
             </span>
         }
