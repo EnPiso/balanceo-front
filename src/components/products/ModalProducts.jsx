@@ -68,7 +68,6 @@ const ModalProducts = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
                             </ModalHeader>
                             <ModalBody>
                                 <ListProductsCustom
-
                                 />
                             </ModalBody>
                             <ModalFooter>

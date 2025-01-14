@@ -18,7 +18,7 @@ const ListProductsCustom = () => {
 
         const getData = async () => {
             try {
-                //setLoading(true);
+                //
                 const result = await fetchGetData(`${urlMain}products`);
                 setProducts(result)
 
@@ -40,7 +40,9 @@ const ListProductsCustom = () => {
         <>
             <div className="grow p-8 overflow-y-auto bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100">
                 {
-                    isLoading ? <Spinner size={"lg"} color={"default"}/> : <TableProductsCustom/>
+                    isLoading ? <div className={"flex justify-center"}>
+                        <Spinner size={"lg"} color={"default"}/>
+                    </div> : <TableProductsCustom/>
                 }
             </div>
 

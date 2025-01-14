@@ -1,5 +1,5 @@
 import {FaBackward, FaBoxOpen, FaPlusCircle} from "react-icons/fa";
-import {Chip, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip} from "@nextui-org/react";
+import {Chip, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spinner, Tooltip} from "@nextui-org/react";
 import React,{useState} from "react";
 import ListProductsCustom from "../products/ListProductsCustom.jsx";
 import ModalCategoryCrud from "../products/ModalCategoryCrud.jsx";
@@ -8,7 +8,7 @@ import ListOperationsProduct from "./ListOperationsProduct.jsx";
 import {useRecoilState} from "recoil";
 import {operationsProduct} from "../../infraestructure/states/operation_states.js";
 
-const ModalOperationProduct = ({setIsOpen, isOpen}) => {
+const ModalOperationProduct = ({setIsOpen, isOpen, isLoading}) => {
   const [operations, setOperations] = useRecoilState(operationsProduct)
 
   const [isNewOperation, setIsNewOperation] = useState(false);
@@ -53,10 +53,19 @@ const ModalOperationProduct = ({setIsOpen, isOpen}) => {
 
                 </ModalHeader>
                 <ModalBody>
-                  <ListOperationsProduct
-                    isNewOperation={isNewOperation}
-                    setIsNewOperation={setIsNewOperation}
-                  />
+                  {
+                    isLoading ?
+                    <div className="flex justify-center">
+                        <Spinner
+                          size={"lg"}
+                          color={"default"}/>
+                    </div> :
+                      <ListOperationsProduct
+                        isNewOperation={isNewOperation}
+                        setIsNewOperation={setIsNewOperation}
+                      />
+                  }
+
 
                 </ModalBody>
                 <ModalFooter>

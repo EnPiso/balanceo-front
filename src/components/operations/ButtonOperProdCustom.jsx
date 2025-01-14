@@ -9,6 +9,7 @@ import {urlMain} from "../../infraestructure/data/const.js";
 
 const ButtonOperProdCustom = ({product}) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [operation, setOperation] = useState(null)
 
   const [operations, setOperations] = useRecoilState(operationsProduct)
@@ -29,9 +30,11 @@ const ButtonOperProdCustom = ({product}) => {
           operations: result
         }
         setOperations(data);
-        console.log(data);
+
       } catch (error) {
         console.error("Error al obtener los datos:", error);
+      } finally {
+        setIsLoading(false)
       }
     };
 
@@ -59,6 +62,7 @@ const ButtonOperProdCustom = ({product}) => {
           product={product}
           setIsOpen={setIsOpen}
           isOpen={isOpen}
+          isLoading={isLoading}
         />
       }
 
