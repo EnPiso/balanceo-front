@@ -4,6 +4,8 @@ import {updateData} from "../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../infraestructure/data/const.js";
 import {useRecoilState} from "recoil";
 import {operationsProduct} from "../../infraestructure/states/operation_states.js";
+import BtnDeleteOperationCustom from "./BtnDeleteOperationCustom.jsx";
+import toast from "react-hot-toast";
 
 const FormOperationProduction = ({ operation }) => {
   const [fields, setFields] = useState({
@@ -39,8 +41,6 @@ const FormOperationProduction = ({ operation }) => {
     const updateOperation = async () => {
       try {
         const result = await updateData(urlMain + `/operations/${operation_id}`, data)
-        console.log(result)
-        console.log(operations)
         const updatedItems = operations.operations
           .map((item) => (item.id === result.id ? result : item))
           .sort((a, b) => new Date(a.created_at) - new Date(b.created_at)); // Ascendente
@@ -48,7 +48,7 @@ const FormOperationProduction = ({ operation }) => {
           ...prevState, // Copia los demás atributos del objeto
           operations: updatedItems, // Actualiza solo el atributo `name`
         }));
-
+        toast.success("La operación ha sido actualizada con éxito")
         // guardar imagen de la tabla del balanceo en product
       } catch (error) {
         console.error('Error setting data', error);
@@ -74,12 +74,23 @@ const FormOperationProduction = ({ operation }) => {
               handleSubmit={handleSubmit}
             />
           ) : (
-            <span onClick={() => handleEditToggle(field)}>
-              {operation[field]}
+            <span className={"flex justify-between items-center"}>
+              <span onClick={() => handleEditToggle(field)}>
+                {operation[field]}
+              </span>
+              {
+                field === "sam" &&
+                  <BtnDeleteOperationCustom
+                    operation={operation}
+                  />
+              }
+
             </span>
+
           )}
         </td>
       ))}
+
     </tr>
   );
 };

@@ -63,3 +63,17 @@ export const updateData = async (url,data) => {
 };
 
 
+// Función para eliminar datos
+export const deleteData = async (url) => {
+  try {
+    const response = await axios.delete(url, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data; // Devuelve los datos de la respuesta (si hay alguno)
+  } catch (err) {
+    console.error('Error al eliminar el recurso:', err.response || err);
+    throw err; // Lanza el error para manejarlo en la llamada
+  }
+};

@@ -1,6 +1,6 @@
 import {FaBackward, FaBoxOpen, FaPlusCircle} from "react-icons/fa";
 import {Chip, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip} from "@nextui-org/react";
-import React from "react";
+import React,{useState} from "react";
 import ListProductsCustom from "../products/ListProductsCustom.jsx";
 import ModalCategoryCrud from "../products/ModalCategoryCrud.jsx";
 import CustomButton from "../../ui/CustomButton.jsx";
@@ -10,6 +10,8 @@ import {operationsProduct} from "../../infraestructure/states/operation_states.j
 
 const ModalOperationProduct = ({setIsOpen, isOpen}) => {
   const [operations, setOperations] = useRecoilState(operationsProduct)
+
+  const [isNewOperation, setIsNewOperation] = useState(false);
 
 
   return(
@@ -33,9 +35,28 @@ const ModalOperationProduct = ({setIsOpen, isOpen}) => {
                     operations &&  operations.product && operations.product["name"]
                   }
 
+                  {
+                    isNewOperation ?
+                      <Tooltip placement={"right-end"} content={"Regresar"}>
+                        <button onClick={()=> setIsNewOperation(false)}>
+                          <FaBackward color={"green"} size={23} className={"ml-3"}/>
+                        </button>
+                      </Tooltip> :
+                      <Tooltip placement={"right-end"} content={"Agregar nueva operación"}>
+                        <button onClick={()=> setIsNewOperation(true)}>
+                          <FaPlusCircle color={"green"} size={23} className={"ml-3"}/>
+                        </button>
+                      </Tooltip>
+
+                  }
+
+
                 </ModalHeader>
                 <ModalBody>
-                  <ListOperationsProduct/>
+                  <ListOperationsProduct
+                    isNewOperation={isNewOperation}
+                    setIsNewOperation={setIsNewOperation}
+                  />
 
                 </ModalBody>
                 <ModalFooter>

@@ -21,8 +21,6 @@ export const isOpenModalProd = atom({
 });
 
 
-
-
 export const operationsProduct = atom({
   key: 'operationsProduct ',
   default: [],

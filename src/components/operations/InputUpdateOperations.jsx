@@ -2,14 +2,13 @@ import { Input } from "@nextui-org/react";
 import React from "react";
 
 const InputUpdateOperations = ({
-                                 operation,
-                                 valueDefault,
-                                 handleChange,
-                                 label,
-                                 setClose,
-                                 name,
-                                 handleSubmit
-                               }) => {
+     operation,
+     valueDefault,
+     handleChange,
+     label,
+     setClose,
+     name,
+     handleSubmit}) => {
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       console.log(operation);
