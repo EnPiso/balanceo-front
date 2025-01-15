@@ -8,6 +8,7 @@ import OrderDashboardModal from "../orders/OrderDashboardModal.jsx";
 import {orderObjBalancing, showOrderObj} from "../../infraestructure/states/order_states.js";
 import ImageLightbox from "../orders/import/ImageLightBox.jsx";
 import DashboardProducts from "../products/DashboardProducts.jsx";
+import DashboardOpers from "../opers/DashboardOpers.jsx";
 
 
 const Sidebar = () => {
@@ -48,6 +49,7 @@ const Sidebar = () => {
 							<OrderDashboardModal/>
 
 							<DashboardProducts/>
+							<DashboardOpers/>
 
 						</div>
 
