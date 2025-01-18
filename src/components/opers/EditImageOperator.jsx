@@ -15,11 +15,13 @@ const EditImageOperator = ({url_image, toggleLightbox,oper, opers, setOpers,setI
   }
 
   const handleImage = (e, oper) => {
+
     const value = e.target.files[0]
 
     console.log(e, oper)
 
     if (value) {
+      setIsLoad(true)
       const data = new FormData();
       data.append("oper[avatar]", value);
       const id = oper.id
