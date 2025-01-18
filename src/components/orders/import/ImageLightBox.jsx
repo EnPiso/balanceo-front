@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ImageLightbox = ({ thumbnailUrl, fullSizeUrl,alt }) => {
+const ImageLightbox = ({ thumbnailUrl, fullSizeUrl,alt,isOperList }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   // Función para abrir y cerrar el lightbox
@@ -9,12 +9,13 @@ const ImageLightbox = ({ thumbnailUrl, fullSizeUrl,alt }) => {
   return (
     <div>
       {/* Imagen en miniatura que abre el lightbox al hacer clic */}
+
       <img
         src={thumbnailUrl}
         alt={alt}
         onClick={toggleLightbox}
         className="hover:shadow-lg transition-shadow dark:hover:shadow-xl shadow-md rounded-xl "
-        style={{ cursor: 'pointer', maxHeight: '15vh' }}
+        style={{ cursor: 'pointer', maxHeight: isOperList ? '8vh' : '15vh' }}
       />
 
       {/* Lightbox */}

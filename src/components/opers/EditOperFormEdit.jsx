@@ -1,7 +1,7 @@
 import {FaDeleteLeft} from "react-icons/fa6";
 import React, {useState} from "react";
 import {AiOutlineRight} from "react-icons/ai";
-import {Input} from "@nextui-org/react";
+import {Avatar, Badge, Button, Input} from "@nextui-org/react";
 import {updateData} from "../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../infraestructure/data/const.js";
 import {assignColorsToArray} from "../../ui/utils.js";
@@ -9,6 +9,9 @@ import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../infraestructure/data/toastMessage.js";
 import {nameImageDateNow} from "../../infraestructure/utils/imagesFormat.js";
 import DeleteInputOperCustom from "./DeleteInputOperCustom.jsx";
+import ImageLightbox from "../orders/import/ImageLightBox.jsx";
+import {FaEdit} from "react-icons/fa";
+import EditImageOperator from "./EditImageOperator.jsx";
 
 const EditOperFormEdit = ({oper, opers, setOpers}) => {
   const [isEditName, setIsEditName] = useState(false)
@@ -16,6 +19,10 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
 
   const [name, setName] = useState('')
   const [idOper, setIdOper] = useState('')
+
+  const [isOpen, setIsOpen] = useState(false);
+  // Función para abrir y cerrar el lightbox
+  const toggleLightbox = () => setIsOpen(!isOpen);
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -85,26 +92,40 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
 
 
 
-
+  const url_image = (oper && oper.avatar) ?
+    oper.avatar :
+    "https://balance-assets.sfo3.digitaloceanspaces.com/assets/user.webp"
 
   return(
     <>
       <tr
-        className="hover:bg-zinc-200 dark:hover:bg-zinc-700">
-        <td onClick={()=> handleName(oper.name)} className="p-3 border border-gray-300 text-zinc-800">
+        className="hover:bg-zinc-200 dark:hover:bg-zinc-700 ">
+        <td  className="p-3  text-zinc-800 ">
+            <span className="flex justify-between items-center">
+              {
+                isEditName ? (
+                  <Input
+                    onKeyDown={handleKeyDown}
+                    endContent={<AiOutlineRight/>}
+                    onChange={(e) => setName(e.target.value)}
+                    value={name}
+                    type="text"/>
+                ) : <span onClick={()=> handleName(oper.name)}  className="cursor-pointer">{oper.name}</span>
+              }
 
-          {
-            isEditName ? (
-              <Input
-                onKeyDown={handleKeyDown}
-                endContent={<AiOutlineRight/>}
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-                type="text"/>
-            ) : <span  className="cursor-pointer">{oper.name}</span>
-          }
+              <EditImageOperator
+                url_image={url_image}
+                toggleLightbox={toggleLightbox}
+                oper={oper}
+                opers={opers}
+                setOpers={setOpers}
+                setIsOpen={setIsOpen}
+              />
+
+            </span>
+
         </td>
-        <td className="p-3 border border-gray-300 text-zinc-800 flex justify-between items-center">
+        <td className="p-5  text-zinc-800 flex justify-between items-center">
           <span>
              {
                isEditIdOperator ? (
@@ -115,7 +136,7 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
                    value={idOper}
                    type="text"/>
                ) :
-                 <span onClick={()=> handleIdOper(oper.id_oper)} className="cursor-pointer">
+                 <span onClick={()=> handleIdOper(oper.id_oper)} className="cursor-pointer ">
                    {oper.id_oper ? oper.id_oper : 'Click para editar la cédula'}
                  </span>
              }
@@ -129,6 +150,16 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
 
         </td>
       </tr>
+
+      {/* Lightbox */}
+      {isOpen && (
+        <span className="lightbox" onClick={toggleLightbox}>
+            <span
+              className="lightbox-content"
+              style={{ backgroundImage: `url(${url_image})` }}
+            />
+        </span>
+      )}
     </>
   )
 }

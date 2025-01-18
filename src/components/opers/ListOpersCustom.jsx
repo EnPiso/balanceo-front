@@ -25,6 +25,7 @@ const ListOpersCustom = ({prodPlant, isLoading, setIsLoading}) => {
       try {
         const data = await fetchGetData(`${urlMain}opers?module_id=${module_id}`);
         setIsLoading(false)
+
         setOpers(data);
 
       } catch (error) {
