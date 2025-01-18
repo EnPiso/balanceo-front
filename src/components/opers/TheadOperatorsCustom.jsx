@@ -1,11 +1,11 @@
 import FormDynamicField from "./FormDynamicField.jsx";
-import {FaPlusCircle, FaUserAlt, FaUserCheck} from "react-icons/fa";
+import {FaBackward, FaPlusCircle, FaUserAlt, FaUserCheck} from "react-icons/fa";
 import React, {useEffect, useState} from "react";
-import {postData} from "../../infraestructure/call_api/crud.js";
+import {postData, postDataFile} from "../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../infraestructure/data/const.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../infraestructure/data/toastMessage.js";
-import {Spinner} from "@nextui-org/react";
+import {Avatar, Input, Spinner, Tooltip} from "@nextui-org/react";
 
 const TheadOperatorsCustom = ({moduleId, opers, setOpers, setIsNewOperator}) => {
   const [nameData,setNameData] = useState('')
@@ -15,20 +15,24 @@ const TheadOperatorsCustom = ({moduleId, opers, setOpers, setIsNewOperator}) => 
   const [isRight,setIsRight] = useState(false)
   const [isLoading,setIsLoading] = useState(false)
 
+  const [fileImage,setFileImage] = useState(null)
+
   useEffect(() => {
     setIsRight(nameData.length >= 2 && idOper.length >= 2)
   }, [nameData, idOper]);
 
   const handleSubmit = () => {
-    const data = {
-      oper: {
-        name: nameData,
-        id_oper: idOper,
-        production_module_id: moduleId
-      }
+    const data = new FormData();
+    data.append("oper[name]", nameData);
+    data.append("oper[id_oper]", idOper);
+    data.append("oper[production_module_id]", moduleId);
+
+    if (fileImage) {
+      data.append("oper[avatar]", fileImage); // Agrega el archivo
     }
-    setIsLoading(true)
-    fetchApi(data)
+
+    setIsLoading(true);
+    fetchApi(data);
   }
 
 
@@ -36,7 +40,7 @@ const TheadOperatorsCustom = ({moduleId, opers, setOpers, setIsNewOperator}) => 
     const createOper = async (data) => {
 
       try {
-        const result = await postData(urlMain + "/opers", data);
+        const result = await postDataFile(urlMain + "/opers", data);
         if(result){
           setOpers([...opers, result])
           toast.success("El operario ha sido creado con éxito")
@@ -69,27 +73,70 @@ const TheadOperatorsCustom = ({moduleId, opers, setOpers, setIsNewOperator}) => 
   }
 
 
+
   return(
     <>
       <thead>
         <tr className="dark:bg-gray-100 bg-zinc-200 text-zinc-100 dark:text-zinc-800 sticky top-0 ">
           <th className="p-4 font-medium border border-gray-300 text-zinc-900">
-            <span className="flex justify-between items-center">
-              Ingresa operario <FaUserAlt/>
+            <span >
+              {
+                fileImage ? (
+                  <div className={"flex justify-center"}>
+                    <span>
+                      <Avatar
+                        className="w-48 h-48"
+                        src={URL.createObjectURL(fileImage)}
+                      />
+                     <Tooltip content={"Cancelar"} placement={"left"}>
+                       <button onClick={() => setFileImage(null)} className={"mt-1"}> <FaBackward size={23} color={"red"}/></button>
+                     </Tooltip>
+                    </span>
+                  </div>
+                ) : (
+                  <div
+                    className="drop-container-small"
+                    // onDrop={handleDrop}
+                    // onDragOver={handleDragOver}
+                    style={{
+                      border: '2px dashed #ccc',
+                      padding: '20px',
+                      borderRadius: '10px',
+                      textAlign: 'center',
+                      marginBottom: '20px',
+                    }}
+                  >
+                    <input
+                      id="images"
+                      type="file"
+                      // accept=".xlsx"
+                      onChange={(e) => setFileImage(e.target.files[0])}
+                      style={{display: 'none'}}
+                    />
+                    <label htmlFor="images"
+                           className="button w-full font-black text-zinc-700 underline hover:text-zinc-500 cursor-pointer">
+                      Seleccionar archivo
+                    </label>
+                  </div>
+                )
+              }
+
+
             </span>
 
           </th>
-          <th className="p-4 font-medium border border-gray-300text-zinc-800 flex justify-between items-center">
+          <th className="p-4 font-medium border border-gray-300text-zinc-800 ">
 
-            <FormDynamicField
-              placeholder={"Nombre completo"}
-              value={nameData}
-              setState={setNameData}
-              valueDefault={""}
-              onKeyDown={() => console.log("onkeydown")}
-            />
-            <span className="flex justify-between items-center">
-             <span className="ml-2">
+           <span className="p-4">
+              <FormDynamicField
+                placeholder={"Nombre completo"}
+                value={nameData}
+                setState={setNameData}
+                valueDefault={""}
+                onKeyDown={() => console.log("onkeydown")}
+              />
+           </span>
+            <span className="mt-3">
                 <FormDynamicField
                   error={idOperError}
                   placeholder={"Cédula"}
@@ -98,24 +145,26 @@ const TheadOperatorsCustom = ({moduleId, opers, setOpers, setIsNewOperator}) => 
                   valueDefault={""}
                   onKeyDown={() => console.log("onkeydown")}
                 />
-             </span>
-              {
-                isRight &&
-                <>
+            </span>
 
-                  {
-                    isLoading ? (
-                      <Spinner color={"default"} size={"lg"}/>
-                    ) : (
-                      <span onClick={handleSubmit} className={"ml-2"}>
+            <span className="mt-3">
+               {
+                 isRight &&
+                 <>
+
+                 {
+                     isLoading ? (
+                       <Spinner color={"default"} size={"lg"}/>
+                     ) : (
+                       <span onClick={handleSubmit} className={"ml-2"}>
                        <FaPlusCircle size={23} color={"green"}/>
                       </span>
-                    )
-                  }
+                     )
+                   }
 
 
-                </>
-              }
+                 </>
+               }
             </span>
 
           </th>

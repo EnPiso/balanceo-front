@@ -8,6 +8,7 @@ import {assignColorsToArray} from "../../ui/utils.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../infraestructure/data/toastMessage.js";
 import {nameImageDateNow} from "../../infraestructure/utils/imagesFormat.js";
+import DeleteInputOperCustom from "./DeleteInputOperCustom.jsx";
 
 const EditOperFormEdit = ({oper, opers, setOpers}) => {
   const [isEditName, setIsEditName] = useState(false)
@@ -64,7 +65,7 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
   const fetchApi = (data, id) => {
     const updateSamOperation = async () => {
       try {
-        const result = await updateData(urlMain + `/opers/${id}`, data);
+        const result = await updateData(urlMain + `opers/${id}`, data);
         const updatedItems = opers.map((item) =>
           item.id === result.id ? result : item
         );
@@ -103,20 +104,29 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
             ) : <span  className="cursor-pointer">{oper.name}</span>
           }
         </td>
-        <td
-          onClick={()=> handleIdOper(oper.id_oper)}
-          className="p-3 border border-gray-300 text-zinc-800 flex justify-between items-center">
-          {
-            isEditIdOperator ? (
-              <Input
-                onKeyDown={handleKeyDownId}
-                endContent={<AiOutlineRight/>}
-                onChange={(e) => setIdOper(e.target.value)}
-                value={idOper}
-                type="text"/>
-            ) : <span  className="cursor-pointer">{oper.id_oper}</span>
-          }
-          <FaDeleteLeft color="red" size={23} className="cursor-pointer"/>
+        <td className="p-3 border border-gray-300 text-zinc-800 flex justify-between items-center">
+          <span>
+             {
+               isEditIdOperator ? (
+                 <Input
+                   onKeyDown={handleKeyDownId}
+                   endContent={<AiOutlineRight/>}
+                   onChange={(e) => setIdOper(e.target.value)}
+                   value={idOper}
+                   type="text"/>
+               ) :
+                 <span onClick={()=> handleIdOper(oper.id_oper)} className="cursor-pointer">
+                   {oper.id_oper ? oper.id_oper : 'Click para editar la cédula'}
+                 </span>
+             }
+          </span>
+
+          <DeleteInputOperCustom
+            oper={oper}
+            opers={opers}
+            setOpers={setOpers}
+          />
+
         </td>
       </tr>
     </>
