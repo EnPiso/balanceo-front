@@ -35,7 +35,8 @@ const BalanceProduct = ({product}) => {
           product: prod.product,
           total_sam: prod.total_sam,
           operations: result.sorted_operations,
-          balancing_id: result.balancing_id
+          balancing_id: result.balancing_id,
+          balancing: result.balancing
         }
 
         const detail = assignColorsToArray(result.details_data)

@@ -38,6 +38,7 @@ import TableRedistribution from "./TableRedistribution.jsx";
 import {FaFilePdf} from "react-icons/fa6";
 import PdfBalancing from "../PDFBalancing.jsx";
 import {useScreenshot} from "use-react-screenshot";
+import CommentBalancing from "../CommentBalancing.jsx";
 
 
 
@@ -299,6 +300,8 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
         }
 
       </div>
+
+      <CommentBalancing/>
 
       {opersSelect.size >= 1 && balancing && (
           <div className="space-y-6">
