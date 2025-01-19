@@ -8,12 +8,16 @@ import {orderObjBalancing} from "../../../infraestructure/states/order_states.js
 import {updateData} from "../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../infraestructure/data/const.js";
 import toast from "react-hot-toast";
+import {Spinner} from "@nextui-org/react";
 
 
 const CommentBalancing = () => {
   const [comment, setComment] = useState('');
   const [isEdit, setIsEdit] = useState(false);
+
   const [seeComment, setSeeComment] = useState(true);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
 
@@ -35,6 +39,7 @@ const CommentBalancing = () => {
     }
 
     const updateComment = async () => {
+      setIsLoading(true)
       try {
         const result = await updateData(urlMain + `/balancings/${balancing_id}`, data)
         console.log(result)
@@ -50,6 +55,8 @@ const CommentBalancing = () => {
         toast.success("El comentario ha sido actualizado con éxito")
       } catch (error) {
         console.error('Error setting data', error);
+      } finally {
+        setIsLoading(false)
       }
     };
 
@@ -80,13 +87,16 @@ const CommentBalancing = () => {
                     <div className="flex justify-end items-center">
                       {
                         comment && <div className={"mt-3"}>
-                          <CustomButton
-                            color="default"
-                            variant="bordered"
-                            startContent={<FaSave color="green"/>}
-                            onClick={handleCommentApi}
-                            title="Guardar comentario"
-                          />
+                          {
+                            isLoading ? <Spinner size={"lg"} color={"default"}/> : <CustomButton
+                              color="default"
+                              variant="bordered"
+                              startContent={<FaSave color="green"/>}
+                              onClick={handleCommentApi}
+                              title="Guardar comentario"
+                            />
+                          }
+
 
                           <CustomButton
                             color="default"
