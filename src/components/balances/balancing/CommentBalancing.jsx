@@ -118,6 +118,27 @@ const CommentBalancing = () => {
                 )
               }
 
+
+
+                {
+                  !isEdit && (
+                    <>
+                      <div className={"flex justify-end items-center font-bold uppercase mb-2 mt-2"}>
+                        <CustomButton
+                          color="default"
+                          variant="bordered"
+                          startContent={<FaPencil color={"green"}/>}
+                          onClick={() => setIsEdit(true)}
+                          title="Editar"
+                        />
+
+                      </div>
+                    </>
+                    )
+                }
+
+
+
                   </>
                   )
                 }
