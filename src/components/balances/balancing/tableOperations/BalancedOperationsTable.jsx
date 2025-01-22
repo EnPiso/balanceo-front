@@ -39,6 +39,7 @@ import {FaFilePdf} from "react-icons/fa6";
 import PdfBalancing from "../PDFBalancing.jsx";
 import {useScreenshot} from "use-react-screenshot";
 import CommentBalancing from "../CommentBalancing.jsx";
+import ImageUrlFormat from './ImageUrlFormat.jsx';
 
 
 
@@ -235,7 +236,8 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
                   {
                       imageUrl && (
                       <>
-                        <div>
+                        <div> 
+                        
                           <img
                             src={imageUrl}
                             alt="Imagen responsive"
@@ -292,7 +294,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
             )
         }
 
-        <div className={`flex items-center justify-center ${isPDFMode && 'px-10 py-10'}`}>
+        <div className={` ${isPDFMode && 'px-10 py-10'}`}>
           <CommentBalancing
             isShow={isPDFMode}
           />
@@ -303,9 +305,12 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
             redistributions.length >= 1 && <TableRedistribution/>
         }
 
+        
+
         {isPDFMode &&
           <>
-            <img src={showOrder.order.image_url} alt="" className="w-full py-2"/>
+            <ImageUrlFormat image_url={showOrder.order.image_url}/>
+          
           </>  
         }
 

@@ -103,12 +103,13 @@ export const BalancingDashboard = () => {
     const element = componentPDF.current;
 
     const canvas = await html2canvas(element, {
+  
       scale: 1,
-      useCORS: true,
-      allowTaint: true,
-      imageTimeout: 0,
-      backgroundColor: null,
-      logging: false
+      useCORS: true, // Habilitar uso de CORS
+      allowTaint: false, // Evitar tainting para imágenes externas
+      imageTimeout: 15000, // Aumentar tiempo de espera para cargar imágenes
+      backgroundColor: null, // Fondo transparente
+      logging: true, // Para depurar si hay errores
     });
 
     const imgData = canvas.toDataURL("image/jpeg", 0.5);
