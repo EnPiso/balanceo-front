@@ -14,6 +14,8 @@ import {AiFillCheckCircle, AiFillDatabase, AiFillStop, AiTwotoneStop} from "reac
 import GenerateImgPdf from "./GenerateImgPdf.jsx";
 import PdfBalancingImg from "./PdfBalancingImg.jsx";
 import {hourMinuteSecond, monthDayYear} from "../../../infraestructure/utils/dateFormat.js";
+import SearchDashboardOrders from "./SearchOrdersCustom.jsx";
+import SearchDateOrders from "./SearchDateOrders.jsx";
 
 
 
@@ -30,19 +32,32 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
   const [totalPages, setTotalPages] = useState(1); // Total de páginas
   const [perPage, setPerPage] = useState(10); // Total de páginas
 
+  const [queryDate, setQueryDate] = useState(null); // Estado para el valor del input
+
+  const [queryString, setQueryString] = useState("");
+
+
+
   const pdfDiv = useRef(null)
+
+
 
   useEffect(() => {
     fetchOrders(currentPage, perPage)
-  }, []);
+  }, [queryDate,queryString]);
 
   const fetchOrders = async (page, per_page) => {
     setIsLoading(true);
     try {
-      const result = await fetchGetData(`${urlMain}orders?page=${page}&archive=${false}&per_page=${per_page}`);
+      const formattedDate = queryDate ? queryDate.toString() : '';
+      const stringSearch = queryString
+
+      const result = await fetchGetData(`${urlMain}orders?page=${page}&archive=${false}&per_page=${per_page}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_cont]=${encodeURIComponent(stringSearch)}`);
       setOrders(result.orders);
       setTotalPages(result.total_pages);
       setCurrentPage(result.current_page);
+      // setQueryString("")
+      // setQueryDate(null)
     } catch (error) {
       console.error("Error al obtener los datos:", error);
     } finally {
@@ -65,6 +80,7 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
   return (
     <div>
       <div className="grow p-8 overflow-y-auto bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100">
+
         {
           showOrder ? <OrderDetail /> : (
             <>
@@ -74,29 +90,39 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
                 </div>
               ) : (
                 <div>
-            <span className="flex justify-start items-center">
-              <button
-                onClick={()=> setIsArchive(false)}>
-                <h3
-                  className="text-md font-semibold mb-4 hover:text-zinc-500 flex justify-between hover:underline uppercase">
-                  Ordenes
-                  <FaFile
-                      color="green"
-                      className="mt-1 ml-1"/>
-                </h3>
-              </button>
-              <button
-                onClick={()=> setIsArchive(true)}
-                className="ml-4">
-                <h3
-                  className="text-md  mb-4 hover:text-zinc-500 flex justify-between hover:underline  ">
-                  Archivadas
-                  <FaFileArchive
-                      color="red"
-                      className="mt-1 ml-1"/>
-                </h3>
-              </button>
-            </span>
+
+                  <SearchDateOrders
+                    queryString={queryString}
+                    setQueryString={setQueryString}
+                    queryDate={queryDate}
+                    setQueryDate={setQueryDate}
+                    isLoading={isLoading}
+                  />
+                  <span className="flex justify-start items-center">
+
+
+                    <button
+                      onClick={()=> setIsArchive(false)}>
+                      <h3
+                        className="text-md font-semibold mb-4 hover:text-zinc-500 flex justify-between hover:underline uppercase">
+                        Ordenes
+                        <FaFile
+                            color="green"
+                            className="mt-1 ml-1"/>
+                      </h3>
+                    </button>
+                    <button
+                      onClick={()=> setIsArchive(true)}
+                      className="ml-4">
+                      <h3
+                        className="text-md  mb-4 hover:text-zinc-500 flex justify-between hover:underline  ">
+                        Archivadas
+                        <FaFileArchive
+                            color="red"
+                            className="mt-1 ml-1"/>
+                      </h3>
+                    </button>
+                  </span>
 
                   <table className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-md border border-gray-300">
                     <thead>

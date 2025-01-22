@@ -88,6 +88,7 @@ const ModalCustomProduct = () => {
             <>
               <ModalHeader className="flex flex-col gap-1">{objBalancing.product.name}</ModalHeader>
               <ModalBody>
+
                 <TabOperationsCustom
                   selected={selected}
                   setSelected={setSelected}

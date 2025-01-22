@@ -4,14 +4,14 @@ import CustomButton from "../../../ui/CustomButton.jsx";
 import {FaBackward, FaEye, FaEyeDropper, FaEyeSlash, FaPlusCircle, FaSave, FaWindowClose} from "react-icons/fa";
 import {FaPencil} from "react-icons/fa6";
 import {useRecoilState} from "recoil";
-import {orderObjBalancing} from "../../../infraestructure/states/order_states.js";
+import {isPDFGenerate, orderObjBalancing} from "../../../infraestructure/states/order_states.js";
 import {updateData} from "../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../infraestructure/data/const.js";
 import toast from "react-hot-toast";
 import {Spinner} from "@nextui-org/react";
 
 
-const CommentBalancing = () => {
+const CommentBalancing = ({isShow}) => {
   const [comment, setComment] = useState('');
   const [isEdit, setIsEdit] = useState(false);
 
@@ -20,6 +20,9 @@ const CommentBalancing = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
+
+    const [isPDFMode, setIsPDFMode] = useRecoilState(isPDFGenerate);
+  
 
   useEffect(() => {
     if(objBalancing && objBalancing.balancing && objBalancing.balancing.comment){
@@ -67,13 +70,17 @@ const CommentBalancing = () => {
   return(
     <>
       <div style={{marginTop: "20px"}}>
-        <CustomButton
-          color="default"
-          variant=""
-          startContent={seeComment ? <FaEyeSlash  size={23}/> : <FaEye color={"green"} size={23}/>}
-          onClick={()=> setSeeComment(!seeComment)}
-          title={seeComment ? "Minimizar comentario" : "Ver comentario"}
-        />
+        {
+          !isShow && 
+            <CustomButton
+              color="default"
+              variant=""
+              startContent={seeComment ? <FaEyeSlash  size={23}/> : <FaEye color={"green"} size={23}/>}
+              onClick={()=> setSeeComment(!seeComment)}
+              title={seeComment ? "Minimizar comentario" : "Ver comentario"}
+            />
+        }
+        
         {
           seeComment && (
             <>
@@ -86,9 +93,13 @@ const CommentBalancing = () => {
 
                     <div className="flex justify-end items-center">
                       {
-                        comment && <div className={"mt-3"}>
+                        comment && <div className={"flex justify-between items-center mt-3"}>
                           {
-                            isLoading ? <Spinner size={"lg"} color={"default"}/> : <CustomButton
+                            isLoading ? <>
+                              <div className="mt-3">
+                                <Spinner size={"lg"} color={"default"}/>
+                              </div>
+                            </> : <CustomButton
                               color="default"
                               variant="bordered"
                               startContent={<FaSave color="green"/>}
@@ -127,11 +138,10 @@ const CommentBalancing = () => {
                   </>
                 )
               }
-
-
-
+            
+      
                 {
-                  !isEdit && (
+                !isShow && !isEdit && (
                     <>
                       <div className={"flex justify-end items-center font-bold uppercase mb-2 mt-2"}>
                         <CustomButton

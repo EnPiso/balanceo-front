@@ -138,7 +138,7 @@ const DragAndDropApp = ({onClose}) => {
           total_sam: total_sam
         }));
 
-        onClose()
+        // onClose()
         toast.success(toastMessageCustom.operationsDragCloneUpdate)
         setIsLoading(false)
 

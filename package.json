@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@internationalized/date": "^3.7.0",
     "@nextui-org/react": "^2.4.8",
     "axios": "^1.7.7",
     "exceljs": "^4.4.0",

@@ -285,23 +285,33 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
                     />
                     </tbody>
                   </table>
-
+                    
+                   
+               
                 </div>
             )
         }
 
+        <div className={`flex items-center justify-center ${isPDFMode && 'px-10 py-10'}`}>
+          <CommentBalancing
+            isShow={isPDFMode}
+          />
+        </div>
+        
 
         {
             redistributions.length >= 1 && <TableRedistribution/>
         }
 
         {isPDFMode &&
+          <>
             <img src={showOrder.order.image_url} alt="" className="w-full py-2"/>
+          </>  
         }
 
       </div>
 
-      <CommentBalancing/>
+     
 
       {opersSelect.size >= 1 && balancing && (
           <div className="space-y-6">

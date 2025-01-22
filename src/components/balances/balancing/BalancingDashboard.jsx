@@ -227,14 +227,12 @@ export const BalancingDashboard = () => {
 
   return (
       <>
+        <ModalCustomProduct />
         {
           objBalancing && (
             <>
 
 
-              <ModalCustomProduct
-                product={objBalancing.product}
-              />
 
               {
                 isLoadPDF ? (
