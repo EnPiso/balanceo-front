@@ -9,9 +9,8 @@ import {NextUIProvider} from '@nextui-org/react'
 
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+
     <NextUIProvider>
       <App />
-    </NextUIProvider>
-  </StrictMode>,
+    </NextUIProvider>,
 )

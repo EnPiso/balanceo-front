@@ -21,7 +21,8 @@ const OrdersArchive = ({setIsArchive}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1); // Página actual
   const [totalPages, setTotalPages] = useState(1); // Total de páginas
-
+ const [perPage, setPerPage] = useState(10); // Total de páginas
+ 
   const fetchOrders = async (page) => {
     setIsLoading(true);
     try {

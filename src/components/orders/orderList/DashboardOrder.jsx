@@ -48,14 +48,21 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
 
   const fetchOrders = async (page, per_page) => {
     setIsLoading(true);
+    
     try {
       const formattedDate = queryDate ? queryDate.toString() : '';
       const stringSearch = queryString
-
-      const result = await fetchGetData(`${urlMain}orders?page=${page}&archive=${false}&per_page=${per_page}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_cont]=${encodeURIComponent(stringSearch)}`);
+    
+      
+      const result = await fetchGetData(
+        `${urlMain}orders?page=${page}&archive=${false}&per_page=${per_page}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_or_products_name_or_products_category_product_name_or_products_reference_cont]=${encodeURIComponent(stringSearch)}`
+       
+      );
+            
       setOrders(result.orders);
       setTotalPages(result.total_pages);
       setCurrentPage(result.current_page);
+
       // setQueryString("")
       // setQueryDate(null)
     } catch (error) {
@@ -80,6 +87,18 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
   return (
     <div>
       <div className="grow p-8 overflow-y-auto bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100">
+        {
+          !showOrder && 
+            <SearchDateOrders
+              queryString={queryString}
+              setQueryString={setQueryString}
+              queryDate={queryDate}
+              setQueryDate={setQueryDate}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+            />
+        }
+        
 
         {
           showOrder ? <OrderDetail /> : (
@@ -91,13 +110,7 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
               ) : (
                 <div>
 
-                  <SearchDateOrders
-                    queryString={queryString}
-                    setQueryString={setQueryString}
-                    queryDate={queryDate}
-                    setQueryDate={setQueryDate}
-                    isLoading={isLoading}
-                  />
+                  
                   <span className="flex justify-start items-center">
 
 

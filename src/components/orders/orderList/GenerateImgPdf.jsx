@@ -13,6 +13,7 @@ import {nameImageDateNow} from "../../../infraestructure/utils/imagesFormat.js";
 import {Spinner, Tooltip} from "@nextui-org/react";
 import { PDFDocument } from "pdf-lib";
 import {FaFilePdf} from "react-icons/fa6";
+import { FaQuestion } from "react-icons/fa";
 
 
 const GenerateImgPdf = ({product, order, pdfDiv}) => {
@@ -131,7 +132,9 @@ const GenerateImgPdf = ({product, order, pdfDiv}) => {
         toast.error("Necesitas generar el balanceo para descargar el PDF")
     }
 
-    const category_product_name =  product.category_product_name ? product.category_product_name.toUpperCase() : "";
+    const category_product_name =  product.category_product_name == "null" ? "" : product.category_product_name.toUpperCase();
+
+
 
     return(
         <>
@@ -153,7 +156,13 @@ const GenerateImgPdf = ({product, order, pdfDiv}) => {
                                         <span>
                                             <span>{product.name}</span>
                                             <span className="font-bold ml-2">
-                                                {product.reference}
+                                            <span className={`ml-2  text-small lowercase`}>
+                                                 {product.reference === "null" ? 'Referencia' : product.reference}
+                                            </span>
+                                                
+                                                 <span className={`ml-2  text-small lowercase ${category_product_name === "" ? 'text-red-500' : 'text-green-700'}`}> 
+                                                     { category_product_name == "" ? "Categoría" : category_product_name } 
+                                                 </span>
                                                 {/** product.category_product_name **/}
                                             </span>
                                         </span>
@@ -185,9 +194,13 @@ const GenerateImgPdf = ({product, order, pdfDiv}) => {
                                       key={product.id}
                                       className="flex justify-between items-center hover:bg-zinc-200 py-1 px-1 ">
                                     <span>
-                                        {product.name} <span className="font-bold">{product.reference}
-
+                                        {product.name} <span className="font-bold">
+                                        <span className={`ml-2  text-small lowercase`}>
+                                                 {product.reference === "null" ? 'Referencia' : product.reference}
+                                        </span>
+                                           
                                     </span>
+                                    <span className={`ml-2  text-small lowercase ${category_product_name === "" ? 'text-red-500' : 'text-green-700'}`}>  { category_product_name == "" ? "Categoría" : category_product_name }</span>
                                 </span>
                                     <span>
                                       {product.has_opers_balancing ?
