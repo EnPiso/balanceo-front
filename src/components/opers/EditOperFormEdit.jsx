@@ -1,7 +1,7 @@
 import {FaDeleteLeft} from "react-icons/fa6";
 import React, {useState} from "react";
 import {AiOutlineRight} from "react-icons/ai";
-import {Avatar, Badge, Button, Input} from "@nextui-org/react";
+import {Avatar, Badge, Button, Input, Spinner} from "@nextui-org/react";
 import {updateData} from "../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../infraestructure/data/const.js";
 import {assignColorsToArray} from "../../ui/utils.js";
@@ -21,6 +21,13 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
   const [idOper, setIdOper] = useState('')
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const [isLoadName, setIsLoadName] = useState(false);
+
+  const [isLoadIdOper, setIsLoadIdOper] = useState(false);
+
+  const [operTempo, setOperTempo] = useState(null)
+
   // Función para abrir y cerrar el lightbox
   const toggleLightbox = () => setIsOpen(!isOpen);
 
@@ -32,10 +39,12 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
           name: name
         }
       }
-      fetchApi(data, oper.id)
+      
+      fetchApiName(data, operTempo.id)
     }else if ((event.key === "Escape")){
       setIsEditName(false)
       setName('')
+      setOperTempo(null)
     }
   };
 
@@ -48,46 +57,82 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
         }
       }
       // console.log(data, oper.id)
-      fetchApi(data, oper.id)
+      fetchApi(data, operTempo.id)
 
     }else if ((event.key === "Escape")){
       setIsEditIdOperator(false)
       setIdOper('')
+      setOperTempo(null)
     }
   };
 
-  const handleName = (name) => {
+  const handleName = (name, oper) => {
+    setOperTempo(oper)
     setIsEditName(true)
     setName(name ? name : '')
 
   }
 
-  const handleIdOper = (oper) => {
+  const handleIdOper = (oper_id, oper) => {
+    setOperTempo(oper)
     setIsEditIdOperator(true)
-    setIdOper(oper ? oper : '')
+    setIdOper(oper_id ? oper_id : '')
 
   }
 
 
   const fetchApi = (data, id) => {
+    setIsLoadIdOper(true)
     const updateSamOperation = async () => {
       try {
         const result = await updateData(urlMain + `opers/${id}`, data);
         const updatedItems = opers.map((item) =>
-          item.id === result.id ? result : item
+          item.id === result.id 
+            ? { ...item, id_oper: result.id_oper } 
+            : item
         );
         setOpers(updatedItems)
         setIsEditName(false)
         setIsEditIdOperator(false)
         setName("")
         setIdOper("")
+        setOperTempo(null)
         toast.success("El operario ha sido actualizado con éxito")
       } catch (error) {
         console.error("Error setting data", error);
+      } finally {
+        setIsLoadIdOper(false)
       }
     };
 
     updateSamOperation();
+  }
+
+  const fetchApiName = (data, id) => {
+    setIsLoadName(true)
+    const updateName = async () => {
+      try {
+        const result = await updateData(urlMain + `opers/${id}/update_name`, data);
+        const updatedItems = opers.map((item) =>
+          item.id === result.id 
+            ? { ...item, name: result.name } 
+            : item
+        );
+        setOpers(updatedItems)
+        setIsEditName(false)
+        setIsEditIdOperator(false)
+        setName("")
+        setIdOper("")
+        setOperTempo(null)
+        toast.success("El operario ha sido actualizado con éxito")
+      } catch (error) {
+        console.error("Error setting data", error);
+      } finally{
+        setIsLoadName(false)
+      }
+    };
+
+    updateName();
   }
 
 
@@ -102,44 +147,63 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
         className="hover:bg-zinc-200 dark:hover:bg-zinc-700 ">
         <td  className="p-3  text-zinc-800 ">
             <span className="flex justify-between items-center">
+
               {
-                isEditName ? (
-                  <Input
-                    onKeyDown={handleKeyDown}
-                    endContent={<AiOutlineRight/>}
-                    onChange={(e) => setName(e.target.value)}
-                    value={name}
-                    type="text"/>
-                ) : <span onClick={()=> handleName(oper.name)}  className="cursor-pointer">{oper.name}</span>
+                isLoadName ? (
+                  <>
+                    <Spinner color="default" size={"lg"}/>
+                  </>
+                ) : (
+                  <>
+                  {
+                        isEditName ? (
+                            <Input
+                              onKeyDown={handleKeyDown}
+                              endContent={<AiOutlineRight/>}
+                              onChange={(e) => setName(e.target.value)}
+                              value={name}
+                              type="text"/>
+                          ) : <span onClick={()=> handleName(oper.name, oper)}  className="cursor-pointer">{oper.name}</span>
+                        }
+
+                        <EditImageOperator
+                          url_image={url_image}
+                          toggleLightbox={toggleLightbox}
+                          oper={oper}
+                          opers={opers}
+                          setOpers={setOpers}
+                          setIsOpen={setIsOpen}
+                        />
+                  </>
+                )
               }
 
-              <EditImageOperator
-                url_image={url_image}
-                toggleLightbox={toggleLightbox}
-                oper={oper}
-                opers={opers}
-                setOpers={setOpers}
-                setIsOpen={setIsOpen}
-              />
-
             </span>
-
         </td>
         <td className="p-5  text-zinc-800 flex justify-between items-center">
           <span>
-             {
-               isEditIdOperator ? (
-                 <Input
-                   onKeyDown={handleKeyDownId}
-                   endContent={<AiOutlineRight/>}
-                   onChange={(e) => setIdOper(e.target.value)}
-                   value={idOper}
-                   type="text"/>
-               ) :
-                 <span onClick={()=> handleIdOper(oper.id_oper)} className="cursor-pointer ">
-                   {oper.id_oper ? oper.id_oper : 'Click para editar la cédula'}
-                 </span>
-             }
+
+              {
+                isLoadIdOper ? <Spinner color="default" size={"lg"}/> : (
+                  <>
+                    {
+                      isEditIdOperator ? (
+                        <Input
+                          onKeyDown={handleKeyDownId}
+                          endContent={<AiOutlineRight/>}
+                          onChange={(e) => setIdOper(e.target.value)}
+                          value={idOper}
+                          type="text"/>
+                      ) :
+                        <span onClick={()=> handleIdOper(oper.id_oper, oper)} className="cursor-pointer ">
+                          {oper.id_oper ? oper.id_oper : 'Click para editar la cédula'}
+                        </span>
+                    }
+                  </>
+                )
+              }
+
+            
           </span>
 
           <DeleteInputOperCustom
