@@ -89,6 +89,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
   };
 
 
+
   useEffect(()=> {
     const updateDetails = detailOperOpera.map((detail) => detail.detail);
 
@@ -252,7 +253,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
                 </div>
             ) : (
                 <div ref={imagePdfRef}>
-
+         
                   <table className="min-w-full border-collapse border border-gray-200 table-hover-columns">
                     <thead className="dark:bg-zinc-100 bg-zinc-700">
                     <TableHeaderOperations opersSelect={opersSelect} balancing={balancing}/>

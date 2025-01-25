@@ -25,7 +25,7 @@ const TableHeaderOperations = ({ opersSelect, balancing }) => {
                   key={`operator-${i}`}
                   className="px-4 py-2 border border-gray-300 text-left dark:text-zinc-700 text-zinc-100 text-sm"
                 >
-                  {isPDFMode && `${oper.index} - `} {oper.name}
+                  {isPDFMode && `${oper.index} - `} {oper.name} 
                 </th>
               )
             })

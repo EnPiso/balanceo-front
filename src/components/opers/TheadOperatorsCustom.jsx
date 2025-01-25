@@ -46,6 +46,7 @@ const TheadOperatorsCustom = ({moduleId, opers, setOpers, setIsNewOperator}) => 
           toast.success("El operario ha sido creado con éxito")
           setNameData("")
           setIdOper("")
+          setFileImage(null)
          // setIsNewOperator()
         }else{
           toast.error("La cédula ya está en uso. Por favor elige otro.")

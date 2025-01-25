@@ -12,6 +12,7 @@ import DeleteInputOperCustom from "./DeleteInputOperCustom.jsx";
 import ImageLightbox from "../orders/import/ImageLightBox.jsx";
 import {FaEdit} from "react-icons/fa";
 import EditImageOperator from "./EditImageOperator.jsx";
+import { userAvatarImage } from "../../infraestructure/data/links.js";
 
 const EditOperFormEdit = ({oper, opers, setOpers}) => {
   const [isEditName, setIsEditName] = useState(false)
@@ -139,7 +140,7 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
 
   const url_image = (oper && oper.avatar) ?
     oper.avatar :
-    "https://balance-assets.sfo3.digitaloceanspaces.com/assets/user.webp"
+    userAvatarImage
 
   return(
     <>

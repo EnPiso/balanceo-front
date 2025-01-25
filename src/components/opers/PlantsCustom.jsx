@@ -14,7 +14,8 @@ import FormNewPlantModules from "./FormNewPlantModules.jsx";
 import ModuleEdit from "../balances/balancing/sidebarForm/ModuleEdit.jsx";
 import ModuleEditCustom from "./ModuleEditCustom.jsx";
 import ListOpersCustom from "./ListOpersCustom.jsx";
-import {Spinner} from "@nextui-org/react";
+import {Spinner, Tooltip} from "@nextui-org/react";
+import NewModuleFormInput from "./NewModuleFormInput.jsx";
 
 const PlantsCustom = () => {
 
@@ -26,6 +27,9 @@ const PlantsCustom = () => {
 
   const [isLoading,setIsLoading] = useState(false)
   const [isLoadingPlants,setIsLoadingPlants] = useState(true)
+
+  const [isNewModule,setIsNewModule] = useState(false)
+
 
   useEffect(() => {
 
@@ -62,12 +66,18 @@ const PlantsCustom = () => {
 
 
       <div className="py-2 flex justify-end">
+      <Tooltip content={`${isCreate ? 'Cancelar' : 'Agregar nueva planta y sus módulos'}`}>
         <button onClick={() => setIsCreate(!isCreate)}>
-          {
-            isCreate ? <AiOutlineMinus size={30}/> : <FaPlus size={30}/>
-          }
-
+            {
+              isCreate ? <AiOutlineMinus size={30}/> : (
+                <>
+                <FaPlus size={30} color="green"/>
+                </>
+              ) 
+            }
         </button>
+      </Tooltip>
+       
       </div>
 
 
@@ -110,12 +120,19 @@ const PlantsCustom = () => {
                           {j < plant.production_modules.length - 1 && ", "}
                         </span>
                       </button>
-
                     </>
                   ))}
                 </p>
+            
+                  <NewModuleFormInput
+                    listPlants={listPlants}
+                    setListPlants={setListPlants}
+                    plant={plant}/>
+             
               </div>
             ))}
+
+           
           </>
         )
       }

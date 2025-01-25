@@ -127,6 +127,7 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
       className={`px-4 py-2  ${(item.is_repeat && operatorTimes.get(i)?.toFixed(2) && isPDFMode )? "borderClass" : "border border-gray-300"}  `}
       style={{backgroundColor: operatorTimes.get(i)?.toFixed(2) ? color: ''}}
     >
+   
       {
         changePolyvalence ? (
           <>
@@ -169,6 +170,7 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
                   }
                 }}>
                 <div>
+
 
                   <span className={`${item.redistribution && "text-red-600"}`}>
                     {operatorTimes.get(i)?.toFixed(2) || ''}

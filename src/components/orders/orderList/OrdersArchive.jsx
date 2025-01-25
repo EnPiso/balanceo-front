@@ -22,11 +22,11 @@ const OrdersArchive = ({setIsArchive}) => {
   const [currentPage, setCurrentPage] = useState(1); // Página actual
   const [totalPages, setTotalPages] = useState(1); // Total de páginas
  const [perPage, setPerPage] = useState(10); // Total de páginas
- 
+
   const fetchOrders = async (page) => {
     setIsLoading(true);
     try {
-      const result = await fetchGetData(`${urlMain}orders?page=${page}&archive=${true}`);
+      const result = await fetchGetData(`${urlMain}orders?page=${page}&archive=${true}&per_page=${per_page}`);
       setOrders(result.orders);
       setTotalPages(result.total_pages);
       setCurrentPage(result.current_page);

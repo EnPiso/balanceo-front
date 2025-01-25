@@ -2,7 +2,7 @@
 import useOpers from "../../../hooks/balances/opers/useOpers.jsx";
 import TitleDashboard from "../../../ui/TitleDashboard.jsx";
 import { FaCheck } from "react-icons/fa";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Avatar } from "@nextui-org/react";
 import useSelectableRows from "../../../hooks/balances/opers/useSelectableRows.jsx";
 import { useRecoilState } from "recoil";
 import {
@@ -12,6 +12,7 @@ import {
   selectProdPlantOriginal
 } from "../../../infraestructure/states/opers_states.js";
 import {ConfirmOpen} from "../balancing/sidebarForm/ConfirmOpers.jsx";
+import { userAvatarImage } from "../../../infraestructure/data/links.js";
 
 export const ListOpers = ({ updateSelectedOperDetails,handleSave,onClose }) => {
 
@@ -31,6 +32,8 @@ export const ListOpers = ({ updateSelectedOperDetails,handleSave,onClose }) => {
 
   const [isOpen, setIsOpen] = useState(false)
 
+  const [isOpenImage, setIsOpenImage] = useState(false)
+  const [imageUrl, setImageUrl] = useState('')
 
   const [isNewInModule, setIsNewInModule] = useState(null)
 
@@ -80,6 +83,33 @@ export const ListOpers = ({ updateSelectedOperDetails,handleSave,onClose }) => {
     setIsOpen(false); // Cerrar el modal de confirmación
   };
 
+  const toggleLightbox = () =>{
+     setIsOpenImage(!isOpenImage)
+     setImageUrl('')
+    
+  };
+
+  const urlImage = (oper) => {
+    const url_image = (oper && oper.avatar) ?
+    oper.avatar :
+    userAvatarImage
+
+    return url_image
+  }
+
+
+  
+  const urlImageFormat = (oper) => {
+    const url_image = (oper && oper.avatar) ?
+    oper.avatar :
+    userAvatarImage
+
+    setIsOpenImage(true)
+    setImageUrl(url_image)
+
+  }
+   
+
   return (
     <div className="select-none">
       <TitleDashboard />
@@ -92,11 +122,12 @@ export const ListOpers = ({ updateSelectedOperDetails,handleSave,onClose }) => {
             <TableRow
               key={oper.id}
               onClick={() => handleClick(oper)}
-              className={`cursor-pointer select-none ${selectedItems.has(oper.id) ? "bg-primary-100" : ""}`}
+              className={`uppercase cursor-pointer select-none ${selectedItems.has(oper.id) ? "bg-zinc-300 text-zinc-800 font-bold " : ""}`}
             >
-              <TableCell className="flex items-center gap-2 select-none">
-                {selectedItems.has(oper.id) && <FaCheck className="text-primary" />}
-                {oper.name}
+              <TableCell className="flex justify-between items-center select-none">
+                {selectedItems.has(oper.id) && <FaCheck className="text-zinc-700" />}
+                
+                {oper.name} <Avatar src={urlImage(oper)} onMouseEnter={()=>  oper.avatar && urlImageFormat(oper)}/> 
               </TableCell>
             </TableRow>
           ))}
@@ -110,6 +141,16 @@ export const ListOpers = ({ updateSelectedOperDetails,handleSave,onClose }) => {
           title={`Actualmente los operarios seleccionados pertenecen al módulo`}
           description={`${prodPlantOriginal && prodPlantOriginal.module.name} debes quitarlos y luego puedes seleccionar operarios el nuevo módulo`}
       />
+
+        {/* Lightbox */}
+        {isOpenImage && (
+        <span className="lightbox" onClick={toggleLightbox}>
+            <span
+              className="lightbox-content"
+              style={{ backgroundImage: `url(${imageUrl})` }}
+            />
+        </span>
+      )}
     </div>
   );
 };

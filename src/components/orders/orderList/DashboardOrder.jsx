@@ -16,6 +16,8 @@ import PdfBalancingImg from "./PdfBalancingImg.jsx";
 import {hourMinuteSecond, monthDayYear} from "../../../infraestructure/utils/dateFormat.js";
 import SearchDashboardOrders from "./SearchOrdersCustom.jsx";
 import SearchDateOrders from "./SearchDateOrders.jsx";
+import { allOperationsProduct } from "../../../infraestructure/states/operation_states.js";
+import { detailOperOperations } from "../../../infraestructure/states/states_balancing.js";
 
 
 
@@ -27,6 +29,10 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
   const [orders, setOrders] = useRecoilState(orderList);
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
 
+  const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
+  
+  
+
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1); // Página actual
   const [totalPages, setTotalPages] = useState(1); // Total de páginas
@@ -36,10 +42,15 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
 
   const [queryString, setQueryString] = useState("");
 
+  
 
 
   const pdfDiv = useRef(null)
 
+  useEffect(()=> {
+    detailOperOpera.length >= 1 && console.log(detailOperOpera)
+    ///////////////////////////////
+  }, [detailOperOpera])
 
 
   useEffect(() => {

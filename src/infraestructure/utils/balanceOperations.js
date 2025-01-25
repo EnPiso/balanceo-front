@@ -51,24 +51,31 @@ export const balanceOperations = (operations, numOperators, golHour) => {
 
   // Ajustar minutos para garantizar que cada operador tenga exactamente 60 minutos
   zones.forEach((zone, index) => {
-    const totalMinutes = zonesMinutes[index];
-
+    const totalMinutes = zone.reduce((sum, op) => sum + op.minutes, 0);
+    
     if (Math.abs(totalMinutes - 60) > 0.01) {
       const difference = 60 - totalMinutes;
+      
       if (zone.length > 0) {
         const lastOperation = zone[zone.length - 1];
-
-        // Ajustar sin sobrescribir si es una operación fraccionada
+        
         if (difference > 0) {
           lastOperation.minutes += difference;
         } else {
           lastOperation.minutes = Math.max(0, lastOperation.minutes + difference);
         }
-
-        // Actualizar el total de minutos
-        zonesMinutes[index] = 60;
       }
     }
+  });
+
+  // Recalcular operationMap con los minutos exactos de la zona
+  const updatedOperationMap = new Map();
+  zones.forEach((zone, index) => {
+    zone.forEach(operation => {
+      const currentOperations = updatedOperationMap.get(operation.operation) || new Map();
+      currentOperations.set(index, operation.minutes);
+      updatedOperationMap.set(operation.operation, currentOperations);
+    });
   });
 
   // Redondear minutos al final
@@ -80,6 +87,7 @@ export const balanceOperations = (operations, numOperators, golHour) => {
 
   return {
     zones: zones.filter((zone) => zone.length > 0),
-    operationMap,
+    operationMap: updatedOperationMap,
   };
+
 };
