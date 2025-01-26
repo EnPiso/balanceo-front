@@ -124,7 +124,7 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
   return (
     <td
       key={`operator-time-${i}`}
-      className={`px-4 py-2  ${(item.is_repeat && operatorTimes.get(i)?.toFixed(2) && isPDFMode )? "borderClass" : "border border-gray-300"}  `}
+      className={`px-4 py-4  ${(item.is_repeat && operatorTimes.get(i)?.toFixed(2) && isPDFMode )? "borderClass" : "border border-gray-300"}  `}
       style={{backgroundColor: operatorTimes.get(i)?.toFixed(2) ? color: ''}}
     >
    

@@ -161,7 +161,7 @@ const OrderDetail = () => {
               color="default"
               startContent={<FaBackward color="gray"/>}
           >
-            Regresar a {showOrder.order.code}
+          Regresar a {showOrder.order.code} 
           </Button>
 
 

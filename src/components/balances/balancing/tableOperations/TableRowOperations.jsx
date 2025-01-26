@@ -17,6 +17,8 @@ import TrDinamycVideo from "./videoOperations/TrDinamycVideo.jsx";
 import ButtonPlayVideos from "./videoOperations/ButtonPlayVideos.jsx";
 import ButtonNavigationVideos from "./videoOperations/ButtonNavigationVideos.jsx";
 import {isPDFGenerate} from "../../../../infraestructure/states/order_states.js";
+import { isScreenShotImg } from "../../../../infraestructure/states/states_product.js";
+import { Tooltip } from "@nextui-org/react";
 
 
 const stylesBorder = {
@@ -52,6 +54,7 @@ const TableRowOperations = ({
 
   const [isPDFMode, setIsPDFMode] = useRecoilState(isPDFGenerate);
 
+  const [isScreenShot, setIsScreenShot] = useRecoilState(isScreenShotImg)
 
 
 
@@ -96,14 +99,8 @@ const TableRowOperations = ({
     <>
     
       <tr
-        // draggable={draggable}
-        // onDragStart={onDragStart}
-        // onDragOver={onDragOver}
-        // onDrop={onDrop}
-        // onDragEnd={onDragEnd}
-        className={`hover:border-zinc-600 dark:hover:border-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition dark:text-zinc-500
-       
-         `}
+
+        className={`hover:border-zinc-600 dark:hover:border-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition dark:text-zinc-500 `}
         style={{
             background: item.is_repeat
                 ? `linear-gradient(to right, ${item.color[0]}, ${item.color[1]}), rgba(0, 0, 0, 0.06)`
@@ -116,34 +113,48 @@ const TableRowOperations = ({
 
       >
 
-        <td className={`px-4 py-2 border border-gray-300 ${showVideos && showVideos.id === item.id && 'font-bold'}`}>
-          <small>
-            <span className="font-bold">
-              {item.operation_position}
-            </span>
-          </small>  {item.operation}
+        <td className={`px-4 py-4 border border-gray-300 ${showVideos && showVideos.id === item.id && 'font-bold'} flex justify-between items-center`}>
+
+          <span className="flex justify-start items-center">
+            <span className="mr-3">
+              <span className="font-bold ">
+                {item.operation_position} 
+              </span>
+            </span> 
+            
+            {item.operation}
+          </span>
+           
           <div className="flex justify-end">
 
             {
-              !isPDFMode && (
+              !isScreenShot && (
                 <>
                   <ButtonPlayVideos
                     item={item}
                     showVideos={showVideos}
                     setShowVideos={setShowVideos}
                   />
-
-                  <button onClick={()=> handleOperationBalancing(item)}>
-                    <FaFileVideo/>
-                  </button>
+                  <Tooltip content="Subir vídeos">
+                    <button
+                      className="mt-2"
+                      onClick={()=> handleOperationBalancing(item)}>
+                      <FaFileVideo 
+                        size={24}
+                      />
+                    </button>
+                  </Tooltip>
+                 
                 </>
               )
             }
 
+          
+
           </div>
 
         </td>
-        <td className="px-4 py-2 border border-gray-300">{item.machine}</td>
+        <td className="px-4 py-4 border border-gray-300">{item.machine}</td>
         <td
           onClick={() => handleSam(item, true)}
           className={`px-4 py-2 border border-gray-300 cursor-pointer ${item.is_sam_minutes && "font-bold"}`}
@@ -154,14 +165,14 @@ const TableRowOperations = ({
         </td>
         <td
           onClick={() => handleSam(item, false)}
-          className={`px-4 py-2 border border-gray-300 cursor-pointer ${!item.is_sam_minutes && "font-bold"}`}
+          className={`px-4 py-4 border border-gray-300 cursor-pointer ${!item.is_sam_minutes && "font-bold"}`}
         >
           {sam_seg}
         </td>
 
         {opersSelect.size >= 1 && balancing && (
           <>
-            <td className="px-4 py-2 border border-gray-300">
+            <td className="px-4 py-4 border border-gray-300">
               {(item.sam * balancing.gol_hour).toFixed(2)}
             </td>
             {[...opersSelect].map((operatorId, index) => {
@@ -201,12 +212,14 @@ const TableRowOperations = ({
       {
         showVideos && item && (showVideos.id === item.id) && (
           <>
-            <TrDinamycVideo showVideos={showVideos}/>
+            <TrDinamycVideo
+              item={item}
+              showVideos={showVideos}/>
           </>
         )
       }
       {
-        videosOperations.length >= 1 && OpersTags.length >= 1 && <ButtonNavigationVideos/>
+        videosOperations.length >= 1 && OpersTags.length >= 1 && <ButtonNavigationVideos item={item}/>
       }
 
     </>

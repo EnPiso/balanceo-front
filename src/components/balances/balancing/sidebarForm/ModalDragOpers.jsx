@@ -79,7 +79,7 @@ const ModalDragOpers = () => {
     setSelectedOperDetails((prevDetails) => {
       if (isSelected) {
         // Agrega el operario con el siguiente índice de selección
-        return [...prevDetails, { id: oper.id, name: oper.name, index: prevDetails.length + 1 }];
+        return [...prevDetails, { id: oper.id, name: oper.name, index: prevDetails.length + 1, avatar: oper.avatar }];
       } else {
         // Remueve el operario y actualiza los índices de selección
         const updatedDetails = prevDetails.filter((detail) => detail.id !== oper.id);

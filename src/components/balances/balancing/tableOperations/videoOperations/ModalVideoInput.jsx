@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
+import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Spinner} from "@nextui-org/react";
 import {FaBackward, FaSave} from "react-icons/fa";
 import CustomButton from "../../../../../ui/CustomButton.jsx";
 import {useRecoilState} from "recoil";
@@ -10,14 +10,18 @@ import {postData, postDataFile, updateData} from "../../../../../infraestructure
 import {urlMain} from "../../../../../infraestructure/data/const.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../../../infraestructure/data/toastMessage.js";
+import { allOperationsProduct } from '../../../../../infraestructure/states/operation_states.js';
 
-const ModalVideoInput = ({isModalInput,setIsModalInput}) => {
+const ModalVideoInput = ({isModalInput,setIsModalInput,item}) => {
   const [selOpeVideos, setSelOpeVideos] = useRecoilState(checkOperationsBalancing);
   const [videos, setVideos] = useState([]); // Estado para almacenar los videos
   const [videosOperations, setVideosOperations] = useRecoilState(listVideosOperations)
+  const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
 
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleApi = () => {
+    setIsLoading(true)
     const formData = new FormData();
     videos.forEach((video, index) => {
       formData.append(`videos[]`, video.file); // Asegúrate de que `video.file` sea un objeto File
@@ -27,9 +31,22 @@ const ModalVideoInput = ({isModalInput,setIsModalInput}) => {
     const postDataOrder = async (formData) => {
         try {
           const result = await postDataFile(urlMain + "videos", formData)
-          console.log(result)
-          console.log(videosOperations)
+          
           const videos = [...videosOperations, ...result.videos]
+
+          const video_length = result.videos.length
+          const operation_id = item.id
+          const updatedItem = { ...item, video_count: item.video_count + video_length };
+
+          // Crear un nuevo array actualizado
+          const updatedItems = operationsProduct.map(operation =>
+            operation.id === operation_id
+              ? updatedItem // Crear un nuevo objeto actualizado
+              : operation // Dejar los demás elementos iguales
+          );
+          setOperationsProduct(updatedItems)
+  
+          
           setVideosOperations(videos)
           setSelOpeVideos(null)
           toast.success(toastMessageCustom.videoSave)
@@ -37,6 +54,8 @@ const ModalVideoInput = ({isModalInput,setIsModalInput}) => {
           setVideos([])
         } catch (error) {
           console.error('Error setting data', error);
+        } finally {
+          setIsLoading(false)
         }
       };
 
@@ -63,14 +82,18 @@ const ModalVideoInput = ({isModalInput,setIsModalInput}) => {
                 />
               </ModalBody>
               <ModalFooter>
-
-                    <CustomButton
-                      color="default"
-                      variant="bordered"
-                      startContent={<FaSave color="green"/>}
-                      onClick={handleApi}
-                      title="Guardar videos"
-                    />
+                    {
+                      isLoading ? 
+                        <Spinner color="default" size='lg'/> : 
+                        <CustomButton
+                          color="default"
+                          variant="bordered"
+                          startContent={<FaSave color="green"/>}
+                          onClick={handleApi}
+                          title="Guardar videos"
+                        />
+                    }
+                    
                       <CustomButton
                         color="default"
                         variant="bordered"

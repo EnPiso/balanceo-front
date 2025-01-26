@@ -1,5 +1,5 @@
 import React from 'react'
-import {FaArrowTurnDown, FaClosedCaptioning, FaPlay} from "react-icons/fa6";
+import {FaArrowTurnDown, FaCirclePlay, FaClosedCaptioning, FaPlay} from "react-icons/fa6";
 import {fetchGetData} from "../../../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../../../infraestructure/data/const.js";
 import {useRecoilState} from "recoil";
@@ -8,6 +8,8 @@ import {
   listVideosOpers,
   videoOperation
 } from "../../../../../infraestructure/states/states_videos.js";
+import { Badge, Tooltip } from '@nextui-org/react';
+import { FaPlayCircle, FaPlaystation, FaRegPlayCircle } from 'react-icons/fa';
 
 const ButtonPlayVideos = ({item,showVideos,setShowVideos}) => {
 
@@ -59,9 +61,29 @@ const ButtonPlayVideos = ({item,showVideos,setShowVideos}) => {
 
 
   return (
-    <button onClick={()=> handleOperation(item)} className="mr-5">
+    <button onClick={()=> handleOperation(item)} className="mr-5 mt-2">
       {
-        showVideos && showVideos.id === item.id ? <FaArrowTurnDown/> : <FaPlay/>
+        showVideos && showVideos.id === item.id ? <FaArrowTurnDown /> : (
+        <>
+          {
+            item.video_count >= 1 && (
+              <>
+                <Tooltip content="Ver vídeos">
+                  <Badge
+                      shape="rectangle" 
+                      showOutline={false}
+                      color="success" 
+                      content={item.video_count} 
+                      className="mt-6">
+                      <FaRegPlayCircle size={24}/>
+                  </Badge>
+                </Tooltip>
+              </>
+              
+            )
+          }
+        </>
+      )
       }
     </button>
   )

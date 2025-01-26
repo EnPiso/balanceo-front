@@ -4,7 +4,7 @@ import useOpers from "../../../hooks/balances/opers/useOpers.jsx";
 import {ListOpers} from "../opers/ListOpers.jsx";
 import ListBalancing from "./ListBalancing.jsx";
 import {useRecoilState} from "recoil";
-import {imageTableBalancing, imageTableUrl, selectProduct} from "../../../infraestructure/states/states_product.js";
+import {imageTableBalancing, imageTableUrl, isScreenShotImg, selectProduct} from "../../../infraestructure/states/states_product.js";
 import {
   imageBalancePdf,
   isPDFGenerate,
@@ -61,6 +61,9 @@ export const BalancingDashboard = () => {
 
   const [tableUrl, setTableUrl] = useRecoilState(imageTableUrl)
 
+  const [isScreenShot, setIsScreenShot] = useRecoilState(isScreenShotImg)
+  
+
 
   useEffect(() => {
 
@@ -77,9 +80,11 @@ export const BalancingDashboard = () => {
             const operDetails = result.map((operBalancing, index) => ({
               id: operBalancing.oper.id,
               name: operBalancing.oper.name,
-              index: index + 1 // Define la posición como el índice en la lista
+              index: index + 1, // Define la posición como el índice en la lista
+              avatar: operBalancing.oper.avatar
             }));
             setSelectedOperDetails(operDetails);
+          
 
             const operIds = new Set(result.map(operBalancing => operBalancing.oper.id));
             setOpersSelect(operIds); // Asegura que opersSelect esté actualizado
@@ -145,6 +150,11 @@ export const BalancingDashboard = () => {
   }, [isPDFMode]);
 
 
+  useEffect(()=> {
+
+    isScreenShot && handleScreenshot()
+
+  }, [isScreenShot])
 
   const handleScreenshot = async () => {
 
@@ -159,10 +169,12 @@ export const BalancingDashboard = () => {
         const url = URL.createObjectURL(blob); // Genera una URL temporal
         setIsPDFMode(true)
         setImageUrl(url); // Almacena la URL para previsualización
-
+        setTimeout(()=> {
+          setIsScreenShot(false)
+        }, 400)
       } catch (error) {
         console.error("Error al capturar el componente:", error);
-      }
+      } 
     }
   };
 
@@ -255,10 +267,10 @@ export const BalancingDashboard = () => {
                       <Button
                         className="ml-5 font-bold uppercase"
                         onPress={()=> {
-                          handleScreenshot()
-
+                          setIsScreenShot(true)
+                        
                         }}>
-                        descargar
+                        descargar 
                         <FaFilePdf color="green"/>
                       </Button>
                     </Tooltip>

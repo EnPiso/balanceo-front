@@ -6,9 +6,10 @@ import {
   listVideosOpers,
   videoOperation
 } from "../../../../../infraestructure/states/states_videos.js";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Badge} from "@nextui-org/react";
+import { FaRegPlayCircle } from 'react-icons/fa';
 
-const ButtonNavigationVideos = () => {
+const ButtonNavigationVideos = ({item}) => {
   const [selectedKeys, setSelectedKeys] = React.useState(new Set(["text"]));
   const [videosOperations, setVideosOperations] = useRecoilState(listVideosOperations)
   const [videoObjOperation, setVideoObjOperation] = useRecoilState(videoOperation)
@@ -29,10 +30,13 @@ const ButtonNavigationVideos = () => {
             className="w-12 h-12 flex justify-center items-center focus:outline-none  transition-colors"
             //onClick="console.log('Button clicked!')"
           >
-            <FaPlay
-              className="h-4 w-4"
-            />
-
+            <Badge color="success" content={videosOperations.length} shape="rectangle" showOutline={false} className=''>
+              <FaRegPlayCircle
+                size={30}
+              />
+            </Badge>
+            
+           
           </button>
         </DropdownTrigger>
         <DropdownMenu

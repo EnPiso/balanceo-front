@@ -12,7 +12,7 @@ import {fetchGetData} from "../../../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../../../infraestructure/data/const.js";
 import {formatDateRails} from "../../../../../ui/utils.js";
 
-const TrDinamycVideo = () => {
+const TrDinamycVideo = ({item}) => {
   const [videoObjOperation, setVideoObjOperation] = useRecoilState(videoOperation);
   const videoRef = useRef(null); // Referencia al elemento <video>
   const [OpersTags, setOpersTags] = useRecoilState(listVideosOpers)
@@ -112,7 +112,18 @@ const TrDinamycVideo = () => {
                 />
               </button>
               <p className="mt-3 font-bold capitalize">
-                Selecciona vídeo
+                {
+                  item && item.video_count > 1 ? (
+                    <>
+                      Selecciona vídeos {item && item.video_count}
+                    </>
+                  ) : (
+                    <>
+                     Selecciona vídeo {item && item.video_count}
+                    </>
+                  )
+                }
+                
               </p>
             </div>
           )

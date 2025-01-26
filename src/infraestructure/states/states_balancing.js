@@ -32,4 +32,14 @@ export const listRedistributions = atom({
 });
 
 
+export const numberCurrentPage = atom({
+  key: 'numberCurrentPage',
+  default: 1,
+});
+
+
+
+
+
+
 

@@ -17,7 +17,7 @@ import {hourMinuteSecond, monthDayYear} from "../../../infraestructure/utils/dat
 import SearchDashboardOrders from "./SearchOrdersCustom.jsx";
 import SearchDateOrders from "./SearchDateOrders.jsx";
 import { allOperationsProduct } from "../../../infraestructure/states/operation_states.js";
-import { detailOperOperations } from "../../../infraestructure/states/states_balancing.js";
+import { detailOperOperations, numberCurrentPage } from "../../../infraestructure/states/states_balancing.js";
 
 
 
@@ -34,7 +34,7 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
   
 
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1); // Página actual
+  const [currentPage, setCurrentPage] = useRecoilState(numberCurrentPage); // Página actual
   const [totalPages, setTotalPages] = useState(1); // Total de páginas
   const [perPage, setPerPage] = useState(10); // Total de páginas
 
@@ -47,10 +47,6 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
 
   const pdfDiv = useRef(null)
 
-  useEffect(()=> {
-    detailOperOpera.length >= 1 && console.log(detailOperOpera)
-    ///////////////////////////////
-  }, [detailOperOpera])
 
 
   useEffect(() => {
@@ -237,6 +233,7 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
                   total={totalPages}
                   initialPage={currentPage}
                   onChange={handlePageChange}
+                  key={JSON.stringify(orders)}
                 />
               </div>
             </>

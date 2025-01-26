@@ -256,7 +256,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
          
                   <table className="min-w-full border-collapse border border-gray-200 table-hover-columns">
                     <thead className="dark:bg-zinc-100 bg-zinc-700">
-                    <TableHeaderOperations opersSelect={opersSelect} balancing={balancing}/>
+                      <TableHeaderOperations opersSelect={opersSelect} balancing={balancing}/>
                     </thead>
                     <tbody className="uppercase">
 
@@ -333,6 +333,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
       <ModalVideoInput
           isModalInput={isModalInput}
           setIsModalInput={setIsModalInput}
+          item={showVideos}
       />
       <DraggableVideo/>
     </div>

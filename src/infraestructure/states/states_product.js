@@ -42,3 +42,7 @@ export const newFormProduct = atom({
   default: false, // Inicializa con createRef
 });
 
+export const isScreenShotImg = atom({
+  key: 'isScreenShotImg', // Debe ser único
+  default: false, // Inicializa con createRef
+});
