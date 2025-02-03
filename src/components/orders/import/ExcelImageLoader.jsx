@@ -10,7 +10,8 @@ import TitleDashboard from "../../../ui/TitleDashboard.jsx";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../infraestructure/data/toastMessage.js";
 
-const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData, orderProOpe }) => {
+const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData, orderProOpe, handleMultipleFile }) => {
+
   const handleFileUpload = async (file) => {
     if (!file) return;
 
@@ -99,8 +100,14 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
   // Drag and Drop Handlers
   const handleDrop = (event) => {
     event.preventDefault();
-    const file = event.dataTransfer.files[0];
-    handleFileUpload(file);
+    const file = event.dataTransfer.files;
+
+    if (file.length > 1) {
+      handleMultipleFile(event.dataTransfer.files); // Manejar múltiples archivos
+    } else {
+      handleFileUpload(file[0]);
+    }
+
   };
 
   const handleDragOver = (event) => {
@@ -110,6 +117,16 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
   const eraseData = () => {
     setImages([]);
     setOperationsData([]);
+  };
+
+  const handleFileInputChange = (event) => {
+    const files = event.target.files;
+
+    if (files.length > 1) {
+      handleMultipleFile(files); // Manejar múltiples archivos
+    } else {
+      handleFileUpload(files[0]); // Manejar un solo archivo
+    }
   };
 
   return (
@@ -140,10 +157,11 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
             <span className="drop-title">Arrastra el archivo de Excel aquí</span>
             <p>o</p>
             <input
+              multiple 
               id="images"
               type="file"
               accept=".xlsx"
-              onChange={(e) => handleFileUpload(e.target.files[0])}
+              onChange={handleFileInputChange}
               style={{ display: 'none' }}
             />
             <label htmlFor="images" className="button w-full font-black text-zinc-700 underline hover:text-zinc-500 cursor-pointer">

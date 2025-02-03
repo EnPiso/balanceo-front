@@ -131,10 +131,13 @@ const GenerateImgPdf = ({product, order, pdfDiv}) => {
     const toastMessage = () => {
         toast.error("Necesitas generar el balanceo para descargar el PDF")
     }
-
+  
+    
     const category_product_name =  product.category_product_name == "null" ? "" : product.category_product_name.toUpperCase();
 
-
+    let total_sam = product.total_sam
+    total_sam = parseFloat(total_sam)
+    total_sam = total_sam.toFixed(2);
 
     return(
         <>
@@ -172,7 +175,7 @@ const GenerateImgPdf = ({product, order, pdfDiv}) => {
                                               (
                                                   <span className="flex justify-between items-center">
                                                     <span className="font-bold ml-2 mr-2">
-                                                     <small> Total sam</small> {product.total_sam}
+                                                     <small> Total sam</small> {total_sam}
                                                     </span>
                                                     <AiFillCheckCircle color="green" size={20}/>
                                                       <FaFilePdf color="green" size={17} className={"ml-2"}/>

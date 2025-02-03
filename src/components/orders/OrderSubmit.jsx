@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../infraestructure/data/toastMessage.js";
 import SpinnerLoaderCustom from "../../ui/SpinnerLoaderCustom.jsx";
 
-const OrderSubmit = ({operationsData, orderProOpe, images, onClose,eraseData}) => {
+const OrderSubmit = ({operationsData, orderProOpe, images, onClose, eraseData}) => {
   const [orders, setOrders] = useRecoilState(orderList);
 
   const [isLoading, setIsLoading] = useState(false)
@@ -17,6 +17,8 @@ const OrderSubmit = ({operationsData, orderProOpe, images, onClose,eraseData}) =
   const handleSubmit = () => {
     setIsLoading(true)
     const formData = new FormData();
+    console.log(operationsData)
+    debugger
 
     formData.append('order[operationsData]', JSON.stringify(operationsData));
     formData.append('order[orderProOpe]', orderProOpe.order);

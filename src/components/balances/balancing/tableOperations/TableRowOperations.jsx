@@ -93,6 +93,9 @@ const TableRowOperations = ({
     setIsModalInput(true)
   }
 
+  let samTotalItem = item.sam
+  samTotalItem = parseFloat(samTotalItem)
+  samTotalItem = samTotalItem.toFixed(2);
 
 
   return (
@@ -126,15 +129,16 @@ const TableRowOperations = ({
           </span>
            
           <div className="flex justify-end">
+          <ButtonPlayVideos
+            item={item}
+            showVideos={showVideos}
+            setShowVideos={setShowVideos}
+          />
 
             {
               !isScreenShot && (
                 <>
-                  <ButtonPlayVideos
-                    item={item}
-                    showVideos={showVideos}
-                    setShowVideos={setShowVideos}
-                  />
+                  
                   <Tooltip content="Subir vídeos">
                     <button
                       className="mt-2"
@@ -159,7 +163,7 @@ const TableRowOperations = ({
           onClick={() => handleSam(item, true)}
           className={`px-4 py-2 border border-gray-300 cursor-pointer ${item.is_sam_minutes && "font-bold"}`}
         >
-          {item.sam}
+          {samTotalItem} 
 
 
         </td>

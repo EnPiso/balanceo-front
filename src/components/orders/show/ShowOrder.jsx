@@ -38,7 +38,7 @@ const ShowOrder = ({order}) => {
       {
         isLoading ? <Spinner color={"default"} size={"lg"}/> : (
             <button onClick={() => handleShowOrder(order)}>
-              <h4 className="font-bold text-large">
+              <h4 className="font-bold text-large hover:text-green-800 uppercase">
                 {
                   order.code
                 }
@@ -46,7 +46,6 @@ const ShowOrder = ({order}) => {
             </button>
         )
       }
-
     </>
   )
 }
