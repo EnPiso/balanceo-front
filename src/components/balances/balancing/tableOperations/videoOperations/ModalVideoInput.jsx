@@ -3,7 +3,7 @@ import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDis
 import {FaBackward, FaSave} from "react-icons/fa";
 import CustomButton from "../../../../../ui/CustomButton.jsx";
 import {useRecoilState} from "recoil";
-import {checkOperationsBalancing, listVideosOperations} from "../../../../../infraestructure/states/states_videos.js";
+import {checkOperationsBalancing, listVideosOperations, videoShow} from "../../../../../infraestructure/states/states_videos.js";
 import InputListVideos from "./inputListVideos.jsx";
 import {FaEraser} from "react-icons/fa6";
 import {postData, postDataFile, updateData} from "../../../../../infraestructure/call_api/crud.js";
@@ -17,6 +17,8 @@ const ModalVideoInput = ({isModalInput,setIsModalInput,item}) => {
   const [videos, setVideos] = useState([]); // Estado para almacenar los videos
   const [videosOperations, setVideosOperations] = useRecoilState(listVideosOperations)
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
+  const [showVideos, setShowVideos]  = useRecoilState(videoShow)
+  
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -52,6 +54,8 @@ const ModalVideoInput = ({isModalInput,setIsModalInput,item}) => {
           toast.success(toastMessageCustom.videoSave)
           setIsModalInput(false)
           setVideos([])
+          videosOperations.length < 1 && setShowVideos(false)
+          
         } catch (error) {
           console.error('Error setting data', error);
         } finally {
