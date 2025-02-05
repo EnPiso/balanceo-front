@@ -38,13 +38,14 @@ const TrDinamycVideo = ({item}) => {
 
 
 
+
   return (
     <tr className="border border-zinc-50 w-full">
       <td className="py-2 px-2 container w-full">
 
 
         {
-          videoObjOperation ? (
+          videoObjOperation ? ( 
             <>
              {/*<div className="px-2 py-2">
                {
@@ -60,10 +61,13 @@ const TrDinamycVideo = ({item}) => {
                }
 
              </div>*/}
+
+          
               {
                 videoObjOperation && <DraggableVideo
                   videoRef={videoRef}
                   videoObjOperation={videoObjOperation}
+                  setVideoObjOperation={setVideoObjOperation}
                 />
               }
 

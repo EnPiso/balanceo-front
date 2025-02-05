@@ -18,3 +18,9 @@ export const videoOperation = atom({
   key: 'videoOperation',
   default: null,
 });
+
+
+export const videoShow   = atom({
+  key: 'videoShow',
+  default: false,
+});

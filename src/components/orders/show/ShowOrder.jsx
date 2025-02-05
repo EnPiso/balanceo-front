@@ -26,7 +26,7 @@ const ShowOrder = ({order}) => {
         console.error('Error al obtener los datos:', error);
 
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 

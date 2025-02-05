@@ -85,22 +85,35 @@ const ModalVideoInput = ({isModalInput,setIsModalInput,item}) => {
                     {
                       isLoading ? 
                         <Spinner color="default" size='lg'/> : 
+                        <>
+                        {
+                          videos.length >= 1 && (
+                            <CustomButton
+                              color="default"
+                              variant="bordered"
+                              startContent={<FaSave color="green"/>}
+                              onClick={handleApi}
+                              title="Guardar videos"
+                            />
+                          )
+                        }
+                          
+                        </>
+                        
+                    }
+                    
+                    {
+                      videos.length >= 1  && (
                         <CustomButton
                           color="default"
                           variant="bordered"
-                          startContent={<FaSave color="green"/>}
-                          onClick={handleApi}
-                          title="Guardar videos"
+                          startContent={<FaEraser color="red"/>}
+                          onClick={()=> setVideos([])}
+                          title="Borrar"
                         />
-                    }
-                    
-                      <CustomButton
-                        color="default"
-                        variant="bordered"
-                        startContent={<FaEraser color="red"/>}
-                        onClick={()=> setVideos([])}
-                        title="Borrar"
-                      />
+                      )
+                    } 
+                      
 
                     <CustomButton
                       color="default"

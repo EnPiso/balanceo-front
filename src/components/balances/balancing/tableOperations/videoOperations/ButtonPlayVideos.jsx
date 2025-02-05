@@ -9,9 +9,9 @@ import {
   videoOperation
 } from "../../../../../infraestructure/states/states_videos.js";
 import { Badge, Tooltip } from '@nextui-org/react';
-import { FaPlayCircle, FaPlaystation, FaRegPlayCircle } from 'react-icons/fa';
+import { FaFileVideo, FaPlayCircle, FaPlaystation, FaRegPlayCircle } from 'react-icons/fa';
 
-const ButtonPlayVideos = ({item,showVideos,setShowVideos}) => {
+const ButtonPlayVideos = ({item,showVideos,setShowVideos, isScreenShot, handleOperationBalancing}) => {
 
   const [videosOperations, setVideosOperations] = useRecoilState(listVideosOperations)
   const [OpersTags, setOpersTags] = useRecoilState(listVideosOpers)
@@ -20,6 +20,7 @@ const ButtonPlayVideos = ({item,showVideos,setShowVideos}) => {
 
   const handleOperation = (item) => {
     setVideoObjOperation(null)
+    
     if(showVideos && showVideos.id === item.id){
       setShowVideos(false)
       setVideosOperations([])
@@ -61,31 +62,59 @@ const ButtonPlayVideos = ({item,showVideos,setShowVideos}) => {
 
 
   return (
-    <button onClick={()=> handleOperation(item)} className="mr-5 mt-2">
-      {
-        showVideos && showVideos.id === item.id ? <FaArrowTurnDown /> : (
-        <>
-          {
-            item.video_count >= 1 && (
-              <>
-                <Tooltip content="Ver vídeos">
-                  <Badge
-                      shape="rectangle" 
-                      showOutline={false}
-                      color="success" 
-                      content={item.video_count} 
-                      className="mt-6">
-                      <FaRegPlayCircle size={24}/>
-                  </Badge>
-                </Tooltip>
-              </>
+
+    <>
+      <button onClick={()=> handleOperation(item)} className="mr-5 mt-2">
+        {
+          showVideos && showVideos.id === item.id ? <FaArrowTurnDown /> : (
+          <>
+            {
+              item.video_count >= 1 && (
+                <>
+                  <Tooltip content="Ver vídeos">
+                    <Badge
+                        shape="rectangle" 
+                        showOutline={false}
+                        color="success" 
+                        content={item.video_count} 
+                        className="mt-6">
+                        <FaRegPlayCircle size={24}/>
+                    </Badge>
+                  </Tooltip>
+                </>
+                
+              )
+            }
+          </>
+        )
+        }
+      </button>
+
+       {
+          !isScreenShot && (
+            <>
               
-            )
-          }
-        </>
-      )
-      }
-    </button>
+              <Tooltip content="Subir vídeos">
+                <button
+                  className="mt-2"
+                  onClick={()=> {
+                    handleOperationBalancing(item)
+                    setShowVideos(item)
+                    // console.log(item.operation_balancing_id)
+                    handleApi(item.operation_balancing_id)
+                  }}>
+                  <FaFileVideo 
+                    size={24}
+                  />
+                </button>
+              </Tooltip>
+              
+            </>
+          )
+        }
+      
+    </>
+   
   )
 }
 export default ButtonPlayVideos

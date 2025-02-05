@@ -56,6 +56,7 @@ const TableRowOperations = ({
 
   const [isScreenShot, setIsScreenShot] = useRecoilState(isScreenShotImg)
 
+  
 
 
   const handleSam = (item, value) => {
@@ -88,6 +89,7 @@ const TableRowOperations = ({
   };
 
   const handleOperationBalancing = (item) => {
+    
     setSelOpeVideos(item)
     setShowVideos(item)
     setIsModalInput(true)
@@ -133,27 +135,10 @@ const TableRowOperations = ({
             item={item}
             showVideos={showVideos}
             setShowVideos={setShowVideos}
+            isScreenShot={isScreenShot}
+            handleOperationBalancing={handleOperationBalancing}
+
           />
-
-            {
-              !isScreenShot && (
-                <>
-                  
-                  <Tooltip content="Subir vídeos">
-                    <button
-                      className="mt-2"
-                      onClick={()=> handleOperationBalancing(item)}>
-                      <FaFileVideo 
-                        size={24}
-                      />
-                    </button>
-                  </Tooltip>
-                 
-                </>
-              )
-            }
-
-          
 
           </div>
 
@@ -223,7 +208,7 @@ const TableRowOperations = ({
         )
       }
       {
-        videosOperations.length >= 1 && OpersTags.length >= 1 && <ButtonNavigationVideos item={item}/>
+        videosOperations.length >= 1 && OpersTags.length >= 1 && <ButtonNavigationVideos showVideos={showVideos} item={item}/>
       }
 
     </>

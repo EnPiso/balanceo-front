@@ -4,4 +4,3 @@
 export const urlMain = "https://squid-app-t8wpu.ondigitalocean.app/"
 
 
-

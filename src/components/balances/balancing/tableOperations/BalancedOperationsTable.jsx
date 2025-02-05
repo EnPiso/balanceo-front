@@ -40,6 +40,7 @@ import PdfBalancing from "../PDFBalancing.jsx";
 import {useScreenshot} from "use-react-screenshot";
 import CommentBalancing from "../CommentBalancing.jsx";
 import ImageUrlFormat from './ImageUrlFormat.jsx';
+import { videoShow } from '../../../../infraestructure/states/states_videos.js';
 
 
 
@@ -60,7 +61,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
 
   const [isModalInput,setIsModalInput] = useState(false)
 
-  const [showVideos, setShowVideos]  = useState(null)
+  const [showVideos, setShowVideos]  = useRecoilState(videoShow)
 
   const [zonesOpersData, setZonesOpersData] = useRecoilState(zonesOpers); // Array con los detalles de cada selección
 

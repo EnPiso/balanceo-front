@@ -60,7 +60,7 @@ const BalanceProduct = ({product}) => {
         console.error('Error al obtener los datos:', error);
 
       } finally {
-        setLoading(false);
+      setIsLoading(false);
       }
     };
 
