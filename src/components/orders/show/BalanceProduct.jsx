@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import {Button, Spinner} from "@nextui-org/react";
 import {FaCalendar} from "react-icons/fa6";
 import {useRecoilState} from "recoil";
@@ -8,6 +8,8 @@ import {urlMain} from "../../../infraestructure/data/const.js";
 import {detailOperOperations} from "../../../infraestructure/states/states_balancing.js";
 import {assignColorsToArray} from "../../../ui/utils.js";
 import {selectProdPlant, selectProdPlantOriginal} from "../../../infraestructure/states/opers_states.js";
+import { goToBalance } from '../../../infraestructure/states/operation_master_state.js';
+import { useTime } from 'framer-motion';
 
 const BalanceProduct = ({product}) => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
@@ -17,6 +19,24 @@ const BalanceProduct = ({product}) => {
   const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
 
   const [isLoading, setIsLoading] = useState(false);
+
+
+  const [goToBalanceObj, setBoToBalanceObj] = useRecoilState(goToBalance)
+  
+
+  useEffect(()=> {
+    if(goToBalanceObj){
+      const productObj = goToBalanceObj.product
+      if( productObj.id === product.product.id){
+      handleBalancing(product)
+      setTimeout(()=> {
+        setBoToBalanceObj(null)
+      }, 1000)
+
+      }
+    } 
+  }, [goToBalanceObj])
+      
 
 
   const handleBalancing = (product) => {

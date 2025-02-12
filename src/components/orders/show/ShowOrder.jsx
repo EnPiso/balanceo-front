@@ -1,14 +1,15 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import {useRecoilState} from "recoil";
 import {showOrderObj} from "../../../infraestructure/states/order_states.js";
 import {fetchGetData} from "../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../infraestructure/data/const.js";
 import {Spinner} from "@nextui-org/react";
+import { goToBalance } from '../../../infraestructure/states/operation_master_state.js';
 
 const ShowOrder = ({order}) => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj)
 
-
+  
   const [isLoading, setIsLoading] = useState(false);
 
   const handleShowOrder = (order) => {
@@ -32,6 +33,7 @@ const ShowOrder = ({order}) => {
 
     getData();
   }
+
 
   return (
     <>

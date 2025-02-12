@@ -20,6 +20,7 @@ import {detailOperOperations} from "../../../infraestructure/states/states_balan
 import {checkOperationsBalancing} from "../../../infraestructure/states/states_videos.js";
 import ModalCustomProduct from "../../balances/balancing/customProduct/ModalCustomProduct.jsx";
 import {hourMinuteSecond, monthDayYear} from "../../../infraestructure/utils/dateFormat.js";
+import GoToBalanceProduct from "../../operations_master/GoToBalanceProduct.jsx";
 
 const OrderDetail = () => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);

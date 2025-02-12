@@ -6,6 +6,7 @@ import {isOpenModalProd, operationsProduct} from "../../infraestructure/states/o
 import {useRecoilState} from "recoil";
 import {fetchGetData} from "../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../infraestructure/data/const.js";
+import { AiFillExperiment } from "react-icons/ai";
 
 const ButtonOperProdCustom = ({product}) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -53,7 +54,7 @@ const ButtonOperProdCustom = ({product}) => {
           className="px-4 py-2 rounded text-2xl "
           onClick={() => handleOperations(product)} // Restablece el estado y carga todos los datos
         >
-          <FaBoxOpen color="green"/>
+          <AiFillExperiment color="green"/>
         </button>
       </Tooltip>
 
