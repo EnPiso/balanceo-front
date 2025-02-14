@@ -1,17 +1,19 @@
 
-import React from 'react'
+import React, { useState } from 'react'
 import { AiFillExperiment } from 'react-icons/ai'
 import { useRecoilState } from 'recoil'
 import { showOperationMasterObj } from '../../infraestructure/states/operation_master_state'
 import { urlMain } from '../../infraestructure/data/const'
 import { fetchGetData } from '../../infraestructure/call_api/crud'
+import { CircularProgress } from '@nextui-org/react'
 
 const TrOperationMaster = ({operation}) => {
   const [showOperation, setShowOperation] = useRecoilState(showOperationMasterObj)
 
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleOperation = (operation) => {
- 
+    setIsLoading(true)
     handleApi(operation)
   }
 
@@ -28,7 +30,7 @@ const TrOperationMaster = ({operation}) => {
             console.error('Error al obtener los datos:', error);
 
         } finally {
-
+          setIsLoading(false)
         }
     };
     
@@ -42,9 +44,18 @@ const TrOperationMaster = ({operation}) => {
       className="border border-gray-300 hover:text-green-600 group"
     >
       <td className="p-1 border border-gray-300 cursor-pointer">
-        <span className="py-2 px-1">
-          {operation.operation}
-        </span>
+        {
+          isLoading ? (
+            <div className="flex justify-start ml-2">
+              <CircularProgress size="lg" color="default" />
+            </div>
+          ):(
+            <span className="py-2 px-1">
+              {operation.operation}
+            </span>
+          )
+        }
+       
       </td>
       <td className="p-1 border border-gray-300 cursor-pointer">
         <span className="py-2 px-1">

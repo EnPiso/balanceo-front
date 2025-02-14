@@ -125,11 +125,7 @@ const ShowOperationMaster = () => {
     </div>
 
 
-      <button 
-        className='btn' 
-        onClick={()=> setShowOperation(null)}>
-        Regresar
-      </button>
+     
     </div>
   )
 }

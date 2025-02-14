@@ -2,6 +2,7 @@ import {Button} from "@nextui-org/react";
 import React, {useState} from "react";
 import {AiOutlineUser, AiTwotoneFolderOpen} from "react-icons/ai";
 import ModalOperators from "./ModalOperators.jsx";
+import { FaUsers } from "react-icons/fa6";
 const DashboardOpers = () => {
 
   const [isOpen, setIsOpen] = useState(false);
@@ -13,11 +14,11 @@ const DashboardOpers = () => {
     <div className="flex flex-col gap-2">
       <Button
         onClick={handleOpen}
-        startContent={<AiOutlineUser/>}
+        startContent={<FaUsers/>}
         size="5xl"
         className="w-full dark:bg-zinc-900 h-10 font-bold "
         variant="bordered">
-        Operarios
+        Plantas y módulos
       </Button>
 
       {

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { urlMain } from '../../infraestructure/data/const';
 import { fetchGetData } from '../../infraestructure/call_api/crud';
-import { AiFillExperiment } from 'react-icons/ai';
-import TrOperationMaster from './TrOperationMaster';
+
 import { CircularProgress, Spinner } from '@nextui-org/react';
 import CustomPaginator from '../../ui/CustomPaginator';
+import TrOperMaster from './TrOperMaster';
 
 
-const ListOperationsMaster = () => {
+const ListOpersMaster = () => {
 
-  const [masterOperations, setMasterOperations] = useState([])
+  const [masterOpers, setMasterOpers] = useState([])
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -22,9 +22,10 @@ const ListOperationsMaster = () => {
     setIsLoading(true)
     const getData = async () => {
         try {
-          const result = await fetchGetData(`${urlMain}operations_master?page=${currentPage}&per_page=${perPage}`);
+          const result = await fetchGetData(`${urlMain}opers/index_all?page=${currentPage}&per_page=${perPage}`);
           //console.log(result)
-          setMasterOperations(result.orders)
+      
+          setMasterOpers(result.opers)
           result.total_pages && setTotalPages(result.total_pages)
           result.current_page && setCurrentPage(result.current_page)
           
@@ -43,6 +44,8 @@ const ListOperationsMaster = () => {
   
   };
 
+  
+
   return (
     <div>
       <div className="space-y-8">
@@ -50,10 +53,10 @@ const ListOperationsMaster = () => {
         <table className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-md border border-gray-300">
           <thead>
             <tr className="dark:bg-gray-100 bg-zinc-800 text-zinc-100 dark:text-zinc-800">
-                <th className="p-1 text-left font-medium border border-gray-300">Operaciones</th>
-                <th className="p-1 text-left font-medium border border-gray-300">Máquina</th>
-                <th className="p-1 text-left font-medium border border-gray-300">Sam</th>
+                <th className="p-1 text-left font-medium border border-gray-300">Nombre</th>
+                <th className="p-1 text-left font-medium border border-gray-300">Cédula</th>
                 <th className="p-1 text-left font-medium border border-gray-300"></th>
+
             </tr>
           </thead>
           <tbody>
@@ -67,9 +70,16 @@ const ListOperationsMaster = () => {
                   </td>
                 </tr>
               ) : (
-                masterOperations.map((operation) => (
-                  <TrOperationMaster key={operation.id} operation={operation} />
-                ))
+                <>
+                {
+                  masterOpers.map((oper, i)=> {
+                    return(
+                      <TrOperMaster oper={oper} key={i} />
+                    )
+                  })
+                }
+                 
+                </>
               )
             }
           </tbody>
@@ -80,15 +90,14 @@ const ListOperationsMaster = () => {
           
       </div>
       <div className="flex justify-start py-4">
-            <CustomPaginator
-              total={totalPages}
-              initialPage={currentPage}
-              onChange={handlePageChange}
-              // key={JSON.stringify(orders)}
-            />
-          </div>  
+        <CustomPaginator
+          total={totalPages}
+          initialPage={currentPage}
+          onChange={handlePageChange}
+        />
+      </div>  
     </div>
   )
 }
 
-export default ListOperationsMaster
+export default ListOpersMaster

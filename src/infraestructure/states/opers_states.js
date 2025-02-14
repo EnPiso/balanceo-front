@@ -33,3 +33,10 @@ export const isNewModule = atom({
   key: 'isNewModule',
   default: [],
 });
+
+
+export const isShowOperMaster = atom({
+  key: 'isShowOperMaster',
+  default: null,
+});
+

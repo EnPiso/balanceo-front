@@ -12,7 +12,7 @@ import {
   Radio, Tooltip,
 } from "@nextui-org/react";
 
-import {FaBackward, FaPlusCircle} from "react-icons/fa";
+import {FaBackward, FaPlusCircle, FaWindowClose} from "react-icons/fa";
 import CustomButton from "../../ui/CustomButton";
 import ListOperationsMaster from "./ListOperationsMaster";
 import { showOperationMasterObj } from "../../infraestructure/states/operation_master_state";
@@ -23,6 +23,8 @@ const ModalOperationMaster = ({isOpen, setIsOpen,handleClose}) => {
 
   const [showOperation, setShowOperation] = useRecoilState(showOperationMasterObj)
 
+  
+
   return (
     <div className="flex flex-col gap-2">
 
@@ -30,7 +32,14 @@ const ModalOperationMaster = ({isOpen, setIsOpen,handleClose}) => {
       size="5xl"
       isOpen={isOpen}
       scrollBehavior={"inside"}
-      onOpenChange={(isOpenState) => setIsOpen(isOpenState)} // Actualiza el estado
+      onOpenChange={(isOpenState) => {
+        setIsOpen(isOpenState)
+        
+        if (!isOpenState) {
+          setShowOperation(null)
+        }
+
+      }} // Actualiza el estado
     >
       <ModalContent>
         {(onClose) => (
@@ -39,7 +48,7 @@ const ModalOperationMaster = ({isOpen, setIsOpen,handleClose}) => {
               {
                 showOperation && showOperation.operation ? 
                   showOperation.operation :
-                  'Operaciones'
+                  'Detalle de las operaciones'
               }
                 
             </ModalHeader>
@@ -54,12 +63,32 @@ const ModalOperationMaster = ({isOpen, setIsOpen,handleClose}) => {
             </ModalBody>
             <ModalFooter>
 
+
+              {
+                showOperation && (
+                  <>
+                    <CustomButton
+                      color="default"
+                      variant="bordered"
+                      startContent={<FaBackward />}
+                      onClick={()=> {
+                        setShowOperation(null)
+                      }}
+                      title="Regresar"
+                    />
+                  </>
+                )
+              }
+
               <CustomButton
                 color="default"
                 variant="bordered"
-                startContent={<FaBackward />}
-                onClick={()=> console.log("Click")}
-                title="Regresar"
+                startContent={<FaWindowClose color="red" />}
+                onClick={()=> {
+                  onClose
+                  setShowOperation(null)
+                }}
+                title="Salir"
               />
 
             </ModalFooter>

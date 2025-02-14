@@ -15,6 +15,7 @@ import { allOperationsProduct, samSumOperation } from '../../infraestructure/sta
 import { selectProduct } from '../../infraestructure/states/states_product.js';
 import { detailOperOperations } from '../../infraestructure/states/states_balancing.js';
 import { checkOperationsBalancing } from '../../infraestructure/states/states_videos.js';
+import OpersMaster from '../opers_master/OpersMaster.jsx';
 
 
 const Sidebar = () => {
@@ -89,6 +90,7 @@ const Sidebar = () => {
 							<DashboardProducts/>
 							<DashboardOpers/>
 							<OperationsMaster/>
+							<OpersMaster/>
 
 						</div>
 

@@ -10,7 +10,7 @@ import {FaFile} from "react-icons/fa6";
 import {FaFileArchive} from "react-icons/fa";
 import ShowOrder from "../show/ShowOrder.jsx";
 import OrderDetail from "../show/OrderDetail.jsx";
-import {AiFillCheckCircle, AiFillDatabase, AiFillStop, AiTwotoneStop} from "react-icons/ai";
+import {AiFillCheckCircle, AiFillDatabase, AiFillStop, AiOutlineSortDescending, AiTwotoneStop} from "react-icons/ai";
 import GenerateImgPdf from "./GenerateImgPdf.jsx";
 import PdfBalancingImg from "./PdfBalancingImg.jsx";
 import {hourMinuteSecond, monthDayYear} from "../../../infraestructure/utils/dateFormat.js";
@@ -18,6 +18,7 @@ import SearchDashboardOrders from "./SearchOrdersCustom.jsx";
 import SearchDateOrders from "./SearchDateOrders.jsx";
 import { allOperationsProduct } from "../../../infraestructure/states/operation_states.js";
 import { detailOperOperations, numberCurrentPage } from "../../../infraestructure/states/states_balancing.js";
+import { BsArrow90DegUp, BsArrowDown, BsArrowDownCircle, BsArrowUpCircle } from "react-icons/bs";
 
 
 
@@ -42,7 +43,7 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
 
   const [queryString, setQueryString] = useState("");
 
-  
+  const [desc, setDesc] = useState(false);
 
 
   const pdfDiv = useRef(null)
@@ -50,10 +51,14 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
 
 
   useEffect(() => {
-    fetchOrders(currentPage, perPage)
+    fetchOrders(currentPage, perPage, desc)
   }, [queryDate,queryString]);
 
-  const fetchOrders = async (page, per_page) => {
+  useEffect(()=> {
+    fetchOrders(currentPage, perPage, desc)
+  }, [desc])
+
+  const fetchOrders = async (page, per_page, desc) => {
     setIsLoading(true);
     
     try {
@@ -62,7 +67,7 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
     
       
       const result = await fetchGetData(
-        `${urlMain}orders?page=${page}&archive=${false}&per_page=${per_page}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_or_products_name_or_products_category_product_name_or_products_reference_cont]=${encodeURIComponent(stringSearch)}`
+        `${urlMain}orders?page=${page}&archive=${false}&per_page=${per_page}&desc=${desc}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_or_products_name_or_products_category_product_name_or_products_reference_cont]=${encodeURIComponent(stringSearch)}`
        
       );
             
@@ -82,13 +87,13 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    fetchOrders(page, perPage);
+    fetchOrders(page, perPage, desc);
   };
 
   const handlePerPageChange = (page) => {
 
     setPerPage(page)
-    fetchOrders(1,page);
+    fetchOrders(1,page, desc);
   };
 
   return (
@@ -168,10 +173,28 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
                                 )
                               })
                             }
-
+                            <span>
+                              {
+                                desc ? (
+                                 <>
+                                  <button onClick={() => setDesc(false)}>
+                                    <BsArrowDownCircle size={28} color="green" />
+                                  </button>
+                                 </>
+                                ) :( 
+                                 <>
+                                  <button onClick={() => setDesc(true)}>
+                                    <BsArrowUpCircle size={28} color="green" />
+                                  </button>
+                                 </>
+                                )
+                              }
+                              
+                              
+                            </span>
                           </span>
                         </Tooltip>
-
+                        
                       </th>
                     </tr>
                     </thead>
