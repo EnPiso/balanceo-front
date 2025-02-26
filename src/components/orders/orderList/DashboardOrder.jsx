@@ -43,7 +43,7 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
 
   const [queryString, setQueryString] = useState("");
 
-  const [desc, setDesc] = useState(false);
+  const [desc, setDesc] = useState(true);
 
 
   const pdfDiv = useRef(null)
