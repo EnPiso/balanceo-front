@@ -9,6 +9,8 @@ import {balancingData, detailOperOperations} from "../../../../infraestructure/s
 import {assignColorsToArray} from "../../../../ui/utils.js";
 import {FaShirt} from "react-icons/fa6";
 import {isPDFGenerate} from "../../../../infraestructure/states/order_states.js";
+import { FaClock } from 'react-icons/fa';
+import ButtonClockOperation from './samples/ButtonClockOperation.jsx';
 
 const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvalenceDetail, color}) => {
   const [changePolyvalence,setChangePolyvalence] = useState(false)
@@ -66,6 +68,8 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
             polyvalence: polyvalence
           }
         }
+
+        
         handlePolyvalenceApi(dataApi)
       }
     }else if ((event.key === "Escape")){
@@ -84,6 +88,8 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
   useEffect(() => {
     changePolyvalence && inputRef.current.focus();
   }, [changePolyvalence]);
+
+
   const handlePolyvalenceApi = (data) => {
 
     const updateDataOrder = async (data) => {
@@ -164,16 +170,24 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
 
               <div
                 className="flex justify-around cursor-pointer"
-                onClick={()=> {
-                  if(!item.redistribution && operatorTimes.get(i)?.toFixed(2)) {
-                    handlePolyvalence(selectedOperDetails[i], item)
-                  }
-                }}>
+                >
+                  <ButtonClockOperation 
+                    item={item} 
+                    selectedOperDetails={selectedOperDetails} 
+                    i={i}
+                  />
+              
                 <div>
 
 
-                  <span className={`${item.redistribution && "text-red-600"}`}>
-                    {operatorTimes.get(i)?.toFixed(2) || ''}
+                  <span 
+                    onClick={()=> {
+                      if(!item.redistribution && operatorTimes.get(i)?.toFixed(2)) {
+                        handlePolyvalence(selectedOperDetails[i], item)
+                      }
+                    }}
+                    className={`${item.redistribution && "text-red-600"}`}>
+                    {operatorTimes.get(i)?.toFixed(2) || ''} 
                   </span>
 
                 </div>
@@ -208,7 +222,8 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
                       </>
                     )
                   }
-
+                
+                
                 </div>
 
               </div>

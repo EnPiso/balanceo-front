@@ -13,13 +13,24 @@ const TheadOperatorsCustom = ({moduleId, opers, setOpers, setIsNewOperator}) => 
   const [idOperError,setIdOperError] = useState(false)
 
   const [isRight,setIsRight] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [isLoading,setIsLoading] = useState(false)
 
   const [fileImage,setFileImage] = useState(null)
 
   useEffect(() => {
-    setIsRight(nameData.length >= 2 && idOper.length >= 2)
-  }, [nameData, idOper]);
+    const isFormatValid = nameData.length >= 2 && idOper.length >= 2;
+    const existingOper = opers.some((oper) => oper.id_oper === idOper);
+  
+    if (existingOper) {
+      setIsRight(false);
+      setErrorMessage("La cédula ya está en uso en este módulo. Por favor elige otro.");
+    } else {
+      setIsRight(isFormatValid);
+      setErrorMessage("");
+    }
+  }, [nameData, idOper, opers]);
 
   const handleSubmit = () => {
     const data = new FormData();
@@ -49,7 +60,7 @@ const TheadOperatorsCustom = ({moduleId, opers, setOpers, setIsNewOperator}) => 
           setFileImage(null)
          // setIsNewOperator()
         }else{
-          toast.error("La cédula ya está en uso. Por favor elige otro.")
+          toast.error("La cédula ya está en uso en este módulo. Por favor elige otro.")
           setIdOperError(true)
 
           setTimeout(()=> {
@@ -148,7 +159,7 @@ const TheadOperatorsCustom = ({moduleId, opers, setOpers, setIsNewOperator}) => 
                 />
             </span>
 
-            <span className="mt-3">
+            <span className="mt-3 mb-3">
                {
                  isRight &&
                  <>
@@ -166,8 +177,18 @@ const TheadOperatorsCustom = ({moduleId, opers, setOpers, setIsNewOperator}) => 
 
                  </>
                }
-            </span>
 
+              
+            </span>
+            {
+                  errorMessage && (
+                    <span className={"text-red-500  "}>
+                      <small className="mt-5 font-bold">
+                        {errorMessage}
+                      </small>
+                    </span>
+                  )
+               } 
           </th>
         </tr>
       </thead>

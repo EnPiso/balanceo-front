@@ -85,7 +85,7 @@ const ModalOperationMaster = ({isOpen, setIsOpen,handleClose}) => {
                 variant="bordered"
                 startContent={<FaWindowClose color="red" />}
                 onClick={()=> {
-                  onClose
+                  onClose()
                   setShowOperation(null)
                 }}
                 title="Salir"
