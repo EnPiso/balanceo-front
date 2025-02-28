@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil';
 import { stepsSamples } from '../../infraestructure/states/states_samples';
 import SaveStep from './SaveStep';
 
-const StepTimeSelector = ({Obj}) => {
+const   StepTimeSelector = ({Obj}) => {
   const [steps, setSteps] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
