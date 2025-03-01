@@ -95,6 +95,7 @@ const ButtonNavigationVideos = ({showVideos}) => {
 
       <DropDownItemVideo
         // key={JSON.stringify(videosOperations)}
+        setVideosOperations={setVideosOperations}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         videosOperations={videosOperations}

@@ -1,8 +1,14 @@
-import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react'
+import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Radio, RadioGroup, Tooltip } from '@nextui-org/react'
 import React from 'react'
 import { FaRegPlayCircle, FaRegWindowClose } from 'react-icons/fa'
+import { useRecoilState } from 'recoil';
+import { checkOpersPosition } from '../../../../../infraestructure/states/opers_states';
+import SelectionOperVideo from './SelectionOperVideo';
+import { FaDeleteLeft } from 'react-icons/fa6';
 
-const DropDownItemVideo = ({videosOperations, isOpen, setIsOpen, handleVideo, handleDelete}) => {
+const DropDownItemVideo = ({videosOperations, isOpen, setIsOpen, handleVideo, handleDelete, setVideosOperations}) => {
+  
+  
 
   return (
     <>
@@ -20,7 +26,7 @@ const DropDownItemVideo = ({videosOperations, isOpen, setIsOpen, handleVideo, ha
           </button>
         </DropdownTrigger>
         <DropdownMenu
-          className="overflow-y-auto max-h-56 mx-w-10"
+          className="overflow-y-auto max-h-96 mx-w-10"
           aria-label="Single selection example"
           variant="flat"
           disallowEmptySelection
@@ -32,25 +38,36 @@ const DropDownItemVideo = ({videosOperations, isOpen, setIsOpen, handleVideo, ha
             videosOperations.map((video, i)=> {
               return(
                 <DropdownItem key={i}>
-                  <div className="w-full px-2 py-2 my-2 mx-2 cursor-pointer">
+                  <div className="w-full px-2 py-2 my-2 mx-2 cursor-pointer bg-zinc-200">
+                    <span className="truncate text-center uppercase text-zinc-600 font-bold bg-zinc-300">
+                      video # <span className="text-green-600">{i + 1}</span>
+                    </span>
+
+
                     <span onClick={()=> handleVideo(video)}>
                       <video
-                        className="w-40 h-40" controls={false}>
+                        className="w-full h-40 mb-2 mt-2" controls={false}>
                         <source src={video.url} type="video/mp4" />
                         Tu navegador no soporta el elemento de video.
                       </video>
                     </span>
                    
-                    <span className="flex justify-between items-center">
-                      <span className="truncate text-center uppercase text-zinc-600 font-bold">
-                        video # <span className="text-green-600">{i + 1}</span>
-                      </span>
+                  
 
-                      <button onClick={()=> handleDelete(video, i + 1)}>
-                        <FaRegWindowClose color="red" size={24} />
-                      </button>
-                    </span>
-                    
+                    <SelectionOperVideo
+                      setVideosOperations={setVideosOperations}
+                      videosOperations={videosOperations}
+                      video={video}
+                    />
+                    <div className="flex justify-end">
+                      <Tooltip content="Eliminar vídeo" placement='bottom'>
+                        <button onClick={()=> handleDelete(video, i + 1)} className='py-4 px-4'>
+                          <FaDeleteLeft color="red" size={24} />
+                        </button>
+                      </Tooltip>
+                     
+                    </div>
+                     
                   </div>
 
                 </DropdownItem>
