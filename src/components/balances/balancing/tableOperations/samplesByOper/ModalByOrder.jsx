@@ -10,13 +10,14 @@ import {
   Avatar
 } from "@nextui-org/react";
 
-import {FaBackward, FaPlus, FaPlusCircle, FaSave, FaWindowClose} from "react-icons/fa";
+import {FaBackward, FaPlayCircle, FaPlus, FaPlusCircle, FaSave, FaWindowClose} from "react-icons/fa";
 import CustomButton from "../../../../../ui/CustomButton";
 
-import { FaClock, FaClockRotateLeft } from "react-icons/fa6";
+import { FaArrowsTurnRight, FaClock, FaClockRotateLeft } from "react-icons/fa6";
 import { useRecoilState } from "recoil";
 import { operationsSamples } from "../../../../../infraestructure/states/states_samples";
 import ListOperationsSamples from "./ListOperationsSamples";
+import DashboardSamplesAutomatic from "../samplesAutomatic/DashboardSamplesAutomatic";
 
 
 
@@ -29,6 +30,8 @@ const ModalByOrder = ({isOpen, setIsOpen, oper}) => {
   const [isLoading, setIsLoading] = useState(false);
   
   const [samplesOperations, setSamplesOperations] = useRecoilState(operationsSamples)
+
+  const [isAutomatic, setIsAutomatic] = useState(false);
 
 
 
@@ -74,11 +77,32 @@ const ModalByOrder = ({isOpen, setIsOpen, oper}) => {
                 </div>
 
 
-                   <ListOperationsSamples/>
+                    <div>
+                      <div className="flex justify-between items-center mt-3">
+                        {
+                          !isAutomatic ? 
+                            <h1 className="text-left uppercase font-bold text-xl mb-2 ">
+                              Operaciones
+                            </h1> :
+                            <div></div>
+                        }
+             
+                        
+                        
+                      </div>
+                    </div>
+
+                    {
+                      isAutomatic ? 
+                      <DashboardSamplesAutomatic
+                        setIsAutomatic={setIsAutomatic}
+                      /> :
+                      <ListOperationsSamples/>
+                    }
                    
-
-              
-
+                   
+                   {
+                    !isAutomatic && (
                       <div
                         onClick={()=> {
                           
@@ -91,7 +115,11 @@ const ModalByOrder = ({isOpen, setIsOpen, oper}) => {
                         </button>
                         <FaPlus color="green" className="mt-1"/>
                       </div>
+                    )
+                   }
+
                     
+                  
    
               
               </div>
@@ -100,7 +128,33 @@ const ModalByOrder = ({isOpen, setIsOpen, oper}) => {
             </ModalBody>
             <ModalFooter>
 
-
+              {
+                isAutomatic ? (
+                  <>
+                
+                    <CustomButton
+                      color="default"
+                      variant="bordered"
+                      startContent={<FaBackward color="red" />}
+                      onClick={()=> {
+                        setIsAutomatic(false)
+                      }}
+                      title="Regresar"
+                    />
+                  </>
+                  
+                ) : (
+                  <CustomButton
+                      color="default"
+                      variant="bordered"
+                      startContent={<FaArrowsTurnRight color="green" />}
+                      onClick={()=> {
+                        setIsAutomatic(true)
+                      }}
+                      title="Automatizar operaciones"
+                    />
+                )
+              }
 
               <CustomButton
                 color="default"

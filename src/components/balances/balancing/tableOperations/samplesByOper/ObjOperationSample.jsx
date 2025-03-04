@@ -7,6 +7,7 @@ import { postData, updateData } from '../../../../../infraestructure/call_api/cr
 import { urlMain } from '../../../../../infraestructure/data/const'
 import toast from 'react-hot-toast'
 import EditWatchChrono from '../../../../samples/EditWatchChrono'
+import { Spinner } from '@nextui-org/react'
 
 const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock, setSamplesClock}) => {
   const {operation} = sampleOperation
@@ -17,10 +18,13 @@ const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock
 
   const [isloadingEdit, setIsloadingEdit] = useState(null)
 
+  const [isLoading, setIsloading] = useState(false)
+
   const handleSample = (sample) => {
     setIsSample(sample)
     setIsSampleClock(true)
     setSamplesClock([])
+    
   }
 
   const handleSaveTime = (time, setIsLoading) => {
@@ -92,16 +96,30 @@ const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock
    
       <div className="border rounded-lg p-4 bg-white dark:bg-zinc-800 mt-1 mb-1">
         <div className="flex justify-start">
-          <button
-            onClick={() => handleSample(sampleOperation)}
-            className={`flex justify-between items-center`}>
-              <h3
-                className={`text-md capitalize hover:text-green-700
-                 ${isSample && operation.id === isSample.operation.id ? 'font-bold text-green-700' : ''}`}>
-                {operation.operation}
-              </h3>
-              <FaClock className=' ml-3'/>
-          </button>
+          {
+            isLoading ? (
+              <>
+                <Spinner size='lg' color='success'/>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => {
+                    !(isSample && operation.id === isSample.operation.id) &&
+                      handleSample(sampleOperation)
+                  }}
+                  className={`flex justify-between items-center`}>
+                    <h3
+                      className={`text-md capitalize hover:text-green-700
+                      ${isSample && operation.id === isSample.operation.id ? 'font-bold text-green-700' : ''}`}>
+                      {operation.operation}
+                    </h3>
+                    <FaClock className=' ml-3'/>
+                </button>
+              </>
+            )
+          }
+         
         </div>
 
         {
@@ -120,6 +138,8 @@ const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock
             }
              </div>
               <ListSamplesClock 
+                isLoading={isLoading}
+                setIsloading={setIsloading}
                 isloadingEdit={isloadingEdit}
                 isEdit={isEdit}
                 setIsEdit={setIsEdit}

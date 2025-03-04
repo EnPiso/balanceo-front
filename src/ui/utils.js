@@ -112,3 +112,8 @@ export const nameReferenceProduct = (garment) => {
     console.log("Formato no coincide");
   }
 };
+
+
+export const firstWordInString = (str) => {
+  return str.trim().split(" ")[0];
+}

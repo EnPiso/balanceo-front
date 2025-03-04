@@ -6,11 +6,11 @@ import { Spinner, Tooltip } from '@nextui-org/react'
 import ConfirmDeleteSample from '../samples/ConfirmDeleteSample'
 import EditWatchChrono from '../../../../samples/EditWatchChrono'
 
-const ListSamplesClock = ({samplesClock, setSamplesClock, isSampleClock, isSample, setIsEdit, isEdit, isloadingEdit}) => {
+const ListSamplesClock = ({samplesClock, setSamplesClock, isSampleClock, isSample, setIsEdit, isEdit, isloadingEdit, isLoading, setIsloading}) => {
 
 
   useEffect(()=> {
-    
+    setIsloading(true)
     const detail_oper_operation_id = isSample.detail_oper_operation_id
     console.log(detail_oper_operation_id)
 
@@ -20,6 +20,8 @@ const ListSamplesClock = ({samplesClock, setSamplesClock, isSampleClock, isSampl
         setSamplesClock(result.samplings);
       } catch (error) {
         console.error("Error al obtener los datos:", error);
+      } finally {
+        setIsloading(false)
       }
     };
     

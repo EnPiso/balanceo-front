@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import { fetchGetData } from '../../../../../infraestructure/call_api/crud';
 import { urlMain } from '../../../../../infraestructure/data/const';
-import { Spinner } from '@nextui-org/react';
+import { Spinner, Tooltip } from '@nextui-org/react';
 import ModalByOrder from './ModalByOrder';
 import { useRecoilState } from 'recoil';
 import { operationsSamples } from '../../../../../infraestructure/states/states_samples';
+import { FaRegTimesCircle, FaTimes, FaTimesCircle } from 'react-icons/fa';
+import { FaClock, FaTimeline } from 'react-icons/fa6';
+import { firstWordInString } from '../../../../../ui/utils';
 
 const ButtonSamplesByOper = ({oper,objBalancing}) => {
 
@@ -49,10 +52,19 @@ const ButtonSamplesByOper = ({oper,objBalancing}) => {
     <>
       {
         isLoading ? 
-          <Spinner size='lg' color='default'/> : 
-          <button onClick={()=> handleSample(oper)} className='hover:text-green-700'>
-            {oper.name} 
-          </button>
+          <Spinner size='lg' color='default'/> : (
+            <>
+              <Tooltip content={oper.name}>
+                <button onClick={()=> handleSample(oper)} className='hover:text-green-700 flex justify-between items-center'>
+                  <span>
+                    {oper.name && firstWordInString(oper.name)}
+                  </span>
+                  <FaClock className='ml-2'/>
+                </button>
+              </Tooltip>
+            </>
+          )
+          
       }
 
       {

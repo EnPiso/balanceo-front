@@ -24,9 +24,7 @@ const ListOperationsSamples = () => {
   return (
 
     <>
-    <h1 className="text-left uppercase font-bold text-xl mb-2 ">
-      Operaciones
-    </h1>
+ 
       {
         samplesOperations.map((sampleOperation, i)=> {
             return  (
