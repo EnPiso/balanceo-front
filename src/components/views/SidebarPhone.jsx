@@ -4,7 +4,9 @@ import React from 'react'
 
 const SidebarPhone = () => {
   return (
-    <div>SidebarPhone</div>
+    <div>
+      
+    </div>
   )
 }
 

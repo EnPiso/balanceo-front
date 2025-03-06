@@ -1,18 +1,31 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './style.css';
 import { FaRecordVinyl } from 'react-icons/fa6';
 import { CircularProgress, Tooltip } from '@nextui-org/react';
 
-const WatchChronoAutoPlay = ({ onSaveTime }) => {
+const WatchChronoAutoPlay = ({ onSaveTime, autoStart = true }) => {
   const [runningTime, setRunningTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [displayTime, setDisplayTime] = useState('00:00');
   const [savedTimes, setSavedTimes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  
   const sphereRef = useRef(null);
   let stopwatchInterval = useRef(null);
 
+  // Efecto para iniciar automáticamente el cronómetro cuando el componente se monta
+  useEffect(() => {
+    if (autoStart && !isRunning) {
+      start();
+      setIsRunning(true);
+    }
+    
+    // Limpieza al desmontar
+    return () => {
+      clearInterval(stopwatchInterval.current);
+    };
+  }, []);
+  
   const playPause = () => {
     if (isRunning) {
       pause();
@@ -21,32 +34,38 @@ const WatchChronoAutoPlay = ({ onSaveTime }) => {
     }
     setIsRunning(!isRunning);
   };
-
+  
   const start = () => {
     const startTime = Date.now() - runningTime;
-    sphereRef.current.style.animation = 'rotacion 60s linear infinite';
-    sphereRef.current.style.animationPlayState = 'running';
+    if (sphereRef.current) {
+      sphereRef.current.style.animation = 'rotacion 60s linear infinite';
+      sphereRef.current.style.animationPlayState = 'running';
+    }
     stopwatchInterval.current = setInterval(() => {
       const newRunningTime = Date.now() - startTime;
       setRunningTime(newRunningTime);
       setDisplayTime(calculateTime(newRunningTime));
     }, 1000);
   };
-
+  
   const pause = () => {
-    sphereRef.current.style.animationPlayState = 'paused';
+    if (sphereRef.current) {
+      sphereRef.current.style.animationPlayState = 'paused';
+    }
     clearInterval(stopwatchInterval.current);
   };
-
+  
   const stop = () => {
-    sphereRef.current.style.transform = 'rotate(-90deg) translateX(60px)';
-    sphereRef.current.style.animation = 'none';
+    if (sphereRef.current) {
+      sphereRef.current.style.transform = 'rotate(-90deg) translateX(60px)';
+      sphereRef.current.style.animation = 'none';
+    }
     setRunningTime(0);
     setDisplayTime('00:00');
     setIsRunning(false);
     clearInterval(stopwatchInterval.current);
   };
-
+  
   const saveTime = () => {
     setIsLoading(true);
     setSavedTimes([...savedTimes, displayTime]);
@@ -55,7 +74,7 @@ const WatchChronoAutoPlay = ({ onSaveTime }) => {
     }
     stop();
   };
-
+  
   const calculateTime = (time) => {
     const totalSeconds = Math.floor(time / 1000);
     const totalMinutes = Math.floor(totalSeconds / 60);
@@ -63,7 +82,7 @@ const WatchChronoAutoPlay = ({ onSaveTime }) => {
     const displayMinutes = String(totalMinutes).padStart(2, '0');
     return `${displayMinutes}:${displaySeconds}`;
   };
-
+  
   return (
     <>
       <main>
@@ -82,7 +101,7 @@ const WatchChronoAutoPlay = ({ onSaveTime }) => {
         </div>
         <div id="seconds-sphere" className="seconds-sphere" ref={sphereRef}></div>
       </main>
-
+      
       {isLoading ? (
         <div className="">
           <CircularProgress aria-label="Loading..." color="success" size="lg" />

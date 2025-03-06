@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlayCircle, FaStop, FaSave, FaRecordVinyl } from 'react-icons/fa';
+import { FaPlayCircle, FaStop, FaSave } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
 import { operationsSamples } from '../../../../../infraestructure/states/states_samples';
 import ObjSampleAutomatic from './ObjSampleAutomatic';
@@ -16,17 +16,16 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [savedSamples, setSavedSamples] = useState([]);
-  const [savedTimes, setSavedTimes] = useState({}); // Guardar tiempos por operación
-
+  const [savedTimes, setSavedTimes] = useState({}); 
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isAutoplay && currentIndex < samplesOperations.length) {
+      // Asignar la operación actual a isSample cuando cambia el índice
       setIsSample(samplesOperations[currentIndex]);
     }
   }, [isAutoplay, currentIndex, samplesOperations]);
 
-  
   const handleSaveTime = (displayTime, setIsLoading) => {
     const operation = samplesOperations[currentIndex];
   
@@ -56,16 +55,16 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
   
     setIsLoading(false);
   
+    // Avanzar a la siguiente operación o volver al principio si es la última
     if (currentIndex < samplesOperations.length - 1) {
       setCurrentIndex((prev) => prev + 1);
     } else {
+      // Si ha completado todos, podría mostrar un mensaje o tomar alguna acción
       setCurrentIndex(0);
+      // Opcionalmente podrías detener el autoplay aquí si quieres que pare al completar todas las operaciones
+      // setIsAutoplay(false);
     }
   };
-  
-  
-  
-  
 
   const startAutoplay = () => {
     setIsAutoplay(true);
@@ -77,20 +76,16 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
     setSamplesClock([]);
     setSavedSamples([]);
     setSavedTimes({});
-    setIsSample(false)
-    
-
+    setIsSample(false);
   };
 
   const saveSamples = () => {
-    // console.log('Saved Samples:', Object.values(savedSamples));
-
-    const samplesUpdate = Object.values(savedSamples).map((sample)=> {
+    const samplesUpdate = Object.values(savedSamples).map((sample) => {
       return {
         detail_oper_operation_id: sample.detail_oper_operation_id,
         times: sample.times
       }
-    })
+    });
 
     const data = {
       samplings: {
@@ -101,23 +96,22 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
     const createAutoplay = async () => {
       setIsLoading(true)
       try {
-        const result = await postData(urlMain + "samplings/create_autoplay", data)
-        console.log(result)
-        setIsAutomatic(false)
-        toast.success("Se han guardado los tiempos correctamente")
+        const result = await postData(urlMain + "samplings/create_autoplay", data);
+        console.log(result);
+        setIsAutomatic(false);
+        toast.success("Se han guardado los tiempos correctamente");
       } catch (error) {
         console.error('Error setting data', error);
       } finally {
-        stopAutoplay()
-        setIsLoading(false)
+        stopAutoplay();
+        setIsLoading(false);
       }
     };
 
     createAutoplay();
-    
   };
 
-  const countSaves = Object.values(savedSamples).reduce((acc, op) => acc + (op.times.length || 0), 0)
+  const countSaves = Object.values(savedSamples).reduce((acc, op) => acc + (op.times.length || 0), 0);
 
   return (
     <>
@@ -126,96 +120,57 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
           <>
             <Tooltip content="Iniciar tomas de tiempos">
               <button onClick={startAutoplay} className="btn btn-primary flex justify-center hover:text-green-700 hover:underline underline-offset-2">
-               
                 <FaPlayCircle className="ml-2 animate-pulse" size={45} color="green" />
               </button>
             </Tooltip>
           </>
         ) : (
           <>
-
-                   
-
-
-          {
-            Object.values(savedSamples).length >= 1 && 
+            {Object.values(savedSamples).length >= 1 && 
               <Tooltip 
                 content={`Borrar ${countSaves < 2 ? "una toma de tiempo" : countSaves + " tomas de tiempo"}`}  
                 placement="right">
+                <div>
+                  <CustomButton
+                    color="default"
+                    variant="bordered"
+                    startContent={<FaStop color="red" />}
+                    onClick={stopAutoplay}
+                    title={`Eliminar`} 
+                  />
+                </div>
+              </Tooltip>
+            }
+          </>
+        )}
+
+        {Object.values(savedSamples).length > 0 && (
+          <>
+            {isLoading ? (
+              <>
+                <Spinner size='lg' color='default'/>
+              </> 
+            ) : (
+              <>
+                <Tooltip 
+                  content={`Guardar ${countSaves < 2 ? "una toma de tiempo" : countSaves + " tomas de tiempo"}`}   
+                  placement="right">
                   <div>
                     <CustomButton
                       color="default"
                       variant="bordered"
-                      startContent={<FaStop color="red" />}
-                      onClick={stopAutoplay}
-                      title={`Eliminar`} 
+                      startContent={<FaSave color="green" />}
+                      onClick={saveSamples}
+                      title={`GUARDAR  ${countSaves}`} 
                     />
                   </div>
-                  
-              </Tooltip>
-            }
-              
+                </Tooltip>
+              </>
+            )}
           </>
-         
         )}
-
-        {
-          Object.values(savedSamples).length > 0 && (
-            <>
-            
-              {
-                isLoading ? (
-                  <>
-                    <Spinner size='lg' color='default'/>
-                  </> 
-                ) : (
-                  <>
-                    <Tooltip 
-                      content={`Guardar ${countSaves < 2 ? "una toma de tiempo" : countSaves + " tomas de tiempo"}`}   
-                      placement="right">
-                        <div>
-                          <CustomButton
-                            color="default"
-                            variant="bordered"
-                            startContent={<FaSave color="green" />}
-                            onClick={saveSamples}
-                            title={`GUARDAR  ${countSaves}`} 
-                          />
-                        </div>
-                        
-                    </Tooltip>
-                  </>
-                  
-                )
-              }
-            </>
-          )
-        }
-
-
       </div>
-        
-        {
-          isAutoplay && Object.values(savedSamples).length < 1 && (
-            <>
-              <div className="flex items-center justify-center w-full">
-                <div className="flex flex-col w-full">
-                 
-                    <div className="w-full flex items-center my-3 bg-zinc-200 py-4 px-4">
-                        <h2 className='text-lg text-center uppercase font-light container-fluid '>
-                         Haz clic en el botón de reproducción <span className="text-green-600 animate-pulse text-lg">▶</span>  para iniciar la toma de tiempos.
-                         Luego, presiona el botón rojo de grabar <span className="animate-pulse text-lg"> 🔴 </span> para detener la grabación.
-                         Una vez guardado el tiempo, la aplicación avanzará automáticamente a la 
-                         siguiente operación, repitiendo el proceso hasta que completes y guardes todas las mediciones.
-                        </h2>
-                    </div>
-          
-                </div>
-              </div>
-            </>
-          )
-        }
-    
+     
 
       {samplesOperations.map((sampleOperation, i) => (
         <ObjSampleAutomatic
@@ -229,7 +184,7 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
           isAutoplay={isAutoplay}
           currentIndex={currentIndex}
           index={i}
-          savedTimes={savedTimes[sampleOperation.operation.id] || []} // Solo muestra los tiempos de esta operación
+          savedTimes={savedTimes[sampleOperation.operation.id] || []}
           setSavedTimes={setSavedTimes}
         />
       ))}
