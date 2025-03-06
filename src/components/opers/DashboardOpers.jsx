@@ -12,14 +12,15 @@ const DashboardOpers = () => {
   const handleOpen = () => setIsOpen(true);
   return (
     <div className="flex flex-col gap-2">
-      <Button
-        onClick={handleOpen}
-        startContent={<FaUsers/>}
-        size="5xl"
-        className="w-full dark:bg-zinc-900 h-10 font-bold "
-        variant="bordered">
-        Plantas y módulos
-      </Button>
+      <button 
+          onClick={handleOpen}
+          className="flex justify-center font-bold border-1 border-secondary_two px-1 py-1 rounded-md ">
+          <FaUsers className="text-secondary_one mr-2 mt-1" size={20}/>
+          <span className="text-secondary_one mt-1">
+            Plantas y módulos
+          </span>
+      </button>
+     
 
       {
         isOpen && <ModalOperators

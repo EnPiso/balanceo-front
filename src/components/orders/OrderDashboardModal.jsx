@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import ExcelImageLoader from "./import/ExcelImageLoader.jsx";
 import CustomButton from "../../ui/CustomButton.jsx";
 import {FaEraser, FaFileExcel} from "react-icons/fa6";
-import {FaBackward, FaSave} from "react-icons/fa";
+import {FaBackward, FaRegFileExcel, FaSave} from "react-icons/fa";
 import InputOrder from "./import/InputOrder.jsx";
 import listenEffect from "./import/listenEffect.jsx";
 import OrderSubmit from "./OrderSubmit.jsx";
@@ -12,6 +12,8 @@ import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../infraestructure/data/toastMessage.js";
 import ExcelImagesLoaders from "./import/ExcelImagesLoaders.jsx";
 import OrderSubmitMultiple from "./OrderSubmitMultiple.jsx";
+import { BsFileExcel } from "react-icons/bs";
+import { RiFileExcelLine } from "react-icons/ri";
 
 
 const OrderDashboardModal = () => {
@@ -73,16 +75,17 @@ const OrderDashboardModal = () => {
   
   return (
     <div className="flex flex-col gap-2">
-      <Button
-        startContent={ <FaFileExcel/>}
-        onPress={onOpen}
-        size="5xl"
-        className="w-full dark:bg-zinc-900 h-10 font-bold "
-        variant="bordered">
-        orden de producción
+  
 
-      </Button>
-
+       <button 
+            onClick={onOpen}
+            className="flex justify-center font-bold border-1 border-secondary_two px-1 py-1 rounded-md ">
+            <FaRegFileExcel className="text-secondary_one mr-2 mt-1" size={20}/>
+            <span className="text-secondary_one mt-1">
+              Ordenes
+            </span>
+        </button>
+     
       <Modal
         size="5xl"
         isOpen={isOpen}
