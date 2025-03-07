@@ -117,3 +117,8 @@ export const nameReferenceProduct = (garment) => {
 export const firstWordInString = (str) => {
   return str.trim().split(" ")[0];
 }
+
+export const timeToSeconds = (timeString) => {
+  const [minutes, seconds] = timeString.split(":").map(Number);
+  return minutes * 60 + seconds;
+}

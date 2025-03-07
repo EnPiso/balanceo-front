@@ -42,6 +42,7 @@ const ModalSelectSamples = ({isOpen, setIsOpen, Obj, itemAll}) => {
   
 
   useEffect(()=> {
+
     const result = selectedOperDetails.find(item => item.id === Obj.oper_id);
     setOperSelect(result)
   }, [])
@@ -120,6 +121,15 @@ const ModalSelectSamples = ({isOpen, setIsOpen, Obj, itemAll}) => {
                        
                       </div>
 
+                      <div className="py-4 bg-zinc-100 px-2 ">
+                        <h1 className="text-lg capitalize">  
+                          <span className="text-zinc-800 ml-2 bg-zinc-200 px-1 py-1 font-bold rounded">
+                            Meta en segundos {" "}
+                            {itemAll.sam_seg}
+                          </span>
+                        </h1>
+                      </div>
+
                     </>
                   )
                 }
@@ -130,15 +140,15 @@ const ModalSelectSamples = ({isOpen, setIsOpen, Obj, itemAll}) => {
                       <StepTimeSelector Obj={Obj}/>
                       <div className="flex justify-end text-red-700 font-bold ">
                         <button 
-                          className="mr-2"
+                          className="mr-2 flex"
                           onClick={()=> {
                             setIsNewSamples(false)
                           }}
                         >
-                          <FaBackward color="red" />
-                        
+                          <FaBackward color="red" className="mt-1 mr-1"/>
+                          Cancelar
                         </button>
-                        Cancelar
+                        
                       </div>
                      
                     </>
@@ -165,7 +175,13 @@ const ModalSelectSamples = ({isOpen, setIsOpen, Obj, itemAll}) => {
 
                     
 
-                    <ListSamples setIsEdit={setIsEdit} obj={Obj} isEdit={isEdit} isLoadingEdit={isLoading}/>
+                    <ListSamples
+                      itemAll={itemAll} 
+                      setIsEdit={setIsEdit}
+                      obj={Obj} isEdit={isEdit} 
+                      isLoadingEdit={isLoading}
+                    />
+
                       <div
                         onClick={()=> {
                           setIsNewSamples(true)

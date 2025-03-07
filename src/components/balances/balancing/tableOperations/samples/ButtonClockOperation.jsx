@@ -21,18 +21,20 @@ const ButtonClockOperation = ({item, selectedOperDetails, i}) => {
     <button onClick={()=>{ 
         console.log(item)
         setItemAll(item)
-
-        console.log(selectedOperDetails[i] )
+        
+        console.log(selectedOperDetails[i])
         const data = {
           operation_balancing_id: item.operation_balancing_id,
           oper_id: selectedOperDetails[i].id
         }
+
+        
         setObj(data)
         setIsOpen(true)
         setIsNewSamples(false)
         setSamples([])
       }}>
-        <FaClock size={23}/>
+        <FaClock size={23}/> 
     </button>
 
     {
