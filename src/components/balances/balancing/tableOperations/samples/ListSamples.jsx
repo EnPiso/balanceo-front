@@ -120,7 +120,7 @@ const ListSamples = ({obj,setIsEdit, isEdit, isLoadingEdit, itemAll}) => {
                       <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">
                         <span className="flex justify-end font-bold text-green-700">
                         {
-                          parseInt(samples.reduce((acc, sample) => acc + itemAll.sam_seg, 0))
+                          parseInt(samples.reduce((acc, sample) => acc + itemAll.sam_seg, 0) * 100)
                         }
                         </span>
                         

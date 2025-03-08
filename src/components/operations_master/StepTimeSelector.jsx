@@ -95,18 +95,11 @@ const   StepTimeSelector = ({Obj}) => {
                  {index + 1} - {time}               
               </span>
               <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleEdit(index)}
-                  className="flex items-center"
-                  disabled={isEditing && index === currentStep}
-                >
-                  <FaEdit size={23}/>
-                </button>
+               
+               
                 <button
                   onClick={() => handleDelete(index)}
-                  className="flex items-center text-red-500 ml-2"
-                  title="Eliminar muestra"
-                >
+                  className="flex items-center text-red-500 ml-2">
                   <FaTrash size={20}/>
                 </button>
               </div>
