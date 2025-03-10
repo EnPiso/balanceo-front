@@ -19,6 +19,7 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
   const [savedTimes, setSavedTimes] = useState({}); 
   const [isLoading, setIsLoading] = useState(false);
 
+
   useEffect(() => {
     if (isAutoplay && currentIndex < samplesOperations.length) {
       // Asignar la operación actual a isSample cuando cambia el índice
@@ -97,7 +98,20 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
       setIsLoading(true)
       try {
         const result = await postData(urlMain + "samplings/create_autoplay", data);
-        console.log(result);
+     
+         // Actualizar samplesOperations con los datos recibidos
+         setSamplesOperations((prevSamplesOperations) =>
+          prevSamplesOperations.map((operation) => {
+            const updatedSamplings = result.samplings.filter(
+              (sampling) => sampling.detail_oper_operation_id === operation.detail_oper_operation_id
+            );
+            return {
+              ...operation,
+              samplings: [...operation.samplings, ...updatedSamplings]
+            };
+          })
+        );
+        
         setIsAutomatic(false);
         toast.success("Se han guardado los tiempos correctamente");
       } catch (error) {

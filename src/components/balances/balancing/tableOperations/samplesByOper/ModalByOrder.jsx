@@ -21,7 +21,7 @@ import DashboardSamplesAutomatic from "../samplesAutomatic/DashboardSamplesAutom
 
 
 
-const ModalByOrder = ({isOpen, setIsOpen, oper}) => {
+const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) => {
 
   const [operSelect, setOperSelect] = useState(null);
 
@@ -30,9 +30,6 @@ const ModalByOrder = ({isOpen, setIsOpen, oper}) => {
   const [isLoading, setIsLoading] = useState(false);
   
   const [samplesOperations, setSamplesOperations] = useRecoilState(operationsSamples)
-
-  const [isAutomatic, setIsAutomatic] = useState(false);
-
 
 
   return (
@@ -100,27 +97,6 @@ const ModalByOrder = ({isOpen, setIsOpen, oper}) => {
                       <ListOperationsSamples/>
                     }
                    
-                   
-                   {
-                    !isAutomatic && (
-                      <div
-                        onClick={()=> {
-                          
-                        }}
-                        className="flex justify-end text-green-700 font-bold mb-5 text-md mt-4 cursor-pointer">
-                        <button 
-                          className="mr-1"
-                        >
-                          Agregar muestras
-                        </button>
-                        <FaPlus color="green" className="mt-1"/>
-                      </div>
-                    )
-                   }
-
-                    
-                  
-   
               
               </div>
              

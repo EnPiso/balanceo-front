@@ -19,6 +19,7 @@ const ButtonSamplesByOper = ({oper,objBalancing}) => {
 
   const [samplesOperations, setSamplesOperations] = useRecoilState(operationsSamples)
 
+  const [isAutomatic, setIsAutomatic] = useState(false);
   
 
 
@@ -31,8 +32,9 @@ const ButtonSamplesByOper = ({oper,objBalancing}) => {
       setIsLoading(true)
       try {
         const result = await fetchGetData(`${urlMain}samplings/index_samples_by_oper?balancing_id=${balancing_id}&oper_id=${oper_id}`);
-        console.log(result,oper)
+        // console.log(result,oper)
         setSamplesOperations(result.operations)
+        
         setIsShowModal(true)
         setIsOpen(true)
 
@@ -55,7 +57,10 @@ const ButtonSamplesByOper = ({oper,objBalancing}) => {
           <Spinner size='lg' color='default'/> : (
             <>
               <Tooltip content={oper.name}>
-                <button onClick={()=> handleSample(oper)} className='hover:text-green-700 flex justify-between items-center'>
+                <button onClick={()=> {
+                    handleSample(oper)
+                    setIsAutomatic(false)
+                  }} className='hover:text-green-700 flex justify-between items-center'>
                   <span>
                     {oper.name && firstWordInString(oper.name)}
                   </span>
@@ -71,6 +76,8 @@ const ButtonSamplesByOper = ({oper,objBalancing}) => {
         showModal && (
           <>
             <ModalByOrder
+              isAutomatic={isAutomatic}
+              setIsAutomatic={setIsAutomatic}
               isOpen={isOpen}
               setIsOpen={setIsOpen}
               oper={oper}
