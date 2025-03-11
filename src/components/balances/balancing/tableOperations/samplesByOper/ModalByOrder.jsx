@@ -49,7 +49,7 @@ const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) =>
           <>
             <ModalHeader className="flex justify-start items-center">
               <h1 className="uppercase flex justify-start">
-                Tiempos en las operaciones
+                Tiempos en las operaciones  
                 <FaClockRotateLeft  className="mt-1 ml-2" />   
               </h1>
             </ModalHeader>
