@@ -18,41 +18,35 @@ const SearchDateOrders = ({queryDate, setQueryDate, isLoading, queryString, setQ
 
 
   return (
-    <div className="flex justify-end items-center bg-gradient-to-l from-zinc-100 to-zinc-200 py-2 mb-2 ">
-    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 ml-2 justify-end">
-      
+    <div className="flex flex-col md:flex-row md:justify-end items-center bg-gradient-to-l from-zinc-100 to-zinc-200 py-2 px-4 rounded-lg gap-4">
+      {/* Componente de Búsqueda */}
+      <div className="w-full md:w-auto">
         <SearchOrdersCustom
           setQueryDate={setQueryDate}
           queryString={queryString}
           setQueryString={setQueryString}
         />
-      
-        <DatePicker
-          color={"default"}
-          className="max-w-xs mr-5"
-          // defaultValue={today(getLocalTimeZone()).add({days: -1})}
-          label="Selecciona fecha"
-          maxValue={today(getLocalTimeZone())}
-          onChange={handleDateChange} // Escucha el cambio
-          value={queryDate}
-        />
-        <div className="mt-3">
-          
+      </div>
+
+      {/* Selector de Fecha */}
+      <DatePicker
+        color="default"
+        className="w-full md:w-auto"
+        label="Selecciona fecha"
+        maxValue={today(getLocalTimeZone())}
+        onChange={handleDateChange}
+        value={queryDate}
+      />
+
+      <div className="py-4">
+        {/* Botón para limpiar fecha */}
+        <Tooltip content="Limpiar fecha">
           <FaCalendarTimes
-              color="gray"
-              size={24}
-              onClick={() => {
-                // setIsDateLook(true)
-                setQueryDate(null)
-              }}/>
-
-        </div>
-      
-    </div>
-
-
-      <div className={"flex justify-end items-center"}>
-        
+            size={24}
+            className="cursor-pointer text-gray-500 hover:text-red-500 transition"
+            onClick={() => setQueryDate(null)}
+          />
+        </Tooltip>
       </div>
     </div>
   )

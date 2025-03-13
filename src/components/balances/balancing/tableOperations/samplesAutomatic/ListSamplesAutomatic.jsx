@@ -8,6 +8,7 @@ import { postData } from '../../../../../infraestructure/call_api/crud';
 import { urlMain } from '../../../../../infraestructure/data/const';
 import toast from 'react-hot-toast';
 import CustomButton from '../../../../../ui/CustomButton';
+import { detailOperOperations } from '../../../../../infraestructure/states/states_balancing';
 
 const ListSamplesAutomatic = ({setIsAutomatic}) => {
   const [isSample, setIsSample] = useState(false);
@@ -19,6 +20,7 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
   const [savedTimes, setSavedTimes] = useState({}); 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
 
   useEffect(() => {
     if (isAutoplay && currentIndex < samplesOperations.length) {
@@ -84,10 +86,11 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
     const samplesUpdate = Object.values(savedSamples).map((sample) => {
       return {
         detail_oper_operation_id: sample.detail_oper_operation_id,
-        times: sample.times
+        times: sample.times,
+        operations_balancing_id: sample.operations_balancing_id
       }
     });
-
+    
     const data = {
       samplings: {
         samplings: JSON.stringify(samplesUpdate)
@@ -111,7 +114,26 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
             };
           })
         );
+        //console.log(detailOperOpera)
+
+        // Actualizar detailOperOpera con los datos recibidos
+        const updatedDetailOperOpera = detailOperOpera.map((targetItem) => {
+          const matchingSamplings = result.samplings.filter(
+            (sourceItem) => targetItem.detail.id === sourceItem.detail_oper_operation_id
+          );
+          if (matchingSamplings.length > 0) {
+            return {
+              ...targetItem,
+              detail: {
+                ...targetItem.detail,
+                samplings_count: targetItem.detail.samplings_count + matchingSamplings.length,
+              },
+            };
+          }
+          return targetItem;
+        });
         
+        setDetailOperOpera(updatedDetailOperOpera);
         setIsAutomatic(false);
         toast.success("Se han guardado los tiempos correctamente");
       } catch (error) {

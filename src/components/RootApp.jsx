@@ -7,6 +7,7 @@ import { showOrderObj } from "../infraestructure/states/order_states.js";
 import OrdersTab from "./orders/orderList/OrdersTab.jsx";
 import { Toaster } from "react-hot-toast";
 import { useState } from 'react';
+import { FaEyeSlash } from 'react-icons/fa6';
 
 const RootApp = () => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
@@ -20,29 +21,22 @@ const RootApp = () => {
   return (
     <>
       <div className="flex">
-        {/* Botón para togglear el Sidebar */}
-       
-
         {/* Sidebar */}
-        <div
-          className={`bg-zinc-800 text-white transform ${
-            isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } transition-transform duration-300 ease-in-out fixed h-full`}
-        >
-          {isSidebarOpen && <Sidebar toggleSidebar={toggleSidebar} />}
-          
-        </div>
 
+       
+        <div
+          className={`bg-zinc-800 text-white h-full w-64 fixed lg:static transition-all duration-300 ease-in-out
+           z-40 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
+            lg:translate-x-0`}
+        >
+          <Sidebar toggleSidebar={toggleSidebar} />
+        </div>
+       
         {/* Contenido principal */}
         <div
-          className={`flex-grow h-full lg:h-screen bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-white transition-all duration-300 ${
-            isSidebarOpen ? 'ml-64' : 'ml-0'
-          }`}
+          className={`flex-1 h-full bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-white transition-all duration-300`}
         >
-          <Navbar
-            isSidebarOpen={isSidebarOpen}
-            toggleSidebar={toggleSidebar}
-          />
+          <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
           <div className="px-2 py-2">
             <OrdersTab />
           </div>
@@ -50,6 +44,8 @@ const RootApp = () => {
       </div>
       <ThemeContextProvider />
       <Toaster position="top-center" reverseOrder={true} />
+
+
     </>
   );
 };

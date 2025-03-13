@@ -41,6 +41,9 @@ import {useScreenshot} from "use-react-screenshot";
 import CommentBalancing from "../CommentBalancing.jsx";
 import ImageUrlFormat from './ImageUrlFormat.jsx';
 import { videoShow } from '../../../../infraestructure/states/states_videos.js';
+import { automaticByOper, isOpenModalSample, isOpenModalSampleByOper, openByOper, openOperaClock, operByOper } from '../../../../infraestructure/states/states_samples.js';
+import ModalSelectSamples from './samples/ModalSelectSamples.jsx';
+import ModalByOrder from './samplesByOper/ModalByOrder.jsx';
 
 
 
@@ -79,7 +82,13 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
 
   // useGenerateZones({ opersSelect, balancing, zones });
 
+  const [operaClock, setOperaClock] = useRecoilState(openOperaClock)
+  const [isModalSample, setIsModalSample] = useRecoilState(isOpenModalSample)
+  // isOpenModalSample
+  
 
+  // operByOper
+  // isOpenModalSampleByOper
 
   // Función centralizada para actualizar zonas**
   const updateZones = (callback) => {
@@ -337,8 +346,22 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
           item={showVideos}
       />
       <DraggableVideo/>
+
+  
+
+      {
+        isModalSample && operaClock &&
+          <ModalSelectSamples 
+            itemAll={operaClock.itemAll}
+            Obj={operaClock.obj}
+            isOpen={isModalSample} 
+            setIsOpen={setIsModalSample}/>
+      }
+
+      
     </div>
   );
 };
 
 export default BalancedOperationsTable;
+

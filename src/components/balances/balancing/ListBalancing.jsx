@@ -16,6 +16,8 @@ import {urlMain} from "../../../infraestructure/data/const.js";
 import {detailOperOperations} from "../../../infraestructure/states/states_balancing.js";
 import {checkOpersPosition} from "../../../infraestructure/states/opers_states.js";
 import ImageLightbox from "../../orders/import/ImageLightBox.jsx";
+import { automaticByOper, isOpenModalSampleByOper, openByOper, operByOper } from '../../../infraestructure/states/states_samples.js';
+import ModalByOrder from './tableOperations/samplesByOper/ModalByOrder.jsx';
 
 const ListBalancing = ({componentPDF,imagePdfRef}) => {
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
@@ -29,6 +31,10 @@ const ListBalancing = ({componentPDF,imagePdfRef}) => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
 
 
+  const [isOpenModalByOper, setIsOpenModalByOper] = useRecoilState(openByOper)
+  const [isAutomatic, setIsAutomatic] = useRecoilState(automaticByOper);
+  const [openModalSampleByOper, setOpenModalSampleByOper] = useRecoilState(isOpenModalSampleByOper);
+  const [selectOperByOper, setSelectOperByOper] = useRecoilState(operByOper);
 
   // const { data, loading, error } = useGetList("/products/product_operations");
 
@@ -49,14 +55,34 @@ const ListBalancing = ({componentPDF,imagePdfRef}) => {
     <>
 
       {
-        operationsProduct.length >= 1 && (
-          <BalancedOperationsTable
-            imagePdfRef={imagePdfRef}
-            componentPDF={componentPDF}
-            key={`${JSON.stringify(operationsProduct)}-${JSON.stringify(detailOperOpera)}-${JSON.stringify(selectedOperDetails)}-${JSON.stringify(objBalancing)}`}
-            data={operationsProduct}
-            samSum={samSum}
-          />
+        operationsProduct.length >= 1 && ( 
+          <>
+            <BalancedOperationsTable
+              imagePdfRef={imagePdfRef}
+              componentPDF={componentPDF}
+              key={`${JSON.stringify(operationsProduct)}-${JSON.stringify(detailOperOpera)}-${JSON.stringify(selectedOperDetails)}-${JSON.stringify(objBalancing)}`}
+              data={operationsProduct}
+              samSum={samSum}
+            />
+
+
+            {
+              openModalSampleByOper && (
+                <>
+                  <ModalByOrder
+                    isAutomatic={isAutomatic}
+                    setIsAutomatic={setIsAutomatic}
+                    isOpen={isOpenModalByOper}
+                    setIsOpen={setIsOpenModalByOper}
+                    oper={selectOperByOper}
+                  />
+                </>
+              )
+            }
+
+          </>
+
+          
         )
       }
 

@@ -17,6 +17,7 @@ import { detailOperOperations } from '../../infraestructure/states/states_balanc
 import { checkOperationsBalancing } from '../../infraestructure/states/states_videos.js';
 import OpersMaster from '../opers_master/OpersMaster.jsx';
 import { Avatar } from '@nextui-org/react';
+import { FaEyeSlash } from 'react-icons/fa6';
 
 
 const Sidebar = ({toggleSidebar}) => {
@@ -54,7 +55,7 @@ const Sidebar = ({toggleSidebar}) => {
 
 
 	return (
-		<div className="bg-gray-100 text-zinc-900 h-screen px-4 fixed  w-64 border-r border-gray-300 dark:border-gray-600 dark:bg-zinc-900 dark:text-white z-50">
+		<div className="bg-zinc-800 text-zinc-900 h-screen px-4 fixed  w-64 border-r border-gray-300 dark:border-gray-600 dark:bg-zinc-900 dark:text-white z-50">
 			<div className="flex justify-center mt-4">
 				<button onClick={handleSideBar}>
 					<img
@@ -62,6 +63,8 @@ const Sidebar = ({toggleSidebar}) => {
 						src="/icon/icon.jpeg"
 						alt="Icono de Balance" // Añade un texto alternativo descriptivo
 					/>
+					<span className="text-primary_two font-black text-lg">EnPiso</span> <br />
+					<small className="text-secondary_two font-bold ml-2">BALANCEOS</small>
 				</button>
 			</div>
 		
@@ -84,6 +87,19 @@ const Sidebar = ({toggleSidebar}) => {
 					<DashboardOpers />
 					<OperationsMaster />
 					<OpersMaster />
+
+					<div className="flex flex-col gap-2">
+						<button 
+								onClick={toggleSidebar}
+								className="flex justify-center font-bold border-1 border-secondary_two px-1 py-1 rounded-md ">
+								<FaEyeSlash className="text-secondary_one mr-2 mt-1" size={20}/>
+								<span className="text-secondary_one mt-1">
+									Ocultar
+								</span>
+						</button>
+
+					</div>
+					
 				</div>
 			)}
 		</div>

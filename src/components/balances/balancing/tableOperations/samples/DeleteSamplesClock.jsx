@@ -11,7 +11,7 @@ import { useRecoilState } from 'recoil'
 import { openOperaClock, operationsSamples } from '../../../../../infraestructure/states/states_samples'
 import { detailOperOperations } from '../../../../../infraestructure/states/states_balancing'
 
-const ConfirmDeleteSample = ({sample, index, setSamples, samples}) => {
+const DeleteSamplesClock = ({sample, index, setSamples, samples, isSample}) => {
   const [isDelete, setIsDelete] = useState(false)
 
   const [isOpenConfirm, setIsOpenConfirm] = useState(false)
@@ -54,24 +54,18 @@ const ConfirmDeleteSample = ({sample, index, setSamples, samples}) => {
                 )
               );
             }
+           const detail_oper_operation_id = isSample.detail_oper_operation_id
             
-            // console.log(operaClock)
-            
-
-            const detail_id = operaClock.obj.detail_id
-          
             // Actualizar el `samplings_count` en el objeto correspondiente
             const updatedDetail = detailOperOpera.map(item => 
-              item.detail.id === detail_id
+              item.detail.id === detail_oper_operation_id
                 ? { ...item, detail: { ...item.detail, samplings_count: item.detail.samplings_count - 1 } }
                 : item
             );
             
-          
             setDetailOperOpera(updatedDetail)
-            
-          
-            setDetailOperOpera(updatedDetail)
+           
+           // setDetailOperOpera(updatedDetail)
            // console.log(detailOperOpera, operaClock)
             
            toast("La muestra ha sida eliminada")
@@ -94,7 +88,7 @@ const ConfirmDeleteSample = ({sample, index, setSamples, samples}) => {
           className="flex items-center text-red-500 ml-2"
           title="Eliminar muestra"
         >
-          <FaDeleteLeft size={20}/>
+          <FaDeleteLeft size={20}/>  
         </button>
       </Tooltip>
      
@@ -113,4 +107,4 @@ const ConfirmDeleteSample = ({sample, index, setSamples, samples}) => {
   )
 }
 
-export default ConfirmDeleteSample
+export default DeleteSamplesClock

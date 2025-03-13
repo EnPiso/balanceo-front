@@ -137,7 +137,7 @@ const ModalSelectSamples = ({isOpen, setIsOpen, Obj, itemAll}) => {
                 {
                   isNewSamples ? (
                     <>
-                      <StepTimeSelector Obj={Obj}/>
+                      <StepTimeSelector Obj={Obj} itemAll={itemAll}/>
                       <div className="flex justify-end text-red-700 font-bold ">
                         <button 
                           className="mr-2 flex"

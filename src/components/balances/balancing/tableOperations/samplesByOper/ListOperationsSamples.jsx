@@ -1,25 +1,30 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaUser } from 'react-icons/fa'
 import { FaClock } from 'react-icons/fa6'
 import { useRecoilState } from 'recoil'
-import { operationsSamples } from '../../../../../infraestructure/states/states_samples'
+import { isSampleObj, operationsSamples } from '../../../../../infraestructure/states/states_samples'
 import ObjOperationSample from './ObjOperationSample'
 
 const ListOperationsSamples = () => {
 
 
-  const [isSample, setIsSample] = useState(false)
+  const [isSample, setIsSample] = useRecoilState(isSampleObj)
 
   const [samplesClock, setSamplesClock] = useState([])
   
 
   const [samplesOperations, setSamplesOperations] = useRecoilState(operationsSamples)
   
+  useEffect(()=> {
+    console.log(samplesOperations)
+    debugger
+  }, [])
 
   const handleSample = (sample) => {
     setIsSample(sample)
     console.log(sample)
   }
+
 
   return (
 

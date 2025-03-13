@@ -12,6 +12,7 @@ import { FaClosedCaptioning } from 'react-icons/fa6'
 import TableSamplesByOper from './TableSamplesByOper'
 import { operationsSamples } from '../../../../../infraestructure/states/states_samples'
 import { useRecoilState } from 'recoil'
+import { detailOperOperations } from '../../../../../infraestructure/states/states_balancing'
 
 const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock, setSamplesClock}) => {
   const {operation} = sampleOperation
@@ -25,6 +26,7 @@ const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock
   const [isLoading, setIsloading] = useState(false)
 
   const [samplesOperations, setSamplesOperations] = useRecoilState(operationsSamples)
+  const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations)
   
 
   const handleSample = (sample) => {
@@ -65,6 +67,18 @@ const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock
           )
         );
 
+        const operations_balancing_id = sampleOperation.operations_balancing_id
+
+          // Actualizar el `samplings_count` en el objeto correspondiente
+          const updatedDetail = detailOperOpera.map(item => 
+            item.detail.operations_balancing_id === operations_balancing_id
+              ? { ...item, detail: { ...item.detail, samplings_count: item.detail.samplings_count + 1 } }
+              : item
+          );
+          
+        
+        setDetailOperOpera(updatedDetail)
+        
         toast.success("Se ha creado la muestra exitosamente")
       } catch (error) {
         console.error('Error setting data', error);
@@ -136,7 +150,7 @@ const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock
                       <div
                         className={`text-md capitalize font-bold
                         ${isSample && operation.id === isSample.operation.id ? ' text-green-700' : ''}`}>
-                        {operation.operation}
+                        {operation.operation} 
                       </div>
                       {
                         isSample && operation.id === isSample.operation.id ? 

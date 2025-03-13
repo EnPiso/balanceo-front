@@ -179,6 +179,8 @@ const TableRowOperations = ({
 
               const color = operatorDetail?.detail?.color || "";
 
+              const samplingsCount = operatorDetail?.detail?.samplings_count || 0;
+
               return (
                 <>
 
@@ -190,6 +192,7 @@ const TableRowOperations = ({
                     i={index}
                     polyvalenceDetail={polyvalence}
                     color={color}
+                    samplingsCount={samplingsCount}
                   />
                 </>
               );

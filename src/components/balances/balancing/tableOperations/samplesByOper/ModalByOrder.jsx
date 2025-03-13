@@ -15,7 +15,7 @@ import CustomButton from "../../../../../ui/CustomButton";
 
 import { FaArrowsTurnRight, FaClock, FaClockRotateLeft } from "react-icons/fa6";
 import { useRecoilState } from "recoil";
-import { operationsSamples } from "../../../../../infraestructure/states/states_samples";
+import { isSampleObj, operationsSamples } from "../../../../../infraestructure/states/states_samples";
 import ListOperationsSamples from "./ListOperationsSamples";
 import DashboardSamplesAutomatic from "../samplesAutomatic/DashboardSamplesAutomatic";
 
@@ -31,7 +31,7 @@ const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) =>
   
   const [samplesOperations, setSamplesOperations] = useRecoilState(operationsSamples)
 
-
+  const [isSample, setIsSample] = useRecoilState(isSampleObj)
   return (
     <div className="flex flex-col gap-2">
 
@@ -41,7 +41,7 @@ const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) =>
       scrollBehavior={"inside"}
       onOpenChange={(isOpenState) => {
         setIsOpen(isOpenState)
-        
+        setIsSample(false)
       }} // Actualiza el estado
     >
       <ModalContent>
@@ -91,10 +91,10 @@ const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) =>
 
                     {
                       isAutomatic ? 
-                      <DashboardSamplesAutomatic
-                        setIsAutomatic={setIsAutomatic}
-                      /> :
-                      <ListOperationsSamples/>
+                        <DashboardSamplesAutomatic
+                          setIsAutomatic={setIsAutomatic}
+                        /> :
+                        <ListOperationsSamples/>
                     }
                    
               

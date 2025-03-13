@@ -12,7 +12,7 @@ import {isPDFGenerate} from "../../../../infraestructure/states/order_states.js"
 import { FaClock } from 'react-icons/fa';
 import ButtonClockOperation from './samples/ButtonClockOperation.jsx';
 
-const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvalenceDetail, color}) => {
+const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvalenceDetail, color, samplingsCount, isOpenClockOperation, setIsOpenClockOperation}) => {
   const [changePolyvalence,setChangePolyvalence] = useState(false)
   const [data,setData] = useState(null)
   const [polyvalence,setPolyvalence] = useState(0)
@@ -171,12 +171,13 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
               <div
                 className="flex justify-around cursor-pointer"
                 >
+                  
                   <ButtonClockOperation 
                     item={item} 
                     selectedOperDetails={selectedOperDetails} 
                     i={i}
-                  />
-              
+                    samplingsCount={samplingsCount}
+                  /> 
                 <div>
 
 

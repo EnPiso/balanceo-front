@@ -4,7 +4,7 @@ import { urlMain } from '../../../../../infraestructure/data/const';
 import { Spinner, Tooltip } from '@nextui-org/react';
 import ModalByOrder from './ModalByOrder';
 import { useRecoilState } from 'recoil';
-import { operationsSamples } from '../../../../../infraestructure/states/states_samples';
+import { automaticByOper, isOpenModalSampleByOper, openByOper, operationsSamples, operByOper } from '../../../../../infraestructure/states/states_samples';
 import { FaRegTimesCircle, FaTimes, FaTimesCircle } from 'react-icons/fa';
 import { FaClock, FaTimeline } from 'react-icons/fa6';
 import { firstWordInString } from '../../../../../ui/utils';
@@ -19,12 +19,17 @@ const ButtonSamplesByOper = ({oper,objBalancing}) => {
 
   const [samplesOperations, setSamplesOperations] = useRecoilState(operationsSamples)
 
-  const [isAutomatic, setIsAutomatic] = useState(false);
+
+  
+  const [isOpenModalByOper, setIsOpenModalByOper] = useRecoilState(openByOper)
+  const [isAutomatic, setIsAutomatic] = useRecoilState(automaticByOper);
+  const [openModalSampleByOper, setOpenModalSampleByOper] = useRecoilState(isOpenModalSampleByOper);
+  const [selectOperByOper, setSelectOperByOper] = useRecoilState(operByOper);
+
   
 
-
   const handleSample = (oper) => {
-   
+    setSelectOperByOper(oper)
     const balancing_id = objBalancing.balancing_id
     const oper_id = oper.id
 
@@ -35,8 +40,9 @@ const ButtonSamplesByOper = ({oper,objBalancing}) => {
         // console.log(result,oper)
         setSamplesOperations(result.operations)
         
-        setIsShowModal(true)
-        setIsOpen(true)
+       // setIsShowModal(true)
+        setOpenModalSampleByOper(true)
+        setIsOpenModalByOper(true)
 
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -72,19 +78,7 @@ const ButtonSamplesByOper = ({oper,objBalancing}) => {
           
       }
 
-      {
-        showModal && (
-          <>
-            <ModalByOrder
-              isAutomatic={isAutomatic}
-              setIsAutomatic={setIsAutomatic}
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-              oper={oper}
-            />
-          </>
-        )
-      }
+     
     </>
   )
 }

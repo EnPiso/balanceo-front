@@ -8,6 +8,7 @@ import EditWatchChrono from '../../../../samples/EditWatchChrono'
 import { timeToSeconds } from '../../../../../ui/utils'
 import LastObjForPolyvalence from '../samples/LastObjForPolyvalence'
 import { FaEdit } from 'react-icons/fa'
+import DeleteSamplesClock from '../samples/DeleteSamplesClock'
 
 const ListSamplesClock = (
   {
@@ -124,11 +125,12 @@ const ListSamplesClock = (
                         <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">
                           
                           <span className="flex justify-end">
-                            <ConfirmDeleteSample 
+                            <DeleteSamplesClock
+                              isSample={isSample}
                               sample={sample} 
                               index={i+1} 
                               setSamples={setSamplesClock} 
-                              samples={samplesClock}/>
+                              samples={samplesClock}/> 
                           </span>
                           
                         </td>

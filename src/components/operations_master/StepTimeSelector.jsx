@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil';
 import { stepsSamples } from '../../infraestructure/states/states_samples';
 import SaveStep from './SaveStep';
 
-const   StepTimeSelector = ({Obj}) => {
+const   StepTimeSelector = ({Obj,itemAll}) => {
   const [steps, setSteps] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
@@ -114,7 +114,7 @@ const   StepTimeSelector = ({Obj}) => {
                     Cancelar edición
                   </span>
                 </button> ) : (
-                  <SaveStep steps={steps} Obj={Obj} />
+                  <SaveStep steps={steps} Obj={Obj} itemAll={itemAll} />
                 )
             }
           </div>
