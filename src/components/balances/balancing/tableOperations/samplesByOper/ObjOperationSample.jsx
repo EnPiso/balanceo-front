@@ -66,15 +66,15 @@ const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock
               : operation
           )
         );
-
-        const operations_balancing_id = sampleOperation.operations_balancing_id
+        
+       
 
           // Actualizar el `samplings_count` en el objeto correspondiente
-          const updatedDetail = detailOperOpera.map(item => 
-            item.detail.operations_balancing_id === operations_balancing_id
-              ? { ...item, detail: { ...item.detail, samplings_count: item.detail.samplings_count + 1 } }
-              : item
-          );
+        const updatedDetail = detailOperOpera.map(item => 
+          item.detail.id === detail_oper_operation_id
+            ? { ...item, detail: { ...item.detail, samplings_count: item.detail.samplings_count + 1 } }
+            : item
+        );
           
         
         setDetailOperOpera(updatedDetail)

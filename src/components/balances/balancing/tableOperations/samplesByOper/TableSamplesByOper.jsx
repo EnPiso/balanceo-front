@@ -66,7 +66,7 @@ const TableSamplesByOper = ({
                               <span className="flex justify-end">
                                 {
                                   Math.round((samSeg / timeToSeconds(sample.sample)) * 100)
-                                } %
+                                } %  
                               </span>
                               
                             </td>
