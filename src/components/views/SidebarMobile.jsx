@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {sidebarData} from "../../infraestructure/data/sidebar.jsx";
 import {useRecoilState} from "recoil";
 import {sideBarNav} from "../../infraestructure/states/states_navigation.js";
@@ -17,10 +17,12 @@ import { detailOperOperations } from '../../infraestructure/states/states_balanc
 import { checkOperationsBalancing } from '../../infraestructure/states/states_videos.js';
 import OpersMaster from '../opers_master/OpersMaster.jsx';
 import { Avatar } from '@nextui-org/react';
-import { FaEyeSlash } from 'react-icons/fa6';
+import { FaAnchorCircleCheck, FaBoxArchive, FaEye, FaEyeSlash, FaUserGroup } from 'react-icons/fa6';
+import { FaAccessibleIcon, FaFolder, FaRegFileExcel, FaUser } from 'react-icons/fa';
+import { AiTwotoneFolderOpen } from 'react-icons/ai';
 
 
-const Sidebar = ({toggleSidebar}) => {
+const SidebarMobile = ({toggleSidebar}) => {
 	const [sideArray,setSideArray] = useRecoilState(sideBarNav)
 	const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
 	const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
@@ -39,11 +41,6 @@ const Sidebar = ({toggleSidebar}) => {
 		const [selOpeVideos, setSelOpeVideos] = useRecoilState(checkOperationsBalancing);
 	
 		const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
-
-		const [isOpen, setIsOpen] = useState(false);
-		
-			// Función para abrir y cerrar el lightbox
-		const toggleLightbox = () => setIsOpen(!isOpen);
 	
 
 
@@ -60,62 +57,54 @@ const Sidebar = ({toggleSidebar}) => {
 
 
 	return (
-		
-		<div className="bg-zinc-800 text-zinc-900 h-screen px-4 fixed w-38 dark:bg-zinc-900 dark:text-white z-50">
-			<div className="flex flex-col items-center mt-4 mb-2">
-        <button onClick={handleSideBar} className="flex flex-col items-center">
-          <img
-            className="w-36 h-36 object-contain mb-2" // Ajusta 'w-8 h-8' al tamaño de ícono deseado
-            src="/icon/icon.jpeg"
-            alt="Icono de Balance" // Añade un texto alternativo descriptivo
-          />
-          <p className="text-primary_two font-black text-4xl text-center m-0"> 
+		<div className="bg-zinc-800 text-zinc-900 h-screen px-4 fixed w-22 drop-shadow-xl  dark:bg-zinc-900 dark:text-white z-50">
+			<div className="flex flex-col items-center mt-2 mb-2">
+				<button onClick={handleSideBar} className="flex flex-col items-center">
+					<img
+						className="w-14 h-14 object-contain mb-2"
+						src="/icon/icon.jpeg"
+						alt="Icono de Balance"
+					/>
+					<p className="text-primary_two font-black text-xl text-center m-0 ">
 						<span>
-							<span className='text-secondary_two'>
-								En
-							</span>
-							<span className='text-primary_two'>
-								Piso	
-							</span>	
-						</span> 
+							<span className="text-secondary_two">En</span>
+							<span className="text-primary_two">Piso</span>
+						</span>
 					</p>
-				
-          <p className="text-secondary_two  text-lg text-center m-0">BALANCEOS</p>
+					<p className="text-secondary_two text-xs text-center m-0">BALANCEOS</p>
+				</button>
+			</div>
+			
+			{objBalancing ? (
+				<>
+					<InfoBoxBalancing />
+					<div className="mt-2 hidden lg:block">
+						
+						<ImageLightbox
+							thumbnailUrl={showOrder.order.image_url}
+							fullSizeUrl={showOrder.order.image_url}
+							alt={`medida ${showOrder.order.code}`}
+							key={showOrder.order.code}
+						/>
+					</div>
+				</>
+			) : (
+				<div className="shadow-md max-w-md mx-auto space-y-3 py-5">
+					<OrderDashboardModal />
+					<DashboardProducts />
+					<DashboardOpers />
+					<OperationsMaster />
+					<OpersMaster />
 
-        </button>
-
-				<div className='mt-5'>
-					{objBalancing ? (
-						<>
-							<InfoBoxBalancing />
-							<div className="mt-2">
-								<ImageLightbox
-									thumbnailUrl={showOrder.order.image_url}
-									fullSizeUrl={showOrder.order.image_url}
-									alt={`medida ${showOrder.order.code}`}
-									key={showOrder.order.code}
-								/>
-							</div>
-						</>
-					) : (
-						<div>
-							<OrderDashboardModal />
-							<DashboardProducts />
-							<DashboardOpers />
-							<OperationsMaster />
-							<OpersMaster />
-
-							
-						</div>
-					)}
+					
 				</div>
+			)}
 
-      </div>
-			
-			
+
+
 		</div>
 
 	)
 }
 
-export default Sidebar
+export default SidebarMobile

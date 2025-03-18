@@ -6,28 +6,28 @@ import { Tooltip } from '@nextui-org/react'
 const ObjForPolyvalence = ({sample, setSamples, i, isEdit, handleEdit, samSeg, samples}) => {
   return (
     <tr className="odd:bg-white even:bg-gray-100 dark:odd:bg-gray-800 dark:even:bg-gray-900 text-gray-900 dark:text-white">
-      <td className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-center">
+      <td className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-center font-bold">
         {i+1}  
       </td>
       <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">
         <Tooltip content="Editar muestra">
-          <span onClick={() => handleEdit(sample)} className={`flex justify-between items-center cursor-pointer ${isEdit && isEdit.id === sample.id && 'text-green-700'}`}>
+          <span onClick={() => handleEdit(sample)} className={`font-bold flex justify-between items-center cursor-pointer ${isEdit && isEdit.id === sample.id && 'text-green-700'}`}>
             {sample.sample}    
-            <span>
-            {timeToSeconds(sample.sample)}  
+            <span className='font-bold'>
+            {timeToSeconds(sample.sample)} s
             </span>      
                 
           </span>
         </Tooltip> 
       </td>
       <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">
-        <span className="flex justify-end">
-          {samSeg}
+        <span className="flex justify-end font-bold">
+          {samSeg} s
         </span>
       </td>
       <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">
         
-        <span className="flex justify-end">
+        <span className="flex justify-end text-zinc-800 font-bold">
           {
             Math.round((samSeg / timeToSeconds(sample.sample)) * 100)
           } %

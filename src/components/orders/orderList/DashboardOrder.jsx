@@ -1,19 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import {Card, CardHeader, CardBody, Image, Spinner, Tooltip} from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Image, Spinner, Tooltip } from "@nextui-org/react";
 import CustomPaginator from "../../../ui/CustomPaginator.jsx";
 import { fetchGetData } from "../../../infraestructure/call_api/crud.js";
 import { urlMain } from "../../../infraestructure/data/const.js";
 import { useRecoilState } from "recoil";
-import {orderList, showOrderObj} from "../../../infraestructure/states/order_states.js";
+import { orderList, showOrderObj } from "../../../infraestructure/states/order_states.js";
 import FileArchiver from "./FileArchiver.jsx";
-import {FaFile} from "react-icons/fa6";
-import {FaFileArchive} from "react-icons/fa";
+import { FaDownLong, FaFile, FaFolderClosed, FaUpLong } from "react-icons/fa6";
+import { FaDoorClosed, FaFileArchive, FaSearch, FaSearchLocation, FaWindowClose } from "react-icons/fa";
 import ShowOrder from "../show/ShowOrder.jsx";
 import OrderDetail from "../show/OrderDetail.jsx";
-import {AiFillCheckCircle, AiFillDatabase, AiFillStop, AiOutlineSortDescending, AiTwotoneStop} from "react-icons/ai";
+import { AiFillCheckCircle, AiFillDatabase, AiFillStop, AiOutlineSortDescending, AiTwotoneStop } from "react-icons/ai";
 import GenerateImgPdf from "./GenerateImgPdf.jsx";
 import PdfBalancingImg from "./PdfBalancingImg.jsx";
-import {hourMinuteSecond, monthDayYear} from "../../../infraestructure/utils/dateFormat.js";
+import { hourMinuteSecond, monthDayYear } from "../../../infraestructure/utils/dateFormat.js";
 import SearchDashboardOrders from "./SearchOrdersCustom.jsx";
 import SearchDateOrders from "./SearchDateOrders.jsx";
 import { allOperationsProduct } from "../../../infraestructure/states/operation_states.js";
@@ -21,63 +21,44 @@ import { detailOperOperations, numberCurrentPage } from "../../../infraestructur
 import { BsArrow90DegUp, BsArrowDown, BsArrowDownCircle, BsArrowUpCircle } from "react-icons/bs";
 import DashboardOrderMobile from "./responsive/DashboardOrderMobile.jsx";
 
+const totalPaginate = [5, 10, 20, 30, 40, 50];
 
-
-
-const totalPaginate = [10,20,30,40,50]
-
-
-const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
+const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
   const [orders, setOrders] = useRecoilState(orderList);
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
-
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
-  
-  
-
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useRecoilState(numberCurrentPage); // Página actual
   const [totalPages, setTotalPages] = useState(1); // Total de páginas
   const [perPage, setPerPage] = useState(10); // Total de páginas
-
   const [queryDate, setQueryDate] = useState(null); // Estado para el valor del input
-
   const [queryString, setQueryString] = useState("");
-
   const [desc, setDesc] = useState(true);
-
-
-  const pdfDiv = useRef(null)
-
-
+  const [isSearchVisible, setIsSearchVisible] = useState(false); // Estado para controlar la visibilidad de SearchDateOrders
+  const pdfDiv = useRef(null);
 
   useEffect(() => {
-    fetchOrders(currentPage, perPage, desc)
-  }, [queryDate,queryString]);
+    fetchOrders(currentPage, perPage, desc);
+  }, [queryDate, queryString]);
 
-  useEffect(()=> {
-    fetchOrders(currentPage, perPage, desc)
-  }, [desc])
+  useEffect(() => {
+    fetchOrders(currentPage, perPage, desc);
+  }, [desc]);
 
   const fetchOrders = async (page, per_page, desc) => {
     setIsLoading(true);
-    
+
     try {
       const formattedDate = queryDate ? queryDate.toString() : '';
-      const stringSearch = queryString
-    
-      
+      const stringSearch = queryString;
+
       const result = await fetchGetData(
         `${urlMain}orders?page=${page}&archive=${false}&per_page=${per_page}&desc=${desc}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_or_products_name_or_products_category_product_name_or_products_reference_cont]=${encodeURIComponent(stringSearch)}`
-       
       );
-            
+
       setOrders(result.orders);
       setTotalPages(result.total_pages);
       setCurrentPage(result.current_page);
-
-      // setQueryString("")
-      // setQueryDate(null)
     } catch (error) {
       console.error("Error al obtener los datos:", error);
     } finally {
@@ -85,217 +66,206 @@ const DashboardOrder = ({setIsArchive, isArchive, archive}) => {
     }
   };
 
-
   const handlePageChange = (page) => {
     setCurrentPage(page);
     fetchOrders(page, perPage, desc);
   };
 
   const handlePerPageChange = (page) => {
+    setPerPage(page);
+    fetchOrders(1, page, desc);
+  };
 
-    setPerPage(page)
-    fetchOrders(1,page, desc);
+  const toggleSearchVisibility = () => {
+    setIsSearchVisible(!isSearchVisible);
   };
 
   return (
     <div>
-      <div className="grow p-8 overflow-y-auto bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100">
-        {
-          !showOrder && 
-            <SearchDateOrders
-              queryString={queryString}
-              setQueryString={setQueryString}
-              queryDate={queryDate}
-              setQueryDate={setQueryDate}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-            />
-        }
-        
+      <div className="grow p-3 overflow-y-auto bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100">
+        {!isLoading && (
+          <>
+            <div className="block lg:hidden">
+             
+              <div className="flex justify-between items-center">
+              {
+                !showOrder && 
+                  <h1 className="text-xl font-semibold py-6 uppercase text-secondary_one">
+                    Ordenes de producción
+                  </h1>
+              }
 
-        {
-          showOrder ? <OrderDetail /> : (
-            <>
-              {isLoading ? (
-                <div className="flex items-center justify-center h-screen">
-                  <Spinner color="default" size="lg" />
+              <div>
+                  {
+                    !showOrder && 
+                    <button
+                      onClick={toggleSearchVisibility}
+                      className="text-primary_one font-bold"
+                    >
+                      {isSearchVisible ? <FaWindowClose size={28}/> : <FaSearch size={28}/>}
+                    </button>
+                  }
                 </div>
-              ) : (
-                <div>
+              </div>
+              
+            </div>
+            
+            { 
+              !showOrder && (
+                <div className="hidden lg:block">
+                  <span className="flex justify-start items-center ">
+                    <button onClick={() => setIsArchive(false)}>
+                      <h3 className="text-md lg:text-2xl font-semibold py-6 uppercase text-secondary_one hover:text-zinc-800 flex justify-between hover:underline">
+                        Ordenes de producción
+                        <FaFile className="mt-1 ml-1" />
+                      </h3>
+                    </button>
+                    <button onClick={() => setIsArchive(true)} className="ml-4">
+                      <h3 className="text-md lg:text-2xl font-semibold py-6 uppercase text-secondary_one hover:text-zinc-800 flex justify-between hover:underline">
+                        Archivadas
+                        <FaFileArchive color="red" className="mt-1 ml-1" />
+                      </h3>
+                    </button>
+                  </span>
+                </div>
+              )
+            }
+           
+          </>
+        )}
 
-                  <div className="hidden lg:block">
-                    <span className="flex justify-start items-center ">
-                      <button
-                        onClick={()=> setIsArchive(false)}>
-                        <h3
-                          className="text-md font-semibold mb-4 hover:text-zinc-500 flex justify-between hover:underline uppercase">
-                          Ordenes
-                          <FaFile
-                              color="green"
-                              className="mt-1 ml-1"/>
-                        </h3>
-                      </button>
-                      <button
-                        onClick={()=> setIsArchive(true)}
-                        className="ml-4">
-                        <h3
-                          className="text-md  mb-4 hover:text-zinc-500 flex justify-between hover:underline  ">
-                          Archivadas
-                          <FaFileArchive
-                              color="red"
-                              className="mt-1 ml-1"/>
-                        </h3>
-                      </button>
-                    </span>
-                    </div>
+        {!showOrder && (
+          <>
+            
+            {isSearchVisible && (
+              <div className="block lg:hidden">
+                <SearchDateOrders
+                  queryString={queryString}
+                  setQueryString={setQueryString}
+                  queryDate={queryDate}
+                  setQueryDate={setQueryDate}
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
+                />
+              </div>
+            )}
+          </>
+        )}
 
-                    {
-                      orders.length >= 5 && (
-                        <div className="block lg:hidden">
-                          <div className="flex justify-start py-4 ">
-                            <CustomPaginator
-                              total={totalPages}
-                              initialPage={currentPage}
-                              onChange={handlePageChange}
-                              key={JSON.stringify(orders)}
-                            />
-                          </div>
-                        </div>
-                      )
-                    }
-                    
-                   
-                  
-                  <div className="hidden lg:block">
-                    <table className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-md border border-gray-300">
-                      <thead>
+        {showOrder ? (
+          <OrderDetail />
+        ) : (
+          <>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-screen">
+                <Spinner color="default" size="lg" />
+              </div>
+            ) : (
+              <div>
+                <div className="hidden lg:block">
+                  <SearchDateOrders
+                    queryString={queryString}
+                    setQueryString={setQueryString}
+                    queryDate={queryDate}
+                    setQueryDate={setQueryDate}
+                    isLoading={isLoading}
+                    setIsLoading={setIsLoading}
+                  />
+                  <table className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg  border border-gray-300 mt-2">
+                    <thead>
                       <tr className="dark:bg-gray-100 bg-zinc-800 text-zinc-100 dark:text-zinc-800">
-                        <th className="p-4 text-left font-medium border border-gray-300">Orden de producción</th>
-                        <th className="p-4 text-left font-medium border border-gray-300">Referencias</th>
-                        <th className="p-4 text-left font-medium border border-gray-300  flex justify-between items-center">
-                          <span>Creación</span>
+                        <th className="p-4 text-left font-medium border border-gray-300 text-secondary_two">
+                          Orden de producción
+                        </th>
+                        <th className="p-4 text-left font-medium border border-gray-300 text-secondary_two">
+                          Referencias
+                        </th>
+                        <th className="p-4 text-left font-medium border border-gray-300 flex justify-between items-center">
+                          <span className="text-secondary_two">Creación</span>
                           <Tooltip content="Cantidad de balanceos">
                             <span className="flex space-x-2">
-
-                              {
-                                totalPaginate.map((page, i) => {
-                                  return (
-                                      <>
-                                          <span
-                                              onClick={() => handlePerPageChange(page)}
-                                              className={`cursor-pointer ${perPage === page && 'text-green-600'}`}
-                                              key={i}>
-                                            {page}
-                                          </span>
-                                      </>
-                                  )
-                                })
-                              }
+                              {totalPaginate.map((page, i) => (
+                                  <span
+                                    onClick={() => handlePerPageChange(page)}
+                                    className={`cursor-pointer  ${perPage === page && 'text-secondary_two'}`}
+                                    key={i}
+                                  >
+                                    {page}
+                                  </span>
+                              ))}
                               <span>
-                                {
-                                  desc ? (
-                                  <>
-                                    <button onClick={() => setDesc(false)}>
-                                      <BsArrowDownCircle size={28} color="green" />
-                                    </button>
-                                  </>
-                                  ) :( 
-                                  <>
-                                    <button onClick={() => setDesc(true)}>
-                                      <BsArrowUpCircle size={28} color="green" />
-                                    </button>
-                                  </>
-                                  )
-                                }
-                                
-                                
+                                {desc ? (
+                                  <button onClick={() => setDesc(false)}>
+                                    <FaDownLong size={28} className="text-secondary_two" />
+                                  </button>
+                                ) : (
+                                  <button onClick={() => setDesc(true)}>
+                                    <FaUpLong size={28} className="text-secondary_two" />
+                                  </button>
+                                )}
                               </span>
                             </span>
                           </Tooltip>
-                          
                         </th>
                       </tr>
-                      </thead>
-                      <tbody>
+                    </thead>
+                    <tbody>
                       {orders.map((order) => (
-                          <tr key={order.id}>
-                            <td className="p-4 border border-gray-300">
-                              <ShowOrder order={order}/>
-
-                            </td>
-                            <td className="p-4 border border-gray-300">
-                              {order.products.map((product, i) => (
-                                  <>
-                                    <GenerateImgPdf
-                                        pdfDiv={pdfDiv}
-                                        order={order}
-                                        product={product}
-                                        key={i}
-                                />
-
-                              </>
+                        <tr key={order.id}>
+                          <td className="p-2 border border-gray-300">
+                            <ShowOrder order={order} />
+                          </td>
+                          <td className="p-2 border border-gray-300">
+                            {order.products.map((product, i) => (
+                              <GenerateImgPdf
+                                pdfDiv={pdfDiv}
+                                order={order}
+                                product={product}
+                                key={i}
+                              />
                             ))}
                           </td>
-                          <td className="p-4 border border-gray-300">
-
+                          <td className="p-2 border border-gray-300">
                             <span className="flex justify-between items-center">
                               <span>
-
-                                {
-                                  order.created_at && monthDayYear(order.created_at)
-                                }
-
-
+                                {order.created_at && monthDayYear(order.created_at)}
                                 <small className="ml-2 font-bold text-black">
-                                  {
-                                      order.created_at && hourMinuteSecond(order.created_at)
-                                  }
-
+                                  {order.created_at && hourMinuteSecond(order.created_at)}
                                 </small>
                               </span>
-
-
-
-                              <FileArchiver
-                                  order={order}
-                              />
+                              <FileArchiver order={order} />
                             </span>
                           </td>
                         </tr>
                       ))}
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="block lg:hidden">
-                    <DashboardOrderMobile/>
-                  </div>
-                    
-
+                    </tbody>
+                  </table>
                 </div>
-              )}
-
-
-              <div className="flex justify-start py-4">
-                <CustomPaginator
-                  total={totalPages}
-                  initialPage={currentPage}
-                  onChange={handlePageChange}
-                  key={JSON.stringify(orders)}
-                />
+                <div className="block lg:hidden">
+                  <DashboardOrderMobile
+                    totalPaginate={totalPaginate}
+                    handlePerPageChange={handlePerPageChange}
+                    perPage={perPage}
+                    setDesc={setDesc}
+                    desc={desc}
+                  />
+                </div>
               </div>
-            </>
-          )
-        }
+            )}
 
-
-
+            <div className="flex justify-start py-4">
+              <CustomPaginator
+                total={totalPages}
+                initialPage={currentPage}
+                onChange={handlePageChange}
+                key={JSON.stringify(orders)}
+              />
+            </div>
+          </>
+        )}
       </div>
 
-
-    <PdfBalancingImg
-        pdfDiv={pdfDiv}
-    />
-
+      <PdfBalancingImg pdfDiv={pdfDiv} />
     </div>
   );
 };

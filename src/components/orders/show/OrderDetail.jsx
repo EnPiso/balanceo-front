@@ -4,7 +4,7 @@ import { orderObjBalancing, showOrderObj } from "../../../infraestructure/states
 import ProductCard from "./ProductCard.jsx";
 import React, { useState, useEffect } from "react";
 import ImageLightbox from "../import/ImageLightBox.jsx";
-import { FaCalendar } from "react-icons/fa6";
+import { FaCalendar, FaDownLong, FaUpLong } from "react-icons/fa6";
 import { BalancingDashboard } from "../../balances/balancing/BalancingDashboard.jsx";
 import {FaBackward} from "react-icons/fa";
 import SaveBalance from "./SaveBalance.jsx";
@@ -21,6 +21,8 @@ import {checkOperationsBalancing} from "../../../infraestructure/states/states_v
 import ModalCustomProduct from "../../balances/balancing/customProduct/ModalCustomProduct.jsx";
 import {hourMinuteSecond, monthDayYear} from "../../../infraestructure/utils/dateFormat.js";
 import GoToBalanceProduct from "../../operations_master/GoToBalanceProduct.jsx";
+import MyCustomButton from "../../../ui/MyCustomButton.jsx";
+import { zonesMobile } from "../../../infraestructure/states/states_mobile.js";
 
 const OrderDetail = () => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
@@ -44,6 +46,7 @@ const OrderDetail = () => {
   const [selOpeVideos, setSelOpeVideos] = useRecoilState(checkOperationsBalancing);
 
   const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
+  const [zonesOperUpdate, setZonesOperUpdate] = useRecoilState(zonesMobile);
 
 
 
@@ -104,99 +107,164 @@ const OrderDetail = () => {
     setSamSum(0)
     setDetailOperOpera([])
     setSelOpeVideos(null)
-
+    setZonesOperUpdate([])
   }
 
 
   if (!showOrder) return <p>Loading...</p>;
 
   return (
-    <div className="p-8 space-y-8">
+    <div className="space-y-8 ">
       {objBalancing ? (
         <>
-          <div className="mt-4 flex justify-between items-center">
 
 
-            {
-                prodPlantOriginal && (
-                    <>
-                      <h1 className="font-bold uppercase text-zinc-700 text-2xl">
-                        {prodPlantOriginal && prodPlantOriginal["plant"].name}
-                      </h1>
-                      <h2 className="font-bold uppercase text-zinc-500 text-md">
-                        {prodPlantOriginal && prodPlantOriginal["module"].name}
-                      </h2>
-                    </>
-                )
-            }
+          <div className="">
+            <div className="ml-2">
 
-            <h3 className="font-bold uppercase text-zinc-500 text-md">
+              <div className="hidden lg:block">
+                  <div className="mt-4  flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-1 lg:space-y-0">
+                    {prodPlantOriginal && (
+                      <>
+                        <div>
+                          <h1 className="font-bold uppercase text-secondary_two text-xl lg:text-2xl">
+                            <span className="bg-primary_one px-1">
+                              {prodPlantOriginal["plant"].name}
+                            </span>
+                          </h1>
+                          <h2 className="font-bold uppercase text-zinc-800 text-sm lg:text-md">
+                            <span className="bg-zinc-300 px-1">
+                              {prodPlantOriginal["module"].name}
+                            </span>
+                            
+                          </h2>
+                        </div>
+                      </>
+                    )}
 
-              {
-                  "  " + objBalancing.product.name
+                    <h3 className="font-bold uppercase text-zinc-500 text-sm lg:text-md">
+                      {"  " + objBalancing.product.name}
+                    </h3>
+                    <h3 className="font-bold uppercase text-zinc-500 text-sm lg:text-md">
+                      Operarios {"  " + selectedOperDetails.length}
+                    </h3>
+                    <h3 className="font-bold uppercase text-zinc-500 text-sm lg:text-md">
+                      Operaciones {"  " + operationsProduct.length}
+                    </h3>
+                  </div>
+                </div>
+              </div>
 
-              }
-            </h3>
-            <h3 className="font-bold uppercase text-zinc-500 text-md">
-              Operarios
-              {
-                  "  " + selectedOperDetails.length
-              }
-            </h3>
+              <div className="block lg:hidden">
+                <div className="flex justify-between items-center">
+                  <div className=" mt-4 flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-1 lg:space-y-0">
+                      {prodPlantOriginal && (
+                        <>
+                          <div>
+                            <h1 className="font-bold uppercase text-secondary_two text-xl lg:text-2xl">
+                              <span className="bg-primary_one px-1">
+                                {prodPlantOriginal["plant"].name}
+                              </span>
+                            </h1>
+                            <h2 className="font-bold uppercase text-zinc-800 text-sm lg:text-md">
+                              <span className="bg-zinc-300 px-1">
+                                {prodPlantOriginal["module"].name}
+                              </span>
+                              
+                            </h2>
+                          </div>
+                        </>
+                      )}
 
-            <h3 className="font-bold uppercase text-zinc-500 text-md">
-              Operaciones
-              {
-                  "  " + operationsProduct.length
+                      <h3 className="font-bold uppercase text-zinc-500 text-sm lg:text-md">
+                        {"  " + objBalancing.product.name}
+                      </h3>
+                      <h3 className="font-bold uppercase text-zinc-500 text-sm lg:text-md">
+                        Operarios {"  " + selectedOperDetails.length}
+                      </h3>
+                      <h3 className="font-bold uppercase text-zinc-500 text-sm lg:text-md">
+                        Operaciones {"  " + operationsProduct.length}
+                      </h3>
+                    </div>
+                    <div>
+                    <ImageLightbox
+                      thumbnailUrl={showOrder.order.image_url}
+                      fullSizeUrl={showOrder.order.image_url}
+                      alt={`medida ${showOrder.order.code}`}
+                      key={showOrder.order.code}
+                    />
+                  </div>
 
-              }
-            </h3>
-
-
+                </div>
+                  
+            </div>
+            
+            
           </div>
-
-
-          <Button
-              className="mt-2 font-bold uppercase"
-              onClick={backward}
-              color="default"
-              startContent={<FaBackward color="gray"/>}
-          >
-          Regresar a {showOrder.order.code} 
-          </Button>
-
+          
 
           {
             isLoading ? (
               <Spinner label="Cargando" color="default" labelColor="foreground"/>
-            ) : <BalancingDashboard />
+            ) : 
+              <BalancingDashboard 
+                backward={backward}
+                showOrder={showOrder}
+              />
           }
 
         </>
       ) : (
           <>
-            <Button
-                className="mt-2"
-                onClick={() => setShowOrder(null)}
-                color="default"
-                startContent={<FaBackward/>}
-            >
-              Regresar
-            </Button>
+          <div className="block lg:hidden">
+            <div className="pr-6 pb-2 flex justify-end fixed bottom-0 w-full z-50">
+              <MyCustomButton
+                icon={<FaBackward className=" mt-1 mr-3 "/>}
+                title={"REGRESAR"}
+                handleClick={setShowOrder}
+                value={null}
+                bgButton={"bg-zinc-800"}
+                textButton={"text-secondary_two"}
+              />
+             
+            </div>
+          </div>
+          
+          <div className="hidden lg:block">
+            <div className="flex justify-end fixed bottom-4 right-3 z-50">
+              <MyCustomButton
+                icon={<FaBackward className=" mt-1 mr-3 "/>}
+                title={"REGRESAR"}
+                handleClick={setShowOrder}
+                value={null}
+                bgButton={"bg-zinc-800"}
+                textButton={"text-secondary_two"}
+              />
+            </div>
+              
+          </div>
+           
+            
 
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold uppercase">
-                {`${showOrder.order.code}`}
-              </h2>
-              <span>
+              <div className="flex justify-between items-center text-xl lg:text-2xl">
+                <h1 className=" font-semibold  uppercase text-secondary_one">
+                  Orden 
+                  
+                </h1>
+                <span className="text-secondary_two font-bold  ml-2">{`${showOrder.order.code}`}</span>
+              </div>
+           
+             
+            <span className="text-zinc-800 bg-zinc-200 p-2 rounded-lg font-bold">
                   {
                       showOrder.order.created_at && monthDayYear(showOrder.order.created_at)
                   }
-                <small className="ml-2 font-bold text-black">
-                 {
-                     showOrder.order.created_at && hourMinuteSecond(showOrder.order.created_at)
-                 }
-              </small>
+              <span className="ml-2  text-secondary_one text-sm">
+                {
+                    showOrder.order.created_at && hourMinuteSecond(showOrder.order.created_at)
+                }
+              </span>
             </span>
 
             </div>
@@ -224,8 +292,8 @@ const OrderDetail = () => {
 
             </div>
 
-            {/* Vista de Tabla para Pantallas Grandes */}
-            <div className="hidden lg:block">
+            {/* Vista de Tabla para Pantallas Grandes hidden lg:block */}
+            <div className="">
 
               {showOrder.products.map((product, index) => (
                   <div key={index} className="mb-8">
@@ -242,16 +310,14 @@ const OrderDetail = () => {
                     {/* Botón para expandir/colapsar el producto */}
                     <button
                         onClick={() => toggleCollapse(index)}
-                        className="w-full text-left p-4 bg-zinc-200 dark:bg-zinc-700 rounded-t-lg focus:outline-none text-zinc-800 dark:text-zinc-100"
+                        className="w-full flex justify-between items-center text-left p-4 bg-zinc-100 dark:bg-zinc-700 rounded-t-lg focus:outline-none text-zinc-800 dark:text-zinc-100"
                     >
-
-
-                  <span className="uppercase">
-                    {product.product.name} <span className="font-black">{product.product.reference} </span>
-                  </span>
-                      <span className={`float-right ${product.product.has_opers_balancing && "text-green-600"}`}>
-                    {expandedProductIndices.includes(index) ? '▲' : '▼'}
-                  </span>
+                      <span className="uppercase font-black">
+                        {product.product.name} <span className=" text-secondary_two">{product.product.reference} </span>
+                      </span>
+                          <span className={`text-2xl animate-pulse ${product.product.has_opers_balancing && "text-secondary_two"}`}>
+                        {expandedProductIndices.includes(index) ? <FaUpLong/> : <FaDownLong/>}
+                      </span>
                     </button>
 
 
@@ -260,7 +326,7 @@ const OrderDetail = () => {
                         <table
                             className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-b-lg shadow-md border border-gray-300">
                           <thead>
-                          <tr className="bg-zinc-800 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-800">
+                          <tr className="bg-zinc-800 dark:bg-zinc-100 text-secondary_two dark:text-zinc-800">
                             <th className="p-4 text-left font-medium border border-gray-300">Operación</th>
                             <th className="p-4 text-left font-medium border border-gray-300">Máquina</th>
                             <th className="p-4 text-left font-medium border border-gray-300">Sam</th>
@@ -269,9 +335,9 @@ const OrderDetail = () => {
                           <tbody>
                           {product.operations.map((operationData, opIndex) => (
                               <tr key={opIndex}>
-                                <td className="p-4 border border-gray-300">{operationData.operation}</td>
-                                <td className="p-4 border border-gray-300">{operationData.machine}</td>
-                                <td className="p-4 border border-gray-300">{operationData.sam}</td>
+                                <td className="p-1 border border-gray-300">{operationData.operation}</td>
+                                <td className="p-1 border border-gray-300">{operationData.machine}</td>
+                                <td className="p-1 border border-gray-300">{operationData.sam}</td>
                               </tr>
                           ))}
                           </tbody>
@@ -283,12 +349,9 @@ const OrderDetail = () => {
             </div>
 
             {/* Vista de Tarjetas para Pantallas Pequeñas */}
-            <div className="lg:hidden space-y-4">
-              <h3 className="text-xl font-semibold">Products</h3>
-              {showOrder.products.map((product, index) => (
-                  <ProductCard key={index} product={product}/>
-              ))}
-            </div>
+            <div className="h-10 w-full">
+
+             </div>
           </>
       )}
     </div>

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./style.css";
 import { CircularProgress, Tooltip } from "@nextui-org/react";
 import { FaSave } from "react-icons/fa";
+import { FaRecordVinyl } from "react-icons/fa6";
 
 const EditWatchChrono = ({ timeData, onUpdateTime, setIsEdit }) => {
   const [runningTime, setRunningTime] = useState(0);
@@ -138,7 +139,7 @@ const EditWatchChrono = ({ timeData, onUpdateTime, setIsEdit }) => {
               <div className="flex justify-center py-4">
                 <Tooltip content={"Guardar cambios"} placement={"right"}>
                   <button className="save-time pulse-effect" onClick={saveUpdatedTime}>
-                    <FaSave size={24} color="green" />
+                    <FaRecordVinyl size={35} color="red" />
                   </button>
                 </Tooltip>
               </div>

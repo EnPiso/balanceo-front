@@ -29,6 +29,7 @@ const ButtonSamplesByOper = ({oper,objBalancing}) => {
   
 
   const handleSample = (oper) => {
+    
     setSelectOperByOper(oper)
     const balancing_id = objBalancing.balancing_id
     const oper_id = oper.id

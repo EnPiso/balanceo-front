@@ -1,24 +1,31 @@
 // components/OperatorDetailsOperations.jsx
 import { useRecoilState } from "recoil";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { checkOpersPosition } from "../../../../infraestructure/states/opers_states.js";
-import {updateDragOperation, zonesOpers} from "../../../../infraestructure/states/states_balancing.js";
+import {detailOperOperations, updateDragOperation, zonesOpers} from "../../../../infraestructure/states/states_balancing.js";
 import {orderObjBalancing} from "../../../../infraestructure/states/order_states.js";
 import {FaUser} from "react-icons/fa6";
+import { allOperationsProduct } from "../../../../infraestructure/states/operation_states.js";
 
-const OperatorDetailsOperations = ({ zone, index }) => {
+const OperatorDetailsOperations = ({ zone, index, zonesOperUpdate }) => {
   const [selectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
   const [zonesOpersData, setZonesOpersData] = useRecoilState(zonesOpers); // Array con los datos por operador
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
   const [updateDrag, setUpdateDrag] = useRecoilState(updateDragOperation);
 
+  const [detail, setDetail] = useState(null)
 
+  const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
+  const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
+
+  
+  
   // Calcula el total de minutos
   const totalMinutes = zone.reduce((total, op) => total + parseFloat(op.minutes), 0).toFixed(2);
 
   // Efecto para actualizar los datos del operador en zonesOpersData
   useEffect(() => {
-    console.log("Ejecución del useEffect", { selectedOperDetails, totalMinutes, index, zone });
+    // console.log("Ejecución del useEffect", { selectedOperDetails, totalMinutes, index, zone });
 
     const operatorData = {
       operator: selectedOperDetails[index]?.id,
@@ -50,8 +57,59 @@ const OperatorDetailsOperations = ({ zone, index }) => {
     });
   }, [selectedOperDetails, totalMinutes, objBalancing]);
 
+  useEffect(()=> {
+
+  }, [])
+
+  const handleClick = (operation, operDetails, isState) => {
+    // Verificar que los parámetros necesarios existen
+    if (!operation || !operDetails) {
+      console.error("Faltan parámetros necesarios", { operation, operDetails });
+      return null;
+    }
+  
+    // Obtener los IDs de manera segura
+    const operation_balancing_id = operation?.operation_balancing_id;
+    const oper_id = operDetails?.id;
+  
+    if (!operation_balancing_id || !oper_id) {
+      console.error("IDs no válidos", { operation_balancing_id, oper_id });
+      return null;
+    }
+
+    // console.log(operationsProduct)
+
+   
+
+   const detailOperation = operationsProduct.find(
+    item => item.operation_balancing_id ===  operation?.operation_balancing_id 
+  );
 
 
+  
+    // Buscar el detalle correspondiente
+    const detailObj = detailOperOpera.find(
+      item => item.oper_id === oper_id && 
+             item.detail?.operations_balancing_id === operation_balancing_id
+    );
+
+   
+  
+    // Actualizar el estado si se solicita
+    if (isState && detailObj) {
+      setDetail(detailObj, detailOperation);
+    }
+    
+    const data = {
+      detailOperation: detailOperation ? detailOperation : null, 
+      detailObj
+    }
+
+   
+   
+    return  detailOperation ? detailOperation : "Hola", 
+    detailObj;
+  }
 
 
 
@@ -73,12 +131,15 @@ const OperatorDetailsOperations = ({ zone, index }) => {
 
       <div className="space-y-2">
         {zone.map((operation, opIndex) => (
-          <div key={opIndex} className="border-b pb-2">
-            <p className="font-medium">{operation.operation}</p>
+          <div key={opIndex} className="border-b pb-2" onClick={()=> handleClick(operation, selectedOperDetails[index], true)}>
+            <p className="font-medium">{operation.operation} </p>
             <div className="text-sm text-gray-600 dark:text-gray-400">
               <p>Máquina: {operation.machine}</p>
               <p>Minutos: {operation.minutes}</p>
             </div>
+            {
+              JSON.stringify(handleClick(operation, selectedOperDetails[index]).detail)
+            }
           </div>
         ))}
         <p className="font-medium pt-2">

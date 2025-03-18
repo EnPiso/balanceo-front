@@ -56,19 +56,24 @@ const ListSamples = ({obj,setIsEdit, isEdit, isLoadingEdit, itemAll}) => {
           <div className="overflow-x-auto">
               <table className="min-w-full border border-gray-300 dark:border-gray-600">
                 {/* Encabezados */}
-                <thead className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white">
-                  <tr>
-                    <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Toma</th>
-                    <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Tiempo en segundos</th>
-                    <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Meta en segundos</th>
-                    <th className="px-4 py-2 border border-gray-300 dark:border-gray-600 flex justify-end"> 
-                      <span className="rounded-md bg-zinc-100 py-1 px-1">
-                        %
-                      </span>
-                    </th>
-                    <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">{""}</th>
-                  </tr>
-                </thead>
+                {
+                  samples.length >= 1 && (
+                    <thead className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white">
+                      <tr>
+                        <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Toma</th>
+                        <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Segundos</th>
+                        <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Meta</th>
+                        <th className="px-4 py-2 border border-gray-300 dark:border-gray-600 flex justify-end"> 
+                          <span className="text-zinc-800 text-center font-bold">
+                            %
+                          </span>
+                        </th>
+                        <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">{""}</th>
+                      </tr>
+                    </thead>  
+                  )
+                }
+                
                 
                 
                 <tbody>

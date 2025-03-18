@@ -97,8 +97,8 @@ const InputListVideos = ({videos,setVideos}) => {
             onChange={(e) => handleFileUpload(e.target.files)}
             style={{ display: 'none' }}
           />
-          <label htmlFor="videos" className={`button font-bold flex justify-center items-center uppercase ${isErrorFormat ? 'text-red-500' : 'text-green-600'}`}>
-            Selecciona archivo(s) de vídeo solo en formato de MP4 <span className="ml-3"> <FaPlayCircle size={24}/> </span>
+          <label htmlFor="videos" className={`button font-bold flex justify-center items-center uppercase ${isErrorFormat ? 'text-red-500' : 'text-secondary_two'}`}>
+            Selecciona archivo(s) de vídeo solo en formato de MP4 <span className="ml-3"> <FaPlayCircle size={35}/> </span>
           </label>
         </div>
       )

@@ -24,8 +24,8 @@ const TableSamplesByOper = ({
                 <thead className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white">
                   <tr>
                     <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Toma</th>
-                    <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Tiempo en segundos</th>
-                    <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Meta en segundos</th>
+                    <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Segundos</th>
+                    <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Meta</th>
                     <th className="px-4 py-2 border border-gray-300 dark:border-gray-600 flex justify-end"> 
                       <span className="rounded-md bg-zinc-100 py-1 px-1">
                         %
@@ -47,23 +47,27 @@ const TableSamplesByOper = ({
                               {i+1}  
                             </td>
                             <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">
-                                <span className={`flex justify-between items-center cursor-pointer `}>
+                                <span className={`flex justify-between items-center cursor-pointer text-sm font-bold`}>
+                                  
                                   {sample.sample}    
                                   <span>
-                                  {timeToSeconds(sample.sample)}  
+                                  {timeToSeconds(sample.sample)}  <small>s</small>
                                   </span>      
                                       
                                 </span>
                             
                             </td>
                             <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">
-                              <span className="flex justify-end">
-                                {samSeg}
+                              <span className="flex justify-end  font-bold">
+                                <span>
+                                  {samSeg} <small>s</small>
+                                </span>
+                                
                               </span>
                             </td>
                             <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">
                               
-                              <span className="flex justify-end">
+                              <span className="flex justify-end text-sm font-bold">
                                 {
                                   Math.round((samSeg / timeToSeconds(sample.sample)) * 100)
                                 } %  

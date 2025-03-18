@@ -43,8 +43,8 @@ const ModalCustomProduct = () => {
     <>
       {
         opersSelect.size >= 1 && (
-            <Button className="ml-4 font-bold uppercase" onPress={handleOpen}>
-              Personalizar {objBalancing.product.name} <FaEdit color="green"/>
+            <Button className=" font-bold uppercase" onPress={handleOpen}>
+              Personalizar {objBalancing.product.name} <FaEdit className="text-secondary_two"/>
             </Button>
 
         )

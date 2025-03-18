@@ -163,8 +163,8 @@ const GenerateImgPdf = ({product, order, pdfDiv}) => {
                                                  {product.reference === "null" ? 'Referencia' : product.reference}
                                             </span>
                                                 
-                                                 <span className={`ml-2  text-small lowercase ${category_product_name === "" ? 'text-red-500' : 'text-green-700'}`}> 
-                                                     { category_product_name == "" ? "Categoría" : category_product_name } 
+                                                 <span className={`ml-2  text-small lowercase ${category_product_name === "" ? '' : 'text-secondary_two'}`}> 
+                                                     { category_product_name == "" ? "" : category_product_name } 
                                                  </span>
                                                 {/** product.category_product_name **/}
                                             </span>
@@ -177,8 +177,8 @@ const GenerateImgPdf = ({product, order, pdfDiv}) => {
                                                     <span className="font-bold ml-2 mr-2">
                                                      <small> Total sam</small> {total_sam}
                                                     </span>
-                                                    <AiFillCheckCircle color="green" size={20}/>
-                                                      <FaFilePdf color="green" size={17} className={"ml-2"}/>
+                                                        <AiFillCheckCircle className="text-secondary_two" size={20}/>
+                                                        <FaFilePdf  size={17} className={"ml-2 text-secondary_two"}/>
                                                   </span>
                                               ) :
                                               <>
@@ -203,12 +203,12 @@ const GenerateImgPdf = ({product, order, pdfDiv}) => {
                                         </span>
                                            
                                     </span>
-                                    <span className={`ml-2  text-small lowercase ${category_product_name === "" ? 'text-red-500' : 'text-green-700'}`}>  { category_product_name == "" ? "Categoría" : category_product_name }</span>
+                                    <span className={`ml-2  text-small lowercase ${category_product_name === "" ? '' : 'text-secondary_two'}`}>  { category_product_name == "" ? "" : category_product_name }</span>
                                 </span>
                                     <span>
                                       {product.has_opers_balancing ?
-                                          <AiFillCheckCircle color="green" size={20}/> :
-                                          <AiFillStop color="red" size={20}/>}
+                                          <AiFillCheckCircle className="text-secondary_two" size={20}/> :
+                                          <AiFillStop className="text-secondary_two" size={20}/>}
 
                                     </span>
                                 </span>

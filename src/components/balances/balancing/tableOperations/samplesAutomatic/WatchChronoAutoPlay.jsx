@@ -111,7 +111,7 @@ const WatchChronoAutoPlay = ({ onSaveTime, autoStart = true }) => {
           <div className="flex justify-center py-4 mt-8 sm:mt-3">
             <Tooltip content={'Agregar tiempo'} placement={'right'}>
               <button className="save-time pulse-effect" onClick={saveTime}>
-                <FaRecordVinyl size={24} color="red" />
+                <FaRecordVinyl size={35} color="red" />
               </button>
             </Tooltip>
           </div>

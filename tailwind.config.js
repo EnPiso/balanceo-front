@@ -21,6 +21,7 @@ export default {
         tertiary_one: "#AAD154",
         tertiary_two: "#FFB03E",
         tertiary_three: "#B50F37",
+        transparent_black: "rgba(7, 48, 52, 0.95)"
       },
     },
   },

@@ -15,7 +15,7 @@ const OrdersTab = () => {
   const [isArchive, setIsArchive] = useState(false);
   
   return (
-    <div className="flex w-full flex-col ">
+    <div className="flex w-full flex-col">
       {
         isArchive ?
           <OrdersArchive

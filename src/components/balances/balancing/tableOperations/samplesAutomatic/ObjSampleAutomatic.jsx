@@ -48,12 +48,11 @@ const ObjSampleAutomatic = ({
           className="flex justify-between items-center"
           disabled={isAutoplay} // Deshabilitar el botón cuando autoplay está activado
         >
-          <h3 className={`
-           text-xs sm:text-sm md:text-md 
-            capitalize  ${isSample && operation.id === isSample.operation.id ? 'font-bold text-green-700' : ''}`}>
+          <h3 className={`text-md font-bold
+            capitalize  ${isSample && operation.id === isSample.operation.id ? 'font-bold text-secondary_two' : ''}`}>
             {operation.operation}
           </h3>
-          <FaClock className="ml-3" />
+          <FaClock className="ml-3 text-secondary_two" size={25} />
         </span>
       </div>
       

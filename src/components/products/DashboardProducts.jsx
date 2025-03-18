@@ -3,6 +3,7 @@ import {FaFileExcel} from "react-icons/fa6";
 import React, {useState} from "react";
 import {AiTwotoneFolderOpen} from "react-icons/ai";
 import ModalProducts from "./ModalProducts.jsx";
+import { FaFolder } from "react-icons/fa";
  const DashboardProducts = () => {
 
      const [isOpen, setIsOpen] = useState(false);
@@ -12,16 +13,16 @@ import ModalProducts from "./ModalProducts.jsx";
      const handleOpen = () => setIsOpen(true);
      return (
         <div className="flex flex-col gap-2">
-            
-                <button 
-                    onClick={handleOpen}
-                    className="flex justify-center font-bold border-1 border-secondary_two px-1 py-1 rounded-md ">
-                    <AiTwotoneFolderOpen className="text-secondary_one mr-2 mt-1" size={20}/>
-                    <span className="text-secondary_one mt-1">
-                        Productos
+            <button onClick={handleOpen} className="mb-4">
+                <span className="text-secondary_two flex flex-col items-center justify-center text-sm">
+                    <span className="text-secondary_two flex flex-col items-center justify-center text-sm">
+                        <FaFolder className="text-secondary_two items-center block lg:hidden" size={24} />
+                        <FaFolder className="text-secondary_two items-center hidden lg:block" size={40} />
+                        <span className="py-3 uppercase font-bold">Productos</span>
                     </span>
-                </button>
-       
+                </span>
+            </button>
+                
             {
                 isOpen && <ModalProducts
                     isOpen={isOpen}

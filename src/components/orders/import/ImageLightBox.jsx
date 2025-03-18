@@ -9,15 +9,13 @@ const ImageLightbox = ({ thumbnailUrl, fullSizeUrl,alt,isOperList }) => {
   return (
     <div>
       {/* Imagen en miniatura que abre el lightbox al hacer clic */}
-
-      <img
-        src={thumbnailUrl}
-        alt={alt}
-        onClick={toggleLightbox}
-        className="hover:shadow-lg transition-shadow dark:hover:shadow-xl shadow-md rounded-xl "
-        style={{ cursor: 'pointer', maxHeight: isOperList ? '8vh' : '15vh' }}
-      />
-
+        <img
+          src={thumbnailUrl}
+          alt={alt}
+          onClick={toggleLightbox}
+          className="w-36 h-36 object-contain mb-2 "
+        />
+ 
       {/* Lightbox */}
       {isOpen && (
         <div className="lightbox" onClick={toggleLightbox}>

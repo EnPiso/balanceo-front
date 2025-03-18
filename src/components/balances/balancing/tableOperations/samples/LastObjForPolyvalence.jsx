@@ -22,7 +22,7 @@ const LastObjForPolyvalence = ({samples,samSeg, isObj}) => {
         </span>
         
       </td>
-      <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">
+      <td className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm">
         <span className={`flex justify-end font-bold ${isObj ? 'text-zinc-900' : 'text-zinc-700'} `}>
           {
             parseInt( (((samples.reduce((acc, sample) => acc + samSeg, 0)) / 

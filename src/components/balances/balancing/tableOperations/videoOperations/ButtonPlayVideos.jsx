@@ -19,6 +19,7 @@ const ButtonPlayVideos = ({item,showVideos,setShowVideos, isScreenShot, handleOp
 
 
   const handleOperation = (item) => {
+
     setVideoObjOperation(null)
     
     if(showVideos && showVideos.id === item.id){
@@ -75,9 +76,9 @@ const ButtonPlayVideos = ({item,showVideos,setShowVideos, isScreenShot, handleOp
                     <Badge
                         shape="rectangle" 
                         showOutline={false}
-                        color="success" 
+                        
                         content={item.video_count} 
-                        className="mt-6">
+                        className="mt-6 bg-secondary_two">
                         <FaRegPlayCircle size={24}/>
                     </Badge>
                   </Tooltip>

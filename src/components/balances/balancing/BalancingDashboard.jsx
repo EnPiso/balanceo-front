@@ -24,7 +24,7 @@ import {FaFilePdf} from "react-icons/fa6";
 import {Button, Spinner, Tooltip} from "@nextui-org/react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import {FaCircleNotch, FaTruckLoading} from "react-icons/fa";
+import {FaBackward, FaCircleNotch, FaTruckLoading} from "react-icons/fa";
 import ScreenshotComponent from "./ScreenshotComponent.jsx";
 import {toPng} from "html-to-image";
 import * as htmlToImage from "html-to-image";
@@ -32,8 +32,9 @@ import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../infraestructure/data/toastMessage.js";
 
 import { PDFDocument } from "pdf-lib";
+import MyCustomButton from '../../../ui/MyCustomButton.jsx';
 
-export const BalancingDashboard = () => {
+export const BalancingDashboard = ({backward}) => {
 
   const iconRef = useRef();
 
@@ -240,54 +241,83 @@ export const BalancingDashboard = () => {
 
   return (
       <>
-        <ModalCustomProduct />
-        {
-          objBalancing && (
-            <>
-
-
-
+        <div className="ml-2">
+          <div className="pr-6 pb-2 flex justify-end fixed bottom-0 w-full z-50 left-1">
+            <MyCustomButton
+              icon={<FaBackward className=" mt-1 mr-3 "/>}
+              title={ "Regresar a " + showOrder.order.code} 
+              handleClick={backward}
+              value={"Regresar a " + showOrder.order.code} 
+              bgButton={"bg-zinc-800"}
+              textButton={"text-secondary_two"}
+            />
+              
+          </div>
+          <div className="flex justify-start">
+            <div className="hidden lg:block">
+              <ModalCustomProduct />
+            </div>
+            <div>
               {
-                isLoadPDF ? (
+              objBalancing && (
+                <>
+                <div className="hidden lg:block">
+                  {
+                      isLoadPDF ? (
 
-                    <Button
-                      className="ml-5 font-bold uppercase">
-                      Generando PDF
-                      <span className="transform transition-transform duration-500 rotate ">
-                        <FaCircleNotch color="green"/>
-                      </span>
+                          <Button
+                            className="ml-5 font-bold uppercase">
+                            Generando PDF
+                            <span className="transform transition-transform duration-500 rotate ">
+                              <FaCircleNotch className='text-secondary_two'/>
+                            </span>
 
-                    </Button>
+                          </Button>
 
-                ) : (
-                  <>
-
-
-                    <Tooltip content="Descargar PDF" placement="right">
-                      <Button
-                        className="ml-5 font-bold uppercase"
-                        onPress={()=> {
-                          setIsScreenShot(true)
-                        
-                        }}>
-                        descargar 
-                        <FaFilePdf color="green"/>
-                      </Button>
-                    </Tooltip>
-
-                  </>
-                )
-              }
+                      ) : (
+                        <>
 
 
-              <ListBalancing
-                componentPDF={componentPDF}
-                imagePdfRef={imagePdfRef}
-                key={JSON.stringify(objBalancing)}
-              />
-            </>
-          )
-        }
+                          <Tooltip content="Descargar PDF" placement="right">
+                            <Button
+                              className="ml-5 font-bold uppercase"
+                              onPress={()=> {
+                                setIsScreenShot(true)
+                              
+                              }}>
+                              descargar 
+                              <FaFilePdf className='text-secondary_two'/>
+                            </Button>
+                          </Tooltip>
+
+                        </>
+                      )
+                    }
+
+                </div>
+          
+                </>
+              )
+            }
+            </div>
+          </div>
+          
+
+         
+            
+
+         
+
+          {
+             objBalancing && 
+                <ListBalancing
+                  componentPDF={componentPDF}
+                  imagePdfRef={imagePdfRef}
+                  key={JSON.stringify(objBalancing)}
+                />
+          }
+        </div>
+       
 
       </>
   )

@@ -146,31 +146,37 @@ const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock
                       !(isSample && operation.id === isSample.operation.id) &&
                         handleSample(sampleOperation)
                     }}
-                    className={`flex justify-between items-center`}>
+                    className={`flex justify-between items-center text`}>
                       <div
-                        className={`text-md capitalize font-bold
-                        ${isSample && operation.id === isSample.operation.id ? ' text-green-700' : ''}`}>
-                        {operation.operation} 
+                        className={`text-md capitalize font-bold text-left 
+                        ${isSample && operation.id === isSample.operation.id ? ' text-secondary_two' : ''}`}>
+                          <span className={` ${isSample && operation.id === isSample.operation.id && 'bg-primary_one py-1'}`}>
+                            {operation.operation} 
+                          </span>
+                         
                       </div>
                       {
-                        isSample && operation.id === isSample.operation.id ? 
-                          <FaClock className=' ml-3' color='green'/> :
-                          <FaArrowAltCircleRight className=' ml-3 animate-pulse' color='green'/>
-                      }
+                            !(isSample && operation.id === isSample.operation.id) &&
+                              <FaArrowAltCircleRight className=' text-secondary_two ml-3 animate-pulse'  size={24}/>
+                          }
+                        
                   </button>
                 </Tooltip>
 
-               
-                <div className='flex justify-between items-center font-bold'>
-                  <Tooltip content={sampleOperation.samplings.length < 1 ? "No hay muestras" : "Muestras tomadas"} >
-                    <span className={sampleOperation.samplings.length < 1 ? 'text-red-500' : 'text-green-700'}>
-                      <span className="bg-zinc-200 rounded py-1 px-1">
-                        {sampleOperation.samplings.length}
+               {
+                sampleOperation.samplings.length >= 1 && (
+                  <div className='flex justify-between items-center font-bold'>
+                    <Tooltip content={sampleOperation.samplings.length < 1 ? "No hay muestras" : "Muestras tomadas"} >
+                      <span className={sampleOperation.samplings.length < 1 ? 'text-red-500' : 'text-primary_one'}>
+                        <span className="bg-secondary_two rounded py-1 px-1 text-xl">
+                          {sampleOperation.samplings.length}
+                        </span>
                       </span>
-                    </span>
-                  </Tooltip>
-                  
-                </div>
+                    </Tooltip>
+                  </div>
+                )
+               }
+                
                
               </>
             )

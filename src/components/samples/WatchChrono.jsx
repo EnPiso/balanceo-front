@@ -139,12 +139,13 @@ const WatchChrono = ({ onSaveTime }) => {
           <div className="flex justify-center py-4">
             <Tooltip content={"Agregar tiempo"} placement={"right"}>
               <button className="save-time pulse-effect" onClick={saveTime}>
-                <FaRecordVinyl size={24} color="red" />
+                <FaRecordVinyl size={35} color="red" />
               </button>
             </Tooltip>
            </div>
         )
       )}
+
     </>
   );
 };

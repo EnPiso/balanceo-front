@@ -61,8 +61,8 @@ const ListSamplesClock = (
               <thead className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white">
                 <tr>
                   <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Toma</th>
-                  <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Tiempo en segundos</th>
-                  <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Meta en segundos</th>
+                  <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Segundos</th>
+                  <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Meta</th>
                   <th className="px-4 py-2 border border-gray-300 dark:border-gray-600 flex justify-end"> 
                     <span className="rounded-md bg-zinc-100 py-1 px-1">
                       %
@@ -87,37 +87,43 @@ const ListSamplesClock = (
                         </td>
                         
                         <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">
-                            <span className={`flex justify-between items-center cursor-pointer}`}>
+                            <span className={`flex justify-between items-center cursor-pointer font-bold text-sm`}>
                             <Tooltip content="Editar muestra" placement='right'>
                               <span onClick={() => {
                                 setIsEdit(sample)
                                 console.log(sample)
                               }} className={`flex justify-between items-center cursor-pointer ${isEdit && isEdit.id === sample.id && 'text-green-700'}`}>
-                                {sample.sample}     
-                                <FaEdit 
-                                  className='ml-2' 
-                                  color='green'/>         
+                                {sample.sample}    
+                                <div className="hidden lg:block">
+                                  <FaEdit 
+                                    className='ml-2' 
+                                    color='green'/>  
+                                </div> 
+                                      
                               </span>
                             </Tooltip>
 
                               <span>
-                              {timeToSeconds(sample.sample)}  
+                              {timeToSeconds(sample.sample)}  <small>s</small>
                               </span>      
                                   
                             </span>
                           
                         </td>
-                        <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">
+                        <td className="px-4 py-2 border border-gray-300 dark:border-gray-600 font-bold">
                           <span className="flex justify-end">
-                            {samSeg}
+                            <span>
+                              {samSeg}  <small>s</small>    
+                            </span>
+                            
                           </span>
                         </td>
-                        <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">
+                        <td className="px-4 py-2 border border-gray-300 dark:border-gray-600 font-bold">
                           
-                          <span className="flex justify-end">
+                          <span className="flex justify-end text-sm">
                             {
                               Math.round((samSeg / timeToSeconds(sample.sample)) * 100)
-                            } %
+                            } <small>%</small>
                           </span>
                           
                         </td>

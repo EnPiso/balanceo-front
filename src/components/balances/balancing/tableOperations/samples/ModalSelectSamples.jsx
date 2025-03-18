@@ -22,6 +22,7 @@ import EditWatchChrono from "../../../../samples/EditWatchChrono";
 import { updateData } from "../../../../../infraestructure/call_api/crud";
 import { urlMain } from "../../../../../infraestructure/data/const";
 import toast from "react-hot-toast";
+import { firstWordInString } from "../../../../../ui/utils";
 
 
 
@@ -97,7 +98,10 @@ const ModalSelectSamples = ({isOpen, setIsOpen, Obj, itemAll}) => {
           <>
             <ModalHeader className="flex justify-start items-center">
               <h1 className="uppercase flex justify-start">
-                Muestra de tiempos
+                <span className="hidden lg:block">
+                   Muestra de tiempos
+                </span>
+               
                 <FaClockRotateLeft  className="mt-1 ml-2" />   
               </h1>
             </ModalHeader>
@@ -106,24 +110,29 @@ const ModalSelectSamples = ({isOpen, setIsOpen, Obj, itemAll}) => {
                 {
                   itemAll && operSelect && (
                     <>
-                      <div className="flex justify-between items-center py-4 bg-zinc-100 px-2 ">
-                        <h1 className="text-xl font-bold capitalize">  
-                          <span className="text-green-800 ml-2">
+                      <div className="flex justify-between items-center  bg-primary_one lg:bg-zinc-100 px-2 mt-1 mb-1">
+
+                        <h1 className="text-lg sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-700 text-center  font-bold uppercase">  
+                          <span className="text-secondary_two ">
+                          { firstWordInString(operSelect.name) } 
+                          </span>
+                        </h1>
+                        
+                        <h1 className="text-md sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-700 text-center  font-bold capitalize">  
+                          <span className="text-secondary_two">
                             {itemAll.operation}
                           </span>
                         </h1>
 
-                        <h1 className="text-xl font-bold capitalize"> 
-                          <span className="text-green-800 ml-2">
-                             { operSelect.name } 
-                          </span>
-                        </h1>
+                        
+
+                    
                        
                       </div>
-
-                      <div className="py-4 bg-zinc-100 px-2 ">
+                      
+                      <div className="py-4 bg-zinc-100 hidden lg:block">
                         <h1 className="text-lg capitalize">  
-                          <span className="text-zinc-800 ml-2 bg-zinc-200 px-1 py-1 font-bold rounded">
+                          <span className="text-zinc-800 px-1 py-1 font-bold rounded">
                             Meta en segundos {" "}
                             {itemAll.sam_seg}
                           </span>
@@ -183,16 +192,26 @@ const ModalSelectSamples = ({isOpen, setIsOpen, Obj, itemAll}) => {
                     />
 
                       <div
-                        onClick={()=> {
-                          setIsNewSamples(true)
-                        }}
-                        className="flex justify-end text-green-700 font-bold mb-5 text-md mt-4 cursor-pointer">
+                       
+                        className="flex justify-end text-secondary_two font-bold mb-5 text-md mt-4 ">
                         <button 
-                          className="mr-1"
+                          className="mr-1 flex justify-end"
+                          onClick={()=> {
+                            setIsNewSamples(true)
+                          }}
                         >
-                          Agregar muestras
+                          <span className="hidden lg:block mr-2">
+                            Agregar muestras
+                          </span>
+                          <div className="block lg:hidden">
+                            <FaPlus className="mt-1" size={50}/>
+                          </div>
+                          <div className="hidden lg:block">
+                            <FaPlus className="mt-1"/>  
+                          </div>
                         </button>
-                        <FaPlus color="green" className="mt-1"/>
+                       
+                        
                       </div>
                     
                   </div>

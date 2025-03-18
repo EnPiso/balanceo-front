@@ -29,7 +29,7 @@ const SearchOrdersCustom = ({queryString, setQueryString, setQueryDate}) => {
   };
 
   return ( 
-    <div className="w-full md:w-auto">
+    <div className="w-full md:w-auto  px-1 py-1  rounded-lg">
       <Tooltip content="Buscar orden, producto, referencia o categoría (ENTER)">
         <Input
           size="lg"
@@ -38,7 +38,7 @@ const SearchOrdersCustom = ({queryString, setQueryString, setQueryDate}) => {
           onChange={(e) => setSearchData(e.target.value)}
           variant="bordered"
           placeholder="Buscar"
-          className="w-full md:w-64"
+          className="w-full md:w-64 bg-white rounded-full"
           endContent={
             <button onClick={handleSearch} className="focus:outline-none">
               <FaMagnifyingGlass />

@@ -4,6 +4,7 @@ import React, {useState} from "react";
 import {AiFillBook, AiFillExperiment, AiOutlineUser, AiTwotoneFolderOpen} from "react-icons/ai";
 import { RiFileUserFill } from "react-icons/ri";
 import ModalOpersMaster from "./ModalOpersMaster";
+import { FaUserGroup } from "react-icons/fa6";
 
 const OpersMaster = () => {
 
@@ -14,14 +15,16 @@ const OpersMaster = () => {
   const handleOpen = () => setIsOpen(true);
   return (
     <div className="flex flex-col gap-2">
-      <button 
-          onClick={handleOpen}
-          className="flex justify-center font-bold border-1 border-secondary_two px-1 py-1 rounded-md ">
-          <RiFileUserFill className="text-secondary_one mr-2 mt-1" size={20}/>
-          <span className="text-secondary_one mt-1">
-           Operarios
-          </span>
+      <button onClick={handleOpen} className="mb-4">
+        <span className="text-secondary_two flex flex-col items-center justify-center text-sm">
+            <span className="text-secondary_two flex flex-col items-center justify-center text-sm">
+                <FaUserGroup className="text-secondary_two items-center block lg:hidden" size={24} />
+                <FaUserGroup className="text-secondary_two items-center hidden lg:block" size={40} />
+                <span className="py-3 uppercase font-bold">Operarios</span>
+            </span>
+        </span>
       </button>
+    
      
       {
         isOpen && 

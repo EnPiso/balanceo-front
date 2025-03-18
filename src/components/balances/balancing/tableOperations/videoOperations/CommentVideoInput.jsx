@@ -7,6 +7,7 @@ import {postData} from "../../../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../../../infraestructure/data/const.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../../../infraestructure/data/toastMessage.js";
+import MyCustomButton from '../../../../../ui/MyCustomButton.jsx';
 
 const CommentVideoInput = ({setCommentsVideos, commentsVideos}) => {
   const [videoObjOperation, setVideoObjOperation] = useRecoilState(videoOperation);
@@ -49,8 +50,8 @@ const CommentVideoInput = ({setCommentsVideos, commentsVideos}) => {
 
 
   return (
-    <div className="bg-gray-100 p-4 rounded-lg shadow">
-      <h2 className="text-lg font-semibold mb-2">Comentarios</h2>
+    <div className="bg-zinc-100 p-4 rounded-lg shadow">
+      
       <textarea
         className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         rows="3"
@@ -61,13 +62,15 @@ const CommentVideoInput = ({setCommentsVideos, commentsVideos}) => {
 
       ></textarea>
 
-      <CustomButton
-        color="default"
-        variant="bordered"
-        startContent={<FaSave color="green"/>}
-        onClick={handleComment}
-        title="Guardar comentario"
-      />
+        <MyCustomButton
+          icon={ <FaSave className='mt-1 mr-1 text-secondary_two'/>}
+          title={"Guardar comentario"}
+          handleClick={handleComment}
+          value={null}
+          bgButton={"bg-zinc-800"}
+          textButton={"text-secondary_two "}
+        />
+     
     </div>
   )
 }

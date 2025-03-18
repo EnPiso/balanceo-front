@@ -22,6 +22,10 @@ const ModalVideoInput = ({isModalInput,setIsModalInput,item}) => {
 
   const [isLoading, setIsLoading] = useState(false)
 
+  useEffect(()=> {
+    setVideos([])
+  }, [])
+
   const handleApi = () => {
     setIsLoading(true)
     const formData = new FormData();
@@ -70,7 +74,17 @@ const ModalVideoInput = ({isModalInput,setIsModalInput,item}) => {
 
   return (
     <>
-      <Modal size="5xl" isOpen={isModalInput} onOpenChange={()=> setIsModalInput(!isModalInput)} scrollBehavior="inside">
+      <Modal 
+        backdrop="transparent" 
+        placement='center' size="5xl" 
+        isOpen={isModalInput} 
+        onOpenChange={(close)=> {
+          setIsModalInput(!isModalInput)
+          !close && 
+            setVideos([])
+            setIsModalInput(false)
+        }} 
+        scrollBehavior="inside">
         <ModalContent>
           {(onClose) => (
             <>

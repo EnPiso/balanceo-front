@@ -85,10 +85,16 @@ const DeleteSamplesClock = ({sample, index, setSamples, samples, isSample}) => {
       <Tooltip content="Eliminar muestra" placement='right'>
         <button
           onClick={() => handleConfirm(sample)}
-          className="flex items-center text-red-500 ml-2"
+          className="flex items-center text-red-500 "
           title="Eliminar muestra"
         >
-          <FaDeleteLeft size={20}/>  
+           <div className="block lg:hidden">
+              <FaDeleteLeft size={31}/>
+            </div>
+            <div className="hidden lg:block">
+              <FaDeleteLeft size={24}/>
+            </div>
+                   
         </button>
       </Tooltip>
      

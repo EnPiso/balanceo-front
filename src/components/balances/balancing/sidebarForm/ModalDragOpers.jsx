@@ -21,7 +21,7 @@ import {orderObjBalancing, showOrderObj} from "../../../../infraestructure/state
 import {postData} from "../../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../../infraestructure/data/const.js";
 import useModal from "./useModal.jsx";
-import {FaBackward, FaEdit, FaSave} from "react-icons/fa";
+import {FaBackward, FaEdit, FaSave, FaUsers} from "react-icons/fa";
 import CustomButton from "../../../../ui/CustomButton.jsx";
 import SpinnerLoaderCustom from "../../../../ui/SpinnerLoaderCustom.jsx";
 import {allOperationsProduct} from "../../../../infraestructure/states/operation_states.js";
@@ -31,6 +31,7 @@ import {assignColorsToArray, isRepeatColor, isRepeatUpdate} from "../../../../ui
 import DashboardPlants from "./DashboardPlants.jsx";
 import {imageTableBalancing} from "../../../../infraestructure/states/states_product.js";
 import {nameImageDateNow} from "../../../../infraestructure/utils/imagesFormat.js";
+import MyCustomButton from "../../../../ui/MyCustomButton.jsx";
 
 const ModalDragOpers = () => {
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
@@ -142,19 +143,20 @@ const ModalDragOpers = () => {
 
   return (
     <>
-      <div className="flex flex-wrap gap-3">
-        <Button
-          onClick={() => {
-            handleOpen("3xl")
-            setProdPlant(prodPlantOriginal)
-          }}
-          size="7xl"
-          className="dark:bg-zinc-900 h-10 font-bold"
-          variant="bordered"
-        >
-
-          {opersSelect.size >= 1 ? `Operarios ${opersSelect.size}` : "Seleccionar operarios"}
-        </Button>
+      <div className="flex justify-center ">
+             <MyCustomButton
+                icon={<FaUsers className=" mt-1 mr-3 "/>}
+                title={opersSelect.size >= 1 ? `Operarios ${opersSelect.size}` : "Operarios"}
+                handleClick={() => {
+                  handleOpen("3xl")
+                  setProdPlant(prodPlantOriginal)
+                }}
+                value={opersSelect.size >= 1 ? `Operarios ${opersSelect.size}` : "Operarios"}
+                bgButton={"bg-primary_one "}
+                textButton={"text-secondary_two"}
+              />
+   
+        
       </div>
       <Modal scrollBehavior="inside" backdrop="blur" size={size} isOpen={isOpen} onClose={onClose}>
         <ModalContent>

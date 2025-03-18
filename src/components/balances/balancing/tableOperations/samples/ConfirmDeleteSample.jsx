@@ -88,16 +88,20 @@ const ConfirmDeleteSample = ({sample, index, setSamples, samples}) => {
 
   return (
     <div>
-      <Tooltip content="Eliminar muestra" placement='right'>
         <button
           onClick={() => handleConfirm(sample)}
           className="flex items-center text-red-500 ml-2"
           title="Eliminar muestra"
         >
-          <FaDeleteLeft size={20}/>
+          <div className="block lg:hidden">
+           <FaDeleteLeft size={40}/>
+          </div>
+          <div className="hidden lg:block">
+            <FaDeleteLeft size={24}/>
+          </div>
+         
         </button>
-      </Tooltip>
-     
+
       
       {
         isDelete && <ModalConfirmSample

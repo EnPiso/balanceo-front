@@ -40,10 +40,13 @@ import PdfBalancing from "../PDFBalancing.jsx";
 import {useScreenshot} from "use-react-screenshot";
 import CommentBalancing from "../CommentBalancing.jsx";
 import ImageUrlFormat from './ImageUrlFormat.jsx';
-import { videoShow } from '../../../../infraestructure/states/states_videos.js';
+import { videoShow, modalInputAdd } from '../../../../infraestructure/states/states_videos.js';
 import { automaticByOper, isOpenModalSample, isOpenModalSampleByOper, openByOper, openOperaClock, operByOper } from '../../../../infraestructure/states/states_samples.js';
 import ModalSelectSamples from './samples/ModalSelectSamples.jsx';
 import ModalByOrder from './samplesByOper/ModalByOrder.jsx';
+import SimpleBalancedOperationsTable from './balancingMobile/SimpleBalancedOperationsTable .jsx';
+import { zonesMobile } from '../../../../infraestructure/states/states_mobile.js';
+import ZonesMobileDashboard from './balancingMobile/ZonesMobileDashboard.jsx';
 
 
 
@@ -62,7 +65,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
 
   const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
 
-  const [isModalInput,setIsModalInput] = useState(false)
+  const [isModalInput,setIsModalInput] = useRecoilState(modalInputAdd)
 
   const [showVideos, setShowVideos]  = useRecoilState(videoShow)
 
@@ -85,7 +88,8 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
   const [operaClock, setOperaClock] = useRecoilState(openOperaClock)
   const [isModalSample, setIsModalSample] = useRecoilState(isOpenModalSample)
   // isOpenModalSample
-  
+
+  const [zonesOperUpdate,setZonesOperUpdate] = useRecoilState(zonesMobile)
 
   // operByOper
   // isOpenModalSampleByOper
@@ -97,6 +101,31 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
       return result; // Solo actualiza si el callback cambia algo
     });
   };
+
+  useEffect(() => {
+    const details = zones.map((zone, index) => {
+      return zone.map((operation) => {
+        const detailObj = detailOperOpera.find(
+          (item) => item.oper_id === selectedOperDetails[index]?.id &&
+                    item.detail.operations_balancing_id === operation.operation_balancing_id
+        );
+        const updatedOperation = operationsProduct.find(
+          (op) => op.operation_balancing_id === operation.operation_balancing_id
+        );
+        return {
+          operation: updatedOperation || operation,
+          detailObj,
+          operator: selectedOperDetails[index]
+        };
+      });
+    });
+    
+    // Verificar si los detalles han cambiado antes de actualizar el estado
+    if (JSON.stringify(details) !== JSON.stringify(zonesOperUpdate)) {
+      setZonesOperUpdate(details);
+      
+    }
+  }, [zones, detailOperOpera, selectedOperDetails, operationsProduct, zonesOperUpdate]);
 
 
 
@@ -183,7 +212,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
       position: index + 1, // Ajusta la posición
     }));
 
-    console.log(draggedItem.operation_balancing_id, operationsBalancings);
+    //console.log(draggedItem.operation_balancing_id, operationsBalancings);
 
     handleApi(operationsBalancings, draggedItem.operation_balancing_id, detailOperOpera, operationBalancingBefore);
   };
@@ -235,10 +264,10 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
 
 
   return (
-    <div className="space-y-8 " >
+    <div>
       <div
           ref={componentPDF}
-          className={`bg-zinc-100 overflow-x-auto overflow-hidden ${isPDFMode && 'text-1xl'}`}>
+          className={`bg-zinc-100 overflow-x-auto overflow-hidden hidden lg:block ${isPDFMode && 'text-1xl'}`}>
 
         {
             isPDFMode ? (
@@ -264,7 +293,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
             ) : (
                 <div ref={imagePdfRef}>
          
-                  <table className="min-w-full border-collapse border border-gray-200 table-hover-columns">
+                  <table className="min-w-full border-collapse border border-gray-200 table-hover-columns mt-2">
                     <thead className="dark:bg-zinc-100 bg-zinc-700">
                       <TableHeaderOperations opersSelect={opersSelect} balancing={balancing}/>
                     </thead>
@@ -327,18 +356,28 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
 
       </div>
 
-     
 
-      {opersSelect.size >= 1 && balancing && (
+
+      {/* {opersSelect.size >= 1 && balancing && (
           <div className="space-y-6">
             <h2 className="text-xl font-bold ml-2">Detalle de Balanceo por Operador</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {zones.map((zone, index) => (
-                  <OperatorDetailsOperations key={index} zone={zone} index={index} updateZones={updateZones}/>
+                  <OperatorDetailsOperations key={index} zone={zone} index={index} zonesOperUpdate={zonesOperUpdate} />
               ))}
             </div>
           </div>
-      )}
+      )} */}
+      <div className="block lg:hidden">
+        {
+          zonesOperUpdate.length >= 1 && <ZonesMobileDashboard/>
+        }
+      </div>
+     
+      
+      <div className="h-10 w-full py-6 mt-6">
+
+      </div>
 
       <ModalVideoInput
           isModalInput={isModalInput}

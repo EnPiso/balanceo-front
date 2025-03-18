@@ -10,14 +10,16 @@ const ImageThead = ({ image }) => {
   return (
     <span className='py-1 px-1'>
       <Tooltip content="Click">
-        <Avatar
+        <img
+          onClick={toggleLightbox}
           src={image}
           alt={"operarios"}
-          onClick={toggleLightbox}
-          color="success"
-          isBordered 
-          
+          className="w-16 h-16 rounded-full object-cover"
+          style={{
+            border: `6px solid #80B7AE`, // Azul personalizado con 6px de grosor
+          }}
         />
+       
       </Tooltip>
       
 

@@ -1,5 +1,6 @@
 import { Spinner } from '@nextui-org/react'
 import React, { useState } from 'react'
+import { firstWordInString } from '../../../../../ui/utils'
 
 const SelectOperCheck = ({selected, oper, handleOperVideo}) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -11,10 +12,10 @@ const SelectOperCheck = ({selected, oper, handleOperVideo}) => {
           <Spinner size='lg' color='default'/> :
           <label
             className={`cursor-pointer px-4 py-2  
-            ${selected && selected.id === oper.id ? 'bg-green-700 text-white' : 'bg-white text-gray-700'} 
+            ${selected && selected.id === oper.id ? 'text-secondary_two bg-zinc-800' : 'bg-white text-zinc-800'} 
             transition-all duration-300`}
           >
-          
+          {}
             <input
        
               type="radio"

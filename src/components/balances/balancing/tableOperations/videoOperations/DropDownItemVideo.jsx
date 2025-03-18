@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import { checkOpersPosition } from '../../../../../infraestructure/states/opers_states';
 import SelectionOperVideo from './SelectionOperVideo';
 import { FaDeleteLeft } from 'react-icons/fa6';
+import MyCustomButton from '../../../../../ui/MyCustomButton';
 
 const DropDownItemVideo = ({videosOperations, isOpen, setIsOpen, handleVideo, handleDelete, setVideosOperations}) => {
   
@@ -14,12 +15,14 @@ const DropDownItemVideo = ({videosOperations, isOpen, setIsOpen, handleVideo, ha
     <>
       <Dropdown isOpen={isOpen} onOpenChange={setIsOpen} closeOnSelect={false}>
         <DropdownTrigger>
+         
           <button
             className="w-12 h-12 flex justify-center items-center focus:outline-none  transition-colors"
             //onClick="console.log('Button clicked!')"
           >
-            <Badge color="success" content={videosOperations.length} shape="rectangle" showOutline={false} className=''>
+            <Badge content={videosOperations.length} shape="rectangle" showOutline={false} className='bg-secondary_two'>
               <FaRegPlayCircle
+                className='text-secondary_two'
                 size={30}
               />
             </Badge>
@@ -40,7 +43,7 @@ const DropDownItemVideo = ({videosOperations, isOpen, setIsOpen, handleVideo, ha
                 <DropdownItem key={i}>
                   <div className="w-full px-2 py-2 my-2 mx-2 cursor-pointer bg-zinc-200">
                     <span className="truncate text-center uppercase text-zinc-600 font-bold bg-zinc-300">
-                      video # <span className="text-green-600">{i + 1}</span>
+                      video # <span className="text-secondary_two">{i + 1}</span>
                     </span>
 
 

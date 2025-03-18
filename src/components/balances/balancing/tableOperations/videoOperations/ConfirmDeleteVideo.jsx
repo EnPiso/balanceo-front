@@ -4,6 +4,7 @@ import {FaBackward, FaSave} from "react-icons/fa";
 
 import React from "react";
 import CustomButton from "../../../../../ui/CustomButton";
+import MyCustomButton from "../../../../../ui/MyCustomButton";
 
 const  ConfirmDeleteVideo = ({isOpen, setIsOpen, handleSave, title, description, isLoading}) => {
 
@@ -16,7 +17,7 @@ const  ConfirmDeleteVideo = ({isOpen, setIsOpen, handleSave, title, description,
   return (
     <>
 
-      <Modal isOpen={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+      <Modal isOpen={isOpen} onOpenChange={(open) => setIsOpen(open)} placement="top-center">
         <ModalContent>
             <>
               <ModalBody>
@@ -33,22 +34,27 @@ const  ConfirmDeleteVideo = ({isOpen, setIsOpen, handleSave, title, description,
                 {
                   isLoading ? 
                     <Spinner size="lg" color="default"/> :
-                    <CustomButton
-                      color="default"
-                      variant="bordered"
-                      startContent={<FaSave color="green"/>}
-                      onClick={handleSaveOperator}
-                      title="Sí, Continuar"
+                    <MyCustomButton
+                      icon={ <FaSave className='mt-1 mr-1 text-secondary_two'/>}
+                      title={"Sí, Continuar"}
+                      handleClick={handleSaveOperator}
+                      value={null}
+                      bgButton={"bg-primary_one"}
+                      textButton={"text-secondary_two"}
                     />
                 }
+
                 
-                <CustomButton
-                  color="default"
-                  variant="bordered"
-                  startContent={<FaBackward />}
-                  onClick={() => setIsOpen(false)}
-                  title="No, Cancelar"
+                
+                <MyCustomButton
+                  icon={ <FaBackward className='mt-1 mr-1 '/>}
+                  title={"No, Cancelar"}
+                  handleClick={()=> setIsOpen(false)}
+                  value={null}
+                  bgButton={"bg-zinc-100"}
+                  textButton={"text-zinc-800"}
                 />
+               
 
               </ModalFooter>
             </>

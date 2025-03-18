@@ -8,6 +8,8 @@ import OrdersTab from "./orders/orderList/OrdersTab.jsx";
 import { Toaster } from "react-hot-toast";
 import { useState } from 'react';
 import { FaEyeSlash } from 'react-icons/fa6';
+import SidebarMobile from './views/SidebarMobile.jsx';
+import Footer from './views/Footer.jsx';
 
 const RootApp = () => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
@@ -20,32 +22,46 @@ const RootApp = () => {
 
   return (
     <>
-      <div className="flex">
-        {/* Sidebar */}
-
-       
-        <div
-          className={`bg-zinc-800 text-white h-full w-64 fixed lg:static transition-all duration-300 ease-in-out
-           z-40 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
-            lg:translate-x-0`}
-        >
+      <div className="flex h-screen">
+        {/* Sidebar grande: Solo visible en lg+ */}
+        <div className="hidden lg:block w-44">
           <Sidebar toggleSidebar={toggleSidebar} />
         </div>
-       
-        {/* Contenido principal */}
-        <div
-          className={`flex-1 h-full bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-white transition-all duration-300`}
-        >
+
+        {/* Overlay cuando el sidebar móvil está abierto */}
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 z-40 lg:hidden"
+            onClick={toggleSidebar}
+          ></div>
+        )}
+
+        {/* Sidebar móvil: Aparece solo en pantallas pequeñas */}
+        {
+          isSidebarOpen && (
+            <div
+            className={`fixed top-0 left-0 h-screen w-[var(--sidebar-width)] bg-zinc-800 text-white z-50 transition-transform duration-300 transform 
+            ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:hidden`}
+          >
+            <SidebarMobile toggleSidebar={toggleSidebar} />
+          </div>
+          )
+        }
+        
+
+
+        {/* Contenido Principal */}
+        <div className="flex-1 flex flex-col bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-white">
           <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-          <div className="px-2 py-2">
+          <div>
             <OrdersTab />
           </div>
         </div>
       </div>
+
       <ThemeContextProvider />
       <Toaster position="top-center" reverseOrder={true} />
-
-
+     
     </>
   );
 };

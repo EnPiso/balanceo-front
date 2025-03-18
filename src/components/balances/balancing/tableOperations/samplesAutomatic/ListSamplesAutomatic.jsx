@@ -156,7 +156,7 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
           <>
             <Tooltip content="Iniciar tomas de tiempos">
               <button onClick={startAutoplay} className="btn btn-primary flex justify-center hover:text-green-700 hover:underline underline-offset-2">
-                <FaPlayCircle className="ml-2 animate-pulse" size={45} color="green" />
+                <FaPlayCircle className="ml-2 animate-pulse text-secondary_two" size={60} />
               </button>
             </Tooltip>
           </>
@@ -195,7 +195,7 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
                     <CustomButton
                       color="default"
                       variant="bordered"
-                      startContent={<FaSave color="green" />}
+                      startContent={<FaSave className="text-secondary_two" />}
                       onClick={saveSamples}
                       title={`GUARDAR  ${countSaves}`} 
                     />

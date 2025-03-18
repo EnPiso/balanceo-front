@@ -18,7 +18,7 @@ const SearchDateOrders = ({queryDate, setQueryDate, isLoading, queryString, setQ
 
 
   return (
-    <div className="flex flex-col md:flex-row md:justify-end items-center bg-gradient-to-l from-zinc-100 to-zinc-200 py-2 px-4 rounded-lg gap-4">
+    <div className="flex flex-col md:flex-row md:justify-end items-center   py-2 px-4  gap-4">
       {/* Componente de Búsqueda */}
       <div className="w-full md:w-auto">
         <SearchOrdersCustom
@@ -28,25 +28,31 @@ const SearchDateOrders = ({queryDate, setQueryDate, isLoading, queryString, setQ
         />
       </div>
 
-      {/* Selector de Fecha */}
-      <DatePicker
-        color="default"
-        className="w-full md:w-auto"
-        label="Selecciona fecha"
-        maxValue={today(getLocalTimeZone())}
-        onChange={handleDateChange}
-        value={queryDate}
-      />
+      {/* Contenedor para DatePicker y FaCalendarTimes */}
+      <div className="flex w-full md:w-auto items-center gap-2 mb-2">
+        {/* Selector de Fecha */}
+        <DatePicker
+          color="default"
+          className="flex-grow"
+          label="Selecciona fecha"
+          maxValue={today(getLocalTimeZone())}
+          onChange={handleDateChange}
+          value={queryDate}
+        />
 
-      <div className="py-4">
         {/* Botón para limpiar fecha */}
-        <Tooltip content="Limpiar fecha">
-          <FaCalendarTimes
-            size={24}
-            className="cursor-pointer text-gray-500 hover:text-red-500 transition"
-            onClick={() => setQueryDate(null)}
-          />
-        </Tooltip>
+
+        {
+          queryDate && 
+            <FaCalendarTimes
+              size={24}
+              className="cursor-pointer text-gray-500 hover:text-red-500 transition"
+              onClick={() => setQueryDate(null)}
+        />
+        }
+       
+         
+        
       </div>
     </div>
   )

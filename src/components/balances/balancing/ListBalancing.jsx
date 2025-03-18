@@ -52,7 +52,7 @@ const ListBalancing = ({componentPDF,imagePdfRef}) => {
 
 
   return (
-    <>
+    <div>
 
       {
         operationsProduct.length >= 1 && ( 
@@ -88,7 +88,7 @@ const ListBalancing = ({componentPDF,imagePdfRef}) => {
 
 
 
-    </>
+    </div>
   )
 }
 export default ListBalancing

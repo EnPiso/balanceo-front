@@ -75,7 +75,7 @@ const CommentBalancing = ({isShow}) => {
             <CustomButton
               color="default"
               variant=""
-              startContent={seeComment ? <FaEyeSlash  size={23}/> : <FaEye color={"green"} size={23}/>}
+              startContent={seeComment ? <FaEyeSlash  size={23}/> : <FaEye className="text-secondary_two" size={23}/>}
               onClick={()=> setSeeComment(!seeComment)}
               title={seeComment ? "Minimizar comentario" : "Ver comentario"}
             />

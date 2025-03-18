@@ -4,48 +4,99 @@ import { useRecoilState } from 'recoil';
 import { orderList } from '../../../../infraestructure/states/order_states';
 import { hourMinuteSecond, monthDayYear } from '../../../../infraestructure/utils/dateFormat';
 import ShowOrder from '../../show/ShowOrder';
+import { FaArrowCircleRight, FaRegFileExcel } from 'react-icons/fa';
+import { BsArrowDownCircle, BsArrowUpCircle } from 'react-icons/bs';
+import { FaDownLong, FaUpLong } from 'react-icons/fa6';
 
 
-const DashboardOrderMobile = () => {
+const DashboardOrderMobile = ({totalPaginate,handlePerPageChange,perPage,setDesc,desc }) => {
   const [orders, setOrders] = useRecoilState(orderList);
 
   return (
     <div>
-      <div className="grid gap-4 py-3">
-          {orders.map((order) => (
-            <Card key={order.id} className="p-4">
-              <CardHeader className='flex justify-between items-center'>
-                <h3 className="text-md font-semibold mr-2 bg-zinc-200 p-2 rounded-lg">
-                  <ShowOrder order={order} />
-                </h3>
-               <div>
-                <p className="text-xs text-gray-600">
-                    {order.created_at && monthDayYear(order.created_at)}
-                    
-                  </p>
-                  <small className="text-xs  text-black ml-2">{order.created_at && hourMinuteSecond(order.created_at)}</small>
-               </div>
+      <div className="py-3 ">
+
+         <div className="flex justify-end">
+            <span className="flex space-x-2  p-2 ">
+              
+              {
+                totalPaginate.map((page, i) => {
+                  return (
+                      <>
+                          <span
+                              onClick={() => handlePerPageChange(page)}
+                              className={`cursor-pointer text-1xl font-bold flex items-center justify-center w-8 h-8   border-zinc-800 ${perPage === page ? 'text-secondary_two border-secondary_two' : 'text-zinc-800'}`}
+                              key={i}>
+                            {page}
+                          </span>
+                      </>
+                  )
+                })
+              }
+            <span>
+                {
+                  desc ? (
+                  <>
+                    <button onClick={() => setDesc(false)}>
+                      <FaDownLong size={30} className="text-secondary_two " />
+                    </button>
+                  </>
+                  ) :( 
+                  <>
+                    <button onClick={() => setDesc(true)}>
+                      <FaUpLong size={30} className="text-secondary_two " />
+                    </button>
+                  </>
+                  )
+                }
                 
-              </CardHeader>
-              <CardBody>
-                <div className="flex justify-start">
+                
+              </span>
+            </span>
+         </div>
+         
+
+          {orders.map((order) => (
+            <div key={order.id} className="p-1 mt-2 border">
+              <div className='flex justify-between items-center'>
+                <div>
+                  <h3 className="text-md font-semibold flex justify-between items-center">
+                    <ShowOrder order={order} /> 
+                  </h3>
                   <div>
-                    
                     {order.products.map((product, i) => (
                       <>
-                          <p key={i} className="text-xs text-secondary_two font-bold">
-                            {product.name}
+                          <p key={i} className="text-md text-secondary_two font-black text-start">
+                            <small>
+                              {product.name}
+                            </small>
+                            
                           </p>
-
                       </>
                     ))}
                       
                   </div>
-                  
                 </div>
                 
-              </CardBody>
-            </Card>
+               <div>
+          
+                <div className="py-3 text-end">
+                  <p className="text-sm text-zinc-800">
+                    {order.created_at && monthDayYear(order.created_at)}
+                    
+                  </p>
+                  <small className="text-md font-bold text-zinc-800 ml-2">
+                      {order.created_at && hourMinuteSecond(order.created_at)}
+                  </small>
+                </div>
+                
+               </div>
+                
+              </div>
+              
+              
+              
+            </div>
           ))}
         </div>
     </div>
