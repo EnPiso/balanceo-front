@@ -47,7 +47,7 @@ export const assignColorsToArray = (array) => {
       color: colorMap[item.oper_id] || null, // Asigna el color si existe, de lo contrario null
     },
   }));
-
+  
   return updatedArray
 };
 

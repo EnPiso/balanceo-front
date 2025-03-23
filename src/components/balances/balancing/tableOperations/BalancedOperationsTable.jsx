@@ -136,7 +136,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
 
     // Compara el nuevo estado con el actual antes de actualizar
     if (JSON.stringify(mergeOperations) !== JSON.stringify(operationsProduct)) {
-        setOperationsProduct(mergeOperations);
+        setOperationsProduct(mergeOperations); /// aca
     }
   },[detailOperOpera, operationsProduct])
 

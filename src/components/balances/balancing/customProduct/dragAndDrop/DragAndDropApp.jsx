@@ -98,10 +98,17 @@ const DragAndDropApp = ({onClose}) => {
 
   const handleSave =  () => {
 
+    
+
+    const updateOperationsCreate = operationsCreate.map((operation)=> {
+      const replacement = operations.find(obj => obj.id === operation.id);
+      return replacement ? replacement : operation; 
+    })
+
     const data = {
       operations_balancings: {
         operations: JSON.stringify(operations),
-        operations_create: JSON.stringify(operationsCreate),
+        operations_create: JSON.stringify(updateOperationsCreate),
         balancing_id: objBalancing.balancing_id,
         selected_oper_details: JSON.stringify(selectedOperDetails),
         gol_hour: balancing.gol_hour,
@@ -110,6 +117,8 @@ const DragAndDropApp = ({onClose}) => {
       }
 
     }
+
+    
     const postDataClone = async (data) => {
       setIsLoading(true)
       try {

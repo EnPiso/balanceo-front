@@ -57,17 +57,19 @@ const BalanceProduct = ({product}) => {
 
         const data = {
           product: prod.product,
-          total_sam: prod.total_sam,
+          total_sam: result.total_sam,
           operations: result.sorted_operations,
           balancing_id: result.balancing_id,
           balancing: result.balancing
         }
 
+        
+
         const detail = assignColorsToArray(result.details_data)
 
         setDetailOperOpera(detail)
         setObjBalancing(data)
-
+        
         if(result.data_plant){
           const dataPlant = {
             plant: {

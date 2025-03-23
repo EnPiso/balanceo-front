@@ -169,7 +169,7 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
               operatorTimes.get(i)?.toFixed(2) &&
 
               <div
-                className="flex justify-around cursor-pointer"
+                className="flex justify-between items-center cursor-pointer"
                 >
                   
                   <ButtonClockOperation 
@@ -207,10 +207,10 @@ const PolyOperOperation = ({selectedOperDetails, operatorTimes, item, i,polyvale
                     balancing && (
                       <>
                         <Chip
-                          variant="flat"
                           avatar={
                             <FaShirt
-                              className="fill-current"
+                              color='#80B7AE'
+                              className="fill-current "
                               size={10} />
                           }
                         >

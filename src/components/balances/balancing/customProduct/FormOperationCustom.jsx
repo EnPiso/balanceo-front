@@ -14,7 +14,7 @@ import {toastMessageCustom} from "../../../../infraestructure/data/toastMessage.
 import {searchOperations} from "../../../../infraestructure/states/operation_states.js";
 
 const FormOperationCustom = () => {
-  const [operation, setOperation] = useState({ operation: "", machine: "", sam: "" });
+  const [operation, setOperation] = useState({ operation: "", machine: "", sam: "", original: true });
   const [isValid, setIsValid] = useState(false);
   const [dataObj, setDataObjClone] = useRecoilState(dataObjClone);
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
@@ -86,6 +86,7 @@ const FormOperationCustom = () => {
       try {
         const result = await postData(urlMain + "/operations", data)
         setCloneOperations([...cloneOperations, result])
+        
         // console.log(result)
         setDataObjClone(null)
         setOperation({ operation: "", machine: "", sam: "" })
@@ -108,7 +109,7 @@ const FormOperationCustom = () => {
           <CustomButton
             color="default"
             variant="bordered"
-            startContent={<FaSave color="green" size={20} />}
+            startContent={<FaSave className="text-secondary_two" size={20} />}
             onClick={handleSubmit}
           />
         </div>
