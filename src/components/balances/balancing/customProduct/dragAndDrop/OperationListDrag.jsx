@@ -72,15 +72,15 @@ const OperationListDrag = ({
       <table className="min-w-full border-collapse text-small">
         <thead className="bg-gradient-to-r from-zinc-700 to-zinc-900 text-white sticky top-0 z-10">
         <tr>
-          <th className="px-4 py-2 text-left font-bold flex justify-between items-center">
-            <FaArrowDownUpAcrossLine/>
+          <th className="px-4 py-2 text-left font-bold flex justify-between items-center text-secondary_two">
+            <FaArrowDownUpAcrossLine className="text-secondary_two"/>
             Posición
           </th>
-          <th className="px-4 py-2 text-left font-bold">
+          <th className="px-4 py-2 text-left font-bold text-secondary_two">
             Operación
           </th>
-          <th className="px-4 py-2 text-left font-bold">Máquina</th>
-          <th className="px-4 py-2 text-left font-bold">Sam</th>
+          <th className="px-4 py-2 text-left font-bold text-secondary_two">Máquina</th>
+          <th className="px-4 py-2 text-left font-bold text-secondary_two">Sam</th>
         </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">

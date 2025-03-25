@@ -87,14 +87,14 @@ const OperationDeleteCustom = ({operation}) => {
   return (
     <>
 
-      <Tooltip content="Eliminar operación">
+      <Tooltip content="Eliminar operación" placement='left'>
         <button className="mr-2">
           {
             isLoading ? <Spinner size="sm" /> : <FaDeleteLeft
-              className="!cursor-pointer"
+              className="!cursor-pointer text-red-500"
               size={20}
               onClick={(e) => handleDelete(e,operation)}
-              color="#e11d48"
+             
             />
           }
 

@@ -7,6 +7,7 @@ import SearchCustom from "../SearchCustom.jsx";
 import {FaArrowDownUpAcrossLine, FaArrowRightLong} from "react-icons/fa6";
 import {FaArrowAltCircleRight, FaArrowCircleRight, FaSave} from "react-icons/fa";
 import CustomButton from "../../../../../ui/CustomButton.jsx";
+import MyCustomButton from "../../../../../ui/MyCustomButton.jsx"
 import {checkOpersPosition, selectOpers} from "../../../../../infraestructure/states/opers_states.js";
 import {balancingData, detailOperOperations} from "../../../../../infraestructure/states/states_balancing.js";
 import {postData} from "../../../../../infraestructure/call_api/crud.js";
@@ -25,7 +26,7 @@ import {nameImageDateNow} from "../../../../../infraestructure/utils/imagesForma
 const DragAndDropApp = ({onClose}) => {
   const [operations, setOperations] = useState([]); // Operaciones de la segunda tabla
   const [operationsCreate, setOperationsCreate] = useState([]); // Operaciones de la segunda tabla
-
+  const [query, setQuery] = useState(""); // Estado para el valor del input
 
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
 
@@ -56,6 +57,7 @@ const DragAndDropApp = ({onClose}) => {
 
   const [imageTable, setImageTable] = useRecoilState(imageTableBalancing)
 
+  
 
   useEffect(() => {
     dataObj && setShowFormNew(true)
@@ -115,9 +117,9 @@ const DragAndDropApp = ({onClose}) => {
         product_id: objBalancing.product.id,
         order_id: showOrder.order.id
       }
-
     }
-
+    console.log(updateOperationsCreate)
+    debugger
     
     const postDataClone = async (data) => {
       setIsLoading(true)
@@ -128,14 +130,7 @@ const DragAndDropApp = ({onClose}) => {
         const updated_operations = result.updated_operations
         const details = result.details
         const total_sam = result.total_sam
-        //console.log(objBalancing)
-
         setSamSum(total_sam)
-
-        // console.log(objBalancing)
-        // console.log(balancing)
-        // console.log(samSum)
-        // console.log(detailOperOpera)
 
         const detail = assignColorsToArray(details)
 
@@ -150,7 +145,11 @@ const DragAndDropApp = ({onClose}) => {
         // onClose()
         toast.success(toastMessageCustom.operationsDragCloneUpdate)
         setIsLoading(false)
-
+        setShowFormNew(false)
+        setCloneOperations([])
+        setOperationsCreate([])
+        setOperationCloneIs(false)
+        setQuery("")
         setTimeout(()=> {
           setImageTable(nameImageDateNow)
         },1000)
@@ -163,13 +162,6 @@ const DragAndDropApp = ({onClose}) => {
 
   }
 
-
-
-
-
-
-
-
   return (
     <div>
 
@@ -180,6 +172,8 @@ const DragAndDropApp = ({onClose}) => {
             <SearchCustom
               showFormNew={showFormNew}
               setShowFormNew={setShowFormNew}
+              query={query}
+              setQuery={setQuery}
             />
             {
               cloneOperations.length >= 1 &&
@@ -187,7 +181,7 @@ const DragAndDropApp = ({onClose}) => {
                  <Tooltip
                    content="mueve los elementos de esta lista para la otra lista"
                    showArrow={true}>
-                   <FaArrowDownUpAcrossLine size={46}/>
+                   <FaArrowDownUpAcrossLine size={28} className="text-secondary_two"/>
                  </Tooltip>
                </div>
 
@@ -196,7 +190,8 @@ const DragAndDropApp = ({onClose}) => {
           </div>
 
           {
-            showFormNew && <FormOperationCustom/>
+            showFormNew && 
+              <FormOperationCustom/>
           }
 
 
@@ -215,13 +210,15 @@ const DragAndDropApp = ({onClose}) => {
                   {
                     operationsCreate.length >= 1 && (
                       <div className="sticky top-0 z-10">
-                        <CustomButton
-                          color="default"
-                          variant="bordered"
-                          startContent={<FaSave color="green"/>}
-                          onClick={handleSave}
+                        <MyCustomButton
+                          icon={<FaSave className=" mt-1 mr-3 "/>}
                           title={`Actualizar operaciones de ${objBalancing && objBalancing.operations.length} a ${operations.length}`}
+                          handleClick={handleSave}
+                          value={`Actualizar operaciones de ${objBalancing && objBalancing.operations.length} a ${operations.length}`}
+                          bgButton={"bg-zinc-800"}
+                          textButton={"text-secondary_two"}
                         />
+                        
                       </div>
 
                     )

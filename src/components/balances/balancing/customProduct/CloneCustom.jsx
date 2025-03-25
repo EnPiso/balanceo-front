@@ -26,13 +26,13 @@ const CloneCustom = ({ addOperation }) => {
       <table className="min-w-full border-collapse text-small">
         <thead className="bg-gradient-to-r from-zinc-700 to-zinc-900 text-white sticky top-0 z-10">
         <tr>
-          <th className="px-4 py-2 border text-left dark:text-zinc-700 text-zinc-100 ">
+          <th className="px-4 py-2 border text-left dark:text-zinc-700 text-secondary_two ">
             Operaciones
           </th>
-          <th className="px-4 py-2 border text-left dark:text-zinc-700 text-zinc-100">
+          <th className="px-4 py-2 border text-left dark:text-zinc-700 text-secondary_two">
             Máquina
           </th>
-          <th className="px-4 py-2 border text-left dark:text-zinc-700 text-zinc-100">
+          <th className="px-4 py-2 border text-left dark:text-zinc-700 text-secondary_two">
             Sam
           </th>
         </tr>

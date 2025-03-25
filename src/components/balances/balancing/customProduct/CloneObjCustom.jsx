@@ -30,7 +30,7 @@ const CloneObjCustom = ({ operation, addOperation }) => {
       onDragStart={handleDragStart}
       className="cursor-pointer bg-white hover:bg-gray-50 transition-all border-b border-gray-200 shadow-sm hover:shadow-md"
     >
-      <td className="px-4 py-2 border border-gray-300 text-left text-gray-700 font-medium hover:scale-105 hover:shadow-md transition-transform duration-300 transform origin-center flex items-center space-x-2 group">
+      <td className="px-4 py-2 border-l-1 text-left text-gray-700 font-medium hover:scale-105 hover:shadow-md transition-transform duration-300 transform origin-center flex items-center space-x-2 group">
         {operation.operation}
         <FaArrowAltCircleRight
           size={20}
@@ -44,10 +44,10 @@ const CloneObjCustom = ({ operation, addOperation }) => {
         </button>
       </td>
 
-      <td className="px-4 py-2  border border-gray-300">
+      <td className="px-4 py-2 border-l-1">
         {operation.machine}
       </td>
-      <td className="px-4 py-2   border border-gray-300">
+      <td className="px-4 py-2 border-l-1">
         {operation.sam}
       </td>
     </tr>

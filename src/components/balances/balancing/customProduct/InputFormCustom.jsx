@@ -25,7 +25,7 @@ const InputFormCustom = memo(({ name, label, operation, setOperation, validateOp
         value={operation[name] || ""} // Aquí asignamos el valor correspondiente
         onChange={handleChange}
         name={name}
-        labelPlacement="inside"
+        labelPlacement="outside"
         type="text"
         label={label}
       />

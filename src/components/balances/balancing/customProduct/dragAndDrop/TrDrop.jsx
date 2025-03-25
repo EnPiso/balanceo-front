@@ -85,10 +85,10 @@ const TrDrop = ({
         isSelected ? "bg-zinc-200 hover:bg-zinc-300" : "hover:bg-zinc-100"
       }`}
     >
-      <td className="px-4 py-2 border border-gray-300 text-right">
+      <td className="px-4 py-2  text-right border-l-1">
         {operation.operation_position}
       </td>
-      <td className="px-4 py-2 border border-gray-300 flex justify-between items-center">
+      <td className="px-4 py-2  flex justify-between items-center border-l-1">
        <div className="flex justify-between items-center">
          <FaDeleteLeft
            size={20}
@@ -115,8 +115,8 @@ const TrDrop = ({
           </button>
         )}
       </td>
-      <td className="px-4 py-2 border border-gray-300">{operation.machine}</td>
-      <td className="px-4 py-2 border border-gray-300">{operation.sam}</td>
+      <td className="px-4 py-2 border-l-1">{operation.machine}</td>
+      <td className="px-4 py-2 border-l-1">{operation.sam}</td>
     </tr>
   );
 };

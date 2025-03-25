@@ -85,14 +85,14 @@ const OperationRedistribution = ({operation}) => {
 
   return (
     <>
-      <Tooltip content="Redistribuir">
+      <Tooltip content="Redistribuir" placement='right'>
         <button className="mr-2">
           {
             isLoading ? <Spinner size="sm" /> :  <FaStop
-              className="!cursor-pointer"
+              className="!cursor-pointer text-secondary_two"
               size={20}
               onClick={(e) => handleRedistribution(e,operation)}
-              color="#3b82f6"
+              
             />
           }
 

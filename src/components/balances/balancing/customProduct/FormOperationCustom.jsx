@@ -12,6 +12,7 @@ import {assignColorsToArray} from "../../../../ui/utils.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../../infraestructure/data/toastMessage.js";
 import {searchOperations} from "../../../../infraestructure/states/operation_states.js";
+import MyCustomButton from "../../../../ui/MyCustomButton.jsx";
 
 const FormOperationCustom = () => {
   const [operation, setOperation] = useState({ operation: "", machine: "", sam: "", original: true });
@@ -100,19 +101,17 @@ const FormOperationCustom = () => {
   }
 
   return (
-    <div className="flex w-full justify-between py-2">
+    <div className="flex  justify-between items-center py-2">
       <InputFormCustom name="operation" label="Operación" operation={operation} setOperation={setOperation} validateOperation={validateOperation} setIsValid={setIsValid} />
       <InputFormCustom name="machine" label="Máquina" operation={operation} setOperation={setOperation} validateOperation={validateOperation} setIsValid={setIsValid} />
       <InputFormCustom name="sam" label="Sam" operation={operation} setOperation={setOperation} validateOperation={validateOperation} setIsValid={setIsValid} />
       {isValid && (
-        <div className="mr-2 mt-3">
-          <CustomButton
-            color="default"
-            variant="bordered"
-            startContent={<FaSave className="text-secondary_two" size={20} />}
-            onClick={handleSubmit}
-          />
-        </div>
+    
+          <button onClick={handleSubmit} >
+            <FaSave className="text-secondary_two mr-2 mt-8" size={30}/>
+           
+          </button>
+          
       )}
     </div>
   );

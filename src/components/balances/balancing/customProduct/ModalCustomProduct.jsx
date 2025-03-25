@@ -19,6 +19,7 @@ import DragAndDropApp from "./dragAndDrop/DragAndDropApp.jsx";
 import {selectOpers} from "../../../../infraestructure/states/opers_states.js";
 import {isOperationClone} from "../../../../infraestructure/states/states_navigation.js";
 import {searchOperations} from "../../../../infraestructure/states/operation_states.js";
+import MyCustomButton from "../../../../ui/MyCustomButton.jsx";
 
 const ModalCustomProduct = () => {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -52,9 +53,6 @@ const ModalCustomProduct = () => {
 
 
       <Modal
-
-
-
         scrollBehavior={"inside"}
         size={selected === "agregar" ? "5xl" : "full"}
         backdrop="opaque"
@@ -86,7 +84,12 @@ const ModalCustomProduct = () => {
         >
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">{objBalancing.product.name}</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                <span className=" text-secondary_two">
+                  {objBalancing.product.name}
+                </span>
+                
+              </ModalHeader>
               <ModalBody>
 
                 <TabOperationsCustom
@@ -97,14 +100,15 @@ const ModalCustomProduct = () => {
 
               </ModalBody>
               <ModalFooter>
-                <CustomButton
-                  color="default"
-                  variant="bordered"
-                  startContent={<FaBackward />}
-                  onClick={onClose}
-                  title="Regresar"
+              
+                <MyCustomButton
+                  icon={<FaBackward className=" mt-1 mr-3 text-secondary_two"/>}
+                  title={`Regresar`}
+                  handleClick={onClose}
+                  value={`Regresar`}
+                  bgButton={"bg-zinc-100"}
+                  textButton={"text-zinc-800"}
                 />
-
               </ModalFooter>
             </>
           )}

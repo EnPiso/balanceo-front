@@ -9,13 +9,9 @@ import {FaLess, FaPlus, FaWindowClose} from "react-icons/fa";
 import {AiOutlineMinus} from "react-icons/ai";
 import {dataObjClone} from "../../../../infraestructure/states/states_navigation.js";
 
-const SearchCustom = ({setShowFormNew,showFormNew}) => {
+const SearchCustom = ({setShowFormNew,showFormNew,query,setQuery}) => {
   const [cloneOperations, setCloneOperations] = useRecoilState(searchOperations);
   const [dataObj, setDataObjClone] = useRecoilState(dataObjClone);
-
-
-
-  const [query, setQuery] = useState(""); // Estado para el valor del input
   const [debouncedQuery, setDebouncedQuery] = useState(""); // Estado para la búsqueda retrasada
 
   useEffect(() => {
@@ -60,7 +56,7 @@ const SearchCustom = ({setShowFormNew,showFormNew}) => {
   }
 
   return (
-    <div className="ml-4 flex justify-between items-center">
+    <div className=" flex justify-between items-center py-2">
       <Input
         value={query}
         onChange={(e) => setQuery(e.target.value)}
@@ -71,14 +67,14 @@ const SearchCustom = ({setShowFormNew,showFormNew}) => {
             className="focus:outline-none"
             type="button"
             aria-label="toggle password visibility">
-            <FaMagnifyingGlass/>
+            <FaMagnifyingGlass className='text-secondary_two'/>
           </button>
         }
         className="max-w-xs mr-5"
       />
       <button onClick={handlePlus}>
         {
-          showFormNew ? <FaWindowClose/> : <FaPlus/>
+          showFormNew ? <FaWindowClose size={30}/> : <FaPlus className='text-secondary_two' size={30}/>
         }
 
 

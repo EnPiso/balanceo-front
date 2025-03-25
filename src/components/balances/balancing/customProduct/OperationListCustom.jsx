@@ -112,12 +112,12 @@ const   DraggableRow = ({ operation, index, handleDragStart, handleDragOver, han
       onDragStart={() => handleDragStart(index)} // Inicio del drag
       onDragOver={(e) => handleDragOver(e)} // Permitir el drop
       onDrop={() => handleDropUpdate(index)} // Acción al soltar
-      className="cursor-move bg-white hover:bg-gray-100 transition-all"
+      className="cursor-move bg-white hover:bg-gray-100 transition-all  border border-zinc-300"
     >
-      <td className="px-4 py-2 border border-gray-300 text-right">
+      <td className="px-4 py-2 text-right">
         {operation.operation_position}
       </td>
-      <td className="px-4 py-2 border border-gray-300 flex justify-start items-center">
+      <td className="px-4 py-2 border-l-1 flex justify-start items-center">
         <OperationDeleteCustom
           operation={operation}
         />
@@ -129,7 +129,7 @@ const   DraggableRow = ({ operation, index, handleDragStart, handleDragOver, han
           {operation.operation}
         </div>
       </td>
-      <td className="px-4 py-2 border border-gray-300">{operation.machine}</td>
+      <td className="px-4 py-2 border-l-1">{operation.machine}</td>
       <EditSamCustom
         operation={operation}
       />
@@ -193,16 +193,16 @@ const OperationListCustom = ({ operations }) => {
 
   return (
       <div className="space-y-4 overflow-auto max-h-100">
-        <table className="min-w-full border-collapse border border-gray-200 text-small">
+        <table className="min-w-full  text-small">
           <thead className="dark:bg-zinc-100 bg-zinc-700 sticky top-0 z-10">
           <tr>
-            <th className="px-4 py-2 border text-left dark:text-zinc-700 text-zinc-100 flex justify-between items-center">
+            <th className="px-4 py-2 border text-left dark:text-zinc-700 text-secondary_two flex justify-between items-center">
               <FaArrowDownUpAcrossLine/>
               <span>Posición</span>
             </th>
-            <th className="px-4 py-2 border text-left dark:text-zinc-700 text-zinc-100">Operación</th>
-            <th className="px-4 py-2 border text-left dark:text-zinc-700 text-zinc-100">Máquina</th>
-            <th className="px-4 py-2 border text-left dark:text-zinc-700 text-zinc-100">Sam</th>
+            <th className="px-4 py-2 border text-left dark:text-zinc-700 text-secondary_two">Operación</th>
+            <th className="px-4 py-2 border text-left dark:text-zinc-700 text-secondary_two">Máquina</th>
+            <th className="px-4 py-2 border text-left dark:text-zinc-700 text-secondary_two">Sam</th>
 
           </tr>
           </thead>
