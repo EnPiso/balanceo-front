@@ -20,7 +20,12 @@ export const  ModalRecVideoMobile = ({operation}) => {
       </button>
       {
         isOpen && (
-            <Modal size={"full"} placement={"center"} isOpen={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+            <Modal 
+              scrollBehavior="inside" 
+              size={"full"} 
+              placement={"center"} 
+              isOpen={isOpen} 
+              onOpenChange={(open) => setIsOpen(open)}>
               <ModalContent>
                   <>
                     <ModalBody>
