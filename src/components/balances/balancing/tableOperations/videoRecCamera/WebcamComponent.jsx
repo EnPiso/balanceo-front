@@ -74,7 +74,7 @@ const WebcamRecorder = ({ setVideoBlob,videoDuration, setVideoDuration, setIsOpe
         audio={true}
         ref={webcamRef}
         videoConstraints={videoConstraints}
-        className="absolute top-0 left-0 w-full h-full object-cover"
+        className="absolute top-0 left-0 w-full h-full object-cover z-40"
       />
 
       {/* Botones posicionados en la parte inferior */}
