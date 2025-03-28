@@ -9,7 +9,7 @@ import ZonesMobileClock from './ZonesMobileClock';
 import ZonesMobileClockOper from './ZonesMobileClockOper';
 import MyCustomButton from '../../../../../ui/MyCustomButton';
 import ZonesMobileDashboardVideos from './ZonesMobileDashboardVideos';
-import { videoShow } from '../../../../../infraestructure/states/states_videos';
+import { isVideosShow, videoShow } from '../../../../../infraestructure/states/states_videos';
 import ModalVideoInput from '../videoOperations/ModalVideoInput';
 
 
@@ -17,7 +17,7 @@ const ZonesMobileDashboard = () => {
   const [zonesOperUpdate] = useRecoilState(zonesMobile);
   const [selectedOperDetails] = useRecoilState(checkOpersPosition);
 
-  const [isVideos,setIsVideos] = useState(false)
+  const [isVideos,setIsVideos] = useRecoilState(isVideosShow)
   
   const [showVideos, setShowVideos]  = useRecoilState(videoShow)
 
@@ -35,8 +35,8 @@ const ZonesMobileDashboard = () => {
           title={"TOMA DE TIEMPOS"}
           handleClick={()=> setIsVideos(false)}
           value={null}
-          bgButton={"bg-zinc-800"}
-          textButton={"text-secondary_two"}
+          bgButton={!isVideos ? "bg-zinc-800" : "bg-zinc-200"}
+          textButton={!isVideos ? "text-secondary_two" : "text-zinc-800"}
         />
 
         <MyCustomButton
@@ -44,8 +44,8 @@ const ZonesMobileDashboard = () => {
           title={"VÍDEOS"}
           handleClick={()=> setIsVideos(true)}
           value={null}
-          bgButton={"bg-zinc-800"}
-          textButton={"text-secondary_two "}
+          bgButton={isVideos ? "bg-zinc-800" : "bg-zinc-200"}
+          textButton={isVideos ? "text-secondary_two" : "text-zinc-800"}
         />
        
       </div>  

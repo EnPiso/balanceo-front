@@ -13,6 +13,7 @@
   "dependencies": {
     "@internationalized/date": "^3.7.0",
     "@nextui-org/react": "^2.4.8",
+    "@remotion/player": "^4.0.280",
     "axios": "^1.7.7",
     "exceljs": "^4.4.0",
     "framer-motion": "^11.11.17",
@@ -33,6 +34,7 @@
     "react-router-dom": "^7.0.1",
     "react-webcam": "^7.2.0",
     "recoil": "^0.7.7",
+    "remotion": "^4.0.280",
     "use-react-screenshot": "^4.0.0"
   },
   "devDependencies": {

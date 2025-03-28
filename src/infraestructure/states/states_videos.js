@@ -29,3 +29,9 @@ export const modalInputAdd   = atom({
   key: 'modalInputAdd',
   default: false,
 });
+
+export const isVideosShow   = atom({
+  key: 'isVideosShow',
+  default: false,
+});
+

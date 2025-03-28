@@ -13,7 +13,7 @@ export const  ConfirmOpen = ({isOpen, setIsOpen, handleSave, title, description}
   return (
     <>
 
-      <Modal isOpen={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+      <Modal placement={"center"} isOpen={isOpen} onOpenChange={(open) => setIsOpen(open)}>
         <ModalContent>
             <>
               <ModalBody>
@@ -30,14 +30,14 @@ export const  ConfirmOpen = ({isOpen, setIsOpen, handleSave, title, description}
                 <CustomButton
                   color="default"
                   variant="bordered"
-                  startContent={<FaSave color="green"/>}
+                  startContent={<FaSave className="text-secondary_two" size={24}/>}
                   onClick={handleSaveOperator}
                   title="Sí, Continuar"
                 />
                 <CustomButton
                   color="default"
                   variant="bordered"
-                  startContent={<FaBackward />}
+                  startContent={<FaBackward size={24}/>}
                   onClick={() => setIsOpen(false)}
                   title="No, Cancelar"
                 />

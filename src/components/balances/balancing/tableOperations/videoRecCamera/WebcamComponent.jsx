@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
+import { FaBackward, FaRecordVinyl, FaStop, FaStopCircle } from "react-icons/fa";
 import Webcam from "react-webcam";
 
-const WebcamRecorder = ({ setVideoBlob,videoDuration, setVideoDuration }) => {
+const WebcamRecorder = ({ setVideoBlob,videoDuration, setVideoDuration, setIsOpen }) => {
   const webcamRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const [recording, setRecording] = useState(false);
@@ -67,32 +68,45 @@ const WebcamRecorder = ({ setVideoBlob,videoDuration, setVideoDuration }) => {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="bg-gray-100">
+      {/* Webcam ocupa toda la pantalla */}
       <Webcam
         audio={true}
         ref={webcamRef}
         videoConstraints={videoConstraints}
-        className="w-full max-w-md"
+        className="absolute top-0 left-0 w-full h-full object-cover"
       />
-      <div className="mt-4 flex gap-2">
+
+      {/* Botones posicionados en la parte inferior */}
+      <div className="absolute bottom-4 left-0 w-full flex justify-center space-x-4 z-50">
         {!recording ? (
           <button
             onClick={startRecording}
-            className="bg-green-500 text-white py-2 px-4 rounded"
+            className="py-2 px-4 rounded"
           >
-            Iniciar Grabación
+            <FaRecordVinyl size={44} className="text-red-500"/>
+            
           </button>
         ) : (
           <button
             onClick={stopRecording}
-            className="bg-red-500 text-white py-2 px-4 rounded"
+            className="py-2 px-4 rounded"
           >
-            Detener Grabación
+           <FaStopCircle size={44} className="text-red-500 animate-pulse"/>
           </button>
         )}
+        <button
+          onClick={()=> setIsOpen(false)}
+          className="py-2 px-4 rounded"
+        >
+          <FaBackward size={44} className="text-secondary_two"/>
+        </button>
+        
       </div>
+
+      {/* Duración del video */}
       {videoDuration !== null && (
-        <p className="mt-4 text-gray-700">
+        <p className="absolute bottom-16 left-0 w-full text-center text-gray-700 z-10">
           Duración del video: {videoDuration.toFixed(2)} segundos
         </p>
       )}
