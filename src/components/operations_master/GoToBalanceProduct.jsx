@@ -36,7 +36,7 @@ const GoToBalanceProduct = () => {
       const product_id =  product.id
       const prod = product
 
-      debugger
+      
       const getData = async () => {
         try {
           //setLoading(true);

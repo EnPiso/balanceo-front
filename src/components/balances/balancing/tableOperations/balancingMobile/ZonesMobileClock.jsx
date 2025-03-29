@@ -29,7 +29,7 @@ const ZonesMobileClock = ({operationDetail, zone, opIndex}) => {
 
 
   const handleClock = (item, i) => { 
-    debugger
+    
     setItemAll(item)
     const oper_id = operationDetail.detailObj.oper_id
     

@@ -60,7 +60,7 @@ const FormCategoryProduct = ({setIsNew}) => {
 
             // Mostrar mensaje de éxito
             const updateAarray = [...categories, result]
-            debugger
+            
             setCategories(updateAarray)
             toast.success(toastMessageCustom.operationsNew);
             setIsNew(false)

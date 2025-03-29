@@ -33,7 +33,7 @@ const EditImageOperator = ({url_image, toggleLightbox,oper, opers, setOpers,setI
           const updatedItems = opers.map((item) =>
             item.id === id ? result : item
           );
-          debugger
+          
           setOpers(updatedItems)
           setIsEdit(false)
           setIsOpen(true)

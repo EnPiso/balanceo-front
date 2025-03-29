@@ -63,7 +63,7 @@ const ModuleEdit = () => {
                     return plant;
                 });
 
-                debugger
+                
                 setListPlants(update_module)
 
                 setProdPlant({ ...prodPlant, module: result })

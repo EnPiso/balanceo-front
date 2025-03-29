@@ -128,7 +128,7 @@ const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) =>
                   <>
                     
                       <MyCustomButton
-                        icon={<FaArrowsTurnRight className=" mt-1 mr-3 text-zinc-100"/>}
+                        icon={""}
                         title={"Automatizar operaciones"}
                         handleClick={()=> setIsAutomatic(true)}
                         value={null}
@@ -140,7 +140,7 @@ const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) =>
                 )
               }
               <MyCustomButton
-                icon={<FaBackward className=" mt-1 mr-3 "/>}
+                icon={""}
                 title={"Salir"}
                 handleClick={onClose}
                 value={null}

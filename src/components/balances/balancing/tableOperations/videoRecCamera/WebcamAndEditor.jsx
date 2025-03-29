@@ -23,7 +23,9 @@ const WebcamAndEditor = ({setIsOpen, operation}) => {
 
   return (
     <div className="w-full h-full">
-     
+      <p className={`absolute ${videoBlob ? 'top-4 font-bold' : 'top-8 font-light'}  left-4 text-secondary_two  bg-opacity-50 px-4 py-2 z-50`} >
+        {operation.operation}
+      </p>
 
       {
         videoBlob ? (

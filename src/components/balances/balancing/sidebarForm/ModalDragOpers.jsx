@@ -128,7 +128,7 @@ const ModalDragOpers = () => {
         setProdPlantOriginal(prodPlant); // Actualiza el módulo original al nuevo módulo
         onClose();
         setIsLoading(false);
-        debugger
+
         setTimeout(()=> {
           setImageTable(nameImageDateNow)
         },1000)

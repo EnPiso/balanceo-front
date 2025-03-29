@@ -31,7 +31,7 @@ const ZoneDinamycVideo = ({item}) => {
       }
     };
 
-    getData();
+    videoObjOperation && getData();
   }, [videoObjOperation]);
 
 

@@ -71,7 +71,7 @@ const NewTableProduct = () => {
         setProducts(updateObj)
         setIsNewProduct(false)
         toast.success("El producto ha sido creado con éxito")
-        debugger
+        
 
       } catch (error) {
         console.error('Error setting data', error);

@@ -76,7 +76,7 @@ const EditCategoryCrud = ({category}) => {
 
 
         setProducts(updatedProducts)
-        debugger
+        
         setCategoriesCustom(updatedItems)
 
         setIsEditCategory(false)

@@ -23,7 +23,9 @@ const TrDinamycVideo = ({item}) => {
     if (videoRef.current) {
       videoRef.current.load(); // Recarga el video cada vez que cambia el estado
     }
+    
     const getData = async () => {
+      debugger
       try {
         const result = await fetchGetData(`${urlMain}/videos/${videoObjOperation.id}/comment_videos`);
 
@@ -33,7 +35,7 @@ const TrDinamycVideo = ({item}) => {
       }
     };
 
-    getData();
+    videoObjOperation && getData();
   }, [videoObjOperation]);
 
 

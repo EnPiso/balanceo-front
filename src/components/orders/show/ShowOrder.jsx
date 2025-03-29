@@ -23,7 +23,7 @@ const ShowOrder = ({order}) => {
         const result = await fetchGetData(`${urlMain}orders/${order.id}/show_order_details/`);
 
         setShowOrder(result)
-        debugger
+        
         //setOrders(result)
         //setError(null);
       } catch (error) {

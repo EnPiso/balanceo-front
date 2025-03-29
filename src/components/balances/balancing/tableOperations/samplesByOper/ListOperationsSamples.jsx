@@ -17,7 +17,7 @@ const ListOperationsSamples = () => {
   
   useEffect(()=> {
     console.log(samplesOperations)
-    debugger
+    
   }, [])
 
   const handleSample = (sample) => {

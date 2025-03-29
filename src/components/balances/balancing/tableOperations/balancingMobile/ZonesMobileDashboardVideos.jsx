@@ -15,7 +15,7 @@ import TrDinamycVideo from '../videoOperations/TrDinamycVideo';
 import ButtonNavigationVideos from '../videoOperations/ButtonNavigationVideos';
 import ZoneDinamycVideo from './ZoneDynamicVideo';
 import ModalVideoInput from '../videoOperations/ModalVideoInput';
-import { ModalRecVideoMobile } from './ModalRecVideoMobile';
+import ButtonRecVideoMobile from './ButtonRecVideoMobile';
 
 
 const ZonesMobileDashboardVideos = () => {
@@ -145,7 +145,7 @@ const ZonesMobileDashboardVideos = () => {
                           className='text-secondary_two'
                         />
                       </button>
-                      <ModalRecVideoMobile
+                      <ButtonRecVideoMobile
                         operation={operation}
                       />
                     </div>

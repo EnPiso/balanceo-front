@@ -47,6 +47,7 @@ import ModalByOrder from './samplesByOper/ModalByOrder.jsx';
 import SimpleBalancedOperationsTable from './balancingMobile/SimpleBalancedOperationsTable .jsx';
 import { zonesMobile } from '../../../../infraestructure/states/states_mobile.js';
 import ZonesMobileDashboard from './balancingMobile/ZonesMobileDashboard.jsx';
+import { ModalRecOutside } from './balancingMobile/ModalRecOutside.jsx';
 
 
 
@@ -373,8 +374,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
           zonesOperUpdate.length >= 1 && <ZonesMobileDashboard/>
         }
       </div>
-     
-      
+        <ModalRecOutside/>
       <div className="h-10 w-full py-6 mt-6">
 
       </div>

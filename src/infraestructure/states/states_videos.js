@@ -35,3 +35,12 @@ export const isVideosShow   = atom({
   default: false,
 });
 
+export const isOpenModalRec   = atom({
+  key: 'isOpenModalRec',
+  default: false,
+});
+
+export const operationRecVideo   = atom({
+  key: 'operationRecVideo',
+  default: null,
+});

@@ -28,7 +28,7 @@ const EditCateroryProduct = ({product}) => {
         category_product_name: category_product.label,
       }
     }
-    debugger
+    
     const updateProduct = async (data) => {
       try {
         const result = await updateData(urlMain + "products/" + product_id, data)

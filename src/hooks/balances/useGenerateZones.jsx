@@ -35,7 +35,7 @@ const useGenerateZones = ({ opersSelect, balancing, zones }) => {
 
       // **Evita actualizaciones redundantes comparando los datos**
       setZonesOpersData((prevData) => {
-        debugger
+        
         // Si los datos no han cambiado, no actualizamos
         if (JSON.stringify(prevData) === JSON.stringify(filteredData)) {
           return prevData;

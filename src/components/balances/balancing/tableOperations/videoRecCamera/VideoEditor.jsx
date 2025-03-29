@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Slider } from "@nextui-org/react";
-import { FaRecordVinyl } from "react-icons/fa";
+import { FaRecordVinyl, FaStop } from "react-icons/fa";
 import VideoRecSave from "./VideoRecSave";
 import { ModalVideoRecConfirm } from "./ModalVideoRecConfirm";
 
@@ -125,7 +125,7 @@ const VideoEditor = ({
       {/* Controles de Recorte */}
       {videoDuration && (
         <>
-          <div className="w-full mt-4 flex flex-col items-center bg-zinc-100 py-6">
+          <div className="w-full mt-4 flex flex-col items-center bg-zinc-100 py-6 px-1">
             <Slider
               fillOffset={0}
               radius="full"
@@ -155,7 +155,7 @@ const VideoEditor = ({
           }}
           className="py-2 px-4 rounded"
         >
-          <FaRecordVinyl size={44} className="text-red-500" />
+          <FaStop size={44} className="text-red-500" />
         </button>
         <VideoRecSave operation={operation} videoBlob={videoBlob} />
       </div>
@@ -167,9 +167,12 @@ const VideoEditor = ({
           setVideoBlob(null);
           setVideoDuration(null);
         }}
-        title="¿Quieres eliminar Vídeo,"
-        description={"para grabar y reemplazar?"}
+        title="¿Quieres eliminar este vídeo"
+        description={"para grabar otro?"}
       />
+      <div className="h-10 w-full py-6 mt-6">
+
+      </div>
     </div>
   );
 };

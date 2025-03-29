@@ -30,18 +30,18 @@ export const  ModalVideoRecConfirm = ({isOpen, setIsOpen, handleSave, title, des
               <ModalFooter className="flex justify-center">
                 <MyCustomButton
                   icon={<FaRecordVinyl className="text-red-500 mt-1 mr-3"/>}
-                  title={"sí, Volver a grabar"} 
+                  title={"Grabar"} 
                   handleClick={handleSaveOperator}
-                  value={"sí, Volver a grabar"} 
+                  value={"Grabar"} 
                   bgButton={"bg-zinc-800"}
                   textButton={"text-secondary_two"}
                 />
 
                 <MyCustomButton
                   icon={<FaBackward className=" mt-1 mr-3 "/>}
-                  title={ "Cancelar"} 
+                  title={ "Regresar"} 
                   handleClick={() => setIsOpen(false)}
-                  value={"Cancelar"} 
+                  value={"Regresar"} 
                   bgButton={"bg-zinc-100"}
                   textButton={"text-zinc-800"}
                 />

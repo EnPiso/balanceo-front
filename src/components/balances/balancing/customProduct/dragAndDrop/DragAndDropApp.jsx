@@ -118,8 +118,8 @@ const DragAndDropApp = ({onClose}) => {
         order_id: showOrder.order.id
       }
     }
-    console.log(updateOperationsCreate)
-    debugger
+   
+    
     
     const postDataClone = async (data) => {
       setIsLoading(true)
