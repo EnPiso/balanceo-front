@@ -1,7 +1,7 @@
 import {DatePicker, Spinner, Tooltip} from "@nextui-org/react";
 import {getLocalTimeZone, today} from "@internationalized/date";
 import React, {useState} from "react";
-import {FaBarcode, FaCalendarAlt, FaCalendarCheck, FaCalendarTimes, FaSearch} from "react-icons/fa";
+import {FaBarcode, FaCalendarAlt, FaCalendarCheck, FaCalendarTimes, FaReplyAll, FaSearch} from "react-icons/fa";
 import SearchOrdersCustom from "./SearchOrdersCustom.jsx";
 
 const SearchDateOrders = ({queryDate, setQueryDate, isLoading, queryString, setQueryString}) => {
@@ -20,6 +20,13 @@ const SearchDateOrders = ({queryDate, setQueryDate, isLoading, queryString, setQ
   return (
     <div className="flex flex-col md:flex-row md:justify-end items-center   py-2 px-4  gap-4">
       {/* Componente de Búsqueda */}
+      <div>
+        <button 
+          onClick={()=> setQueryString("")}>
+          <FaReplyAll size={25} className="text-secondary_two"/>
+        </button>
+      </div>
+
       <div className="w-full md:w-auto">
         <SearchOrdersCustom
           setQueryDate={setQueryDate}

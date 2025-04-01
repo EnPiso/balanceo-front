@@ -1,18 +1,53 @@
 import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Radio, RadioGroup, Tooltip } from '@nextui-org/react'
 import React from 'react'
-import { FaRegPlayCircle, FaRegWindowClose } from 'react-icons/fa'
+import { FaRegPlayCircle, FaRegWindowClose, FaStar } from 'react-icons/fa'
 import { useRecoilState } from 'recoil';
 import { checkOpersPosition } from '../../../../../infraestructure/states/opers_states';
 import SelectionOperVideo from './SelectionOperVideo';
 import { FaDeleteLeft } from 'react-icons/fa6';
 import MyCustomButton from '../../../../../ui/MyCustomButton';
+import { updateData } from '../../../../../infraestructure/call_api/crud';
+import { urlMain } from '../../../../../infraestructure/data/const';
+import { listVideosOperations, videoShow } from '../../../../../infraestructure/states/states_videos';
+import toast from 'react-hot-toast';
 
-const DropDownItemVideo = ({videosOperations, isOpen, setIsOpen, handleVideo, handleDelete, setVideosOperations}) => {
+const DropDownItemVideo = ({isOpen, setIsOpen, handleVideo, handleDelete}) => {
   
-  
+  const [videosOperations, setVideosOperations] = useRecoilState(listVideosOperations)
+  const [showVideos, setShowVideos]  = useRecoilState(videoShow)
+
+  const handleFavorite = (video) => {
+    const video_id = video.id
+    const uploadFavorite = async () => {
+      
+      try {
+        const result = await updateData(urlMain + `videos/${video_id}/favorite_video`, {})
+
+        const videoUpdate = result.video
+    
+        const update_array = videosOperations.map((video) =>
+          video.id === videoUpdate.id
+            ? { ...video, favorite: videoUpdate.favorite } // Actualiza solo el parámetro "favorite"
+            : video
+        );
+
+        setVideosOperations(update_array)
+        
+        videoUpdate.favorite ? 
+          toast.success("El vídeo ha sido agregado a la lista de favoritos") :
+          toast("El vídeo ha sido eliminado de la lista de favorito")
+        
+      } catch (error) {
+        console.error('Error setting data', error);
+      } 
+    };
+
+    uploadFavorite()
+  }
 
   return (
     <>
+   
       <Dropdown isOpen={isOpen} onOpenChange={setIsOpen} closeOnSelect={false}>
         <DropdownTrigger>
          
@@ -37,14 +72,36 @@ const DropDownItemVideo = ({videosOperations, isOpen, setIsOpen, handleVideo, ha
           // selectedKeys={selectedKeys}
           // onSelectionChange={setSelectedKeys}
         >
+          
           {
             videosOperations.map((video, i)=> {
               return(
                 <DropdownItem key={i}>
-                  <div className="w-full px-2 py-2 my-2 mx-2 cursor-pointer bg-zinc-200">
-                    <span className="truncate text-center uppercase text-zinc-600 font-bold bg-zinc-300">
-                      video # <span className="text-secondary_two">{i + 1}</span>
-                    </span>
+                  <div className="w-full px-2 py-2 my-2 mx-2 cursor-pointer ">
+                  {
+                    (i === 0 || i === videosOperations.length - 1) && (
+                      <h1 className="font-bold text-secondary_two text-xl uppercase">
+                        <span className="bg-zinc-100">
+                          {showVideos.operation}
+                        </span>
+                      </h1>
+                    )
+                  }
+                  
+                    <div className="flex justify-between items-center">
+                      <span className="truncate text-center uppercase text-zinc-600 font-bold bg-zinc-300">
+                        video # <span className="text-secondary_two">{i + 1}</span>
+                      </span>
+                      <button onClick={()=> handleFavorite(video)}>
+                        {
+                          video.favorite ? 
+                            <FaStar size={30} className='text-yellow-400'/> : 
+                            <FaStar size={30} className='text-secondary_two animate-pulse'/>
+                        }
+                        
+                      </button>
+                    </div>
+                    
 
 
                     <span onClick={()=> handleVideo(video)}>
@@ -64,8 +121,8 @@ const DropDownItemVideo = ({videosOperations, isOpen, setIsOpen, handleVideo, ha
                     />
                     <div className="flex justify-end">
                       <Tooltip content="Eliminar vídeo" placement='bottom'>
-                        <button onClick={()=> handleDelete(video, i + 1)} className='py-4 px-4'>
-                          <FaDeleteLeft color="red" size={24} />
+                        <button onClick={()=> handleDelete(video, i + 1)} className='py-4'>
+                          <FaDeleteLeft color="red" size={30} />
                         </button>
                       </Tooltip>
                      
@@ -80,7 +137,7 @@ const DropDownItemVideo = ({videosOperations, isOpen, setIsOpen, handleVideo, ha
 
         </DropdownMenu>
       </Dropdown>
-
+     
     </>
   )
 }

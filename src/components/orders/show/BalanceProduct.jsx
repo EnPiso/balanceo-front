@@ -137,7 +137,13 @@ const BalanceProduct = ({product}) => {
                 icon={<FaCalendar className=" mt-1 mr-3 "/>}
                 title={ 
                   <div>
-                    Balancear <span className="uppercase">{product.product.name}</span> <span className="font-bold"> {product.product.reference} </span>
+                    Balancear
+                    <span className="uppercase">
+                      {product.product.name}
+                    </span> 
+                    <span className="font-bold"> 
+                      {product.product.reference} 
+                    </span>
                   </div>
                 }
                 handleClick={()=> handleBalancing(product)}

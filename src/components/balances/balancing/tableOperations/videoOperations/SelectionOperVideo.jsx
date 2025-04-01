@@ -65,11 +65,9 @@ const SelectionOperVideo = ({ video, setVideosOperations, videosOperations }) =>
   return (
     <>
 
-        <div className='bg-zinc-300 py-2'>
-            <h1 className="px-4 flex justify-between items-center  font-bold mb-1 text-zinc-800 text-md uppercase">
-              Operarios <FaUser size={15} className='ml-2 text-secondary_two'/>
-            </h1>
-              <div className="flex gap-2 flex-wrap py-2 px-2">
+        <div className='py-2  px-1'>
+          
+              <div className="flex gap-2 flex-wrap">
                 
                 {selectedOperDetails.map((oper, index) => (
                   <SelectOperCheck

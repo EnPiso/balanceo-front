@@ -11,11 +11,11 @@ const SelectOperCheck = ({selected, oper, handleOperVideo}) => {
         isLoading ? 
           <Spinner size='lg' color='default'/> :
           <label
-            className={`cursor-pointer px-4 py-2  
+            className={`cursor-pointer px-4 py-2 font-bold uppercase tex-xs
             ${selected && selected.id === oper.id ? 'text-secondary_two bg-zinc-800' : 'bg-white text-zinc-800'} 
             transition-all duration-300`}
           >
-          {}
+         
             <input
        
               type="radio"
@@ -25,7 +25,11 @@ const SelectOperCheck = ({selected, oper, handleOperVideo}) => {
               onChange={() => handleOperVideo(oper, setIsLoading)}
               className="hidden"
             />
-            {oper.name}
+            <span className="flex justify-between items-center">
+              {firstWordInString(oper.name)}
+              <img src={oper.avatar} className="h-6 ml-1" />
+            </span>
+            
           </label>
       }
    
