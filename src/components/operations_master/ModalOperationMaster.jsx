@@ -29,6 +29,7 @@ const ModalOperationMaster = ({isOpen, setIsOpen,handleClose}) => {
     <div className="flex flex-col gap-2">
 
     <Modal
+      placement="center"
       size="5xl"
       isOpen={isOpen}
       scrollBehavior={"inside"}

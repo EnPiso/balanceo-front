@@ -86,6 +86,7 @@ const OrderDashboardModal = () => {
      
      
       <Modal
+        placement="center"
         size="5xl"
         isOpen={isOpen}
         onOpenChange={onOpenChange}

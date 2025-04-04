@@ -13,6 +13,7 @@ import { useTime } from 'framer-motion';
 import MyCustomButton from '../../../ui/MyCustomButton.jsx';
 import toast from 'react-hot-toast';
 import { FaDoorClosed, FaNotEqual } from 'react-icons/fa';
+import { samplingsCircleObj } from '../../../infraestructure/states/states_mobile.js';
 
 const BalanceProduct = ({product}) => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
@@ -25,6 +26,8 @@ const BalanceProduct = ({product}) => {
 
 
   const [goToBalanceObj, setBoToBalanceObj] = useRecoilState(goToBalance)
+
+  const [samplingsGlobal, setSamplingsGlobal] = useRecoilState(samplingsCircleObj)
   
 
   useEffect(()=> {
@@ -80,7 +83,11 @@ const BalanceProduct = ({product}) => {
           }
           setProdPlantOriginal(dataPlant)
         }
-
+        
+        if(result.samplings_cycles){
+          setSamplingsGlobal(result.samplings_cycles)
+        }
+        
 
       } catch (error) {
         console.error('Error al obtener los datos:', error);
@@ -137,7 +144,7 @@ const BalanceProduct = ({product}) => {
                 icon={<FaCalendar className=" mt-1 mr-3 "/>}
                 title={ 
                   <div>
-                    Balancear
+                    Balancear {" "}
                     <span className="uppercase">
                       {product.product.name}
                     </span> 

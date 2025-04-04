@@ -39,6 +39,7 @@ const ModalDashboardOrder = () => {
 
       </div>
       <Modal
+        placement="center"
         size={"5xl"}
         isOpen={isOpen}
         onClose={onClose}

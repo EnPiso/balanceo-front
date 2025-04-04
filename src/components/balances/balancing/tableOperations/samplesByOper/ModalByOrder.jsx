@@ -37,6 +37,7 @@ const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) =>
     <div className="flex flex-col gap-2">
 
     <Modal
+      placement="center"
       size="full"
       isOpen={isOpen}
       scrollBehavior={"inside"}

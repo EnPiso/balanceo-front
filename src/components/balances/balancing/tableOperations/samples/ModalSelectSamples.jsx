@@ -85,6 +85,7 @@ const ModalSelectSamples = ({isOpen, setIsOpen, Obj, itemAll}) => {
     <div className="flex flex-col gap-2">
 
     <Modal
+      placement="center"
       size="5xl"
       isOpen={isOpen}
       scrollBehavior={"inside"}

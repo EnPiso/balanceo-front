@@ -35,7 +35,7 @@ import {
   showOrderObj
 } from "../../../../infraestructure/states/order_states.js";
 import TableRedistribution from "./TableRedistribution.jsx";
-import {FaFilePdf} from "react-icons/fa6";
+import {FaClock, FaFilePdf} from "react-icons/fa6";
 import PdfBalancing from "../PDFBalancing.jsx";
 import {useScreenshot} from "use-react-screenshot";
 import CommentBalancing from "../CommentBalancing.jsx";
@@ -45,9 +45,11 @@ import { automaticByOper, isOpenModalSample, isOpenModalSampleByOper, openByOper
 import ModalSelectSamples from './samples/ModalSelectSamples.jsx';
 import ModalByOrder from './samplesByOper/ModalByOrder.jsx';
 import SimpleBalancedOperationsTable from './balancingMobile/SimpleBalancedOperationsTable .jsx';
-import { zonesMobile } from '../../../../infraestructure/states/states_mobile.js';
+import { clockGlobalModal, samplingsCircleList, samplingsCircleObj, zonesMobile } from '../../../../infraestructure/states/states_mobile.js';
 import ZonesMobileDashboard from './balancingMobile/ZonesMobileDashboard.jsx';
 import { ModalRecOutside } from './balancingMobile/ModalRecOutside.jsx';
+import FooterCycles from './FooterCycles.jsx';
+import { Tooltip } from '@nextui-org/react';
 
 
 
@@ -94,6 +96,16 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
 
   // operByOper
   // isOpenModalSampleByOper
+
+  const [clockGlobal, setClockGlobal]  = useRecoilState(clockGlobalModal)
+  const [samplingsGlobal, setSamplingsGlobal] = useRecoilState(samplingsCircleObj)
+  const [samplingsCircle, setSamplingsCircle] = useRecoilState(samplingsCircleList);
+    
+  
+    const handleGlobalClock = () => {
+      setClockGlobal(!clockGlobal)
+    }
+  
 
   // Función centralizada para actualizar zonas**
   const updateZones = (callback) => {
@@ -329,12 +341,29 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
                     </tbody>
                   </table>
                     
-                   
+                  
                
                 </div>
             )
         }
-
+        {
+          samplingsCircle.length >= 1 ? 
+            <FooterCycles handleFunction={handleGlobalClock}/> :
+              <div className="py-4">
+                <Tooltip placement="right-end" content="Ciclos de producto">
+                  <button
+                    onClick={handleGlobalClock}
+                    className='ml-2 mt-2 flex justify-between items-center'>
+                      <span className="font-bold text-secondary_two mr-2">
+                        Ciclos de producto
+                      </span>
+                    <FaClock size={24} className='text-secondary_two'/>
+                  </button>
+                </Tooltip>
+                
+              </div>
+        }
+         
         <div className={` ${isPDFMode && 'px-10 py-10'}`}>
           <CommentBalancing
             isShow={isPDFMode}

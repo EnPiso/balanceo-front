@@ -33,6 +33,8 @@ import {toastMessageCustom} from "../../../infraestructure/data/toastMessage.js"
 
 import { PDFDocument } from "pdf-lib";
 import MyCustomButton from '../../../ui/MyCustomButton.jsx';
+import { clockGlobalModal } from '../../../infraestructure/states/states_mobile.js';
+import SamplesGlobalModal from './tableOperations/samplesByOper/SamplesGlobalModal.jsx';
 
 export const BalancingDashboard = ({backward}) => {
 
@@ -64,7 +66,8 @@ export const BalancingDashboard = ({backward}) => {
 
   const [isScreenShot, setIsScreenShot] = useRecoilState(isScreenShotImg)
   
-
+  const [clockGlobal, setClockGlobal]  = useRecoilState(clockGlobalModal)
+  
 
   useEffect(() => {
 
@@ -317,8 +320,15 @@ export const BalancingDashboard = ({backward}) => {
                 />
           }
         </div>
-       
-
+        
+       {
+        clockGlobal && 
+          <SamplesGlobalModal
+            isOpen={clockGlobal}
+            setIsOpen={setClockGlobal}
+        /> 
+       }
+         
       </>
   )
 }

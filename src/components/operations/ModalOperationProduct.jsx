@@ -20,6 +20,7 @@ const ModalOperationProduct = ({setIsOpen, isOpen, isLoading}) => {
 
 
         <Modal
+          placement="center"
           size="5xl"
           isOpen={isOpen}
           scrollBehavior={"inside"}

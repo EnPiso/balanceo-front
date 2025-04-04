@@ -123,6 +123,7 @@ const ModalCategoryNew = () => {
       </Tooltip>
 
       <Modal
+        placement="center"
         backdrop="opaque"
         classNames={{
           backdrop: "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20",

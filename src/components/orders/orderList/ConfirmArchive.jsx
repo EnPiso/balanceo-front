@@ -11,7 +11,7 @@ const ConfirmArchive = ({isOpen, setIsOpen, handleSubmit, title, description, is
   return (
 
     <>
-      <Modal isOpen={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+      <Modal placement="center" isOpen={isOpen} onOpenChange={(open) => setIsOpen(open)}>
         <ModalContent>
           <>
             <ModalBody>

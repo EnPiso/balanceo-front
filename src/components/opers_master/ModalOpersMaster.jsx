@@ -24,6 +24,7 @@ const ModalOpersMaster = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
 
 
       <Modal
+        placement="center"
         size="5xl"
         isOpen={isOpen}
         scrollBehavior={"inside"}

@@ -186,7 +186,7 @@ const OrderDetail = () => {
                         Operaciones {"  " + operationsProduct.length}
                       </h3>
                     </div>
-                    <div>
+                  <div>
                     <ImageLightbox
                       thumbnailUrl={showOrder.order.image_url}
                       fullSizeUrl={showOrder.order.image_url}

@@ -55,6 +55,7 @@ const ModalCategoryCrud = () => {
       </Tooltip>
 
       <Modal
+        placement="center"
         scrollBehavior={"inside"}
         size={"5xl"}
         backdrop="opaque"

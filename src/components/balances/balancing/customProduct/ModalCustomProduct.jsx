@@ -53,6 +53,7 @@ const ModalCustomProduct = () => {
 
 
       <Modal
+        placement="center"
         scrollBehavior={"inside"}
         size={selected === "agregar" ? "5xl" : "full"}
         backdrop="opaque"

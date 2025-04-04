@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaFileVideo, FaPlay, FaUser, FaVideo } from 'react-icons/fa6';
-import { zonesMobile } from '../../../../../infraestructure/states/states_mobile';
+import { clockGlobalModal, samplingsCircleList, samplingsCircleObj, zonesMobile } from '../../../../../infraestructure/states/states_mobile';
 import { checkOpersPosition } from '../../../../../infraestructure/states/opers_states';
 import { useRecoilState } from 'recoil';
 import { Avatar, Badge } from '@nextui-org/react';
@@ -11,6 +11,7 @@ import MyCustomButton from '../../../../../ui/MyCustomButton';
 import ZonesMobileDashboardVideos from './ZonesMobileDashboardVideos';
 import { isVideosShow, videoShow } from '../../../../../infraestructure/states/states_videos';
 import ModalVideoInput from '../videoOperations/ModalVideoInput';
+import FooterCycles from '../FooterCycles';
 
 
 const ZonesMobileDashboard = () => {
@@ -21,7 +22,15 @@ const ZonesMobileDashboard = () => {
   
   const [showVideos, setShowVideos]  = useRecoilState(videoShow)
 
+  const [clockGlobal, setClockGlobal]  = useRecoilState(clockGlobalModal)
 
+  const [samplingsGlobal, setSamplingsGlobal] = useRecoilState(samplingsCircleObj)
+  
+  const [samplingsCircle, setSamplingsCircle] = useRecoilState(samplingsCircleList);
+
+  const handleGlobalClock = () => {
+    setClockGlobal(!clockGlobal)
+  }
 
   const handleOperation = (operationDetail) => {
     console.log(operationDetail)
@@ -30,29 +39,46 @@ const ZonesMobileDashboard = () => {
   return (
     <div>
       <div className="flex justify-between items-center font-bold ">
-        <MyCustomButton
-          icon={!isVideos && <FaClock className='mt-1 mr-1 text-secondary_two'/>}
-          title={"TOMA DE TIEMPOS"}
-          handleClick={()=> setIsVideos(false)}
-          value={null}
-          bgButton={!isVideos ? "bg-zinc-800" : "bg-zinc-200"}
-          textButton={!isVideos ? "text-secondary_two" : "text-zinc-800"}
-        />
-
-        <MyCustomButton
-          icon={isVideos && <FaPlay className='mt-1 mr-1 text-secondary_two'/>}
-          title={"VÍDEOS"}
-          handleClick={()=> setIsVideos(true)}
-          value={null}
-          bgButton={isVideos ? "bg-zinc-800" : "bg-zinc-200"}
-          textButton={isVideos ? "text-secondary_two" : "text-zinc-800"}
-        />
+          <div className="flex justify-start">
+            <MyCustomButton
+                icon={!isVideos && <FaClock className='mt-1 mr-1 text-secondary_two'/>}
+                title={"TOMA DE TIEMPOS"}
+                handleClick={()=> setIsVideos(false)}
+                value={null}
+                bgButton={!isVideos ? "bg-zinc-800" : "bg-zinc-200"}
+                textButton={!isVideos ? "text-secondary_two" : "text-zinc-800"}
+              />
+              {
+                samplingsCircle.length < 1 && 
+                  <button
+                    onClick={handleGlobalClock}
+                    className='ml-2 mt-2'>
+                    <FaClock size={40} className='text-secondary_two'/>
+                  </button>
+              }
+          </div>
+          
+          <MyCustomButton
+            icon={isVideos && <FaPlay className='mt-1 mr-1 text-secondary_two'/>}
+            title={"VÍDEOS"}
+            handleClick={()=> setIsVideos(true)}
+            value={null}
+            bgButton={isVideos ? "bg-zinc-800" : "bg-zinc-200"}
+            textButton={isVideos ? "text-secondary_two" : "text-zinc-800"}
+          />
        
       </div>  
 
       {
         isVideos ? <ZonesMobileDashboardVideos/> : (
           <div>
+            {
+              samplingsCircle.length >= 1 && 
+                <FooterCycles 
+                  handleFunction={handleGlobalClock}/>
+            }
+            
+
           {zonesOperUpdate.map((zone, zoneIndex) => (
             <div 
               key={zoneIndex} 
@@ -101,9 +127,6 @@ const ZonesMobileDashboard = () => {
                     )}
   
   
-                  {
-  
-                  }
   
                       <button className="font-medium" onClick={()=> handleOperation(operationDetail)}>
                         {operationDetail.operation.operation}  

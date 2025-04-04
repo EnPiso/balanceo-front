@@ -29,7 +29,7 @@ const InfoBoxBalancing = () => {
       gol_day: parseInt(((opersSelect.size * 60) / samSum) * 8)
     }
     setBalancing(data)
-
+    
   }, [samSum,opersSelect]);
 
   return (
@@ -38,7 +38,6 @@ const InfoBoxBalancing = () => {
         <ModalDragOpers/>
       </div>
       
-
       <div className="mt-3">
         {
             opersSelect.size >= 1 && balancing && (
