@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaFileVideo, FaPlay, FaUser, FaVideo } from 'react-icons/fa6';
 import { clockGlobalModal, samplingsCircleList, samplingsCircleObj, zonesMobile } from '../../../../../infraestructure/states/states_mobile';
 import { checkOpersPosition } from '../../../../../infraestructure/states/opers_states';
@@ -36,6 +36,8 @@ const ZonesMobileDashboard = () => {
     console.log(operationDetail)
   }
 
+
+
   return (
     <div>
       <div className="flex justify-between items-center font-bold ">
@@ -49,7 +51,7 @@ const ZonesMobileDashboard = () => {
                 textButton={!isVideos ? "text-secondary_two" : "text-zinc-800"}
               />
               {
-                samplingsCircle.length < 1 && 
+                !samplingsGlobal && 
                   <button
                     onClick={handleGlobalClock}
                     className='ml-2 mt-2'>
@@ -73,7 +75,7 @@ const ZonesMobileDashboard = () => {
         isVideos ? <ZonesMobileDashboardVideos/> : (
           <div>
             {
-              samplingsCircle.length >= 1 && 
+              samplingsGlobal && 
                 <FooterCycles 
                   handleFunction={handleGlobalClock}/>
             }

@@ -25,7 +25,7 @@ const TrDinamycVideo = ({item}) => {
     }
     
     const getData = async () => {
-      debugger
+      
       try {
         const result = await fetchGetData(`${urlMain}/videos/${videoObjOperation.id}/comment_videos`);
 

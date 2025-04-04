@@ -346,23 +346,29 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
                 </div>
             )
         }
+
         {
-          samplingsCircle.length >= 1 ? 
-            <FooterCycles handleFunction={handleGlobalClock}/> :
-              <div className="py-4">
-                <Tooltip placement="right-end" content="Ciclos de producto">
-                  <button
-                    onClick={handleGlobalClock}
-                    className='ml-2 mt-2 flex justify-between items-center'>
-                      <span className="font-bold text-secondary_two mr-2">
-                        Ciclos de producto
-                      </span>
-                    <FaClock size={24} className='text-secondary_two'/>
-                  </button>
-                </Tooltip>
-                
-              </div>
+          selectedOperDetails.length > 0 && (
+            <>
+              { samplingsGlobal ? 
+                <FooterCycles handleFunction={handleGlobalClock}/> :
+                    <div className="py-4">
+                      <Tooltip placement="right-end" content="Ciclos de producto">
+                        <button
+                          onClick={handleGlobalClock}
+                          className='ml-2 mt-2 flex justify-between items-center'>
+                            <span className="font-bold text-secondary_two mr-2">
+                              Ciclos de producto 
+                            </span>
+                          <FaClock size={24} className='text-secondary_two'/>
+                        </button>
+                      </Tooltip>
+                    </div>
+              }
+            </>
+          )
         }
+        
          
         <div className={` ${isPDFMode && 'px-10 py-10'}`}>
           <CommentBalancing

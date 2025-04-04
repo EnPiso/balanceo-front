@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { samplingsCircleObj } from '../../../../infraestructure/states/states_mobile'
 import { orderObjBalancing } from '../../../../infraestructure/states/order_states'
@@ -9,6 +9,8 @@ const FooterCycles = ({handleFunction}) => {
 
   const [samplingsGlobal, setSamplingsGlobal] = useRecoilState(samplingsCircleObj)
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
+  
+
 
   return (
     <>

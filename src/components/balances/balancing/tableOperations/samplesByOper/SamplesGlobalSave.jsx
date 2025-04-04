@@ -5,8 +5,10 @@ import { useRecoilState } from 'recoil'
 import { orderObjBalancing } from '../../../../../infraestructure/states/order_states'
 import { postData } from '../../../../../infraestructure/call_api/crud'
 import { urlMain } from '../../../../../infraestructure/data/const'
-import { samplingsCircleList, samplingsCircleObj } from '../../../../../infraestructure/states/states_mobile'
+import { clockGlobalModal, samplingsCircleList, samplingsCircleObj } from '../../../../../infraestructure/states/states_mobile'
 import toast from 'react-hot-toast'
+import { samplesGlobalShared } from '../../../../../infraestructure/utils/samplesGlobal'
+import { selectOpers } from '../../../../../infraestructure/states/opers_states'
 
 const SamplesGlobalSave = ({isLoading,steps,setSteps,setCurrentStep}) => {
 
@@ -14,6 +16,9 @@ const SamplesGlobalSave = ({isLoading,steps,setSteps,setCurrentStep}) => {
   
   const [samplingsCircle, setSamplingsCircle] = useRecoilState(samplingsCircleList);
 
+  const [opersSelect] = useRecoilState(selectOpers);
+
+  const [samplingsGlobal, setSamplingsGlobal] = useRecoilState(samplingsCircleObj)
   
 
   const handleSave = () => {
@@ -25,7 +30,12 @@ const SamplesGlobalSave = ({isLoading,steps,setSteps,setCurrentStep}) => {
     const postDataSamplings = async () => {
           try {
             const result = await postData(urlMain + "samplings_cycles", data);
-            setSamplingsCircle([...samplingsCircle, ...result]);
+            const updateSamplings = [...samplingsCircle, ...result]
+            setSamplingsCircle(updateSamplings);
+            
+            const objUpdate = samplesGlobalShared(updateSamplings, opersSelect, objBalancing.total_sam)
+            
+            setSamplingsGlobal(objUpdate)
             setSteps([])
             setCurrentStep(0)
             if(result.length > 1){

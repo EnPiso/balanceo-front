@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { orderObjBalancing } from '../../../../../infraestructure/states/order_states';
 import { useRecoilState } from 'recoil';
-import { samplingsCircleList, samplingsCircleObj } from '../../../../../infraestructure/states/states_mobile';
+import { clockGlobalModal, samplingsCircleList, samplingsCircleObj } from '../../../../../infraestructure/states/states_mobile';
 import { selectOpers } from '../../../../../infraestructure/states/opers_states';
 import { samSumOperation } from '../../../../../infraestructure/states/operation_states';
 import SamplesGlobalCard from './SamplesGlobalCard';
@@ -12,22 +12,8 @@ const SamplesGlobalFooter = () => {
   const [samplingsCircle, setSamplingsCircle] = useRecoilState(samplingsCircleList);
   const [opersSelect, setOpersSelect] = useRecoilState(selectOpers)
   const [samSum, setSamSum] = useRecoilState(samSumOperation);
-  const [samplingsGlobal, setSamplingsGlobal] = useRecoilState(samplingsCircleObj)
 
-  useEffect(() => {
-    console.log("samplingsCircle cambió:", samplingsCircle);
-    if (samplingsCircle.length < 1) {
-      setSamplingsGlobal(null);
-    } else {
-      const dataUpdate = {
-        cycles: samplingsCircle.length,
-        total_time: totalSeconds.toFixed(2),
-        potencial_percent: processTimeFormat(`${objBalancing.total_sam}/${totalSeconds}`),
-        potential_uds: golDay(),
-      };
-      setSamplingsGlobal(dataUpdate);
-    }
-  }, [samplingsCircle]);
+  
   
   // Función para convertir "mm:ss" a segundos
   const convertToSeconds = (time) => {
