@@ -5,12 +5,14 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter
+  ModalFooter,
+  Spinner,
+  CircularProgress
 } from "@nextui-org/react";
 
 import { FaArrowsTurnRight, FaClock, FaClockRotateLeft } from "react-icons/fa6";
 import MyCustomButton from "../../../../../ui/MyCustomButton";
-import { clockGlobalModal, samplingsCircleList } from "../../../../../infraestructure/states/states_mobile";
+import { clockGlobalModal, loadingSamplingsCircle, samplingsCircleList, samplingsCircleObj } from "../../../../../infraestructure/states/states_mobile";
 import { useRecoilState } from "recoil";
 import SamplesGlobalChrono from "./SamplesGlobalChrono";
 import { orderObjBalancing } from "../../../../../infraestructure/states/order_states";
@@ -20,7 +22,11 @@ const SamplesGlobalModal = ({isOpen, setIsOpen}) => {
 
   const [clockGlobal, setClockGlobal]  = useRecoilState(clockGlobalModal)
 
+  const [samplingsCircle, setSamplingsCircle] = useRecoilState(samplingsCircleList);
+  const [samplingsGlobal, setSamplingsGlobal] = useRecoilState(samplingsCircleObj)
+
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
+  const [isLoadingSamplings, setIsLoadingSamplings] = useRecoilState(loadingSamplingsCircle)
 
   
   const handleOut = () => {
@@ -37,6 +43,7 @@ const SamplesGlobalModal = ({isOpen, setIsOpen}) => {
       scrollBehavior={"inside"}
       onOpenChange={(isOpenState) => {
         setIsOpen(isOpenState)
+        setSamplingsCircle([])
       }} // Actualiza el estado
     >
       <ModalContent>
@@ -44,14 +51,18 @@ const SamplesGlobalModal = ({isOpen, setIsOpen}) => {
           <>
             <ModalHeader className="flex justify-between items-center">
               <h1 className="uppercase flex justify-start">
-                Ciclos de {objBalancing.product.name}
+                Ciclos de  {objBalancing.product.name}
                 <FaClockRotateLeft  className="mt-1 ml-2 text-secondary_two" />   
               </h1>
 
             </ModalHeader>
             <ModalBody>
-              <SamplesGlobalChrono/>
               
+             
+                <SamplesGlobalChrono/>
+             
+              
+
             </ModalBody>
             <ModalFooter>
 

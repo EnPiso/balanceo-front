@@ -20,3 +20,10 @@ export const samplingsCircleObj = atom({
   default: null,
 });
 
+
+export const loadingSamplingsCircle = atom({
+  key: 'loadingSamplingsCircle',
+  default: false,
+});
+
+

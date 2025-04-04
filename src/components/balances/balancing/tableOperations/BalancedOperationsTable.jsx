@@ -102,9 +102,9 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
   const [samplingsCircle, setSamplingsCircle] = useRecoilState(samplingsCircleList);
     
   
-    const handleGlobalClock = () => {
-      setClockGlobal(!clockGlobal)
-    }
+  const handleGlobalClock = () => {
+    setClockGlobal(!clockGlobal)
+  }
   
 
   // Función centralizada para actualizar zonas**
