@@ -86,6 +86,7 @@ const WebcamRecorder = ({ setVideoBlob, videoDuration, setVideoDuration, setIsOp
       {/* Webcam ocupa toda la pantalla */}
       <Webcam
         audio={true}
+        muted={true} 
         ref={webcamRef}
         videoConstraints={videoConstraints}
         className="absolute top-0 left-0 w-full h-full object-cover z-40"
