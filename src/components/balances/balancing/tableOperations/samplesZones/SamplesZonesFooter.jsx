@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil';
 import { orderObjBalancing } from '../../../../../infraestructure/states/order_states';
 import { samplingsCircleList } from '../../../../../infraestructure/states/states_mobile';
-import { selectOpers } from '../../../../../infraestructure/states/opers_states';
+import { checkOpersPosition, selectOpers } from '../../../../../infraestructure/states/opers_states';
 import { samSumOperation } from '../../../../../infraestructure/states/operation_states';
 import SamplesGlobalCard from '../samplesByOper/SamplesGlobalCard';
 import { zonesSamplesList } from '../../../../../infraestructure/states/states_samples_zones';
@@ -12,6 +12,8 @@ const SamplesZonesFooter = () => {
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
 
   const [zonesSamples, setZonesSamples] = useRecoilState(zonesSamplesList)
+  
+  const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
   
   // Función para convertir "mm:ss" a segundos
   const convertToSeconds = (time) => {
@@ -49,7 +51,7 @@ const SamplesZonesFooter = () => {
       <SamplesGlobalCard
         cycles={zonesSamples.length}
         totalSeconds={totalSeconds.toFixed(2)}
-        total_sam={objBalancing.total_sam.toFixed(2)}
+        total_sam={(objBalancing.total_sam / selectedOperDetails.length).toFixed(2)}
         potential={processTimeFormat(`${objBalancing.total_sam}/${totalSeconds}`)}
         potentialUds={golDay()}
         handleFunction={false}
