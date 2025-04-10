@@ -8,6 +8,7 @@ import SamplesZonesSteps from './SamplesZonesSteps'
 import SamplesZonesList from './SamplesZonesList'
 import SamplesZonesDetails from './SamplesZonesDetails'
 import SamplesZonesFooter from './SamplesZonesFooter'
+import { Accordion, AccordionItem } from '@nextui-org/react'
 
 const DashboardSamplesZones = () => {
   const [steps, setSteps] = useState([]);
@@ -15,7 +16,13 @@ const DashboardSamplesZones = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [zoneOperSample, setZoneOperSample] = useRecoilState(zoneOperSampleObj)
   const [zonesSamples, setZonesSamples] = useRecoilState(zonesSamplesList)
-  
+
+  const [expandedKeys, setExpandedKeys] = useState(new Set([""])); // Estado para controlar el accordion
+  // Función para manejar la expansión del accordion
+   const handleAccordionChange = (keys) => {
+     setExpandedKeys(keys);
+   };
+ 
 
   const handleSaveTime = (time, setIsLoading) => {
     const newSteps = [...steps];
@@ -33,6 +40,9 @@ const DashboardSamplesZones = () => {
     //   handleBackEdit();
     // } 
   };
+
+  const isAccordionOpen = expandedKeys.has("1");
+
 
   return (
     <div>
@@ -72,8 +82,20 @@ const DashboardSamplesZones = () => {
         />
       </div>
 
-      <SamplesZonesDetails/>
-      
+      <Accordion
+        selectedKeys={expandedKeys}
+        onSelectionChange={handleAccordionChange}
+      >
+        <AccordionItem
+          key="1"
+          aria-label={isAccordionOpen ? "Menos detalles de la zona" : "Más detalles de la zona"}
+          subtitle={isAccordionOpen ? "Click para colapsar" : "Click para expandir"}
+          title={`${isAccordionOpen ? "Ocultar" : "Ver"} detalles de la zona`}
+        >
+          <SamplesZonesDetails/>
+        </AccordionItem>
+      </Accordion>
+
       <SamplesZonesList/>
       
       </div>
