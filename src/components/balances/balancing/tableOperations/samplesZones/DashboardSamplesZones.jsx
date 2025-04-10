@@ -39,7 +39,7 @@ const DashboardSamplesZones = () => {
       <h1 className="text-zinc-800 font-bold uppercase">
         {zoneOperSample?.operator.name}
       </h1>
-      <div className="my-3">
+      <div className="mt-4">
         <WatchChrono
             onSaveTime={handleSaveTime}
           />
