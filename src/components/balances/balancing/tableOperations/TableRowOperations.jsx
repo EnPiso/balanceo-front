@@ -27,6 +27,7 @@ const stylesBorder = {
   borderColor: "#71717a"
 }
 const TableRowOperations = ({
+                              key,
                               item,
                               opersSelect,
                               balancing,
@@ -104,7 +105,7 @@ const TableRowOperations = ({
     <>
     
       <tr
-
+        key={key}
         className={`hover:border-zinc-600 dark:hover:border-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition dark:text-zinc-500 `}
         style={{
             background: item.is_repeat

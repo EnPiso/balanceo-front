@@ -120,7 +120,6 @@ const ZonesMobileDashboard = () => {
                           </h3>
                           <ZonesMobileZoneTime
                             operationDetail={operationDetail}
-                            zone={zone}
                           />
                         </div>
                         

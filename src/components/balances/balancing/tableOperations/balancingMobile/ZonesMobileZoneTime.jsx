@@ -5,7 +5,7 @@ import { isShowModalZoneSample, zoneOperSampleObj, zonesSamplesDetail } from '..
 import { detailOperOperations } from '../../../../../infraestructure/states/states_balancing'
 import { allOperationsProduct } from '../../../../../infraestructure/states/operation_states'
 
-const ZonesMobileZoneTime = ({operationDetail, zone}) => {
+const ZonesMobileZoneTime = ({operationDetail}) => {
 
   const [isShowModalZone, setIsShowModalZone] = useRecoilState(isShowModalZoneSample)
   
@@ -18,7 +18,7 @@ const ZonesMobileZoneTime = ({operationDetail, zone}) => {
   const [detailOperOpera] = useRecoilState(detailOperOperations);
   
   const handleClick = (operationDetail) => {
-  
+    
     const opers_balancing_id = operationDetail.detailObj.detail.opers_balancing_id
 
     const filtered = detailOperOpera.filter(item => item.detail.opers_balancing_id === opers_balancing_id)
@@ -32,29 +32,26 @@ const ZonesMobileZoneTime = ({operationDetail, zone}) => {
     setZonesDetailSample(filteredUpdate)
     setIsShowModalZone(true)
     setZoneOperSample(operationDetail)
-    
   }
 
   return (
     <>
-    <button 
-      onClick={()=> handleClick(operationDetail, zone)}>
-      <FaClock 
-        className="w-11 h-11 rounded-full object-cover text-primary_one"
-        style={{
-          border: `6px solid #f4f4f5`, // Azul personalizado con 6px de grosor
-        }} />
-      <span className="absolute bottom-0 left-6 px-2 py-1 rounded-full">
-        <h1 
-          className='text-secondary_two bg-white rounded-full'>
-          <span className="text-start px-1 rounded-md bg-zinc-100 cursor-pointer text-secondary_two font-bold flex justify-between items-center">
-            Tiempo de la zona 
-          </span>
-        </h1>
-      </span>
-    </button>
-    
-     
+      <button 
+        onClick={()=> handleClick(operationDetail)}>
+        <FaClock 
+          className="w-11 h-11 rounded-full object-cover text-primary_one"
+          style={{
+            border: `6px solid #f4f4f5`, // Azul personalizado con 6px de grosor
+          }} />
+        <span className="absolute bottom-0 left-6 px-2 py-1 rounded-full">
+          <h1 
+            className='text-secondary_two bg-white rounded-full'>
+            <span className="text-start px-1 rounded-md bg-zinc-100 cursor-pointer text-secondary_two font-bold flex justify-between items-center">
+              Tiempo de la zona 
+            </span>
+          </h1>
+        </span>
+      </button>
     </>
    
   )

@@ -13,6 +13,7 @@ const TableHeaderOperations = ({ opersSelect, balancing }) => {
   const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
   const [isPDFMode, setIsPDFMode] = useRecoilState(isPDFGenerate);
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
+  const [detailOperOpera] = useRecoilState(detailOperOperations);
 
 
   return(
@@ -40,7 +41,10 @@ const TableHeaderOperations = ({ opersSelect, balancing }) => {
                     <ButtonSamplesByOper oper={oper} objBalancing={objBalancing}/>
                     
                    
-                    <ImageThead image={oper.avatar ? oper.avatar : userAvatarImage} />
+                    <ImageThead 
+                      oper={oper}
+                      image={oper.avatar ? oper.avatar : userAvatarImage} />
+                      
                   </span>
                  
 

@@ -42,7 +42,7 @@ const TrDinamycVideo = ({item}) => {
 
 
   return (
-    <tr className="border border-zinc-50 w-full">
+    <tr key={JSON.stringify(item)} className="border border-zinc-50 w-full">
       <td className="py-2 px-2 container w-full">
 
 
