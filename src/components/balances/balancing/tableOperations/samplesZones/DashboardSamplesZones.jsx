@@ -39,9 +39,11 @@ const DashboardSamplesZones = () => {
       <h1 className="text-zinc-800 font-bold uppercase">
         {zoneOperSample?.operator.name}
       </h1>
-      <WatchChrono
-        onSaveTime={handleSaveTime}
-      />
+      <div className="my-3">
+        <WatchChrono
+            onSaveTime={handleSaveTime}
+          />
+      </div>
       <div className="py-6">
         {steps.map((time, index) => (
           <div
