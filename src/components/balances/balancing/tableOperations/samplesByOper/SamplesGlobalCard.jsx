@@ -30,13 +30,15 @@ const SamplesGlobalCard = ({cycles, totalSeconds, total_sam, potential, potentia
           title={"Total SAM"}
           description={`${total_sam}`}
         />
-        <CardSample
-          title={"Potencial %"}
-          description={`${potential}`}
-        />
+       
         <CardSample
           title={"Potencial uds"}
           description={`${potentialUds}`}
+        />
+
+        <CardSample
+          title={"Potencial Hora"}
+          description={`${potential}`}
         />
         {
           handleFunction && 

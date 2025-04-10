@@ -84,9 +84,9 @@ const ZonesMobileClock = ({operationDetail, zone, opIndex}) => {
                         className="mt-6">
                         <FaClock size={44}/>
                     </Badge>
-                  ) : (
+                  ) : 
                     <FaClock size={44}/>  
-                  )
+                 
                 }
                 
               </button>

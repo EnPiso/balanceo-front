@@ -12,6 +12,7 @@ import ZonesMobileDashboardVideos from './ZonesMobileDashboardVideos';
 import { isVideosShow, videoShow } from '../../../../../infraestructure/states/states_videos';
 import ModalVideoInput from '../videoOperations/ModalVideoInput';
 import FooterCycles from '../FooterCycles';
+import ZonesMobileZoneTime from './ZonesMobileZoneTime';
 
 
 const ZonesMobileDashboard = () => {
@@ -110,47 +111,55 @@ const ZonesMobileDashboard = () => {
                       
                     {opIndex < 1 && zone[0] && zone[0].operator && zone[0].detailObj && (
                       <div className="flex justify-between items-center relative">
-                        <h3 className="text-lg mb-3 text-secondary_two uppercase font-black">
-                          <span className="bg-primary_one px-1">
-                            {zone[0].operator.name}
-                          </span>
-                          
-                        </h3>
+                        <div className="flex flex-col">
+                          <h3 className="text-lg mb-3 text-secondary_two uppercase font-black">
+                            <span className="bg-primary_one px-1 rounded-md">
+                              {zone[0].operator.name}
+                            </span>
+                            
+                          </h3>
+                          <ZonesMobileZoneTime
+                            operationDetail={operationDetail}
+                            zone={zone}
+                          />
+                        </div>
+                        
+
                         <div className="relative">
                           <ZonesMobileClockOper
                             zone={zone}
                           />
 
-                          
-                          
                         </div>
                        
                       </div>
                     )}
   
   
-  
-                      <button className="font-medium" onClick={()=> handleOperation(operationDetail)}>
-                        {operationDetail.operation.operation}  
-                      </button>
-  
-                      <div className="flex justify-between items-start">
-                        <div className="text-sm text-gray-600 dark:text-gray-400">
-                          <p>Máquina: {operationDetail.operation.machine}</p>
-                          <p>Minutos: {operationDetail.detailObj && operationDetail.detailObj.detail.minutes} </p>
+                      <div className="pt-4">
+                          
+                        <p className="font-medium">
+                          {operationDetail.operation.operation}
+                        </p>
+    
+                        <div className="flex justify-between items-start">
+                            <div className="text-sm text-gray-600 dark:text-gray-400">
+                              <p>Máquina: {operationDetail.operation.machine}</p>
+                              <p>Minutos: {operationDetail.detailObj && operationDetail.detailObj.detail.minutes} </p>
+                            </div>
+                          <pre className="text-xs text-gray-500">
+                            {// JSON.stringify(operationDetail.detailObj.detail.samplings_count, null, 2)}
+        } 
+                          <ZonesMobileClock
+                            operationDetail={operationDetail}
+                            zone={zone}
+                            opIndex={opIndex}
+                          />
+                        
+                            
+                            
+                          </pre>
                         </div>
-                      <pre className="text-xs text-gray-500">
-                        {// JSON.stringify(operationDetail.detailObj.detail.samplings_count, null, 2)}
-    } 
-                      <ZonesMobileClock
-                        operationDetail={operationDetail}
-                        zone={zone}
-                        opIndex={opIndex}
-                      />
-                    
-                        
-                        
-                      </pre>
                       </div>
                       
                     </div>

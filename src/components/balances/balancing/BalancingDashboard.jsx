@@ -35,6 +35,8 @@ import { PDFDocument } from "pdf-lib";
 import MyCustomButton from '../../../ui/MyCustomButton.jsx';
 import { clockGlobalModal } from '../../../infraestructure/states/states_mobile.js';
 import SamplesGlobalModal from './tableOperations/samplesByOper/SamplesGlobalModal.jsx';
+import { isShowModalZoneSample } from '../../../infraestructure/states/states_samples_zones.js';
+import SamplesZonesModal from './tableOperations/samplesZones/SamplesZonesModal.jsx';
 
 export const BalancingDashboard = ({backward}) => {
 
@@ -43,18 +45,11 @@ export const BalancingDashboard = ({backward}) => {
   const componentPDF = useRef();
   const imagePdfRef = useRef();
 
-
   const [isPDFMode, setIsPDFMode] = useRecoilState(isPDFGenerate);
-
-
-
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
-
   const [, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // No necesitas el valor actual aquí, solo el setter
   const [, setOpersSelect] = useRecoilState(selectOpers);
-
   const [isLoadPDF, setIsLoadPDF] = useState(false);
-
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
 
   const [imageBlob, setImageBlob] = useState(null); // Estado para almacenar la imagen como Blob
@@ -67,6 +62,8 @@ export const BalancingDashboard = ({backward}) => {
   const [isScreenShot, setIsScreenShot] = useRecoilState(isScreenShotImg)
   
   const [clockGlobal, setClockGlobal]  = useRecoilState(clockGlobalModal)
+  
+  const [isShowModalZone, setIsShowModalZone] = useRecoilState(isShowModalZoneSample)
   
 
   useEffect(() => {
@@ -149,19 +146,15 @@ export const BalancingDashboard = ({backward}) => {
 
   useEffect(() => {
     isPDFMode && generatePDF()
-
     handleUpload()
   }, [isPDFMode]);
 
 
   useEffect(()=> {
-
     isScreenShot && handleScreenshot()
-
   }, [isScreenShot])
 
   const handleScreenshot = async () => {
-
 
     if (imagePdfRef.current) {
       try {
@@ -188,8 +181,6 @@ export const BalancingDashboard = ({backward}) => {
       const formData = new FormData();
       formData.append("file", imageBlob, "screenshot.png");
       console.log(formData)
-
-
     }
   };
 
@@ -203,9 +194,7 @@ export const BalancingDashboard = ({backward}) => {
         }); // Captura el contenido como Blob
         // console.log(blob); // Almacena el Blob en el estado
         if(blob){
-
           fetchUpdateImageTable(blob)
-
         }
       } catch (error) {
         console.error("Error al capturar el componente:", error);
@@ -224,7 +213,6 @@ export const BalancingDashboard = ({backward}) => {
       try {
         const result = await updateData(urlMain + `/products/${productId}`, formData)
         console.log(result)
-
         // guardar imagen de la tabla del balanceo en product
       } catch (error) {
         console.error('Error setting data', error);
@@ -322,12 +310,20 @@ export const BalancingDashboard = ({backward}) => {
         </div>
         
        {
-        clockGlobal && 
-          <SamplesGlobalModal
-            isOpen={clockGlobal}
-            setIsOpen={setClockGlobal}
-        /> 
+          clockGlobal && 
+            <SamplesGlobalModal
+              isOpen={clockGlobal}
+              setIsOpen={setClockGlobal}
+          /> 
        }
+         
+        {
+          isShowModalZone && 
+            <SamplesZonesModal
+              isOpen={isShowModalZone}
+              setIsOpen={setIsShowModalZone}
+            />
+        }
          
       </>
   )
