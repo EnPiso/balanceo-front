@@ -115,7 +115,7 @@ const TrOperMaster = ({oper}) => {
               isLoadingModules ? (
                 <>
                   <div className="flex justify-start ml-2">
-                    <CircularProgress size="lg" color="default" />
+                    <CircularProgress size="md" color="default" />
                   </div>
                 </>
               ) :
