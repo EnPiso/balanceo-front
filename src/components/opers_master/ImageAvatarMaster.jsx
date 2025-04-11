@@ -1,6 +1,7 @@
 
 import { Avatar, Tooltip } from '@nextui-org/react';
 import React, { useState } from 'react';
+import { userAvatarImage } from '../../infraestructure/data/links';
 
 const ImageAvatarMaster = ({ image }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,17 +10,18 @@ const ImageAvatarMaster = ({ image }) => {
   const toggleLightbox = () => setIsOpen(!isOpen);
 
   return (
-    <span className='py-1 px-1'>
-      <Tooltip content="Ver operario">
+    <span>
         <Avatar
-          src={image}
-          alt={"operarios-" + image}
-          onClick={toggleLightbox}
-          color="success"
+          size="md" 
+          className="w-10 h-10 rounded-full"
+          src={image ? image : `${userAvatarImage}`}
+          alt={"operarios-" + image ? image : ''}
+          onClick={image ? toggleLightbox : null}
+          color={image ? "success" : "default"}
           isBordered 
           
         />
-      </Tooltip>
+   
       
 
       {/* Lightbox */}

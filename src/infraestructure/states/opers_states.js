@@ -34,9 +34,14 @@ export const isNewModule = atom({
   default: [],
 });
 
-
 export const isShowOperMaster = atom({
   key: 'isShowOperMaster',
   default: null,
 });
+
+export const opersListModules = atom({
+  key: 'opersListModules',
+  default: null,
+});
+
 
