@@ -24,7 +24,7 @@ const AutocompleteOpersMaster = () => {
   const handleClick = (selectedKey) => {
     // Busca el elemento seleccionado usando el índice
     const selectedCategory = modules[selectedKey - 1];
-    console.log(selectedCategory + "iniciando")
+    
     if (selectedCategory) {
       console.log(selectedCategory, oper);
 
@@ -37,6 +37,7 @@ const AutocompleteOpersMaster = () => {
         }
       }
       const updatePlant = async () => {
+        console.log("async")
         try {
           const result = await updateData(urlMain + `opers/${oper_id}/update_production_module`, data)
           console.log(result + "resultado")
