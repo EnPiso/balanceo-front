@@ -36,13 +36,14 @@ const AutocompleteOpersMaster = () => {
 
       const data = {
         oper: {
-          production_module_id: module_id
+          production_module_id: module_id,
+          id: oper_id
         }
       }
       const updateOperZone = async () => {
         console.log("async")
         try {
-          const result = await updateData(urlMain + `opers/${oper_id}/update_prod_mod`, data)
+          const result = await updateData(urlMain + `opers/update_production_module`, data)
           const  updateOpers = masterOpers.map(item => item.id === result.id ? result : item);
           setMasterOpers(updateOpers)
           toast.success("Se ha actualizado el módulo del operario correctamente")
