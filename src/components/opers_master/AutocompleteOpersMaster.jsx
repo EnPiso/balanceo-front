@@ -39,18 +39,12 @@ const AutocompleteOpersMaster = () => {
           production_module_id: module_id
         }
       }
-      const updatePlant = async () => {
+      const updateOperZone = async () => {
         console.log("async")
         try {
-          const result = await updateData(urlMain + `opers/${oper_id}/update_production_module`, data)
-
-          const production_module_id = result.production_module_id
-          console.log(result + "resultado")
-          console.log(masterOpers)
-          debugger
+          const result = await updateData(urlMain + `opers/${oper_id}/update_prod_mod`, data)
           const  updateOpers = masterOpers.map(item => item.id === result.id ? result : item);
           setMasterOpers(updateOpers)
-          
           toast.success("Se ha actualizado el módulo del operario correctamente")
           // guardar imagen de la tabla del balanceo en product
         } catch (error) {
@@ -58,7 +52,7 @@ const AutocompleteOpersMaster = () => {
         }
       };
   
-      updatePlant()
+      updateOperZone()
       // Aquí puedes realizar las acciones necesarias con la categoría seleccionada
     }
   }
