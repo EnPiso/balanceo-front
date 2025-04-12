@@ -5,11 +5,13 @@ import { fetchGetData } from '../../infraestructure/call_api/crud';
 import { CircularProgress, Spinner } from '@nextui-org/react';
 import CustomPaginator from '../../ui/CustomPaginator';
 import TrOperMaster from './TrOperMaster';
+import { masterOpersList } from '../../infraestructure/states/opers_states';
+import { useRecoilState } from 'recoil';
 
 
 const ListOpersMaster = () => {
 
-  const [masterOpers, setMasterOpers] = useState([])
+  const [masterOpers, setMasterOpers] = useRecoilState(masterOpersList)
 
   const [isLoading, setIsLoading] = useState(false)
 

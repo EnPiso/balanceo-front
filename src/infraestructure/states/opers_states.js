@@ -45,3 +45,7 @@ export const opersListModules = atom({
 });
 
 
+export const masterOpersList = atom({
+  key: 'masterOpersList',
+  default: [],
+});
