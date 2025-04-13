@@ -40,23 +40,21 @@ const AutocompleteOpersMaster = () => {
           id: oper_id
         }
       }
-      const updateOperZone = async () => {
-        console.log("async")
-        try {
-          const result = await updateData(urlMain + `opers/update_production_module`, data)
-          const  updateOpers = masterOpers.map(item => item.id === result.id ? result : item);
-          setMasterOpers(updateOpers)
-          toast.success("Se ha actualizado el módulo del operario correctamente")
-          // guardar imagen de la tabla del balanceo en product
-        } catch (error) {
-          console.error('Error setting data', error);
-        }
-      };
-  
-      updateOperZone()
-      // Aquí puedes realizar las acciones necesarias con la categoría seleccionada
+      updateOperModule(data)
     }
   }
+
+  const updateOperModule = async (data) => {
+      
+    try {
+      const result = await updateData(urlMain + `production_modules/update_oper_production_modules`, data)
+      const  updateOpers = masterOpers.map(item => item.id === result.id ? result : item);
+      setMasterOpers(updateOpers)
+      toast.success("Se ha actualizado el módulo del operario correctamente")
+    } catch (error) {
+      console.error('Error setting data', error);
+    } 
+  };
 
 
   return (
