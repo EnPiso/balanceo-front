@@ -120,10 +120,13 @@ const TrOperMaster = ({oper}) => {
                 </>
               ) :
               <> 
+              <Tooltip content="Cambiar módulo" placement="left" className="z-50">
                 <button 
                   onClick={() => handleChangeModule(oper)}>
-                  <FaExchangeAlt size={24} className="text-secondary_two mr-1"/>
+                   <FaExchangeAlt size={24} className="text-secondary_two mr-1"/>
                 </button>
+              </Tooltip>
+                
               </> 
             
             }

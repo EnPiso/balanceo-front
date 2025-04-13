@@ -10,9 +10,11 @@ import FormEditInput from "../balances/balancing/sidebarForm/FormEditInput.jsx";
 import FormDynamicField from "./FormDynamicField.jsx";
 import TheadOperatorsCustom from "./TheadOperatorsCustom.jsx";
 import EditOperFormEdit from "./EditOperFormEdit.jsx";
+import { listOpersCustom } from "../../infraestructure/states/opers_states.js";
+import { useRecoilState } from "recoil";
 
 const ListOpersCustom = ({prodPlant, isLoading, setIsLoading}) => {
-  const [opers,setOpers] = useState([])
+  const [opers,setOpers] = useRecoilState(listOpersCustom)
 
   const [isNewOperator,setIsNewOperator] = useState(false)
 

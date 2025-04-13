@@ -1,7 +1,7 @@
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { masterOpersList, opersListModules } from '../../infraestructure/states/opers_states';
+import { listOpersCustom, masterOpersList, opersListModules } from '../../infraestructure/states/opers_states';
 import { updateData } from '../../infraestructure/call_api/crud';
 import { urlMain } from '../../infraestructure/data/const';
 import toast from 'react-hot-toast';
@@ -12,6 +12,9 @@ const AutocompleteOpersMaster = ({setIsOpen}) => {
   const [defaultModule, setDefaultModule] = useState(null);
 
   const [masterOpers, setMasterOpers] = useRecoilState(masterOpersList)
+
+  const [opersCustom,setOpersCustom] = useRecoilState(listOpersCustom)
+  
 
   const { oper, modules } = opersModules;
 
@@ -52,6 +55,10 @@ const AutocompleteOpersMaster = ({setIsOpen}) => {
       setMasterOpers(updateOpers)
       toast.success("Se ha actualizado el módulo del operario correctamente")
       setIsOpen(false)
+      const updatedOpersCustom = opersCustom.filter((oper) => oper.id !== result.id);
+      setOpersCustom(updatedOpersCustom);
+      debugger
+      // setOpersCustom()
     } catch (error) {
       console.error('Error setting data', error);
     } 

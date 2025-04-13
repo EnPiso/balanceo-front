@@ -10,9 +10,11 @@ import {toastMessageCustom} from "../../infraestructure/data/toastMessage.js";
 import {nameImageDateNow} from "../../infraestructure/utils/imagesFormat.js";
 import DeleteInputOperCustom from "./DeleteInputOperCustom.jsx";
 import ImageLightbox from "../orders/import/ImageLightBox.jsx";
-import {FaEdit} from "react-icons/fa";
+import {FaEdit, FaExchangeAlt} from "react-icons/fa";
 import EditImageOperator from "./EditImageOperator.jsx";
 import { userAvatarImage } from "../../infraestructure/data/links.js";
+import ModalOperModule from "../opers_master/ModalOperModule.jsx";
+import UpdateOperModuleCustom from "./UpdateOperModuleCustom.jsx";
 
 const EditOperFormEdit = ({oper, opers, setOpers}) => {
   const [isEditName, setIsEditName] = useState(false)
@@ -28,6 +30,8 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
   const [isLoadIdOper, setIsLoadIdOper] = useState(false);
 
   const [operTempo, setOperTempo] = useState(null)
+
+  const [isOpenChangeModule, setIsOpenChangeModule] = useState(false)
 
   // Función para abrir y cerrar el lightbox
   const toggleLightbox = () => setIsOpen(!isOpen);
@@ -207,11 +211,17 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
             
           </span>
 
-          <DeleteInputOperCustom
-            oper={oper}
-            opers={opers}
-            setOpers={setOpers}
-          />
+          <div className="flex justify-between items-center">
+            <UpdateOperModuleCustom oper={oper}/>
+            
+            <DeleteInputOperCustom
+              oper={oper}
+              opers={opers}
+              setOpers={setOpers}
+            />
+          </div>
+
+          
 
         </td>
       </tr>
@@ -225,6 +235,11 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
             />
         </span>
       )}
+
+          <ModalOperModule
+            isOpen={isOpenChangeModule} 
+            setIsOpen={setIsOpenChangeModule}
+          />
     </>
   )
 }

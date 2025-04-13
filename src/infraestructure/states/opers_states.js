@@ -49,3 +49,10 @@ export const masterOpersList = atom({
   key: 'masterOpersList',
   default: [],
 });
+
+
+
+export const listOpersCustom = atom({
+  key: 'listOpersCustom',
+  default: [],
+});
