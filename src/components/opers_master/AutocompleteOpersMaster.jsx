@@ -25,27 +25,29 @@ const AutocompleteOpersMaster = () => {
   }, [opersModules]);
 
   const handleClick = (selectedKey) => {
-    // Busca el elemento seleccionado usando el índice
-    const selectedCategory = modules[selectedKey - 1];
+    console.log("🔑 selectedKey recibido:", selectedKey);
+  
+    const selectedCategory = modules.find((m) => String(m.id) === String(selectedKey));
     
     if (selectedCategory) {
-      console.log(selectedCategory, oper);
-
+      console.log("✅ selectedCategory:", selectedCategory);
+  
       const oper_id = oper.id;
       const module_id = selectedCategory.id;
-
+  
       const data = {
         oper: {
           production_module_id: module_id,
           id: oper_id
         }
-      }
-      updateOperModule(data)
+      };
+      updateOperModule(data);
+    } else {
+      console.warn("⚠️ Módulo no encontrado para selectedKey:", selectedKey);
     }
-  }
+  };
 
-  const updateOperModule = async (data) => {
-      
+  const updateOperModule = async (data) => { 
     try {
       const result = await updateData(urlMain + `production_modules/update_oper_production_modules`, data)
       const  updateOpers = masterOpers.map(item => item.id === result.id ? result : item);
