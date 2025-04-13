@@ -7,6 +7,11 @@ import CustomPaginator from '../../ui/CustomPaginator';
 import TrOperMaster from './TrOperMaster';
 import { masterOpersList } from '../../infraestructure/states/opers_states';
 import { useRecoilState } from 'recoil';
+import SearchOpersMaster from './SearchOpersMaster';
+
+
+const totalPaginate = [5, 10, 20, 50];
+
 
 
 const ListOpersMaster = () => {
@@ -15,16 +20,18 @@ const ListOpersMaster = () => {
 
   const [isLoading, setIsLoading] = useState(false)
 
+  const [currentPage, setCurrentPage] = useState(1); // Página actual
+  const [totalPages, setTotalPages] = useState(1); // Total de páginas
+  const [perPage, setPerPage] = useState(10); // Total de páginas
 
-    const [currentPage, setCurrentPage] = useState(1); // Página actual
-    const [totalPages, setTotalPages] = useState(1); // Total de páginas
-    const [perPage, setPerPage] = useState(10); // Total de páginas
+  const [searchData, setSearchData] = useState("");
+  const [queryString, setQueryString] = useState("");
 
   useEffect(()=> {
     setIsLoading(true)
     const getData = async () => {
         try {
-          const result = await fetchGetData(`${urlMain}opers/index_all?page=${currentPage}&per_page=${perPage}`);
+          const result = await fetchGetData(`${urlMain}opers/index_all?page=${currentPage}&per_page=${perPage}&q[name_or_id_oper_cont]=${encodeURIComponent(queryString)}`);
           //console.log(result)
       
           setMasterOpers(result.opers)
@@ -39,7 +46,7 @@ const ListOpersMaster = () => {
       };
 
     getData();
-  },[currentPage])
+  },[currentPage,queryString,perPage])
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -51,13 +58,30 @@ const ListOpersMaster = () => {
   return (
     <div>
       <div className="space-y-8">
+        <SearchOpersMaster
+          searchData={searchData}
+          setSearchData={setSearchData}
+          setQueryString={setQueryString}
+        />
         <div className="overflow-x-auto">
         <table className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-md border border-gray-300">
           <thead>
             <tr className="dark:bg-gray-100 bg-zinc-800 text-zinc-100 dark:text-zinc-800">
                 <th className="p-1 text-left font-medium border border-gray-300">Nombre</th>
                 <th className="p-1 text-left font-medium border border-gray-300">Cédula</th>
-                <th className="p-1 text-left font-medium border border-gray-300"></th>
+                <th className="p-1 text-left font-medium border border-gray-300">
+                  <div className="flex justify-end space-x-4 mr-2"> {/* Alinea los elementos horizontalmente y agrega espacio */}
+                    {totalPaginate.map((page, i) => (
+                      <span
+                        onClick={() => setPerPage(page)}
+                        className={`cursor-pointer ${perPage === page && 'text-secondary_two'}`}
+                        key={i}
+                      >
+                        {page}
+                      </span>
+                    ))}
+                  </div>
+                </th>
 
             </tr>
           </thead>
