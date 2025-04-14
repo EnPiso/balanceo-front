@@ -7,6 +7,7 @@ import { fetchGetData } from '../../../../../infraestructure/call_api/crud';
 import { urlMain } from '../../../../../infraestructure/data/const';
 import SamplesZoneDelete from './SamplesZoneDelete';
 import { CircularProgress } from '@nextui-org/react';
+import PercentSamplesZones from './PercentSamplesZones';
 
 const SamplesZonesList = () => {
   const [zonesSamples, setZonesSamples] = useRecoilState(zonesSamplesList)
@@ -41,6 +42,7 @@ const SamplesZonesList = () => {
                         <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Ciclo</th>
                         <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Segundos</th>
                         <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">{""}</th>
+                        <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">{""}</th>
                       </tr>
                     </thead>  
                 }
@@ -68,6 +70,13 @@ const SamplesZonesList = () => {
                                 <span className="text-secondary_two">
                                   {timeToSeconds(sampling.sample)}  <small>s</small>
                                 </span>
+                              </span>
+                            </td>
+                            <td className="px-4 py-2 border-l-1">
+                              <span className="flex justify-end">
+                                <PercentSamplesZones 
+                                  sample={timeToSeconds(sampling.sample)}
+                                />
                               </span>
                             </td>
                             <td className="px-4 py-2 border-l-1">

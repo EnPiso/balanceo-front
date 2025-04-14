@@ -26,4 +26,9 @@ export const loadingSamplingsCircle = atom({
   default: false,
 });
 
+export const clockZoneByZoneModal = atom({
+  key: 'clockZoneByZoneModal',
+  default: false,
+});
+
 

@@ -30,6 +30,7 @@ const SamplesZonesFooter = () => {
 
   totalSeconds = totalSeconds / zonesSamples.length
   
+  // total tiempo = sumar las tomas , dividirlo por 60 y el resultado dividirlo por la cantidad de zonas
 
   const processTimeFormat = (timeFormat) => {
     const [time, divisor] = timeFormat.split("/").map(Number); // Separar el tiempo y el divisor
@@ -46,13 +47,14 @@ const SamplesZonesFooter = () => {
     
   }
 
+
   return (
     <div>
       <SamplesGlobalCard
         cycles={zonesSamples.length}
         totalSeconds={totalSeconds.toFixed(2)}
         total_sam={(objBalancing.total_sam / selectedOperDetails.length).toFixed(2)}
-        potential={processTimeFormat(`${objBalancing.total_sam}/${totalSeconds}`)}
+        potential={processTimeFormat(`${objBalancing.total_sam / selectedOperDetails.length}/${totalSeconds}`)}
         potentialUds={golDay()}
         handleFunction={false}
       />

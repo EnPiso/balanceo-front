@@ -33,10 +33,11 @@ import {toastMessageCustom} from "../../../infraestructure/data/toastMessage.js"
 
 import { PDFDocument } from "pdf-lib";
 import MyCustomButton from '../../../ui/MyCustomButton.jsx';
-import { clockGlobalModal } from '../../../infraestructure/states/states_mobile.js';
+import { clockGlobalModal, clockZoneByZoneModal } from '../../../infraestructure/states/states_mobile.js';
 import SamplesGlobalModal from './tableOperations/samplesByOper/SamplesGlobalModal.jsx';
 import { isShowModalZoneSample } from '../../../infraestructure/states/states_samples_zones.js';
 import SamplesZonesModal from './tableOperations/samplesZones/SamplesZonesModal.jsx';
+import ZonesByZoneModal from './tableOperations/balancingMobile/clockZonesByZone/ZonesByZoneModal.jsx';
 
 export const BalancingDashboard = ({backward}) => {
 
@@ -64,6 +65,8 @@ export const BalancingDashboard = ({backward}) => {
   const [clockGlobal, setClockGlobal]  = useRecoilState(clockGlobalModal)
   
   const [isShowModalZone, setIsShowModalZone] = useRecoilState(isShowModalZoneSample)
+  
+  const [zoneByZoneModal, setZoneByZoneModal]  = useRecoilState(clockZoneByZoneModal)
   
 
   useEffect(() => {
@@ -309,13 +312,21 @@ export const BalancingDashboard = ({backward}) => {
           }
         </div>
         
-       {
+       { 
           clockGlobal && 
             <SamplesGlobalModal
               isOpen={clockGlobal}
               setIsOpen={setClockGlobal}
           /> 
        }
+
+        { 
+          zoneByZoneModal && 
+            <ZonesByZoneModal
+              isOpen={zoneByZoneModal}
+              setIsOpen={setZoneByZoneModal}
+          /> 
+        }
          
         {
           isShowModalZone && 

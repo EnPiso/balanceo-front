@@ -1,5 +1,6 @@
 import React from 'react'
 import { FaClock } from 'react-icons/fa6'
+import { colorFormatPercent } from '../../../../../infraestructure/utils/colors'
 
 const CardSample = ({title, description}) => (
   <div className="text-center">
@@ -11,6 +12,21 @@ const CardSample = ({title, description}) => (
     </p>
   </div>
 )
+
+const CardSamplePercent = ({title, description}) => (
+  <div className="text-center">
+    <h3 className="text-sm font-bold text-zinc-800 dark:text-white">
+      {title}
+    </h3>
+    <p className={`text-lg font-semibold text-${colorFormatPercent(description)}-500  dark:text-gray-200`}>
+      {description}
+    </p>
+  </div>
+)
+
+//colorFormatPercent
+
+
 
 const SamplesGlobalCard = ({cycles, totalSeconds, total_sam, potential, potentialUds, handleFunction}) => {
   return (
@@ -36,7 +52,7 @@ const SamplesGlobalCard = ({cycles, totalSeconds, total_sam, potential, potentia
           description={`${potentialUds}`}
         />
 
-        <CardSample
+        <CardSamplePercent
           title={"Potencial Hora"}
           description={`${potential}`}
         />

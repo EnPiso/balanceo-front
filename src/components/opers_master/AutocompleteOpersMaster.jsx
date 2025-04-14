@@ -57,7 +57,7 @@ const AutocompleteOpersMaster = ({setIsOpen}) => {
       setIsOpen(false)
       const updatedOpersCustom = opersCustom.filter((oper) => oper.id !== result.id);
       setOpersCustom(updatedOpersCustom);
-      debugger
+    
       // setOpersCustom()
     } catch (error) {
       console.error('Error setting data', error);

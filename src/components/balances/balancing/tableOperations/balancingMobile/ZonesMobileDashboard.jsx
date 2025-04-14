@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { FaFileVideo, FaPlay, FaUser, FaVideo } from 'react-icons/fa6';
-import { clockGlobalModal, samplingsCircleList, samplingsCircleObj, zonesMobile } from '../../../../../infraestructure/states/states_mobile';
+import { FaFileVideo, FaPlay, FaUser, FaUserClock, FaVideo } from 'react-icons/fa6';
+import { clockGlobalModal, clockZoneByZoneModal, samplingsCircleList, samplingsCircleObj, zonesMobile } from '../../../../../infraestructure/states/states_mobile';
 import { checkOpersPosition } from '../../../../../infraestructure/states/opers_states';
 import { useRecoilState } from 'recoil';
 import { Avatar, Badge } from '@nextui-org/react';
@@ -28,6 +28,14 @@ const ZonesMobileDashboard = () => {
   const [samplingsGlobal, setSamplingsGlobal] = useRecoilState(samplingsCircleObj)
   
   const [samplingsCircle, setSamplingsCircle] = useRecoilState(samplingsCircleList);
+
+  const [zoneByZoneModal, setZoneByZoneModal]  = useRecoilState(clockZoneByZoneModal)
+  
+  const clockZoneByZone = () => {
+    setZoneByZoneModal(!zoneByZoneModal)
+    console.log(!zoneByZoneModal)
+  }
+
 
   const handleGlobalClock = () => {
     setClockGlobal(!clockGlobal)
@@ -59,6 +67,11 @@ const ZonesMobileDashboard = () => {
                     <FaClock size={40} className='text-secondary_two'/>
                   </button>
               }
+                  <button
+                    onClick={clockZoneByZone}
+                    className='ml-2 mt-2'>
+                    <FaUserClock size={40} className='text-secondary_two'/>
+                  </button>
           </div>
           
           <MyCustomButton
