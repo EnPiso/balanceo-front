@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { timeToSeconds } from '../../../../../ui/utils'
 import LastObjForPolyvalence from '../samples/LastObjForPolyvalence'
+import PercentSamplesZones from '../../../../../ui/PercentageBox '
 
 const TableSamplesByOper = ({
   samples,
@@ -65,14 +66,9 @@ const TableSamplesByOper = ({
                                 
                               </span>
                             </td>
-                            <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">
-                              
-                              <span className="flex justify-end text-sm font-bold">
-                                {
-                                  Math.round((samSeg / timeToSeconds(sample.sample)) * 100)
-                                } %  
-                              </span>
-                              
+                            <td className="px-1 py-2 border border-gray-300 dark:border-gray-600">
+                              <PercentSamplesZones value={Math.round((samSeg / timeToSeconds(sample.sample)) * 100)}/>
+                            
                             </td>
                             
                           </tr>

@@ -1,15 +1,7 @@
 export const colorFormatPercent = (value) => {
-  let color = '';
-
-  if (value < 60) {
-    color = 'red';
-  } else if (value >= 60 && value < 80) {
-    color = 'yellow';
-  } else if (value >= 80 && value <= 100) {
-    color = 'green';
-  } else {
-    color = 'blue';
-  }
-
-  return color
-}
+  const valueInt = parseInt(value);
+  if (valueInt < 60) return 'text-red-500';
+  if (valueInt < 80) return 'text-yellow-500';
+  if (valueInt <= 100) return 'text-green-500';
+  return 'text-blue-500';
+};

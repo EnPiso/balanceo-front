@@ -1,6 +1,7 @@
 import React from 'react'
 import { timeToSeconds } from '../../../../../ui/utils'
 import { FaEquals } from 'react-icons/fa'
+import PercentSamplesZones from '../../../../../ui/PercentageBox '
 
 const LastObjForPolyvalence = ({samples,samSeg, isObj}) => {
   return (
@@ -22,13 +23,13 @@ const LastObjForPolyvalence = ({samples,samSeg, isObj}) => {
         </span>
         
       </td>
-      <td className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm">
-        <span className={`flex justify-end font-bold ${isObj ? 'text-zinc-900' : 'text-zinc-700'} `}>
-          {
+      <td className="px-1 py-2 border border-gray-300 dark:border-gray-600 text-sm">
+           
+          <PercentSamplesZones value={
             parseInt( (((samples.reduce((acc, sample) => acc + samSeg, 0)) / 
             (samples.reduce((acc, sample) => acc + timeToSeconds(sample.sample), 0))) * 100))
-          } % 
-        </span>
+          }/>
+       
       </td>
     </tr>
   )

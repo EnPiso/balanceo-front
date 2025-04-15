@@ -1,6 +1,8 @@
 import React from 'react'
 import { FaClock } from 'react-icons/fa6'
 import { colorFormatPercent } from '../../../../../infraestructure/utils/colors'
+import { Chip } from '@nextui-org/react'
+import PercentSamplesZones from '../../../../../ui/PercentageBox '
 
 const CardSample = ({title, description}) => (
   <div className="text-center">
@@ -18,9 +20,10 @@ const CardSamplePercent = ({title, description}) => (
     <h3 className="text-sm font-bold text-zinc-800 dark:text-white">
       {title}
     </h3>
-    <p className={`text-lg font-semibold text-${colorFormatPercent(description)}-500  dark:text-gray-200`}>
-      {description}
-    </p>
+    
+      <PercentSamplesZones value={parseInt(description)} />
+   
+    
   </div>
 )
 

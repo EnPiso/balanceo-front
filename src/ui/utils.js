@@ -122,3 +122,22 @@ export const timeToSeconds = (timeString) => {
   const [minutes, seconds] = timeString.split(":").map(Number);
   return minutes * 60 + seconds;
 }
+
+
+export const secondsToTimeFormat = (decimalTime) => {
+  // Obtener parte entera como minutos
+  const minutes = Math.floor(decimalTime);
+
+  // Obtener parte decimal y convertirla a segundos
+  const decimalPart = decimalTime - minutes;
+  const seconds = Math.round(decimalPart * 100); // porque 0.56 representa 56 segundos
+
+  const totalSeconds = (minutes * 60) + seconds;
+
+  return totalSeconds; 
+}
+
+export const formatClockToFloat = (timeString) => { 
+  const [minutes, seconds] = timeString.split(":").map(Number);
+  return (minutes + seconds / 60).toFixed(2); // Retorna el tiempo en formato decimal
+}

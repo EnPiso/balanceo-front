@@ -9,6 +9,7 @@ import { timeToSeconds } from '../../../../../ui/utils'
 import LastObjForPolyvalence from '../samples/LastObjForPolyvalence'
 import { FaEdit } from 'react-icons/fa'
 import DeleteSamplesClock from '../samples/DeleteSamplesClock'
+import PercentSamplesZones from '../../../../../ui/PercentageBox '
 
 const ListSamplesClock = (
   {
@@ -118,13 +119,9 @@ const ListSamplesClock = (
                             
                           </span>
                         </td>
-                        <td className="px-4 py-2 border border-gray-300 dark:border-gray-600 font-bold">
+                        <td className="px-4 py-2 border border-gray-300 dark:border-gray-600 font-bold w-36">
                           
-                          <span className="flex justify-end text-sm">
-                            {
-                              Math.round((samSeg / timeToSeconds(sample.sample)) * 100)
-                            } <small>%</small>
-                          </span>
+                            <PercentSamplesZones value={Math.round((samSeg / timeToSeconds(sample.sample)) * 100)}/>
                           
                         </td>
                         

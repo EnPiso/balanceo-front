@@ -103,6 +103,7 @@ const SamplesGlobalChrono = () => {
           <SamplesGlobalDetail/>
         </AccordionItem>
       </Accordion>
+      
       <SamplesGlobalList/>
       
     </div>

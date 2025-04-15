@@ -9,8 +9,6 @@ const FooterCycles = ({handleFunction}) => {
 
   const [samplingsGlobal, setSamplingsGlobal] = useRecoilState(samplingsCircleObj)
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
-  
-
 
   return (
     <>
@@ -21,7 +19,7 @@ const FooterCycles = ({handleFunction}) => {
                 cycles={samplingsGlobal.cycles}
                 totalSeconds={samplingsGlobal.total_time}
                 total_sam={objBalancing.total_sam.toFixed(2)}
-                potential={`${samplingsGlobal.potencial_percent} `}
+                potential={`${samplingsGlobal.potencial_percent}`}
                 potentialUds={samplingsGlobal.potential_uds}
                 handleFunction={handleFunction}
               />

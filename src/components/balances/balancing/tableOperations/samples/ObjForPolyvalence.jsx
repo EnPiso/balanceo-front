@@ -2,6 +2,7 @@ import React from 'react'
 import ConfirmDeleteSample from './ConfirmDeleteSample'
 import { timeToSeconds } from '../../../../../ui/utils'
 import { Tooltip } from '@nextui-org/react'
+import PercentSamplesZones from '../../../../../ui/PercentageBox '
 
 const ObjForPolyvalence = ({sample, setSamples, i, isEdit, handleEdit, samSeg, samples}) => {
   return (
@@ -25,14 +26,10 @@ const ObjForPolyvalence = ({sample, setSamples, i, isEdit, handleEdit, samSeg, s
           {samSeg} s
         </span>
       </td>
-      <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">
+      <td className="px-1 py-2 border border-gray-300 dark:border-gray-600 w-36">
         
-        <span className="flex justify-end text-zinc-800 font-bold">
-          {
-            Math.round((samSeg / timeToSeconds(sample.sample)) * 100)
-          } %
-        </span>
-        
+          <PercentSamplesZones value={Math.round((samSeg / timeToSeconds(sample.sample)) * 100)}/>
+     
       </td>
       <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">
         <span className="flex justify-end">

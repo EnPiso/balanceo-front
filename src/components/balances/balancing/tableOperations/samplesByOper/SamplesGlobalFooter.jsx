@@ -34,7 +34,7 @@ const SamplesGlobalFooter = () => {
   const processTimeFormat = (timeFormat) => {
     const [time, divisor] = timeFormat.split("/").map(Number); // Separar el tiempo y el divisor
     // Dividir por el divisor y redondear a 2 decimales
-    return `${((time / divisor) * 100).toFixed(0)} %`;
+    return `${((time / divisor) * 100).toFixed(0)}`;
   };
 
   const golDay = () => {

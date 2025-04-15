@@ -5,10 +5,11 @@ import { urlMain } from '../../../../../infraestructure/data/const';
 import { orderObjBalancing } from '../../../../../infraestructure/states/order_states';
 import { useRecoilState } from 'recoil';
 import { loadingSamplingsCircle, samplingsCircleList } from '../../../../../infraestructure/states/states_mobile';
-import { timeToSeconds } from '../../../../../ui/utils';
+import { formatClockToFloat, timeToSeconds } from '../../../../../ui/utils';
 import SamplesGlobalDelete from './SamplesGlobalDelete';
 import SamplesGlobalFooter from './SamplesGlobalFooter';
 import { Spinner } from '@nextui-org/react';
+import PercentSamplesZones from '../../../../../ui/PercentageBox ';
 
 const SamplesGlobalList = () => {
 
@@ -34,6 +35,23 @@ const SamplesGlobalList = () => {
     
         getData();
   }, [])
+  
+    
+
+  const formatPercent = (sample) => {
+
+    // Total SAM promedio por operador (en segundos)
+
+    const totalTiming = parseFloat((objBalancing.total_sam).toFixed(2));
+
+    // Convertir sample recibido a segundos
+    const realTiming = parseFloat(formatClockToFloat(sample)); // sample viene como string tipo "2:56"
+  
+    // Calcular el porcentaje de eficiencia
+    return (totalTiming / realTiming) * 100;
+    
+    
+  }
 
   return (
     <div>
@@ -50,6 +68,7 @@ const SamplesGlobalList = () => {
                       <tr>
                         <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Ciclo</th>
                         <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Segundos</th>
+                        <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">{""}</th>
                         <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">{""}</th>
                       </tr>
                     </thead>  
@@ -70,10 +89,14 @@ const SamplesGlobalList = () => {
                             <span className=" text-zinc-800">
                               { sampling.sample }
                             </span>
-                            <span className="text-secondary_two">
+                            <small className="text-secondary_two font-bold">
                               {timeToSeconds(sampling.sample)}  <small>s</small>
-                            </span>
+                            </small>
                           </span>
+                        </td>
+                        <td className="px-1 py-2 border-l-1 w-32">
+                         
+                          <PercentSamplesZones value={formatPercent(sampling.sample)} />  
                         </td>
                         <td className="px-4 py-2 border-l-1">
                           <SamplesGlobalDelete

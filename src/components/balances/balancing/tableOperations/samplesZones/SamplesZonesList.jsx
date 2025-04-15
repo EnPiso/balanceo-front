@@ -72,12 +72,11 @@ const SamplesZonesList = () => {
                                 </span>
                               </span>
                             </td>
-                            <td className="px-4 py-2 border-l-1">
-                              <span className="flex justify-end">
+                            <td className="px-1 py-2 border-l-1  w-36">
                                 <PercentSamplesZones 
-                                  sample={timeToSeconds(sampling.sample)}
+                                  sample={sampling.sample}
                                 />
-                              </span>
+                             
                             </td>
                             <td className="px-4 py-2 border-l-1">
                               <span className="flex justify-end">

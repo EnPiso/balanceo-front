@@ -86,6 +86,7 @@ const BalanceProduct = ({product}) => {
         }
         
         if(result.samplings_cycles){
+          
           setSamplingsGlobal(result.samplings_cycles)
         } else {
           setSamplingsGlobal(null)
