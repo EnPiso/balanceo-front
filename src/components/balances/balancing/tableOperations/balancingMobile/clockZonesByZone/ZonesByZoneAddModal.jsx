@@ -12,10 +12,11 @@ import {
 
 import { FaArrowsTurnRight, FaClock, FaClockRotateLeft } from "react-icons/fa6";
 import MyCustomButton from "../../../../../../ui/MyCustomButton";
-import ZonesByZoneDashboard from "./ZonesByZoneDashboard";
+import ListZonesByZone from "./ListZonesByZone";
 
 
-const ZonesByZoneModal = ({isOpen, setIsOpen}) => {
+
+const ZonesByZoneAddModal = ({isOpen, setIsOpen, cycleObjAdd, setCycleObjAdd}) => {
 
   const handleOut = () => {
     setIsOpen(false)
@@ -25,7 +26,7 @@ const ZonesByZoneModal = ({isOpen, setIsOpen}) => {
     <div className="flex flex-col gap-2">
       <Modal
         placement="center"
-        size="5xl"
+        size="full"
         isOpen={isOpen}
         scrollBehavior={"inside"}
         onOpenChange={(isOpenState) => {
@@ -38,20 +39,24 @@ const ZonesByZoneModal = ({isOpen, setIsOpen}) => {
             <>
               <ModalHeader className="flex justify-between items-center">
                 <h1 className="uppercase flex justify-start">
-                  Tiempos de las zonas
+                  Ciclos
                   <FaClockRotateLeft  className="mt-1 ml-2 text-secondary_two" />   
                 </h1>
 
               </ModalHeader>
               <ModalBody>
-                <ZonesByZoneDashboard/>
+                <ListZonesByZone
+                  cycleObjAdd={cycleObjAdd}
+                  setCycleObjAdd={setCycleObjAdd}
+                  setIsOpen={setIsOpen}
+                />
               </ModalBody>
               <ModalFooter>
 
                 <MyCustomButton
                   icon={""}
                   title={"Salir"}
-                  handleClick={handleOut}
+                  handleClick={()=> setIsOpen(false)}
                   value={null}
                   bgButton={"bg-zinc-800"}
                   textButton={"text-secondary_two"}
@@ -66,5 +71,5 @@ const ZonesByZoneModal = ({isOpen, setIsOpen}) => {
   )
 }
 
-export default ZonesByZoneModal
+export default ZonesByZoneAddModal
 

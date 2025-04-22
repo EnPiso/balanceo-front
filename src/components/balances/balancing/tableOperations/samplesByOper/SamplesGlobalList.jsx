@@ -9,7 +9,7 @@ import { formatClockToFloat, timeToSeconds } from '../../../../../ui/utils';
 import SamplesGlobalDelete from './SamplesGlobalDelete';
 import SamplesGlobalFooter from './SamplesGlobalFooter';
 import { Spinner } from '@nextui-org/react';
-import PercentSamplesZones from '../../../../../ui/PercentageBox ';
+import PercentSamplesZones from '../../../../../ui/PercentageBox';
 
 const SamplesGlobalList = () => {
 
@@ -46,7 +46,7 @@ const SamplesGlobalList = () => {
 
     // Convertir sample recibido a segundos
     const realTiming = parseFloat(formatClockToFloat(sample)); // sample viene como string tipo "2:56"
-  
+    
     // Calcular el porcentaje de eficiencia
     return (totalTiming / realTiming) * 100;
     

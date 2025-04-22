@@ -1,7 +1,7 @@
 import React from 'react'
 import { timeToSeconds } from '../../../../../ui/utils'
 import { FaEquals } from 'react-icons/fa'
-import PercentSamplesZones from '../../../../../ui/PercentageBox '
+import PercentSamplesZones from '../../../../../ui/PercentageBox'
 
 const LastObjForPolyvalence = ({samples,samSeg, isObj}) => {
   return (

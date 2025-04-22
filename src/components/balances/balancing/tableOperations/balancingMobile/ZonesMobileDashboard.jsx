@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { FaFileVideo, FaPlay, FaUser, FaUserClock, FaVideo } from 'react-icons/fa6';
+import { FaClockRotateLeft, FaFileVideo, FaPlay, FaUser, FaUserClock, FaVideo } from 'react-icons/fa6';
 import { clockGlobalModal, clockZoneByZoneModal, samplingsCircleList, samplingsCircleObj, zonesMobile } from '../../../../../infraestructure/states/states_mobile';
 import { checkOpersPosition } from '../../../../../infraestructure/states/opers_states';
 import { useRecoilState } from 'recoil';
-import { Avatar, Badge } from '@nextui-org/react';
+import { Avatar, Badge, CircularProgress, Spinner } from '@nextui-org/react';
 import { FaClock, FaTimes, FaTimesCircle } from 'react-icons/fa';
 import ZonesMobileClock from './ZonesMobileClock';
 import ZonesMobileClockOper from './ZonesMobileClockOper';
@@ -13,6 +13,11 @@ import { isVideosShow, videoShow } from '../../../../../infraestructure/states/s
 import ModalVideoInput from '../videoOperations/ModalVideoInput';
 import FooterCycles from '../FooterCycles';
 import ZonesMobileZoneTime from './ZonesMobileZoneTime';
+import { fetchGetData } from '../../../../../infraestructure/call_api/crud';
+import { urlMain } from '../../../../../infraestructure/data/const';
+import { orderObjBalancing } from '../../../../../infraestructure/states/order_states';
+import { zoneCyclesList } from '../../../../../infraestructure/states/states_samples';
+import SecuentialZone from './SecuentialZone';
 
 
 const ZonesMobileDashboard = () => {
@@ -31,22 +36,17 @@ const ZonesMobileDashboard = () => {
 
   const [zoneByZoneModal, setZoneByZoneModal]  = useRecoilState(clockZoneByZoneModal)
   
-  const clockZoneByZone = () => {
-    setZoneByZoneModal(!zoneByZoneModal)
-    console.log(!zoneByZoneModal)
-  }
+  const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
+  
+  const [zonesCycles, setZonesCycles] = useRecoilState(zoneCyclesList);
 
+  const [isLoading, setIsLoading] = useState(false)
+  
 
   const handleGlobalClock = () => {
     setClockGlobal(!clockGlobal)
   }
-
-  const handleOperation = (operationDetail) => {
-    console.log(operationDetail)
-  }
-
-
-
+  
   return (
     <div>
       <div className="flex justify-between items-center font-bold ">
@@ -59,19 +59,30 @@ const ZonesMobileDashboard = () => {
                 bgButton={!isVideos ? "bg-zinc-800" : "bg-zinc-200"}
                 textButton={!isVideos ? "text-secondary_two" : "text-zinc-800"}
               />
-              {
-                !samplingsGlobal && 
-                  <button
-                    onClick={handleGlobalClock}
-                    className='ml-2 mt-2'>
-                    <FaClock size={40} className='text-secondary_two'/>
-                  </button>
-              }
-                  <button
-                    onClick={clockZoneByZone}
-                    className='ml-2 mt-2'>
-                    <FaUserClock size={40} className='text-secondary_two'/>
-                  </button>
+             
+             <div>
+                { 
+                !isVideos && !samplingsGlobal && 
+                  <div className="flex mt-2 ml-4 justify-between items-center relative">
+                    <button onClick={handleGlobalClock} className="relative">
+                      <FaClock
+                        className="w-11 h-11 rounded-full object-cover text-primary_one"
+                        style={{
+                          border: `6px solid #80B7AE`, // Azul personalizado con 6px de grosor
+                        }}
+                      />
+                      <span className="absolute bottom-0 left-6 w-8 h-8 flex items-center justify-center rounded-full">
+                        <img
+                          className="w-full h-full object-contain"
+                          src="https://balance-assets.sfo3.digitaloceanspaces.com/assets/shirt.png"
+                          alt="shirt"
+                        />
+                      </span>
+                    </button>
+                  </div>
+                  
+                }
+              </div>
           </div>
           
           <MyCustomButton
@@ -85,7 +96,41 @@ const ZonesMobileDashboard = () => {
        
       </div>  
 
+
+
+          <div className="mt-2 flex justify-between items-center">
+             
+              
+              <div>
+              {
+                !isVideos && 
+                  <>
+                  {
+                    isLoading ?
+                      <CircularProgress 
+                        size='lg' 
+                        color='default' 
+                        className=''/> : 
+                      <SecuentialZone
+                        setIsLoading={setIsLoading}
+                      />
+                  
+                        
+                  }
+                    
+                  </>
+                 
+              }
+              </div>
+
+          </div>
+
+
       {
+
+
+
+
         isVideos ? <ZonesMobileDashboardVideos/> : (
           <div>
             {

@@ -41,7 +41,7 @@ const SamplesZonesModal = ({isOpen, setIsOpen}) => {
             <>
               <ModalHeader className="flex justify-start items-center">
                 <h1 className="uppercase flex justify-start">
-                  <span className="hidden lg:block">
+                  <span>
                     Tiempos por zona
                   </span>
                   <FaClockRotateLeft  className="mt-1 ml-2" />   

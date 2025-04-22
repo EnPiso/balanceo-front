@@ -99,8 +99,8 @@ const ModalSelectSamples = ({isOpen, setIsOpen, Obj, itemAll}) => {
           <>
             <ModalHeader className="flex justify-start items-center">
               <h1 className="uppercase flex justify-start">
-                <span className="hidden lg:block">
-                   Muestra de tiempos
+                <span>
+                  Tiempo de las operaciones
                 </span>
                
                 <FaClockRotateLeft  className="mt-1 ml-2" />   

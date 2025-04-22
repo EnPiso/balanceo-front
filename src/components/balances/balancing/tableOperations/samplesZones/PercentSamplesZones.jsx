@@ -2,7 +2,7 @@ import React from 'react'
 import { useRecoilState } from 'recoil';
 import { orderObjBalancing } from '../../../../../infraestructure/states/order_states';
 import { checkOpersPosition } from '../../../../../infraestructure/states/opers_states';
-import PercentageBox from '../../../../../ui/PercentageBox ';
+import PercentageBox from '../../../../../ui/PercentageBox';
 import { formatClockToFloat, secondsToTimeFormat } from '../../../../../ui/utils';
 
 const PercentSamplesZones = ({sample}) => {

@@ -59,7 +59,19 @@ export const isSampleObj = atom({
   default: false,
 });
 
-//isSample
 
-//isOpenByOper
-// isAutomaticByOper
+export const samplesZoneByZones = atom({
+  key: 'samplesZoneByZones',
+  default: [],
+});
+
+export const zoneCyclesList = atom({
+  key: 'zoneCyclesList',
+  default: [],
+});
+
+export const isCycleList = atom({
+  key: 'isCycleList',
+  default: false,
+});
+

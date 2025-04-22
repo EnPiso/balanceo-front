@@ -50,6 +50,8 @@ import ZonesMobileDashboard from './balancingMobile/ZonesMobileDashboard.jsx';
 import { ModalRecOutside } from './balancingMobile/ModalRecOutside.jsx';
 import FooterCycles from './FooterCycles.jsx';
 import { Tooltip } from '@nextui-org/react';
+import { FaRegClock, FaUserClock } from 'react-icons/fa';
+import SecuentialZoneDash from './balancingMobile/SecuentialZoneDash.jsx';
 
 
 
@@ -357,10 +359,13 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
                         <button
                           onClick={handleGlobalClock}
                           className='ml-2 mt-2 flex justify-between items-center'>
-                            <span className="font-bold text-secondary_two mr-2">
+                            <span className="font-bold text-primary_one mr-2">
                               Ciclos de producto 
                             </span>
-                          <FaClock size={24} className='text-secondary_two'/>
+                          <FaClock style={{
+                            border: `6px solid #073034`, // Azul personalizado con 6px de grosor
+                          }}
+                          className="w-10 h-10 rounded-full object-cover text-primary_one"/>
                         </button>
                       </Tooltip>
                     </div>
@@ -368,6 +373,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
             </>
           )
         }
+        <SecuentialZoneDash/>
         
          
         <div className={` ${isPDFMode && 'px-10 py-10'}`}>
@@ -394,16 +400,6 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
 
 
 
-      {/* {opersSelect.size >= 1 && balancing && (
-          <div className="space-y-6">
-            <h2 className="text-xl font-bold ml-2">Detalle de Balanceo por Operador</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {zones.map((zone, index) => (
-                  <OperatorDetailsOperations key={index} zone={zone} index={index} zonesOperUpdate={zonesOperUpdate} />
-              ))}
-            </div>
-          </div>
-      )} */}
       <div className="block lg:hidden">
         {
           zonesOperUpdate.length >= 1 && <ZonesMobileDashboard/>

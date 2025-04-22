@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { timeToSeconds } from '../../../../../ui/utils'
 import LastObjForPolyvalence from '../samples/LastObjForPolyvalence'
-import PercentSamplesZones from '../../../../../ui/PercentageBox '
+import PercentSamplesZones from '../../../../../ui/PercentageBox'
 
 const TableSamplesByOper = ({
   samples,

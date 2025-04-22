@@ -2,7 +2,7 @@ import React from 'react'
 import { FaClock } from 'react-icons/fa6'
 import { colorFormatPercent } from '../../../../../infraestructure/utils/colors'
 import { Chip } from '@nextui-org/react'
-import PercentSamplesZones from '../../../../../ui/PercentageBox '
+import PercentSamplesZones from '../../../../../ui/PercentageBox'
 
 const CardSample = ({title, description}) => (
   <div className="text-center">
@@ -62,10 +62,20 @@ const SamplesGlobalCard = ({cycles, totalSeconds, total_sam, potential, potentia
         {
           handleFunction && 
             <div className="flex justify-center">
-              <button
-                onClick={handleFunction}
-                className='ml-2 mt-2'>
-                <FaClock size={40} className='text-secondary_two'/>
+              <button onClick={handleFunction} className="relative">
+                <FaClock
+                  className="w-11 h-11 rounded-full object-cover text-primary_one"
+                  style={{
+                    border: `6px solid #80B7AE`, // Azul personalizado con 6px de grosor
+                  }}
+                />
+                <span className="absolute bottom-0 left-6 w-8 h-8 flex items-center justify-center rounded-full">
+                  <img
+                    className="w-full h-full object-contain"
+                    src="https://balance-assets.sfo3.digitaloceanspaces.com/assets/shirt.png"
+                    alt="shirt"
+                  />
+                </span>
               </button>
             </div>
         }

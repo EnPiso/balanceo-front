@@ -2,7 +2,7 @@ import React from 'react'
 import ConfirmDeleteSample from './ConfirmDeleteSample'
 import { timeToSeconds } from '../../../../../ui/utils'
 import { Tooltip } from '@nextui-org/react'
-import PercentSamplesZones from '../../../../../ui/PercentageBox '
+import PercentSamplesZones from '../../../../../ui/PercentageBox'
 
 const ObjForPolyvalence = ({sample, setSamples, i, isEdit, handleEdit, samSeg, samples}) => {
   return (

@@ -66,32 +66,39 @@ const ZonesMobileClock = ({operationDetail, zone, opIndex}) => {
 
   return (
     <div className='mr-2 text-secondary_two'>
+      
         {
            operationDetail.detailObj && operationDetail.detailObj.detail  && (
-              <button 
-                onClick={()=> handleClock(
-                  operationDetail.operation,
-                  opIndex
+            <button 
+              onClick={() => handleClock(operationDetail.operation, opIndex)}
+              className="flex flex-col"
+            >
+              <div className="flex justify-end">
+                {operationDetail.detailObj.detail.samplings_count > 0 ? (
+                  <Badge
+                    shape="rectangle"
+                    showOutline={false}
+                    color="default"
+                    content={
+                      <span className="text-secondary_one font-bold text-2xl">
+                        {operationDetail.detailObj.detail.samplings_count}
+                      </span>
+                    }
+                    className="mt-6"
+                  >
+                    <FaClock size={44} />
+                  </Badge>
+                ) : (
+                  <FaClock size={44} />
                 )}
-              >  
-                {
-                  operationDetail.detailObj.detail.samplings_count > 0 ? (
-                    <Badge
-                        shape="rectangle" 
-                        showOutline={false}
-                        color="default" 
-                        content={<span className='text-secondary_one font-bold text-2xl'>{operationDetail.detailObj.detail.samplings_count}</span>} 
-                        className="mt-6">
-                        <FaClock size={44}/>
-                    </Badge>
-                  ) : 
-                    <FaClock size={44}/>  
-                 
-                }
-                
-              </button>
+              </div>
+              <span className="text-sm font-bold text-secondary_two">
+                Secuencial Operaciones
+              </span>
+            </button>
            )
         }
+        
     </div>
   )
 }

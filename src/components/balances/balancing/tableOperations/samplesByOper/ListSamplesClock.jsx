@@ -9,7 +9,7 @@ import { timeToSeconds } from '../../../../../ui/utils'
 import LastObjForPolyvalence from '../samples/LastObjForPolyvalence'
 import { FaEdit } from 'react-icons/fa'
 import DeleteSamplesClock from '../samples/DeleteSamplesClock'
-import PercentSamplesZones from '../../../../../ui/PercentageBox '
+import PercentSamplesZones from '../../../../../ui/PercentageBox'
 
 const ListSamplesClock = (
   {
