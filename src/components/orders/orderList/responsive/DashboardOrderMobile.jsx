@@ -4,9 +4,11 @@ import { useRecoilState } from 'recoil';
 import { orderList } from '../../../../infraestructure/states/order_states';
 import { hourMinuteSecond, monthDayYear } from '../../../../infraestructure/utils/dateFormat';
 import ShowOrder from '../../show/ShowOrder';
-import { FaArrowCircleRight, FaRegFileExcel } from 'react-icons/fa';
+import { FaArrowCircleRight, FaFilePdf, FaRegFileExcel } from 'react-icons/fa';
 import { BsArrowDownCircle, BsArrowUpCircle } from 'react-icons/bs';
 import { FaDownLong, FaUpLong } from 'react-icons/fa6';
+import SamplesCountProduct from '../SamplesCountProduct';
+import { AiFillCheckCircle, AiFillStop } from 'react-icons/ai';
 
 
 const DashboardOrderMobile = ({totalPaginate,handlePerPageChange,perPage,setDesc,desc }) => {
@@ -63,15 +65,60 @@ const DashboardOrderMobile = ({totalPaginate,handlePerPageChange,perPage,setDesc
                   <h3 className="text-md font-semibold flex justify-between items-center">
                     <ShowOrder order={order} /> 
                   </h3>
+                  
                   <div>
                     {order.products.map((product, i) => (
                       <>
-                          <p key={i} className="text-md text-secondary_two font-black text-start">
+                        <div className="flex justify-between items-start bg-zinc-100">
+                          <p key={i} className={`text-md ${product.has_opers_balancing ? 'text-secondary_two' : 'text-zinc-400'}  font-black text-start`}>
                             <small>
                               {product.name}
                             </small>
                             
                           </p>
+
+                          <span>
+                            {product.has_opers_balancing ?
+                                (
+                                    <span className="flex justify-between items-center">
+                                      <SamplesCountProduct
+                                          value={product.samplings_cycles_count}
+                                          style={"red"}    
+                                      />
+                                      
+                                      <SamplesCountProduct
+                                          value={product.time_cycle_oper_count}
+                                          style={"blue"}    
+                                      />
+
+                                      <SamplesCountProduct
+                                          value={product.opers_zones_count}
+                                          style={"yellow"}    
+                                      />
+                                      <SamplesCountProduct
+                                          value={product.samplings_count}
+                                          style={"green"}    
+                                      />
+                                      
+                                    </span>
+                                ) :
+                                <>
+                                    <AiFillStop size={20} className="ml-2 text-zinc-400"/>
+                                </>
+                            }
+
+
+                          </span>
+                          
+                        </div>
+                        {
+                            product.has_opers_balancing &&
+                                <small className={`capitalize font-light text-secondary_two`}> 
+                                    { product.plant_module_name } 
+                                </small>
+                              
+                          } 
+                          
                       </>
                     ))}
                       

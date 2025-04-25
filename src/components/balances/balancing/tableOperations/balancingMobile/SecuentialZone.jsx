@@ -44,7 +44,7 @@ const SecuentialZone = ({setIsLoading}) => {
       <button onClick={clockZoneByZone} className="flex items-center">
         <FaClock
           style={{
-            border: `6px solid #073034`, // Azul personalizado con 6px de grosor
+            border: `3px solid #3B82F6`, // Azul personalizado con 6px de grosor
           }}
           className="w-10 h-10 rounded-full object-cover text-primary_one" />
         <span className="text-primary_one font-bold ml-1">

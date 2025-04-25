@@ -63,7 +63,9 @@ const ZoneCyclesObj = ({cycleIndex, cycle}) => {
         <ul className="list-disc pl-4 font-bold capitalize">
           {cycle.zones_cycles.map((zone, zoneIndex) => (
             <li key={zoneIndex}>
-              {zone.name}  <span className="text-secondary_two">{zone.sample}</span>
+              <span className="flex justify-between items-center bg-zinc-100 mb-1 mt-1 rounded-sm">
+                {zone.name}  <span className="text-secondary_two">{zone.sample}</span>
+              </span>
               <PercentZonesByZone
                 sample={zone.sample}
               />

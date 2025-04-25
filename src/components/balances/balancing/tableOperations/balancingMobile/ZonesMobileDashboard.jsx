@@ -47,6 +47,8 @@ const ZonesMobileDashboard = () => {
     setClockGlobal(!clockGlobal)
   }
   
+
+
   return (
     <div>
       <div className="flex justify-between items-center font-bold ">
@@ -62,24 +64,24 @@ const ZonesMobileDashboard = () => {
              
              <div>
                 { 
-                !isVideos && !samplingsGlobal && 
-                  <div className="flex mt-2 ml-4 justify-between items-center relative">
-                    <button onClick={handleGlobalClock} className="relative">
-                      <FaClock
-                        className="w-11 h-11 rounded-full object-cover text-primary_one"
-                        style={{
-                          border: `6px solid #80B7AE`, // Azul personalizado con 6px de grosor
-                        }}
-                      />
-                      <span className="absolute bottom-0 left-6 w-8 h-8 flex items-center justify-center rounded-full">
-                        <img
-                          className="w-full h-full object-contain"
-                          src="https://balance-assets.sfo3.digitaloceanspaces.com/assets/shirt.png"
-                          alt="shirt"
+                  !isVideos && !samplingsGlobal && 
+                    <div className="flex mt-2 ml-4 justify-between items-center relative">
+                      <button onClick={handleGlobalClock} className="relative">
+                        <FaClock
+                          className="w-11 h-11 rounded-full object-cover text-primary_one "
+                          style={{
+                            border: `3px solid #fb2c36`, // Azul personalizado con 6px de grosor
+                          }}
                         />
-                      </span>
-                    </button>
-                  </div>
+                        <span className="absolute bottom-0 left-6 w-8 h-8 flex items-center justify-center rounded-full">
+                          <img
+                            className="w-full h-full object-contain"
+                            src="https://balance-assets.sfo3.digitaloceanspaces.com/assets/shirt.png"
+                            alt="shirt"
+                          />
+                        </span>
+                      </button>
+                    </div>
                   
                 }
               </div>

@@ -64,7 +64,7 @@ const ZonesMobileClockOper = ({zone}) => {
           alt={zone[0].operator.avatar ? zone[0].operator.avatar : 'https://balance-assets.sfo3.digitaloceanspaces.com/assets/user.webp'}
           className="w-16 h-16 rounded-full object-cover"
           style={{
-            border: `6px solid #80B7AE`, // Azul personalizado con 6px de grosor
+            border: `3px solid #22C55E`, // Azul personalizado con 6px de grosor
           }}
         />
         <span className="absolute bottom-0 left-9  px-2 py-1 rounded-full">

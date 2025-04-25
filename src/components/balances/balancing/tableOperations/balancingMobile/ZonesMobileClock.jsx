@@ -86,7 +86,13 @@ const ZonesMobileClock = ({operationDetail, zone, opIndex}) => {
                     }
                     className="mt-6"
                   >
-                    <FaClock size={44} />
+                    <FaClock 
+                      style={{
+                        border: `3px solid #22C55E`, // Azul personalizado con 6px de grosor
+                      }}
+                      size={44}
+                      className="w-10 h-10 rounded-full object-cover text-secondary_two"/>
+                    
                   </Badge>
                 ) : (
                   <FaClock size={44} />

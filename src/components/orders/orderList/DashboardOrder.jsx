@@ -227,12 +227,17 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
                           </td>
                           <td className="p-2 border border-gray-300">
                             <span className="flex justify-between items-center">
-                              <span>
-                                {order.created_at && monthDayYear(order.created_at)}
-                                <small className="ml-2 font-bold text-black">
-                                  {order.created_at && hourMinuteSecond(order.created_at)}
-                                </small>
-                              </span>
+                              <div className="flex justify-start">
+                                <span>
+                                  {order.created_at && monthDayYear(order.created_at)}
+                                  <small className="ml-2 font-bold text-black">
+                                    {order.created_at && hourMinuteSecond(order.created_at)}
+                                  </small>
+                                </span>
+                               
+                              </div>
+                              
+
                               <FileArchiver order={order} />
                             </span>
                           </td>

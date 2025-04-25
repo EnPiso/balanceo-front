@@ -10,10 +10,11 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import {orderObjBalancing, showOrderObj} from "../../../infraestructure/states/order_states.js";
 import {nameImageDateNow} from "../../../infraestructure/utils/imagesFormat.js";
-import {Spinner, Tooltip} from "@nextui-org/react";
+import {Badge, Spinner, Tooltip} from "@nextui-org/react";
 import { PDFDocument } from "pdf-lib";
-import {FaFilePdf} from "react-icons/fa6";
-import { FaQuestion } from "react-icons/fa";
+import {FaClockRotateLeft, FaFilePdf} from "react-icons/fa6";
+import { FaClock, FaQuestion } from "react-icons/fa";
+import SamplesCountProduct from "./SamplesCountProduct.jsx";
 
 
 const GenerateImgPdf = ({product, order, pdfDiv}) => {
@@ -150,35 +151,82 @@ const GenerateImgPdf = ({product, order, pdfDiv}) => {
                     <>
                         {
                            product.has_opers_balancing ? (
-                                <Tooltip placement="left-end" content={`Descargar PDF ${category_product_name}`}>
+                                
                                     <span
-                                        onClick={() => handleProductImage(product)}
                                         key={product.id}
                                         className="flex justify-between items-center hover:bg-zinc-200 py-1 px-1 cursor-pointer uppercase">
-
-                                        <span>
-                                            <span>{product.name}</span>
-                                            <span className="font-bold ml-2">
-                                            <span className={`ml-2  text-small lowercase`}>
-                                                 {product.reference === "null" ? 'Referencia' : product.reference}
+                                        <Tooltip 
+                                            placement="left-end" 
+                                            content={`Descargar PDF 
+                                                ${category_product_name ? category_product_name : product.name}`}>
+                                            <span
+                                                onClick={() => handleProductImage(product)}>
+                                                <span>{product.name}</span>
+                                                <span className="font-bold ml-2">
+                                                <span className={`ml-2  text-small lowercase`}>
+                                                    {product.reference === "null" ? 'Referencia' : product.reference}
+                                                </span>
+                                                    
+                                                    <span className={`ml-2  text-small lowercase ${category_product_name === "" ? '' : 'text-secondary_two'}`}> 
+                                                        { category_product_name == "" ? "" : category_product_name } 
+                                                    </span>
+                                                   
+                                                    {
+                                                        product.has_opers_balancing &&
+                                                            <small className={`ml-2 text-small capitalize font-light text-secondary_two`}> 
+                                                                { product.plant_module_name } 
+                                                            </small>
+                                                       
+                                                    } 
+                                                </span>
                                             </span>
-                                                
-                                                 <span className={`ml-2  text-small lowercase ${category_product_name === "" ? '' : 'text-secondary_two'}`}> 
-                                                     { category_product_name == "" ? "" : category_product_name } 
-                                                 </span>
-                                                {/** product.category_product_name **/}
-                                            </span>
-                                        </span>
+                                        </Tooltip>    
+                                        
 
                                         <span>
                                           {product.has_opers_balancing ?
                                               (
                                                   <span className="flex justify-between items-center">
-                                                    <span className="font-bold ml-2 mr-2">
-                                                     <small> Total sam</small> {total_sam}
+                                                    
+                                                    <SamplesCountProduct
+                                                        value={product.samplings_cycles_count}
+                                                        style={"red"}  
+                                                        tooltip={"Ciclos del producto"}  
+                                                    />
+                                                    <SamplesCountProduct
+                                                        value={product.time_cycle_oper_count}
+                                                        style={"blue"}   
+                                                        tooltip={"Zona secuencial"}   
+                                                    />
+
+                                                    <SamplesCountProduct
+                                                        value={product.opers_zones_count}
+                                                        style={"yellow"}
+                                                        tooltip={"Tiempos por zona"}    
+                                                    />
+                                                    <SamplesCountProduct
+                                                        value={product.samplings_count}
+                                                        style={"green"}
+                                                        tooltip={"Secuencial operaciones"}    
+                                                    />
+                                                   
+                                                    <span 
+                                                         onClick={() => handleProductImage(product)}
+                                                        className="font-bold ml-4 mr-2">
+                                                        <small> Total sam</small> {total_sam}
                                                     </span>
+                                                    <span
+                                                         onClick={() => handleProductImage(product)}
+                                                    >
                                                         <AiFillCheckCircle className="text-secondary_two" size={20}/>
+                                                    </span>
+                                                    <span
+                                                         onClick={() => handleProductImage(product)}
+                                                    >
                                                         <FaFilePdf  size={17} className={"ml-2 text-secondary_two"}/>
+                                                    </span>
+                                                        
+                                                        
                                                   </span>
                                               ) :
                                               <>
@@ -189,13 +237,11 @@ const GenerateImgPdf = ({product, order, pdfDiv}) => {
 
                                         </span>
                                     </span>
-                                </Tooltip>
                             ) : (
-                                <Tooltip placement="left-end" content={`${category_product_name}`}>
-                                  <span
+                                <span
                                       onClick={toastMessage}
                                       key={product.id}
-                                      className="flex justify-between items-center hover:bg-zinc-200 py-1 px-1 ">
+                                      className="flex justify-between items-center text-zinc-400 hover:bg-zinc-200 py-1 px-1 ">
                                     <span>
                                         {product.name} <span className="font-bold">
                                         <span className={`ml-2  text-small lowercase`}>
@@ -203,17 +249,15 @@ const GenerateImgPdf = ({product, order, pdfDiv}) => {
                                         </span>
                                            
                                     </span>
-                                    <span className={`ml-2  text-small lowercase ${category_product_name === "" ? '' : 'text-secondary_two'}`}>  { category_product_name == "" ? "" : category_product_name }</span>
+                                    <span className={`ml-2  text-small lowercase `}>  { category_product_name == "" ? "" : category_product_name }</span>
                                 </span>
                                     <span>
                                       {product.has_opers_balancing ?
                                           <AiFillCheckCircle className="text-secondary_two" size={20}/> :
-                                          <AiFillStop className="text-secondary_two" size={20}/>}
+                                          <AiFillStop className="text-zinc-400" size={20}/>}
 
                                     </span>
                                 </span>
-                                </Tooltip>
-
                             )
                         }
 

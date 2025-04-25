@@ -66,7 +66,7 @@ const SamplesGlobalCard = ({cycles, totalSeconds, total_sam, potential, potentia
                 <FaClock
                   className="w-11 h-11 rounded-full object-cover text-primary_one"
                   style={{
-                    border: `6px solid #80B7AE`, // Azul personalizado con 6px de grosor
+                    border: `3px solid #fb2c36`, // Azul personalizado con 6px de grosor
                   }}
                 />
                 <span className="absolute bottom-0 left-6 w-8 h-8 flex items-center justify-center rounded-full">

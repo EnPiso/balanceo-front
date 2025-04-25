@@ -41,7 +41,7 @@ const ZonesMobileZoneTime = ({operationDetail}) => {
         <FaClock 
           className="w-11 h-11 rounded-full object-cover text-primary_one"
           style={{
-            border: `6px solid #f4f4f5`, // Azul personalizado con 6px de grosor
+            border: `3px solid #EAB308`, // Azul personalizado con 6px de grosor
           }} />
         <span className="absolute bottom-0 left-6 px-2 py-1 rounded-full">
           <h1 
