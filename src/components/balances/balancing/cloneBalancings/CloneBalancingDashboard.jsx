@@ -35,6 +35,7 @@ const CloneBalancingDashboard = () => {
   const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
   const [zonesOperUpdate, setZonesOperUpdate] = useRecoilState(zonesMobile)
   const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
+  
 
   const backward = (goToBalance) => {
     const showOrderProducts = showOrder.products
@@ -80,17 +81,24 @@ const CloneBalancingDashboard = () => {
   const handleClone = () => {
     setIsClone(true)
     
+    console.log(operationsProduct)
+   
+    const product_id = objBalancing.product.id
+    const formatOperation = (op, item) => ({
+      ...op,
+      garment: `${item.product.name} [${item.product.reference}] {${item.product.category_product_name}}`,
+      reference: parseInt(item.product.reference),
+      order: showOrder.order.code,
+      name: op.operation ? op.operation : op.name,
+      sam: parseFloat(op.sam),
+    });
+    
+    const operations = showOrder.products.flatMap((item) => {
+      return product_id === item.product.id
+        ? operationsProduct.map((op) => formatOperation(op, item))
+        : item.operations.map((op) => formatOperation(op, item));
+    });
 
-    const operations = showOrder.products.flatMap(item =>
-      item.operations.map(op => ({
-        ...op,
-        garment: `${item.product.name} [${item.product.reference}] {${item.product.category_product_name}}`,
-        reference: parseInt(item.product.reference),
-        order: showOrder.order.code,
-        operation: op.name,
-        sam: parseFloat(op.sam)
-      }))
-    );
 
     const data = {
       order_id: showOrder.order.id,
