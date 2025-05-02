@@ -24,7 +24,7 @@ import {FaFilePdf} from "react-icons/fa6";
 import {Button, Spinner, Tooltip} from "@nextui-org/react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import {FaBackward, FaCircleNotch, FaTruckLoading} from "react-icons/fa";
+import {FaBackward, FaCircleNotch, FaClone, FaTruckLoading} from "react-icons/fa";
 import ScreenshotComponent from "./ScreenshotComponent.jsx";
 import {toPng} from "html-to-image";
 import * as htmlToImage from "html-to-image";
@@ -38,6 +38,7 @@ import SamplesGlobalModal from './tableOperations/samplesByOper/SamplesGlobalMod
 import { isShowModalZoneSample } from '../../../infraestructure/states/states_samples_zones.js';
 import SamplesZonesModal from './tableOperations/samplesZones/SamplesZonesModal.jsx';
 import ZonesByZoneModal from './tableOperations/balancingMobile/clockZonesByZone/ZonesByZoneModal.jsx';
+import CloneBalancingDashboard from './cloneBalancings/CloneBalancingDashboard.jsx';
 
 export const BalancingDashboard = ({backward}) => {
 
@@ -49,7 +50,7 @@ export const BalancingDashboard = ({backward}) => {
   const [isPDFMode, setIsPDFMode] = useRecoilState(isPDFGenerate);
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
   const [, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // No necesitas el valor actual aquí, solo el setter
-  const [, setOpersSelect] = useRecoilState(selectOpers);
+
   const [isLoadPDF, setIsLoadPDF] = useState(false);
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
 
@@ -67,6 +68,7 @@ export const BalancingDashboard = ({backward}) => {
   const [isShowModalZone, setIsShowModalZone] = useRecoilState(isShowModalZoneSample)
   
   const [zoneByZoneModal, setZoneByZoneModal]  = useRecoilState(clockZoneByZoneModal)
+  const [opersSelect, setOpersSelect] = useRecoilState(selectOpers)
   
 
   useEffect(() => {
@@ -271,25 +273,35 @@ export const BalancingDashboard = ({backward}) => {
                       ) : (
                         <>
 
+                          {
+                            opersSelect.size >= 1 && (
+                              <>
+                                <Tooltip content="Descargar PDF" placement="top">
+                                  <Button
+                                    className="ml-5 font-bold uppercase"
+                                    onPress={()=> {
+                                      setIsScreenShot(true)
+                                    
+                                    }}>
+                                    descargar 
+                                    <FaFilePdf className='text-secondary_two'/>
+                                  </Button>
+                                </Tooltip>
 
-                          <Tooltip content="Descargar PDF" placement="right">
-                            <Button
-                              className="ml-5 font-bold uppercase"
-                              onPress={()=> {
-                                setIsScreenShot(true)
-                              
-                              }}>
-                              descargar 
-                              <FaFilePdf className='text-secondary_two'/>
-                            </Button>
-                          </Tooltip>
+                                <CloneBalancingDashboard/>
+                                    
+                              </>
+                            )
+                          }
+
+                          
 
                         </>
                       )
                     }
 
                 </div>
-          
+                   
                 </>
               )
             }

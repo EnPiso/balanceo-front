@@ -13,7 +13,7 @@ const ImageLightbox = ({ thumbnailUrl, fullSizeUrl,alt,isOperList }) => {
           src={thumbnailUrl}
           alt={alt}
           onClick={toggleLightbox}
-          className="w-36 h-36 object-contain mb-2 "
+          className="w-28 h-28 object-contain mb-2 "
         />
  
       {/* Lightbox */}

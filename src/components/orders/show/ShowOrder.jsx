@@ -7,20 +7,28 @@ import {Spinner} from "@nextui-org/react";
 import { goToBalance } from '../../../infraestructure/states/operation_master_state.js';
 import { FaArrowCircleRight } from 'react-icons/fa';
 import { FaRightLong } from 'react-icons/fa6';
+import { goToUpdateBalance } from '../../../infraestructure/states/states_balancing.js';
 
 const ShowOrder = ({order}) => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj)
+  const [toUpdateBalance, setToUpdateBalance] = useRecoilState(goToUpdateBalance)
 
   
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleShowOrder = (order) => {
+  useEffect(()=> {
+    if(toUpdateBalance){
+      handleShowOrder(toUpdateBalance.orderId)
+    }
+  },toUpdateBalance)
+
+  const handleShowOrder = (order_id) => {
     setIsLoading(true)
     //setShowOrder(order)
     const getData = async () => {
       try {
         //setLoading(true);
-        const result = await fetchGetData(`${urlMain}orders/${order.id}/show_order_details/`);
+        const result = await fetchGetData(`${urlMain}orders/${order_id}/show_order_details/`);
 
         setShowOrder(result)
         
@@ -42,7 +50,7 @@ const ShowOrder = ({order}) => {
     <>
       {
         isLoading ? <Spinner color={"default"} size={"lg"}/> : (
-            <button onClick={() => handleShowOrder(order)}>
+            <button onClick={() => handleShowOrder(order.id)}>
               <h4 className="font-bold text-lg uppercase flex justify-between items-center">
                 {
                   order.code

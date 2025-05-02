@@ -61,7 +61,7 @@ const Sidebar = ({toggleSidebar}) => {
 
 	return (
 		
-		<div className="bg-zinc-800 text-zinc-900 h-screen px-4 fixed w-38 dark:bg-zinc-900 dark:text-white z-50">
+		<div className="bg-zinc-800 text-zinc-900 h-screen px-1 fixed w-40 dark:bg-zinc-900 dark:text-white z-50">
 			<div className="flex flex-col items-center mt-4 mb-2">
         <button onClick={handleSideBar} className="flex flex-col items-center">
           <img

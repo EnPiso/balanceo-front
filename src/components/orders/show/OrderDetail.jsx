@@ -220,7 +220,7 @@ const OrderDetail = () => {
             <div className="pr-6 pb-2 flex justify-end fixed bottom-0 w-full z-50">
               <MyCustomButton
                 icon={<FaBackward className=" mt-1 mr-3 "/>}
-                title={"REGRESAR"}
+                title={"Regresar"}
                 handleClick={setShowOrder}
                 value={null}
                 bgButton={"bg-zinc-800"}
@@ -234,7 +234,7 @@ const OrderDetail = () => {
             <div className="flex justify-end fixed bottom-4 right-3 z-50">
               <MyCustomButton
                 icon={<FaBackward className=" mt-1 mr-3 "/>}
-                title={"REGRESAR"}
+                title={"Regresar"}
                 handleClick={setShowOrder}
                 value={null}
                 bgButton={"bg-zinc-800"}

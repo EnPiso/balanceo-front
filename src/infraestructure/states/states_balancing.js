@@ -37,6 +37,34 @@ export const numberCurrentPage = atom({
   default: 1,
 });
 
+export const goToUpdateBalance = atom({
+  key: 'goToUpdateBalance',
+  default: null,
+});
+
+
+export const isCloneModal = atom({
+  key: 'isCloneModal',
+  default: false,
+});
+
+
+export const openModalOpers = atom({
+  key: 'openModalOpers',
+  default: false,
+});
+
+
+export const isShowButtonOpers = atom({
+  key: 'isShowButtonOpers',
+  default: false,
+});
+
+
+
+
+
+
 
 
 

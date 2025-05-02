@@ -25,13 +25,14 @@ import {FaBackward, FaEdit, FaSave, FaUsers} from "react-icons/fa";
 import CustomButton from "../../../../ui/CustomButton.jsx";
 import SpinnerLoaderCustom from "../../../../ui/SpinnerLoaderCustom.jsx";
 import {allOperationsProduct} from "../../../../infraestructure/states/operation_states.js";
-import {balancingData, detailOperOperations, zonesOpers} from "../../../../infraestructure/states/states_balancing.js";
+import {balancingData, detailOperOperations, openModalOpers, zonesOpers} from "../../../../infraestructure/states/states_balancing.js";
 import {ConfirmOpen} from "./ConfirmOpers.jsx";
 import {assignColorsToArray, isRepeatColor, isRepeatUpdate} from "../../../../ui/utils.js";
 import DashboardPlants from "./DashboardPlants.jsx";
 import {imageTableBalancing} from "../../../../infraestructure/states/states_product.js";
 import {nameImageDateNow} from "../../../../infraestructure/utils/imagesFormat.js";
 import MyCustomButton from "../../../../ui/MyCustomButton.jsx";
+import { useRef } from "react";
 
 const ModalDragOpers = () => {
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
@@ -43,6 +44,7 @@ const ModalDragOpers = () => {
 
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const [size, setSize] = useState('5xl');
 
   const [isLoading, setIsLoading] = useState(false)
@@ -64,14 +66,14 @@ const ModalDragOpers = () => {
 
   const [imageTable, setImageTable] = useRecoilState(imageTableBalancing)
 
-  useEffect(() => {
-    // console.log(detailOperOpera)
-  }, [detailOperOpera]);
+  const [isOpenModalOpers, setIsOpenModalOpers] = useRecoilState(openModalOpers)
 
+ 
 
   const handleOpen = (size) => {
     setSize(size);
     onOpen();
+    setIsOpenModalOpers(false)
   };
 
   // Función para actualizar selectedOperDetails
@@ -144,9 +146,10 @@ const ModalDragOpers = () => {
 
   return (
     <>
-      <div className="flex justify-center ">
+    
+      <div className={`flex justify-center`}>
              <MyCustomButton
-                icon={<FaUsers className=" mt-1 mr-3 "/>}
+                icon={(isOpenModalOpers || opersSelect.size < 1) && <FaUsers className="mt-1 mr-1"/>}
                 title={opersSelect.size >= 1 ? `Operarios ${opersSelect.size}` : "Operarios"}
                 handleClick={() => {
                   handleOpen("3xl")
@@ -154,7 +157,7 @@ const ModalDragOpers = () => {
                 }}
                 value={opersSelect.size >= 1 ? `Operarios ${opersSelect.size}` : "Operarios"}
                 bgButton={"bg-primary_one "}
-                textButton={"text-secondary_two"}
+                textButton={`mt-1 mr-3 ${(isOpenModalOpers || opersSelect.size < 1) ? 'text-zinc-100 pulse-effect' : 'text-secondary_two'}`}
               />
    
         

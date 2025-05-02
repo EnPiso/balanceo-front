@@ -18,8 +18,7 @@ const OrderSubmit = ({operationsData, orderProOpe, images, onClose, eraseData}) 
     setIsLoading(true)
     const formData = new FormData();
     console.log(operationsData)
-    
-
+    debugger
     formData.append('order[operationsData]', JSON.stringify(operationsData));
     formData.append('order[orderProOpe]', orderProOpe.order);
     formData.append('order[image]', images[0])

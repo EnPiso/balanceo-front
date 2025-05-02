@@ -24,7 +24,7 @@ const RootApp = () => {
     <>
       <div className="flex h-screen">
         {/* Sidebar grande: Solo visible en lg+ */}
-        <div className="hidden lg:block w-44">
+        <div className="hidden lg:block w-40">
           <Sidebar toggleSidebar={toggleSidebar} />
         </div>
 

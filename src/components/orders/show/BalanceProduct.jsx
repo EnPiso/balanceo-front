@@ -5,7 +5,7 @@ import {useRecoilState} from "recoil";
 import {orderObjBalancing, showOrderObj} from "../../../infraestructure/states/order_states.js";
 import {fetchGetData, postData} from "../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../infraestructure/data/const.js";
-import {detailOperOperations} from "../../../infraestructure/states/states_balancing.js";
+import {detailOperOperations, goToUpdateBalance, isShowButtonOpers} from "../../../infraestructure/states/states_balancing.js";
 import {assignColorsToArray} from "../../../ui/utils.js";
 import {selectProdPlant, selectProdPlantOriginal} from "../../../infraestructure/states/opers_states.js";
 import { goToBalance } from '../../../infraestructure/states/operation_master_state.js';
@@ -29,31 +29,48 @@ const BalanceProduct = ({product}) => {
 
   const [samplingsGlobal, setSamplingsGlobal] = useRecoilState(samplingsCircleObj)
 
+  const [toUpdateBalance, setToUpdateBalance] = useRecoilState(goToUpdateBalance)
   
+  const [isShowButton, setIsShowButton] = useRecoilState(isShowButtonOpers)
+  
+  useEffect(()=> {
+    if(toUpdateBalance){
+      const product_id = product.product.id
+      if(toUpdateBalance.product.id === product_id){
+        handleBalancing(product, toUpdateBalance.orderId)
+        setIsShowButton(true)
+          setTimeout(()=> {
+            setToUpdateBalance(null)
+
+          }, 1000)
+        }
+    } 
+  }, [toUpdateBalance])
 
 
   useEffect(()=> {
     if(goToBalanceObj){
       const productObj = goToBalanceObj.product
       if( productObj.id === product.product.id){
-      handleBalancing(product)
+      handleBalancing(product, showOrder.order.id)
       setTimeout(()=> {
         setBoToBalanceObj(null)
       }, 1000)
 
       }
     } 
+    
   }, [goToBalanceObj])
       
 
 
-  const handleBalancing = (product) => {
+  const handleBalancing = (product, order_id) => {
     setIsLoading(true)
     // balancings/show_balance
 
-    const order_id = showOrder.order.id
     const product_id =  product.product.id
     const prod = product
+    debugger
     const getData = async () => {
       try {
         //setLoading(true);
@@ -111,31 +128,39 @@ const BalanceProduct = ({product}) => {
   return (
     <>
     
-      {
-        isLoading ? <Spinner color={"default"} size={"lg"}/> : (
+  
           <>
           <div className="block lg:hidden">
             <MyCustomButton
                 icon={
-                  product.product.has_opers_balancing ? 
-                    <FaCalendar className=" mt-1 mr-3 "/> : 
-                    <FaX className=" mt-1 mr-3 text-red-500" />
+                  !isLoading && (
+                    product.product.has_opers_balancing ? (
+                      <FaCalendar className="mt-1 mr-3" />
+                    ) : (
+                      <FaX className="mt-1 mr-3 text-red-500" />
+                    )
+                  )
                 }
                 title={ 
-                  <div>
-                    {product.product.has_opers_balancing && "Balancear"}
-                     
-                    <span className="uppercase">
-                      {product.product.name}
-                    </span> 
-                    <span className="font-bold"> 
-                      {product.product.reference} 
-                    </span>
-                  </div>
+                  isLoading ? 
+                    <Spinner 
+                      color={"default"} 
+                      size={"lg"}/> :
+                    <div>
+                      {product.product.has_opers_balancing && "Balancear"}
+                      {" "}
+                      
+                      <span className="uppercase">
+                        {product.product.name}
+                      </span> 
+                      <span className="font-bold"> 
+                        {product.product.reference} 
+                      </span>
+                    </div>
                 }
                 handleClick={()=> {
                   product.product.has_opers_balancing ?
-                    handleBalancing(product) :
+                    handleBalancing(product, showOrder.order.id) :
                     toast.error('No hay balanceo disponible')
                 }}
                 value={product}
@@ -145,19 +170,20 @@ const BalanceProduct = ({product}) => {
           </div>
           <div className="hidden lg:block">
             <MyCustomButton
-                icon={<FaCalendar className=" mt-1 mr-3 "/>}
+                icon={!isLoading && <FaCalendar className=" mt-1 mr-3 "/>}
                 title={ 
-                  <div>
-                    Balancear {" "}
-                    <span className="uppercase">
-                      {product.product.name}
-                    </span> 
-                    <span className="font-bold"> 
-                      {product.product.reference} 
-                    </span>
-                  </div>
+                  isLoading ? <Spinner color={"default"} size={"lg"}/> :
+                    <div>
+                      Balancear {" "}
+                      <span className="uppercase">
+                        {product.product.name}
+                      </span> 
+                      <span className="font-bold"> 
+                        {product.product.reference} 
+                      </span>
+                    </div>
                 }
-                handleClick={()=> handleBalancing(product)}
+                handleClick={()=> handleBalancing(product, showOrder.order.id)}
                 value={product}
                 bgButton={"bg-zinc-800"}
                 textButton={"text-secondary_two"}
@@ -165,9 +191,6 @@ const BalanceProduct = ({product}) => {
           </div>
             
           </>
-          
-        )
-      }
 
             
     </>

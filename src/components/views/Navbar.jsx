@@ -12,7 +12,7 @@ const Navbar = ({toggleSidebar,isSidebarOpen}) => {
 
 
   return (
-    <div className='z-40 bg-zinc-800 text-gray-900 border-b border-gray-300 p-4 flex justify-between items-center dark:border-gray-600 dark:bg-zinc-900 dark:text-white sticky top-0'>
+    <div className='z-40 bg-zinc-800 text-gray-900  p-4 flex justify-between items-center dark:border-gray-600 dark:bg-zinc-900 dark:text-white sticky top-0'>
         <div>
           <div className="block lg:hidden">
 

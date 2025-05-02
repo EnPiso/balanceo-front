@@ -17,9 +17,10 @@ import { hourMinuteSecond, monthDayYear } from "../../../infraestructure/utils/d
 import SearchDashboardOrders from "./SearchOrdersCustom.jsx";
 import SearchDateOrders from "./SearchDateOrders.jsx";
 import { allOperationsProduct } from "../../../infraestructure/states/operation_states.js";
-import { detailOperOperations, numberCurrentPage } from "../../../infraestructure/states/states_balancing.js";
+import { detailOperOperations, isCloneModal, numberCurrentPage } from "../../../infraestructure/states/states_balancing.js";
 import { BsArrow90DegUp, BsArrowDown, BsArrowDownCircle, BsArrowUpCircle } from "react-icons/bs";
 import DashboardOrderMobile from "./responsive/DashboardOrderMobile.jsx";
+import ModalCloneNew from "../../balances/balancing/cloneBalancings/ModalCloneNew.jsx";
 
 const totalPaginate = [5, 10, 20, 30, 40, 50];
 
@@ -27,6 +28,9 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
   const [orders, setOrders] = useRecoilState(orderList);
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
+
+  const [isClone, setIsClone] = useRecoilState(isCloneModal)
+
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useRecoilState(numberCurrentPage); // Página actual
   const [totalPages, setTotalPages] = useState(1); // Total de páginas
@@ -80,9 +84,10 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
     setIsSearchVisible(!isSearchVisible);
   };
 
+  
   return (
     <div>
-      <div className="grow p-3 overflow-y-auto bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100">
+      <div className="grow overflow-y-auto bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100">
         {!isLoading && (
           <>
             <div className="block lg:hidden">
@@ -271,6 +276,15 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
       </div>
 
       <PdfBalancingImg pdfDiv={pdfDiv} />
+      
+        {
+          isClone && 
+            <ModalCloneNew
+              isOpen={isClone}
+              setIsOpen={setIsClone}
+        />
+        }
+      
     </div>
   );
 };
