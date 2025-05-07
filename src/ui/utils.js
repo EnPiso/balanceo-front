@@ -141,3 +141,4 @@ export const formatClockToFloat = (timeString) => {
   const [minutes, seconds] = timeString.split(":").map(Number);
   return (minutes + seconds / 60).toFixed(2); // Retorna el tiempo en formato decimal
 }
+

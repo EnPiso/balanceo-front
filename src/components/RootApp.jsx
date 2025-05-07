@@ -53,7 +53,7 @@ const RootApp = () => {
         {/* Contenido Principal */}
         <div className="flex-1 flex flex-col bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-white">
           <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-          <div>
+          <div className="ml-1">
             <OrdersTab />
           </div>
         </div>

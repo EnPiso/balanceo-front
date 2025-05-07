@@ -11,3 +11,20 @@ export const goToBalance = atom({
   default: null,
 });
 
+
+export const operationsProductManual = atom({
+  key: 'operationsProductManual',
+  default: [],
+});
+
+export const selectManualObj = atom({
+  key: 'selectManualObj',
+  default: null,
+});
+
+export const newManualObj = atom({
+  key: 'newManualObj',
+  default: { order: '', 
+    products: []
+  },
+});

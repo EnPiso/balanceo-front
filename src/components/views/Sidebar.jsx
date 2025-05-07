@@ -18,6 +18,7 @@ import { checkOperationsBalancing } from '../../infraestructure/states/states_vi
 import OpersMaster from '../opers_master/OpersMaster.jsx';
 import { Avatar } from '@nextui-org/react';
 import { FaEyeSlash } from 'react-icons/fa6';
+import OrdersManualCreate from '../orders/manual/OrdersManualCreate.jsx';
 
 
 const Sidebar = ({toggleSidebar}) => {
@@ -100,6 +101,7 @@ const Sidebar = ({toggleSidebar}) => {
 					) : (
 						<div>
 							<OrderDashboardModal />
+							
 							<DashboardProducts />
 							<DashboardOpers />
 							<OperationsMaster />

@@ -7,7 +7,7 @@ import { useRecoilState } from "recoil";
 import { orderList, showOrderObj } from "../../../infraestructure/states/order_states.js";
 import FileArchiver from "./FileArchiver.jsx";
 import { FaDownLong, FaFile, FaFolderClosed, FaUpLong } from "react-icons/fa6";
-import { FaDoorClosed, FaFileArchive, FaSearch, FaSearchLocation, FaWindowClose } from "react-icons/fa";
+import { FaDoorClosed, FaFileArchive, FaPlus, FaSearch, FaSearchLocation, FaWindowClose } from "react-icons/fa";
 import ShowOrder from "../show/ShowOrder.jsx";
 import OrderDetail from "../show/OrderDetail.jsx";
 import { AiFillCheckCircle, AiFillDatabase, AiFillStop, AiOutlineSortDescending, AiTwotoneStop } from "react-icons/ai";
@@ -21,6 +21,8 @@ import { detailOperOperations, isCloneModal, numberCurrentPage } from "../../../
 import { BsArrow90DegUp, BsArrowDown, BsArrowDownCircle, BsArrowUpCircle } from "react-icons/bs";
 import DashboardOrderMobile from "./responsive/DashboardOrderMobile.jsx";
 import ModalCloneNew from "../../balances/balancing/cloneBalancings/ModalCloneNew.jsx";
+import OrdersManualCreate from "../manual/OrdersManualCreate.jsx";
+import { isModalManual } from "../../../infraestructure/states/states_manual_order.js";
 
 const totalPaginate = [5, 10, 20, 30, 40, 50];
 
@@ -32,7 +34,9 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
   const [isClone, setIsClone] = useRecoilState(isCloneModal)
 
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useRecoilState(numberCurrentPage); // Página actual
+  const [currentPage, setCurrentPage] = useRecoilState(numberCurrentPage);
+  const [isModalManualOrder, setIsModalManualOrder] = useRecoilState(isModalManual);
+  // Página actual
   const [totalPages, setTotalPages] = useState(1); // Total de páginas
   const [perPage, setPerPage] = useState(10); // Total de páginas
   const [queryDate, setQueryDate] = useState(null); // Estado para el valor del input
@@ -125,7 +129,9 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
                         <FaFile className="mt-1 ml-1" />
                       </h3>
                     </button>
-                    <button onClick={() => setIsArchive(true)} className="ml-4">
+                    <button
+                      onClick={() => setIsArchive(true)} 
+                      className="ml-4">
                       <h3 className="text-md lg:text-2xl font-semibold py-6 uppercase text-secondary_one hover:text-zinc-800 flex justify-between hover:underline">
                         Archivadas
                         <FaFileArchive color="red" className="mt-1 ml-1" />
@@ -179,8 +185,16 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
                   <table className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg  border border-gray-300 mt-2">
                     <thead>
                       <tr className="dark:bg-gray-100 bg-zinc-800 text-zinc-100 dark:text-zinc-800">
-                        <th className="p-4 text-left font-medium border border-gray-300 text-secondary_two">
-                          Orden de producción
+                        <th className="p-4 text-left font-medium border border-gray-300 text-secondary_two ">
+                          <span className="flex justify-between items-center">
+                            Orden de producción
+                            <button
+                              onClick={()=> setIsModalManualOrder(true)}
+                            >
+                              <FaPlus className="text-secondary_two items-center" size={28} />
+                            </button>
+                          </span>
+                          
                         </th>
                         <th className="p-4 text-left font-medium border border-gray-300 text-secondary_two">
                           Referencias
@@ -284,6 +298,13 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
               setIsOpen={setIsClone}
         />
         }
+
+        {
+          isModalManualOrder && 
+            <OrdersManualCreate
+              isOpen={isModalManualOrder}
+              setIsOpen={setIsModalManualOrder} />
+          }
       
     </div>
   );

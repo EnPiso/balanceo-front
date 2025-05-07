@@ -114,13 +114,13 @@ const OrderDetail = () => {
   if (!showOrder) return <p>Loading...</p>;
 
   return (
-    <div className="space-y-8 ">
+    <div className="space-y-1">
       {objBalancing ? (
         <>
 
 
-          <div className="">
-            <div className="ml-2">
+          <div>
+            <div>
 
               <div className="hidden lg:block">
                   <div className="mt-4  flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-1 lg:space-y-0">

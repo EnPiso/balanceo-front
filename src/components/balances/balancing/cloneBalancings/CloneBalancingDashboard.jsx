@@ -104,6 +104,8 @@ const CloneBalancingDashboard = () => {
       order_id: showOrder.order.id,
       operations: JSON.stringify(operations)
     }
+
+    debugger
     cloneOrder(data)
   }
 

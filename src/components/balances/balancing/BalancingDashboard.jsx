@@ -237,7 +237,7 @@ export const BalancingDashboard = ({backward}) => {
 
   return (
       <>
-        <div className="ml-2">
+        <div>
           <div className="pr-6 pb-2 flex justify-end fixed bottom-0 w-full z-50 left-1">
             <MyCustomButton
               icon={<FaBackward className=" mt-1 mr-3 "/>}
