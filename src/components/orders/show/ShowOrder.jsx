@@ -6,7 +6,7 @@ import {urlMain} from "../../../infraestructure/data/const.js";
 import {Spinner} from "@nextui-org/react";
 import { goToBalance } from '../../../infraestructure/states/operation_master_state.js';
 import { FaArrowCircleRight } from 'react-icons/fa';
-import { FaRightLong } from 'react-icons/fa6';
+import { FaArrowRight, FaRightLong } from 'react-icons/fa6';
 import { goToUpdateBalance } from '../../../infraestructure/states/states_balancing.js';
 
 const ShowOrder = ({order}) => {
@@ -51,11 +51,11 @@ const ShowOrder = ({order}) => {
       {
         isLoading ? <Spinner color={"default"} size={"lg"}/> : (
             <button onClick={() => handleShowOrder(order.id)}>
-              <h4 className="font-bold text-lg uppercase flex justify-between items-center">
+              <h4 className="font-bold text-lg uppercase flex justify-between items-center text-secondary_two">
                 {
                   order.code
                 }
-               
+               <FaArrowRight className='ml-2'/>
               </h4>
               
             </button>

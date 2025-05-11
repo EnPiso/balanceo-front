@@ -189,25 +189,37 @@ const GenerateImgPdf = ({product, order, pdfDiv}) => {
                                                   <span className="flex justify-between items-center">
                                                     
                                                     <SamplesCountProduct
+                                                        order={order}
+                                                        product={product}
                                                         value={product.samplings_cycles_count}
                                                         style={"red"}  
-                                                        tooltip={"Ciclos del producto"}  
+                                                        tooltip={"Ciclos del producto"}
+                                                        timeCyclesGo={1}  
                                                     />
                                                     <SamplesCountProduct
+                                                        order={order}
+                                                        product={product}
                                                         value={product.time_cycle_oper_count}
                                                         style={"blue"}   
-                                                        tooltip={"Zona secuencial"}   
+                                                        tooltip={"Zona secuencial"}
+                                                        timeCyclesGo={2}   
                                                     />
 
                                                     <SamplesCountProduct
+                                                        order={order}
+                                                        product={product}
                                                         value={product.opers_zones_count}
                                                         style={"yellow"}
-                                                        tooltip={"Tiempos por zona"}    
+                                                        tooltip={"Tiempos por zona"}
+                                                        timeCyclesGo={3}    
                                                     />
                                                     <SamplesCountProduct
+                                                        order={order}
+                                                        product={product}
                                                         value={product.samplings_count}
                                                         style={"green"}
-                                                        tooltip={"Secuencial operaciones"}    
+                                                        tooltip={"Secuencial operaciones"}
+                                                        timeCyclesGo={4}    
                                                     />
                                                    
                                                     <span 

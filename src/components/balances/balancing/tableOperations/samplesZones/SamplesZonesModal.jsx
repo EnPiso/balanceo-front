@@ -14,12 +14,28 @@ import CustomButton from "../../../../../ui/CustomButton";
 import { FaClock, FaClockRotateLeft } from "react-icons/fa6";
 import DashboardSamplesZones from "./DashboardSamplesZones";
 import { useRecoilState } from "recoil";
-import { zonesSamplesList } from "../../../../../infraestructure/states/states_samples_zones";
+import { zoneOperSampleObj, zonesSamplesDetail, zonesSamplesList } from "../../../../../infraestructure/states/states_samples_zones";
+import { isLoadingTimeByZone } from "../../../../../infraestructure/states/operation_master_state";
+import { zonesMobile } from "../../../../../infraestructure/states/states_mobile";
 
 
 const SamplesZonesModal = ({isOpen, setIsOpen}) => {
 
   const [zonesSamples, setZonesSamples] = useRecoilState(zonesSamplesList)
+  const [isLoadingByZone, setIsLoadingByZone] = useRecoilState(isLoadingTimeByZone)
+  
+  const [zoneOperSample, setZoneOperSample] = useRecoilState(zoneOperSampleObj)
+    
+  const [zonesDetailSample, setZonesDetailSample] = useRecoilState(zonesSamplesDetail)
+  
+  const [zonesOperUpdate, setZonesOperUpdate] = useRecoilState(zonesMobile);
+  
+  const resetValues = () => {
+    setZoneOperSample(null)
+    setZonesSamples([])
+    setZonesDetailSample(null)
+    setZonesOperUpdate([])
+  }
    
   return (
     <div className="flex flex-col gap-2">
@@ -32,7 +48,7 @@ const SamplesZonesModal = ({isOpen, setIsOpen}) => {
         onOpenChange={(isOpenState) => {
           setIsOpen(isOpenState)
           if (!isOpenState) {
-            setZonesSamples([])
+            resetValues()
           }
         }} // Actualiza el estado
       >
@@ -48,7 +64,9 @@ const SamplesZonesModal = ({isOpen, setIsOpen}) => {
                 </h1>
               </ModalHeader>
               <ModalBody>
+                
                 <DashboardSamplesZones/>
+            
               </ModalBody>
               <ModalFooter>
                 <CustomButton

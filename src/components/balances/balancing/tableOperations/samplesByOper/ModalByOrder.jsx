@@ -15,10 +15,16 @@ import CustomButton from "../../../../../ui/CustomButton";
 
 import { FaArrowsTurnRight, FaClock, FaClockRotateLeft } from "react-icons/fa6";
 import { useRecoilState } from "recoil";
-import { isSampleObj, operationsSamples } from "../../../../../infraestructure/states/states_samples";
+import { isSampleObj, operationsSamples, operByOper } from "../../../../../infraestructure/states/states_samples";
 import ListOperationsSamples from "./ListOperationsSamples";
 import DashboardSamplesAutomatic from "../samplesAutomatic/DashboardSamplesAutomatic";
 import MyCustomButton from "../../../../../ui/MyCustomButton";
+import { orderObjBalancing } from "../../../../../infraestructure/states/order_states";
+import { fetchGetData } from "../../../../../infraestructure/call_api/crud";
+import { urlMain } from "../../../../../infraestructure/data/const";
+import SelectOpersForTimes from "../samplesZones/SelectOpersForTimes";
+import { zoneOperSampleObj, zonesSamplesDetail, zonesSamplesList } from "../../../../../infraestructure/states/states_samples_zones";
+import { zonesMobile } from "../../../../../infraestructure/states/states_mobile";
 
 
 
@@ -33,6 +39,46 @@ const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) =>
   const [samplesOperations, setSamplesOperations] = useRecoilState(operationsSamples)
 
   const [isSample, setIsSample] = useRecoilState(isSampleObj)
+  const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
+  const [selectOperByOper, setSelectOperByOper] = useRecoilState(operByOper);
+    
+  const [opersBalancingId, setOpersBalancingId] = useState(0);
+
+  const [isShowDetail, setIsShowDetail] = useState(true);
+
+
+  useEffect(()=> {
+   // console.log(oper, samplesOperations, isSample)
+    oper && setIsShowDetail(false)
+  },[])
+
+  const handleSample = (oper) => {
+        
+    setSelectOperByOper(oper)
+    const balancing_id = objBalancing.balancing_id
+    const oper_id = oper.id
+
+    const getData = async () => {
+      setIsLoading(true)
+      try {
+        const result = await fetchGetData(`${urlMain}samplings/index_samples_by_oper?balancing_id=${balancing_id}&oper_id=${oper_id}`);
+        // console.log(result,oper)
+        setSamplesOperations(result.operations)
+        setIsShowDetail(false)
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      } finally {
+        setIsLoading(false)
+        
+      }
+    };
+
+    getData();
+  
+  }
+  
+
+
   return (
     <div className="flex flex-col gap-2">
 
@@ -44,6 +90,12 @@ const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) =>
       onOpenChange={(isOpenState) => {
         setIsOpen(isOpenState)
         setIsSample(false)
+        if(!isOpenState){
+          setSamplesOperations([])
+          setIsSample(false)
+          setSelectOperByOper(null)
+        }
+       
       }} // Actualiza el estado
     >
       <ModalContent>
@@ -58,43 +110,54 @@ const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) =>
             <ModalBody>
               <div>
 
+
+                <SelectOpersForTimes
+                  setOpersBalancingId={setOpersBalancingId}
+                  isOnlyOper={true}
+                  handleSample={handleSample}
+                  isShowDetail={isShowDetail}
+                  setIsShowDetail={setIsShowDetail}
+                />
+
                 <div className="flex justify-end py-4 bg-zinc-100 px-2 ">
                   <div className="flex justi items-center">
-                    <h1 className="text-xl font-bold uppercase mr-3">  
-                      <span className="text-secondary_two bg-primary_one ml-2">
-                        {oper.name}
-                      </span>
-                    </h1>
+                    {
+                      oper && <>
+                        <h1 className="text-xl font-bold uppercase mr-3">  
+                          <span className="text-secondary_two bg-primary_one ml-2">
+                            {oper.name}
+                          </span>
+                        </h1>
 
-                    <img
-                      src={oper.avatar ? oper.avatar : 'https://balance-assets.sfo3.digitaloceanspaces.com/assets/user.webp'}
-                      alt={oper.avatar ? oper.avatar : 'https://balance-assets.sfo3.digitaloceanspaces.com/assets/user.webp'}
-                      className="w-16 h-16 rounded-full object-cover"
-                      style={{
-                        border: `6px solid #80B7AE`, // Azul personalizado con 6px de grosor
-                      }}
-                    />
+                        <img
+                          src={oper.avatar ? oper.avatar : 'https://balance-assets.sfo3.digitaloceanspaces.com/assets/user.webp'}
+                          alt={oper.avatar ? oper.avatar : 'https://balance-assets.sfo3.digitaloceanspaces.com/assets/user.webp'}
+                          className="w-16 h-16 rounded-full object-cover"
+                          style={{
+                            border: `6px solid #80B7AE`, // Azul personalizado con 6px de grosor
+                          }}
+                        />
+                      </> 
+                    }
+                    
                    
                    
                   </div>
                 
                 </div>
 
-
-                    <div>
-                      <div className="flex justify-between items-center mt-3">
                         {
-                          !isAutomatic ? 
-                            <h1 className="text-left uppercase font-bold text-xl mb-2 ">
-                              Operaciones
-                            </h1> :
+                          !isAutomatic && samplesOperations.length >= 1 ? 
+                          <div>
+                            <div className="flex justify-between items-center mt-3">
+                              <h1 className="text-left uppercase font-bold text-xl mb-2 ">
+                                Operaciones
+                              </h1>
+                            </div>
+                          </div> :
                             <div></div>
                         }
-             
-                        
-                        
-                      </div>
-                    </div>
+                    
 
                     {
                       isAutomatic ? 

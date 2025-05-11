@@ -53,6 +53,15 @@ const SamplesGlobalList = () => {
     
   }
 
+  const timeToDecimalMinutes = (timeStr) => {
+    const [minutesStr, secondsStr] = timeStr.split(':');
+    const minutes = parseInt(minutesStr, 10);
+    const seconds = parseInt(secondsStr, 10);
+  
+    return +(minutes + (seconds / 60)).toFixed(2);
+
+  }
+
   return (
     <div>
       {
@@ -87,7 +96,7 @@ const SamplesGlobalList = () => {
                         <td className="px-4 py-2 border-l-1">
                           <span className="flex justify-between items-center font-bold">
                             <span className=" text-zinc-800">
-                              { sampling.sample }
+                              { timeToDecimalMinutes(sampling.sample) }
                             </span>
                             <small className="text-secondary_two font-bold">
                               {timeToSeconds(sampling.sample)}  <small>s</small>

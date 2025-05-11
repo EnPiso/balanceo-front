@@ -27,32 +27,32 @@ const ZonesMobileClockOper = ({zone}) => {
 
   const handleSample = (oper) => {
       
-      setSelectOperByOper(oper)
-      const balancing_id = objBalancing.balancing_id
-      const oper_id = oper.id
-  
-      const getData = async () => {
-        setIsLoading(true)
-        try {
-          const result = await fetchGetData(`${urlMain}samplings/index_samples_by_oper?balancing_id=${balancing_id}&oper_id=${oper_id}`);
-          // console.log(result,oper)
-          setSamplesOperations(result.operations)
-          
-         // setIsShowModal(true)
-          setOpenModalSampleByOper(true)
-          setIsOpenModalByOper(true)
-  
-        } catch (error) {
-          console.error("Error al obtener los datos:", error);
-        } finally {
-          setIsLoading(false)
-          
-        }
-      };
-  
-      getData();
-  
-    }
+    setSelectOperByOper(oper)
+    const balancing_id = objBalancing.balancing_id
+    const oper_id = oper.id
+
+    const getData = async () => {
+      setIsLoading(true)
+      try {
+        const result = await fetchGetData(`${urlMain}samplings/index_samples_by_oper?balancing_id=${balancing_id}&oper_id=${oper_id}`);
+        // console.log(result,oper)
+        setSamplesOperations(result.operations)
+        
+        // setIsShowModal(true)
+        setOpenModalSampleByOper(true)
+        setIsOpenModalByOper(true)
+
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      } finally {
+        setIsLoading(false)
+        
+      }
+    };
+
+    getData();
+
+  }
 
     
 

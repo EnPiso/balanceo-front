@@ -45,13 +45,15 @@ import { automaticByOper, isOpenModalSample, isOpenModalSampleByOper, openByOper
 import ModalSelectSamples from './samples/ModalSelectSamples.jsx';
 import ModalByOrder from './samplesByOper/ModalByOrder.jsx';
 import SimpleBalancedOperationsTable from './balancingMobile/SimpleBalancedOperationsTable .jsx';
-import { clockGlobalModal, samplingsCircleList, samplingsCircleObj, zonesMobile } from '../../../../infraestructure/states/states_mobile.js';
+import { clockGlobalModal, clockZoneByZoneModal, samplingsCircleList, samplingsCircleObj, zonesMobile } from '../../../../infraestructure/states/states_mobile.js';
 import ZonesMobileDashboard from './balancingMobile/ZonesMobileDashboard.jsx';
 import { ModalRecOutside } from './balancingMobile/ModalRecOutside.jsx';
 import FooterCycles from './FooterCycles.jsx';
 import { Tooltip } from '@nextui-org/react';
 import { FaRegClock, FaUserClock } from 'react-icons/fa';
 import SecuentialZoneDash from './balancingMobile/SecuentialZoneDash.jsx';
+import { isLoadingTime, isLoadingTimeByZone, timeDataCyclesNum } from '../../../../infraestructure/states/operation_master_state.js';
+import { isShowModalZoneSample } from '../../../../infraestructure/states/states_samples_zones.js';
 
 
 
@@ -96,13 +98,48 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
 
   const [zonesOperUpdate,setZonesOperUpdate] = useRecoilState(zonesMobile)
 
-  // operByOper
-  // isOpenModalSampleByOper
 
   const [clockGlobal, setClockGlobal]  = useRecoilState(clockGlobalModal)
   const [samplingsGlobal, setSamplingsGlobal] = useRecoilState(samplingsCircleObj)
   const [samplingsCircle, setSamplingsCircle] = useRecoilState(samplingsCircleList);
+
+
+  const [numTimeDataCycles, setNumTimeDataCycles] = useRecoilState(timeDataCyclesNum)
+  const [isLoadingTimeModal, setIsLoadingTimeModal] = useRecoilState(isLoadingTime)
+  const [isLoadingByZone, setIsLoadingByZone] = useRecoilState(isLoadingTimeByZone)
+  
+  
+  
+  const [zoneByZoneModal, setZoneByZoneModal]  = useRecoilState(clockZoneByZoneModal)
+  const [isShowModalZone, setIsShowModalZone] = useRecoilState(isShowModalZoneSample)
+  const [openModalSampleByOper, setOpenModalSampleByOper] = useRecoilState(isOpenModalSampleByOper);
+  const [isOpenModalByOper, setIsOpenModalByOper] = useRecoilState(openByOper)
     
+  const [isComponentsLoaded, setIsComponentsLoaded] = useState(false); // Estado para rastrear si los componentes han cargado
+  const [isFinalActionDone, setIsFinalActionDone] = useState(false); // Estado para rastrear si la acción final se ejecutó
+
+  
+
+  // Simula la carga de otros componentes
+  useEffect(() => {
+    const loadOtherComponents = async () => {
+      // Simula la carga de otros componentes con un retraso
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simula 2 segundos de carga
+      setIsComponentsLoaded(true); // Indica que los componentes han cargado
+    };
+
+    loadOtherComponents();
+  }, []);
+
+  // Ejecuta la acción final cuando todos los componentes hayan cargado
+  useEffect(() => {
+    if (isComponentsLoaded && !isFinalActionDone) {
+      console.log("Todos los componentes han cargado. Ejecutando acción final...");
+      setIsLoadingTimeModal(true)
+      setIsLoadingByZone(true)
+    }
+  }, [isComponentsLoaded, isFinalActionDone]);
+
   
   const handleGlobalClock = () => {
     setClockGlobal(!clockGlobal)

@@ -56,7 +56,7 @@ const SamplesGlobalCard = ({cycles, totalSeconds, total_sam, potential, potentia
         />
 
         <CardSamplePercent
-          title={"Potencial Hora"}
+          title={"Potencial"}
           description={`${potential}`}
         />
         {

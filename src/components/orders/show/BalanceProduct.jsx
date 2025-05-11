@@ -50,6 +50,7 @@ const BalanceProduct = ({product}) => {
 
   useEffect(()=> {
     if(goToBalanceObj){
+      
       const productObj = goToBalanceObj.product
       if( productObj.id === product.product.id){
       handleBalancing(product, showOrder.order.id)
@@ -70,7 +71,7 @@ const BalanceProduct = ({product}) => {
 
     const product_id =  product.product.id
     const prod = product
-    debugger
+    
     const getData = async () => {
       try {
         //setLoading(true);

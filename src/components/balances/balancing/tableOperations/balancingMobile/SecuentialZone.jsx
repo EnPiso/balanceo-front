@@ -22,21 +22,21 @@ const SecuentialZone = ({setIsLoading}) => {
   }
 
   const getApiZonesCycles = () => {
-      const balancing_id = objBalancing.balancing_id
-      setIsLoading(true)
-      const getData = async () => {
-        try {
-          const result = await fetchGetData(`${urlMain}zones_cycles?balancing_id=${balancing_id}`);
-          setZonesCycles(result.cycles)
-          setZoneByZoneModal(!zoneByZoneModal)
-        } catch (error) {
-          console.error("Error al obtener los datos:", error);
-        } finally {
-          setIsLoading(false)
-        }
-      };
-      getData();
-    }
+    const balancing_id = objBalancing.balancing_id
+    setIsLoading(true)
+    const getData = async () => {
+      try {
+        const result = await fetchGetData(`${urlMain}zones_cycles?balancing_id=${balancing_id}`);
+        setZonesCycles(result.cycles)
+        setZoneByZoneModal(!zoneByZoneModal)
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      } finally {
+        setIsLoading(false)
+      }
+    };
+    getData();
+  }
 
 
   return (

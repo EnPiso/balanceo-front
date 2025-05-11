@@ -13,12 +13,26 @@ import {
 import { FaArrowsTurnRight, FaClock, FaClockRotateLeft } from "react-icons/fa6";
 import MyCustomButton from "../../../../../../ui/MyCustomButton";
 import ZonesByZoneDashboard from "./ZonesByZoneDashboard";
+import { isCycleList, zoneCyclesList } from "../../../../../../infraestructure/states/states_samples";
+import { orderObjBalancing } from "../../../../../../infraestructure/states/order_states";
+import { isLoadingTime } from "../../../../../../infraestructure/states/operation_master_state";
+import { useRecoilState } from "recoil";
 
 
 const ZonesByZoneModal = ({isOpen, setIsOpen}) => {
+  const [zonesCycles, setZonesCycles] = useRecoilState(zoneCyclesList);
+  const [isLoadingTimeModal, setIsLoadingTimeModal] = useRecoilState(isLoadingTime)
+  const [isCycleCreate, setIsCycleCreate] = useRecoilState(isCycleList)
 
   const handleOut = () => {
     setIsOpen(false)
+    handleReset()
+  }
+
+  const handleReset = () => { 
+    setZonesCycles([])
+    setIsLoadingTimeModal(false)
+    setIsCycleCreate(false)
   }
 
   return (
@@ -30,8 +44,9 @@ const ZonesByZoneModal = ({isOpen, setIsOpen}) => {
         scrollBehavior={"inside"}
         onOpenChange={(isOpenState) => {
           setIsOpen(isOpenState)
-        
-        }} // Actualiza el estado
+          !isOpenState && handleReset()
+        } 
+      } // Actualiza el estado
       >
         <ModalContent>
           {(onClose) => (

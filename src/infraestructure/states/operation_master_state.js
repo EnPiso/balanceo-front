@@ -28,3 +28,22 @@ export const newManualObj = atom({
     products: []
   },
 });
+
+
+
+export const timeDataCyclesNum = atom({
+  key: 'timeDataCyclesNum',
+  default: 0,
+});
+
+
+export const isLoadingTime = atom({
+  key: 'isLoadingTime',
+  default: false,
+});
+
+
+export const isLoadingTimeByZone = atom({
+  key: 'isLoadingTimeByZone',
+  default: false,
+});

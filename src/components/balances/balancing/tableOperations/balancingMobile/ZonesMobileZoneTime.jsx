@@ -32,6 +32,7 @@ const ZonesMobileZoneTime = ({operationDetail}) => {
     setZonesDetailSample(filteredUpdate)
     setIsShowModalZone(true)
     setZoneOperSample(operationDetail)
+    
   }
 
   return (

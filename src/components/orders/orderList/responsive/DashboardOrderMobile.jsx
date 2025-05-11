@@ -60,17 +60,29 @@ const DashboardOrderMobile = ({totalPaginate,handlePerPageChange,perPage,setDesc
 
           {orders.map((order) => (
             <div key={order.id} className="p-1 mt-2 border">
-              <div className='flex justify-between items-center'>
+              <div>
                 <div>
-                  <h3 className="text-md font-semibold flex justify-between items-center">
-                    <ShowOrder order={order} /> 
-                  </h3>
+                  <div className="flex justify-between items-center mb-1 rounded-md">
+                    <h3 className="text-md font-semibold flex justify-between items-center">
+                      <ShowOrder order={order} /> 
+                    </h3>
+                    <div className="text-end">
+                      <p className="text-sm text-zinc-800">
+                        {order.created_at && monthDayYear(order.created_at)}
+                        
+                      </p>
+                      <small className="text-md font-bold text-zinc-800 ml-1">
+                          {order.created_at && hourMinuteSecond(order.created_at)}
+                      </small>
+                    </div>
+                  </div>
+                  
                   
                   <div>
                     {order.products.map((product, i) => (
-                      <>
-                        <div className="flex justify-between items-start bg-zinc-100">
-                          <p key={i} className={`text-md ${product.has_opers_balancing ? 'text-secondary_two' : 'text-zinc-400'}  font-black text-start`}>
+                      <div  key={i} className="p-2  border-t border-zinc-100 bg-zinc-50">
+                        <div className="flex justify-between items-start  py-1">
+                          <p className={`text-md ${product.has_opers_balancing ? 'text-secondary_two' : 'text-zinc-400'}  font-black text-start`}>
                             <small>
                               {product.name}
                             </small>
@@ -83,21 +95,33 @@ const DashboardOrderMobile = ({totalPaginate,handlePerPageChange,perPage,setDesc
                                     <span className="flex justify-between items-center">
                                       <SamplesCountProduct
                                           value={product.samplings_cycles_count}
-                                          style={"red"}    
+                                          style={"red"}
+                                          order={order}
+                                          product={product}
+                                          timeCyclesGo={1}     
                                       />
                                       
                                       <SamplesCountProduct
                                           value={product.time_cycle_oper_count}
-                                          style={"blue"}    
+                                          style={"blue"} 
+                                          order={order}
+                                          product={product}
+                                          timeCyclesGo={2}    
                                       />
 
                                       <SamplesCountProduct
                                           value={product.opers_zones_count}
-                                          style={"yellow"}    
+                                          style={"yellow"}  
+                                          order={order}
+                                          product={product}
+                                          timeCyclesGo={3}   
                                       />
                                       <SamplesCountProduct
                                           value={product.samplings_count}
-                                          style={"green"}    
+                                          style={"green"} 
+                                          order={order}
+                                          product={product}
+                                          timeCyclesGo={4}    
                                       />
                                       
                                     </span>
@@ -113,31 +137,19 @@ const DashboardOrderMobile = ({totalPaginate,handlePerPageChange,perPage,setDesc
                         </div>
                         {
                             product.has_opers_balancing &&
-                                <small className={`capitalize font-light text-secondary_two`}> 
+                                <small className={`capitalize font-light text-zinc-700`}> 
                                     { product.plant_module_name } 
                                 </small>
                               
                           } 
                           
-                      </>
+                      </div>
                     ))}
                       
                   </div>
                 </div>
                 
-               <div>
-          
-                <div className="py-3 text-end">
-                  <p className="text-sm text-zinc-800">
-                    {order.created_at && monthDayYear(order.created_at)}
-                    
-                  </p>
-                  <small className="text-md font-bold text-zinc-800 ml-2">
-                      {order.created_at && hourMinuteSecond(order.created_at)}
-                  </small>
-                </div>
-                
-               </div>
+              
                 
               </div>
               
