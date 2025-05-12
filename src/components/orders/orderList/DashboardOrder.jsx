@@ -296,7 +296,7 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
             <ModalCloneNew
               isOpen={isClone}
               setIsOpen={setIsClone}
-        />
+            />
         }
 
         {

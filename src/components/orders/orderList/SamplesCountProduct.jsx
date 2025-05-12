@@ -1,4 +1,4 @@
-import { Tooltip } from '@nextui-org/react'
+import { CircularProgress, Tooltip } from '@nextui-org/react'
 import React, { useState } from 'react'
 import { FaClockRotateLeft } from 'react-icons/fa6'
 import { useRecoilState } from 'recoil'
@@ -75,40 +75,49 @@ const SamplesCountProduct = ({value, style, tooltip, product, timeCyclesGo, orde
 
   return (
     <>
-      {
-        value > 0 && <>
-          {
-            tooltip ? (
-              
-                <Tooltip placement="top" content={tooltip}>
-                  <span
-                    onClick={()=> handleSampleGo(product, timeCyclesGo, order)}
-                    className="ml-2 mr-2 relative">
-                    <FaClockRotateLeft 
-                        className={`w-6 h-6 rounded-full object-cover text-${style}-500`}/>
-                    <small className={`absolute bottom-2 left-6  rounded-ful font-bold  text-${style}-500`}>
-                      {value}
-                    </small>
-                  </span> 
-                </Tooltip>
-              
-            ) : (
-              <span 
-                onClick={()=> handleSampleGo(product, timeCyclesGo, order)}
-                className="ml-2 mr-2 relative">
-                <FaClockRotateLeft 
-                    className={`w-6 h-6 rounded-full object-cover text-${style}-500`}/>
-                <small className={`absolute bottom-2 left-6  rounded-ful font-bold  text-${style}-500`}>
-                  {value}
-                </small>
-              </span>
-            )
-          }
-        
-            
-        </>
+    {
+      isLoading ? (
+        <CircularProgress size='sm'  color='success'/> 
+      ) :
+      <>
+        {
+          value > 0 && <>
+            {
+              tooltip ? (
+                
+                  <Tooltip placement="top" content={tooltip}>
+                    <button
+                      onClick={()=> handleSampleGo(product, timeCyclesGo, order)}
+                      className="ml-2 mr-2 relative">
+                      <FaClockRotateLeft 
+                          className={`w-6 h-6 rounded-full object-cover text-${style}-500`}/>
+                      <small className={`absolute bottom-2 left-6  rounded-ful font-bold  text-${style}-500`}>
+                        {value}
+                      </small>
+                    </button> 
+                  </Tooltip>
+                
+              ) : (
+                <button 
+                  onClick={()=> handleSampleGo(product, timeCyclesGo, order)}
+                  className="ml-2 mr-2 relative">
+                  <FaClockRotateLeft 
+                      className={`w-6 h-6 rounded-full object-cover text-${style}-500`}/>
+                  <small className={`absolute bottom-2 left-6  rounded-ful font-bold  text-${style}-500`}>
+                    {value}
+                  </small>
+                </button>
+              )
+            }
           
-      }
+              
+          </>
+            
+        }
+      
+      </>
+    }
+      
     </>
   )
 }
