@@ -102,7 +102,7 @@ const DashboardManualOrder = ({setIsOpen}) => {
         </div>
         <div>
           <SearchManualProducts
-            content="Buscar productos"
+            content="Buscar (ENTER)"
             searchData={searchData}
             setSearchData={setSearchData}
             setQueryString={setQueryString}

@@ -65,11 +65,11 @@ const ObjManualProduct = ({product, dataSearchList}) => {
     <tr
       onClick={()=> handleProduct(product)}
       className="cursor-pointer odd:bg-white even:bg-gray-100 dark:odd:bg-gray-800 dark:even:bg-gray-900 text-gray-900 dark:text-white">
-      <td className={`${selectObj && (selectObj.id === product.id) ? 'text-secondary_two' : ''} px-4 py-2 border border-gray-300 dark:border-gray-600 text-left font-bold`}>
+      <td className={`flex justify-between items-center ${selectObj && (selectObj.id === product.id) ? 'text-secondary_two' : ''} px-4 py-2 border border-gray-300 dark:border-gray-600 text-left font-bold`}>
         {
           isLoading ? <CircularProgress size='24' color='default'/> : product.name
-        }  
-      </td>
+        }  <span className="text-secondary_two">{product.reference}</span>
+      </td> 
       {
         dataSearchList && !dataSearchList.original &&
         <>

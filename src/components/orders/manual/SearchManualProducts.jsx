@@ -34,7 +34,7 @@ const SearchManualProducts = ({searchData, setSearchData, setQueryString,  conte
             onKeyDown={handleKeyDown}
             onChange={(e) => setSearchData(e.target.value)}
             variant="bordered"
-            placeholder="Buscar (ENTER)"
+            placeholder="Buscar producto o referencia (ENTER)"
             className="w-full md:w-64 bg-white rounded-full"
             endContent={
               searchData.length >= 1 &&

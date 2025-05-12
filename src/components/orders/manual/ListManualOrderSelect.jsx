@@ -25,30 +25,27 @@ const ListManualOrderSelect = ({ dataSearchList, setIsOpenManualModal, newManual
  
 
 
-  const fetchApiProducts = (currentPage,perPage) => {
+  const fetchApiProducts = (currentPage, perPage) => {
     const getData = async () => {
-      
       try {
-
-        // Construir los parámetros de búsqueda dinámicamente
         const formattedDate = dataSearchList && dataSearchList.created_at ? dataSearchList.created_at.toString() : '';
-        
+
         const queryParamsObject = {
           ...(dataSearchList && !dataSearchList.original && dataSearchList.module && { 'q[plant_module_name_cont]': dataSearchList.module }),
-          ...(dataSearchList && dataSearchList.name && { 'q[name_cont]': dataSearchList.name }),
+          ...(dataSearchList && dataSearchList.name && { 'q[name_cont]': dataSearchList.name }), // name_cont busca en name y reference
+          ...(dataSearchList && dataSearchList.reference && { 'q[reference_cont]': dataSearchList.reference }),
           ...(dataSearchList && !dataSearchList.original && dataSearchList.created_at && { 'q[created_at_eq]': encodeURIComponent(formattedDate) }),
           ...(dataSearchList && dataSearchList.original
             ? { 'q[original_eq]': true }
             : { 'q[has_opers_balancing_eq]': true, 'q[original_eq]': false }),
-          page: currentPage, // Agregar paginación aquí
-          per_page: perPage, // Agregar paginación aquí
+          page: currentPage,
+          per_page: perPage,
         };
-        
+
         const queryParams = new URLSearchParams(queryParamsObject);
-        
-        // Hacer la solicitud con los parámetros
+
         const result = await fetchGetData(`${urlMain}products/index_manual_order?${queryParams.toString()}`);
-        debugger
+
         setProducts(result.products);
         setTotalPages(result.total_pages);
         setCurrentPage(result.current_page);
@@ -57,7 +54,7 @@ const ListManualOrderSelect = ({ dataSearchList, setIsOpenManualModal, newManual
       }
     };
     getData();
-  }
+  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -87,8 +84,8 @@ const ListManualOrderSelect = ({ dataSearchList, setIsOpenManualModal, newManual
         products.length >= 1 && (
           <thead className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white">
             <tr>
-              <th className="px-4 py-2 border text-left border-gray-300 dark:border-gray-600 text-secondary_two">
-                Producto
+              <th className="px-4 py-2 border text-left border-gray-300 dark:border-gray-600 flex justify-between items-center">
+                Producto  <span className="text-secondary_two">Referencia</span> 
               </th>
               {
                 dataSearchList && !dataSearchList.original && (
