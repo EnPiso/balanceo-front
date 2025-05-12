@@ -26,3 +26,9 @@ export const imageBalancePdf = atom({
   default: '',
 });
 
+
+export const productsNextLast = atom({
+  key: 'productsNextLast',
+  default: [],
+});
+

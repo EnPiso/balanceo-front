@@ -39,6 +39,7 @@ import { isShowModalZoneSample } from '../../../infraestructure/states/states_sa
 import SamplesZonesModal from './tableOperations/samplesZones/SamplesZonesModal.jsx';
 import ZonesByZoneModal from './tableOperations/balancingMobile/clockZonesByZone/ZonesByZoneModal.jsx';
 import CloneBalancingDashboard from './cloneBalancings/CloneBalancingDashboard.jsx';
+import { BalancingSideBar } from './BalancingSideBar.jsx';
 
 export const BalancingDashboard = ({backward}) => {
 
@@ -347,6 +348,7 @@ export const BalancingDashboard = ({backward}) => {
               setIsOpen={setIsShowModalZone}
             />
         }
+        <BalancingSideBar/>
          
       </>
   )
