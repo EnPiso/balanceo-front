@@ -19,6 +19,7 @@ import OpersMaster from '../opers_master/OpersMaster.jsx';
 import { Avatar } from '@nextui-org/react';
 import { FaEyeSlash } from 'react-icons/fa6';
 import OrdersManualCreate from '../orders/manual/OrdersManualCreate.jsx';
+import DashboardVideoMain from '../balances/balancing/tableOperations/videoOperations/videoSidebarMain/DashboardVideoMain.jsx';
 
 
 const Sidebar = ({toggleSidebar}) => {
@@ -106,7 +107,7 @@ const Sidebar = ({toggleSidebar}) => {
 							<DashboardOpers />
 							<OperationsMaster />
 							<OpersMaster />
-
+							<DashboardVideoMain/>
 							
 						</div>
 					)}

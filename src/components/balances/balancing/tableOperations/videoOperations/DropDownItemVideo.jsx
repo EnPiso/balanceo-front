@@ -1,5 +1,5 @@
 import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Radio, RadioGroup, Tooltip } from '@nextui-org/react'
-import React from 'react'
+import React, { useState } from 'react'
 import { FaRegPlayCircle, FaRegWindowClose, FaStar } from 'react-icons/fa'
 import { useRecoilState } from 'recoil';
 import { checkOpersPosition } from '../../../../../infraestructure/states/opers_states';
@@ -10,12 +10,16 @@ import { updateData } from '../../../../../infraestructure/call_api/crud';
 import { urlMain } from '../../../../../infraestructure/data/const';
 import { listVideosOperations, videoShow } from '../../../../../infraestructure/states/states_videos';
 import toast from 'react-hot-toast';
+import { ConfirmOpen } from '../../sidebarForm/ConfirmOpers';
 
 const DropDownItemVideo = ({isOpen, setIsOpen, handleVideo, handleDelete}) => {
   
   const [videosOperations, setVideosOperations] = useRecoilState(listVideosOperations)
   const [showVideos, setShowVideos]  = useRecoilState(videoShow)
 
+  const [isOpenConfirm, setIsOpenConfirm] = useState(false);
+  const [objVideo, setObjVideo] = useState(null);
+  
   const handleFavorite = (video) => {
     const video_id = video.id
     const uploadFavorite = async () => {
@@ -43,6 +47,11 @@ const DropDownItemVideo = ({isOpen, setIsOpen, handleVideo, handleDelete}) => {
     };
 
     uploadFavorite()
+  }
+
+  const handleConfirmFavorite = (video) => {
+    setObjVideo(video)
+    setIsOpenConfirm(true)
   }
 
   return (
@@ -92,7 +101,9 @@ const DropDownItemVideo = ({isOpen, setIsOpen, handleVideo, handleDelete}) => {
                       <span className="truncate text-center uppercase text-zinc-600 font-bold bg-zinc-300">
                         video # <span className="text-secondary_two">{i + 1}</span>
                       </span>
-                      <button onClick={()=> handleFavorite(video)}>
+                      <button onClick={()=> {
+                          handleConfirmFavorite(video)
+                        }}>
                         {
                           video.favorite ? 
                             <FaStar size={30} className='text-yellow-400'/> : 
@@ -137,7 +148,22 @@ const DropDownItemVideo = ({isOpen, setIsOpen, handleVideo, handleDelete}) => {
 
         </DropdownMenu>
       </Dropdown>
-     
+      
+      {
+        isOpenConfirm && 
+          <ConfirmOpen
+            isOpen={isOpenConfirm}
+            setIsOpen={setIsOpenConfirm}
+            handleSave={() => handleFavorite(objVideo)}
+            title={
+              objVideo.favorite ? 
+                "¿Quieres quitar este vídeo" : 
+                "¿Quieres agregar este vídeo"
+            }
+            description={`como un referente de la operación ${showVideos.operation}?`}
+          />
+      }
+      
     </>
   )
 }
