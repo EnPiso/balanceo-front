@@ -5,7 +5,7 @@ import { urlMain } from '../../../../../../infraestructure/data/const'
 import ModalShowVideos from './ModalShowVideos'
 import { CircularProgress } from '@nextui-org/react'
 
-const VideoObjMain = ({operation,key,operationTemp, setOperationTemp}) => {
+const VideoObjMain = ({operation,key,operationTemp, setOperationTemp, isFavorite}) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [videos, setVideos] = useState([]);
@@ -21,7 +21,7 @@ const VideoObjMain = ({operation,key,operationTemp, setOperationTemp}) => {
     const getData = async () => {
       setIsLoading(true);
       try {
-        const result = await fetchGetData(`${urlMain}videos/get_videos_operations?operation_id=${operation_id}`);
+        const result = await fetchGetData(`${urlMain}videos/get_videos_operations?operation_id=${operation_id}&favorite=${isFavorite}`);
         console.log(result.videos)
         setVideos(result.videos)
         setIsOpen(true)

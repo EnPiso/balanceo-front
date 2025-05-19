@@ -86,6 +86,8 @@ const DashboardManualOrder = ({setIsOpen}) => {
       <div className="flex justify-between items-center bg-zinc-50 px-1 rounded-md shadow-sm py-1 mb-2">
         <div>
           <IsOriginalProduct
+            titleTrue="balanceos"
+            titleFalse="originales"
             isOriginal={isOriginal}
             setIsOriginal={setIsOriginal}
           />
@@ -106,6 +108,7 @@ const DashboardManualOrder = ({setIsOpen}) => {
             searchData={searchData}
             setSearchData={setSearchData}
             setQueryString={setQueryString}
+            placeholder="Buscar producto o referencia (ENTER)"
           />
         </div>
         <div>

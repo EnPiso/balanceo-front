@@ -30,3 +30,21 @@ export const extractOperations = (worksheet) => {
   });
   return operations;
 };
+
+
+export const formatearString = (str) => {
+  // Eliminar caracteres especiales (excepto letras, números y espacios)
+    if (!str) {
+    console.warn("Se recibió un valor null o undefined para formatear.");
+    return "";
+  }
+  const sinEspeciales = str.replace(/[^\w\s]/gi, '');
+
+  // Eliminar espacios al final
+  const sinEspaciosFinal = sinEspeciales.trimEnd();
+
+  // Eliminar puntos al final (si los hubiera, aunque en tu ejemplo no hay)
+  const sinPuntoFinal = sinEspaciosFinal.replace(/\.$/, '');
+
+  return sinPuntoFinal;
+}

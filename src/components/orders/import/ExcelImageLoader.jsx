@@ -9,6 +9,7 @@ import ShowOderProdOperations from "./ShowOderProdOper.jsx";
 import TitleDashboard from "../../../ui/TitleDashboard.jsx";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../infraestructure/data/toastMessage.js";
+import { formatearString } from './utils.js';
 
 const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData, orderProOpe, handleMultipleFile }) => {
 
@@ -48,6 +49,7 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
       // Actualizar estados
       setImages(extractedImages);
       setOperationsData(extractedOperations);
+      
 
       toast.success(toastMessageCustom.file_upload)
     } catch (error) {
@@ -73,7 +75,9 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
     const operations = [];
     worksheet.eachRow((row, rowNumber) => {
       if (rowNumber > 1) { // Saltar la fila de encabezado
-        const operation = row.getCell(1).value;
+        
+        const stringFormat  = formatearString(row.getCell(1).value)
+        const operation = stringFormat;
         const machine = row.getCell(2).value;
         const sam = row.getCell(8).value;
 

@@ -21,15 +21,12 @@ const ModalVideoMain = ({setIsOpen, handleClose, isOpen}) => {
             <>
               <ModalHeader className="flex justify-start items-center">
                 Operaciones y vídeos
-
               </ModalHeader>
               <ModalBody>
                 <ListVideosMain/>
               </ModalBody>
               <ModalFooter>
-
                 
-
                 <CustomButton
                   color="default"
                   variant="bordered"

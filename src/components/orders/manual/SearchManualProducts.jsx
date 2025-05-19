@@ -2,7 +2,7 @@ import { Input, Tooltip } from '@nextui-org/react'
 import React from 'react'
 import { FaArrowLeftLong, FaMagnifyingGlass, FaReplyAll, FaTentArrowLeftRight } from 'react-icons/fa6';
 
-const SearchManualProducts = ({searchData, setSearchData, setQueryString,  content}) => {
+const SearchManualProducts = ({searchData, setSearchData, setQueryString,  content, placeholder}) => {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -34,7 +34,7 @@ const SearchManualProducts = ({searchData, setSearchData, setQueryString,  conte
             onKeyDown={handleKeyDown}
             onChange={(e) => setSearchData(e.target.value)}
             variant="bordered"
-            placeholder="Buscar producto o referencia (ENTER)"
+            placeholder={placeholder}
             className="w-full md:w-64 bg-white rounded-full"
             endContent={
               searchData.length >= 1 &&
