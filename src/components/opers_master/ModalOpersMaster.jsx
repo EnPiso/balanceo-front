@@ -13,12 +13,19 @@ import ListOpersMaster from "./ListOpersMaster.jsx";
 import { useRecoilState } from "recoil";
 import { isShowOperMaster } from "../../infraestructure/states/opers_states.js";
 import ShowOperMaster from "./ShowOperMaster.jsx";
+import TabsOperatorMasterPol from "../polyvalencesTimes/TabsOperatorMasterPol.jsx";
+import { MyOperationsPoly, setOperPolyvalence } from "../../infraestructure/states/states_polyvalence.js";
 
 
 const ModalOpersMaster = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
   // Usa useState para controlar el estado del modal
-    const [operMaster, setOperMaster] = useRecoilState(isShowOperMaster)
+  const [operMaster, setOperMaster] = useRecoilState(isShowOperMaster)
   
+  const [tabState, setTabState] = useState("detalles de los operarios");  
+
+  const [operPoly, setOperPoly] = useRecoilState(setOperPolyvalence)
+  const [operationsPoly, setOperationsPoly] = useRecoilState(MyOperationsPoly)
+
   return (
     <div className="flex flex-col gap-2">
 
@@ -31,7 +38,10 @@ const ModalOpersMaster = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
         onOpenChange={(isOpenState) => {
           if (!isOpenState) {
             setOperMaster(null)
+            setOperPoly(null)
+            setOperationsPoly([])
           }
+          
           setIsOpen(isOpenState)
         }} // Actualiza el estado
       >
@@ -43,11 +53,13 @@ const ModalOpersMaster = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
 
               </ModalHeader>
               <ModalBody>
-               {
-                operMaster ? 
-                  <ShowOperMaster/> : 
-                  <ListOpersMaster/>
-               }
+
+              <TabsOperatorMasterPol
+                operMaster={operMaster}
+                tabState={tabState}
+                setTabState={setTabState}
+              />
+
               </ModalBody>
               <ModalFooter>
 

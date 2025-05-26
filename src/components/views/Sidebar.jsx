@@ -20,6 +20,7 @@ import { Avatar } from '@nextui-org/react';
 import { FaEyeSlash } from 'react-icons/fa6';
 import OrdersManualCreate from '../orders/manual/OrdersManualCreate.jsx';
 import DashboardVideoMain from '../balances/balancing/tableOperations/videoOperations/videoSidebarMain/DashboardVideoMain.jsx';
+import { PolyvalencesDashboard } from '../polyvalencesTimes/PolyvalencesDashboard.jsx';
 
 
 const Sidebar = ({toggleSidebar}) => {
@@ -102,12 +103,10 @@ const Sidebar = ({toggleSidebar}) => {
 					) : (
 						<div>
 							<OrderDashboardModal />
-							
 							<DashboardProducts />
 							<DashboardOpers />
 							<OperationsMaster />
 							<OpersMaster />
-							<DashboardVideoMain/>
 							
 						</div>
 					)}

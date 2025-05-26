@@ -17,11 +17,14 @@ import CustomButton from "../../ui/CustomButton";
 import ListOperationsMaster from "./ListOperationsMaster";
 import { showOperationMasterObj } from "../../infraestructure/states/operation_master_state";
 import ShowOperationMaster from "./ShowOperationMaster";
+import TabsOperationsMaster from "./TabsOperationsMaster";
 
 
 const ModalOperationMaster = ({isOpen, setIsOpen,handleClose}) => {
 
   const [showOperation, setShowOperation] = useRecoilState(showOperationMasterObj)
+
+  const [tabState,setTabState] = useState("")
 
   
 
@@ -47,24 +50,21 @@ const ModalOperationMaster = ({isOpen, setIsOpen,handleClose}) => {
           <>
             <ModalHeader className="flex justify-start items-center">
               {
-                showOperation && showOperation.operation ? 
-                  showOperation.operation :
-                  'Detalle de las operaciones'
+                tabState
               }
                 
             </ModalHeader>
             <ModalBody>
-              {
-                showOperation ? 
-                  <ShowOperationMaster/> :
-                  <ListOperationsMaster />
-              }
-                
+              <TabsOperationsMaster
+                tabState={tabState}
+                setTabState={setTabState}
+                showOperation={showOperation}
+              />
                
             </ModalBody>
             <ModalFooter>
 
-
+              
               {
                 showOperation && (
                   <>
