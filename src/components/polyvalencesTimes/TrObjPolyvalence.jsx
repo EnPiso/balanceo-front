@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ImageAvatarMaster from '../opers_master/ImageAvatarMaster'
 import { fetchGetData } from '../../infraestructure/call_api/crud'
 import { urlMain } from '../../infraestructure/data/const'
-import { MyOperationsPoly, OperPolyvalence, setOperPolyvalence } from '../../infraestructure/states/states_polyvalence'
+import { MyOperationsPoly, OperPolyvalence, percentZonesOpers, setOperPolyvalence } from '../../infraestructure/states/states_polyvalence'
 import PolyvalenceMachine from './PolyvalenceMachine'
 import { useRecoilState } from 'recoil'
 import { CircularProgress } from '@nextui-org/react'
@@ -30,6 +30,10 @@ const TrObjPolyvalence = ({
   const [ isShowOper, setIsShowOper ] = useState(false)
   
   const [ operTemporal, setOperTemporal ] = useState(null)
+
+  const [ percentZones, setPercentZones ] = useRecoilState(percentZonesOpers)
+  
+  
 
   const handlePolyvalence = (oper) => {
     
@@ -61,11 +65,14 @@ const TrObjPolyvalence = ({
         // console.log(result);
         
         setOperPoly(oper)
-        setAllMachines(result)
+        setAllMachines(result.samplings)
+        
+        setPercentZones(result.percent_zones_opers)
         setOperTemporal(oper)
         setIsShowOper(true)
-        if(result.length < 1){
+        if(result.samplings?.length < 1){
           toast.error(`${oper.name}, no tiene tomas de tiempos`)
+          setPercentZones(0)
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);

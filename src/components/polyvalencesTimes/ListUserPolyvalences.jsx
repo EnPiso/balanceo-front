@@ -3,7 +3,7 @@ import { fetchGetData } from '../../infraestructure/call_api/crud';
 import { urlMain } from '../../infraestructure/data/const';
 import { useRecoilState } from 'recoil';
 import { masterOpersList } from '../../infraestructure/states/opers_states';
-import { MyOperationsPoly, OpersPolyvalences, setOperPolyvalence } from '../../infraestructure/states/states_polyvalence';
+import { MyOperationsPoly, OpersPolyvalences, percentZonesOpers, setOperPolyvalence } from '../../infraestructure/states/states_polyvalence';
 import SearchOpersMaster from '../opers_master/SearchOpersMaster';
 import CustomPaginator from '../../ui/CustomPaginator';
 import { CircularProgress } from '@nextui-org/react';
@@ -38,6 +38,9 @@ const ListUserPolyvalences = () => {
   const [isLoadingObj, setIsLoadingObj] = useState(false)
   
   const [isShowCard, setIsShowCard] = useState(0)
+
+  const [ percentZones, setPercentZones ] = useRecoilState(percentZonesOpers)
+  
 
 
   const isLargeScreen = useIsLargeScreen();
@@ -85,9 +88,15 @@ const ListUserPolyvalences = () => {
         // console.log(result);
         
         setOperPoly(oper)
+        setAllMachines(result.samplings)
         
-        setAllMachines(result)
-        if(result < 1){
+        if(result.percent_zones_opers === 0){
+          setPercentZones(0)
+        }else{
+          setPercentZones(result.percent_zones_opers)
+        }
+        
+        if(result.samplings?.length < 1){
           toast.error(`${oper.name}, no tiene tomas de tiempos`)
         }
       } catch (error) {

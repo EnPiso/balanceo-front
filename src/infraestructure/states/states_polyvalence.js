@@ -28,3 +28,9 @@ export const opersZonesPoly = atom({
   default: [],
 });
 
+
+export const percentZonesOpers = atom({
+  key: 'percentZonesOpers',
+  default: 0,
+});
+

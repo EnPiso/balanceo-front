@@ -14,7 +14,7 @@ import { useRecoilState } from "recoil";
 import { isShowOperMaster } from "../../infraestructure/states/opers_states.js";
 import ShowOperMaster from "./ShowOperMaster.jsx";
 import TabsOperatorMasterPol from "../polyvalencesTimes/TabsOperatorMasterPol.jsx";
-import { MyOperationsPoly, setOperPolyvalence } from "../../infraestructure/states/states_polyvalence.js";
+import { MyOperationsPoly, percentZonesOpers, setOperPolyvalence } from "../../infraestructure/states/states_polyvalence.js";
 
 
 const ModalOpersMaster = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
@@ -25,6 +25,8 @@ const ModalOpersMaster = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
 
   const [operPoly, setOperPoly] = useRecoilState(setOperPolyvalence)
   const [operationsPoly, setOperationsPoly] = useRecoilState(MyOperationsPoly)
+  const [ percentZones, setPercentZones ] = useRecoilState(percentZonesOpers)
+  
 
   return (
     <div className="flex flex-col gap-2">
@@ -40,6 +42,7 @@ const ModalOpersMaster = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
             setOperMaster(null)
             setOperPoly(null)
             setOperationsPoly([])
+            setPercentZones(0)
           }
           
           setIsOpen(isOpenState)
@@ -82,6 +85,7 @@ const ModalOpersMaster = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
                   onClick={()=> {
                     setOperMaster(null)
                     handleClose()
+                    setPercentZones(0)
                   }}
                   title="Salir"
                 />

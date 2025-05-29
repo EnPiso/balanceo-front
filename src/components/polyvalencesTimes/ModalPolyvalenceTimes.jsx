@@ -11,7 +11,7 @@ import {
 import {FaBackward, FaPlusCircle, FaWindowClose} from "react-icons/fa";
 import ListUserPolyvalences from "./ListUserPolyvalences";
 import { useRecoilState } from "recoil";
-import { MyOperationsPoly, opersZonesPoly, setOperPolyvalence } from "../../infraestructure/states/states_polyvalence";
+import { MyOperationsPoly, opersZonesPoly, percentZonesOpers, setOperPolyvalence } from "../../infraestructure/states/states_polyvalence";
 
 
 const ModalPolyvalenceTimes = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
@@ -19,6 +19,7 @@ const ModalPolyvalenceTimes = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
   const [operPoly, setOperPoly] = useRecoilState(setOperPolyvalence)
   const [operationsPoly, setOperationsPoly] = useRecoilState(MyOperationsPoly)
   const [ opersZonesPolyvalence, setOpersZonesPolyvalence ] = useRecoilState(opersZonesPoly)
+  const [ percentZones, setPercentZones ] = useRecoilState(percentZonesOpers)
 
   return (
     <div className="flex flex-col gap-2">
@@ -35,6 +36,7 @@ const ModalPolyvalenceTimes = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
             setOperPoly(null)
             setOperationsPoly([])
             setOpersZonesPolyvalence([])
+            setPercentZones(0)
           }
         }} // Actualiza el estado
       >
@@ -52,9 +54,10 @@ const ModalPolyvalenceTimes = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
                 <button
                   onClick={()=> {
                     handleClose()
+                    setPercentZones(0)
                   }}
                 >
-                  Salir
+                  Salir &&&
                 </button>
              
                

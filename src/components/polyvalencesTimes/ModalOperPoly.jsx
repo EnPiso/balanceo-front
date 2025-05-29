@@ -11,7 +11,7 @@ import CardUnitPol from "./CardUnitPol";
 import ImageCardPol from "./ImageCardPol";
 import PolyvalenceMachine from "./PolyvalenceMachine";
 import { useRecoilState } from "recoil";
-import { MyOperationsPoly, opersZonesPoly } from "../../infraestructure/states/states_polyvalence";
+import { MyOperationsPoly, opersZonesPoly, percentZonesOpers } from "../../infraestructure/states/states_polyvalence";
 import TextColorPercent from "./TextColorPercent";
 import { timeToSeconds } from "../../ui/utils";
 import { FaClock } from "react-icons/fa6";
@@ -40,6 +40,8 @@ const ModalOperPoly = ({
   
   
   const [ isLoading, setIsLoading ] = useState(false)
+
+  const [ percentZones, setPercentZones ] = useRecoilState(percentZonesOpers)
   
 
   const handleZone = (oper) => {
@@ -49,10 +51,14 @@ const ModalOperPoly = ({
       setIsLoading(true)
       try {
         const result = await fetchGetData(`${urlMain}polyvalences_times/opers_zones?oper_id=${oper_id}`);
-        // console.log(result);
+        console.log(result);
+        
         setOpersZonesPolyvalence(result)
+        setPercentZones(result.percent_general)
+        
         if(result.opers_zones_by_opers_balancing?.length < 1) {
           toast.error("No hay tiempos en la zona")
+          setPercentZones(0)
         }
         
       } catch (error) {
@@ -78,6 +84,7 @@ const ModalOperPoly = ({
           setIsOpen(isOpenState)
           if(!isOpenState){
             setOpersZonesPolyvalence([])
+            setPercentZones(0)
           }
           
         }} // Actualiza el estado
@@ -154,6 +161,7 @@ const ModalOperPoly = ({
                   onClick={()=> {
                     handleClose()
                     setOpersZonesPolyvalence([])
+                    setPercentZones(0)
                   }}
                 >
                   Regresar

@@ -8,7 +8,7 @@ import { FaCompress } from 'react-icons/fa'
 import { FaObjectGroup } from 'react-icons/fa6'
 import ImageCardPol from './ImageCardPol'
 import { useRecoilState } from 'recoil'
-import { opersZonesPoly } from '../../infraestructure/states/states_polyvalence'
+import { opersZonesPoly, percentZonesOpers } from '../../infraestructure/states/states_polyvalence'
 import { fetchGetData } from '../../infraestructure/call_api/crud'
 import { urlMain } from '../../infraestructure/data/const'
 import ButtonZonePoly from './ButtonZonePoly'
@@ -35,6 +35,9 @@ const CardPolyvalence = ({
   const [ isLoading, setIsLoading ] = useState(false)
 
   const [ isLoadingZones, setIsLoadingZones ] = useState(false)
+
+  const [ percentZones, setPercentZones ] = useRecoilState(percentZonesOpers)
+  
 
   const handleZone = (oper) => {
 
@@ -153,6 +156,7 @@ const CardPolyvalence = ({
           onClick={() => {
             setIsShowCard(0)
             setOpersZonesPolyvalence([])
+            setPercentZones(0)
           }}
           style={{ display: isShowCard ? 'block' : 'none' }}
         >
