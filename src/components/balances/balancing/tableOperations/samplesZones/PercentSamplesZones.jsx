@@ -20,7 +20,7 @@ const PercentSamplesZones = ({sample}) => {
 
   return (
     <div>
-       <PercentageBox value={percentage} />
+      <PercentageBox value={percentage} />
     </div>
   )
 }

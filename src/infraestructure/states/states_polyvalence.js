@@ -23,4 +23,8 @@ export const MyOperationsPoly = atom({
   default: [],
 });
 
+export const opersZonesPoly = atom({
+  key: 'opersZonesPoly',
+  default: [],
+});
 

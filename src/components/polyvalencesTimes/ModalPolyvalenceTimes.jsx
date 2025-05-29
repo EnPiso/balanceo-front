@@ -11,13 +11,14 @@ import {
 import {FaBackward, FaPlusCircle, FaWindowClose} from "react-icons/fa";
 import ListUserPolyvalences from "./ListUserPolyvalences";
 import { useRecoilState } from "recoil";
-import { MyOperationsPoly, setOperPolyvalence } from "../../infraestructure/states/states_polyvalence";
+import { MyOperationsPoly, opersZonesPoly, setOperPolyvalence } from "../../infraestructure/states/states_polyvalence";
 
 
 const ModalPolyvalenceTimes = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
   // Usa useState para controlar el estado del modal
   const [operPoly, setOperPoly] = useRecoilState(setOperPolyvalence)
   const [operationsPoly, setOperationsPoly] = useRecoilState(MyOperationsPoly)
+  const [ opersZonesPolyvalence, setOpersZonesPolyvalence ] = useRecoilState(opersZonesPoly)
 
   return (
     <div className="flex flex-col gap-2">
@@ -33,6 +34,7 @@ const ModalPolyvalenceTimes = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
           if(!isOpenState){
             setOperPoly(null)
             setOperationsPoly([])
+            setOpersZonesPolyvalence([])
           }
         }} // Actualiza el estado
       >
@@ -47,7 +49,6 @@ const ModalPolyvalenceTimes = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
               </ModalBody>
               <ModalFooter>
 
-               
                 <button
                   onClick={()=> {
                     handleClose()
@@ -55,6 +56,7 @@ const ModalPolyvalenceTimes = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
                 >
                   Salir
                 </button>
+             
                
               </ModalFooter>
             </>

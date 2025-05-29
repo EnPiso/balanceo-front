@@ -12,7 +12,7 @@ const PolyvalenceMachine = ({idx, machine, machineSelect, setMachineSelect}) => 
   const [ operationsPoly, setOperationsPoly ] = useRecoilState(MyOperationsPoly)
   
   const [ machinePercent, setMachinePercent ] = useState(0)
-  const [isLoading, setIsLoading] = useState(false)
+  const [ isLoading, setIsLoading ] = useState(false)
 
   const handleMachine = () => {
     setMachineSelect(machine)
@@ -35,7 +35,7 @@ const PolyvalenceMachine = ({idx, machine, machineSelect, setMachineSelect}) => 
                 samplingsWithPercent.reduce((acc, s) => acc + s.percent, 0) / samplingsWithPercent.length
               )
             : 0;
-
+          
           return {
             ...operation,
             samplings: samplingsWithPercent,
@@ -47,6 +47,8 @@ const PolyvalenceMachine = ({idx, machine, machineSelect, setMachineSelect}) => 
         const totalMachinePercent = allPercents.length > 0
           ? Math.round(allPercents.reduce((acc, p) => acc + p, 0) / allPercents.length)
           : 0;
+
+        
         setMachinePercent(totalMachinePercent);
 
         setOperationsPoly(resultWithPercent);
@@ -62,32 +64,31 @@ const PolyvalenceMachine = ({idx, machine, machineSelect, setMachineSelect}) => 
 
   return (
     <>
-      {
-        machine.has_samplings && 
-          <span
-            onClick={()=> handleMachine(machine)}
-            key={idx}
-            className={`cursor-pointer font-bold ${machineSelect.machine === machine.machine ? 'text-secondary_two' : 'text-zinc-700'} bg-zinc-200 text-xs rounded-full px-2 py-0.5`} 
-          >
+  
+      <span
+        onClick={()=> handleMachine(machine)}
+        key={idx}
+        className={`cursor-pointer font-bold ${machineSelect.machine === machine.machine ? 'text-secondary_two' : 'text-zinc-700'} bg-zinc-200 text-xs rounded-full px-2 py-0.5`} 
+      >
+        
+        {
+        isLoading ? 
+          <>
+            <small>Cargando</small>
+            <Progress isIndeterminate  className="max-w-md" size="sm" color='default' />
+          </> :
+          <>
+            {machine.machine} {" "} 
             {
-            isLoading ? 
-              <>
-                <small>Cargando</small>
-                <Progress isIndeterminate  className="max-w-md" size="sm" color='default' />
-              </> :
-              <>
-                {machine.machine} {" "} 
-                {
-                  machineSelect.machine === machine.machine && 
-                    ` ${machinePercent}%`
-                }
-              </>
+              ` ${machine.average_percent}%`
             }
-            
-          </span>
-           
+          </>
+        }
+        {
           
-      }
+        }
+      </span>
+           
       
     </>
     

@@ -105,7 +105,7 @@ const CloneBalancingDashboard = () => {
       operations: JSON.stringify(operations)
     }
 
-    debugger
+    
     cloneOrder(data)
   }
 

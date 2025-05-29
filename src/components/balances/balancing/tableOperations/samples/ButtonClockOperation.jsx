@@ -32,7 +32,7 @@ const ButtonClockOperation = ({item, selectedOperDetails, i, samplingsCount}) =>
     <button onClick={()=>{ 
         console.log(item, detailOperOpera)
         setItemAll(item)
-        debugger
+        
         const oper_id = selectedOperDetails[i].id
         const operation_balancing_id = item.operation_balancing_id
 

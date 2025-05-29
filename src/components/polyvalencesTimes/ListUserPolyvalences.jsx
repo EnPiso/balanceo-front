@@ -10,6 +10,7 @@ import { CircularProgress } from '@nextui-org/react';
 import TrObjPolyvalence from './TrObjPolyvalence';
 import CardPolyvalence from './CardPolyvalence';
 import toast from 'react-hot-toast';
+import { useIsLargeScreen } from './useIsLargeScreen';
 
 const totalPaginate = [5, 10, 20, 50];
 
@@ -36,6 +37,17 @@ const ListUserPolyvalences = () => {
   
   const [isLoadingObj, setIsLoadingObj] = useState(false)
   
+  const [isShowCard, setIsShowCard] = useState(0)
+
+
+  const isLargeScreen = useIsLargeScreen();
+
+  useEffect(()=> {
+    if(isLargeScreen){
+      setIsShowCard(0)
+    }
+  },[isLargeScreen])
+
 
   useEffect(()=> {
     setIsLoading(true)
@@ -69,12 +81,13 @@ const ListUserPolyvalences = () => {
     setMachineSelect('')
     const getData = async () => {
       try {
-        const result = await fetchGetData(`${urlMain}polyvalences_times/unique_machines?oper_id=${oper_id}`);
+        const result = await fetchGetData(`${urlMain}polyvalences_times/update_unique_machines?oper_id=${oper_id}`);
         // console.log(result);
         
         setOperPoly(oper)
-        setAllMachines(result.machines)
-        if(result.no_samplings){
+        
+        setAllMachines(result)
+        if(result < 1){
           toast.error(`${oper.name}, no tiene tomas de tiempos`)
         }
       } catch (error) {
@@ -92,30 +105,38 @@ const ListUserPolyvalences = () => {
   return (
     <div>
       <div className="space-y-8">
-        <SearchOpersMaster
-          searchData={searchData}
-          setSearchData={setSearchData}
-          setQueryString={setQueryString}
-        />
+        {
+          isShowCard === 0 && 
+            <SearchOpersMaster
+              searchData={searchData}
+              setSearchData={setSearchData}
+              setQueryString={setQueryString}
+            />
+        }
+        
         <div className="overflow-x-auto">
         <table className=" w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-md border border-gray-300">
           <thead>
             <tr className="dark:bg-gray-100 bg-zinc-800 text-zinc-100 dark:text-zinc-800">
                 <th className="hidden md:table-cell p-1 text-left font-medium border border-gray-300">Nombre</th>
                 <th className="hidden md:table-cell p-1 text-left font-medium border border-gray-300">Cédula</th>
-                <th className="p-1 text-left font-medium border border-gray-300">
-                  <div className="flex justify-end space-x-4 mr-2"> {/* Alinea los elementos horizontalmente y agrega espacio */}
-                    {totalPaginate.map((page, i) => (
-                      <span
-                        onClick={() => setPerPage(page)}
-                        className={`cursor-pointer ${perPage === page && 'text-secondary_two'}`}
-                        key={i}
-                      >
-                        {page}
-                      </span>
-                    ))}
-                  </div>
-                </th>
+                {
+                  isShowCard === 0 && 
+                    <th className="p-1 text-left font-medium border border-gray-300">
+                      <div className="flex justify-end space-x-4 mr-2"> {/* Alinea los elementos horizontalmente y agrega espacio */}
+                        {totalPaginate.map((page, i) => (
+                          <span
+                            onClick={() => setPerPage(page)}
+                            className={`cursor-pointer ${perPage === page && 'text-secondary_two'}`}
+                            key={i}
+                          >
+                            {page}
+                          </span>
+                        ))}
+                      </div>
+                    </th>
+                }
+                
 
             </tr>
           </thead>
@@ -135,6 +156,8 @@ const ListUserPolyvalences = () => {
                   opersList.map((oper, i)=> {
                     return(
                       <TrObjPolyvalence
+                        isShowCard={isShowCard}
+                        setIsShowCard={setIsShowCard}
                         isLoading={isLoadingObj}
                         setIsLoading={setIsLoadingObj}
                         oper={oper} 
@@ -162,21 +185,52 @@ const ListUserPolyvalences = () => {
               <CircularProgress size="lg" color="default" />
             </div>
           ) : (
-            opersList.map((oper, i) => (
-              <CardPolyvalence
-                oper={oper}
-                setOperPoly={setOperPoly}
-                setAllMachines={setAllMachines}
-                operPoly={operPoly}
-                allMachines={allMachines}
-                isLoading={isLoading}
-                machineSelect={machineSelect}
-                setMachineSelect={setMachineSelect}
-                operationsPoly={operationsPoly}
-                key={i}
-                handleMachine={handleMachine}
-              />
-            ))
+            <>
+
+              {isShowCard
+                ? (
+                  opersList
+                    .filter(oper => oper.id === isShowCard)
+                    .map((oper, i) => (
+                      <CardPolyvalence
+                        oper={oper}
+                        setOperPoly={setOperPoly}
+                        setAllMachines={setAllMachines}
+                        operPoly={operPoly}
+                        allMachines={allMachines}
+                        isLoading={isLoading}
+                        machineSelect={machineSelect}
+                        setMachineSelect={setMachineSelect}
+                        operationsPoly={operationsPoly}
+                        key={i}
+                        handleMachine={handleMachine}
+                        setIsShowCard={setIsShowCard}
+                        isShowCard={isShowCard}
+                      />
+                    ))
+                )
+                : (
+                  opersList.map((oper, i) => (
+                    <CardPolyvalence
+                      oper={oper}
+                      setOperPoly={setOperPoly}
+                      setAllMachines={setAllMachines}
+                      operPoly={operPoly}
+                      allMachines={allMachines}
+                      isLoading={isLoading}
+                      machineSelect={machineSelect}
+                      setMachineSelect={setMachineSelect}
+                      operationsPoly={operationsPoly}
+                      key={i}
+                      handleMachine={handleMachine}
+                      setIsShowCard={setIsShowCard}
+                      isShowCard={isShowCard}
+                    />
+                  ))
+                )
+              }
+            
+            </>
           )}
         </div> 
 
@@ -184,7 +238,7 @@ const ListUserPolyvalences = () => {
         
           
       </div>
-      <div className="flex justify-start py-4">
+      <div style={{ display: !isShowCard ? 'block' : 'none' }} className="flex justify-start py-4">
         <CustomPaginator
           total={totalPages}
           initialPage={currentPage}
