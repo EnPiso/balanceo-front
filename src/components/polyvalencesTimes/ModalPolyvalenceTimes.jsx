@@ -57,7 +57,7 @@ const ModalPolyvalenceTimes = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
                     setPercentZones(0)
                   }}
                 >
-                  Salir &&&
+                  Salir 
                 </button>
              
                

@@ -5,10 +5,11 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter
+  ModalFooter,
+  Tooltip
 } from "@nextui-org/react";
 import CustomButton from "../../ui/CustomButton.jsx";
-import {FaBackward, FaPlusCircle, FaWindowClose} from "react-icons/fa";
+import {FaBackward, FaPlusCircle, FaQuestionCircle, FaWindowClose} from "react-icons/fa";
 import ListOpersMaster from "./ListOpersMaster.jsx";
 import { useRecoilState } from "recoil";
 import { isShowOperMaster } from "../../infraestructure/states/opers_states.js";
@@ -34,7 +35,7 @@ const ModalOpersMaster = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
 
       <Modal
         placement="center"
-        size="5xl"
+        size="full"
         isOpen={isOpen}
         scrollBehavior={"inside"}
         onOpenChange={(isOpenState) => {
@@ -51,12 +52,11 @@ const ModalOpersMaster = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex justify-start items-center">
+              <ModalHeader className="flex justify-start">
                 Detalles de los operarios
-
               </ModalHeader>
               <ModalBody>
-
+                
               <TabsOperatorMasterPol
                 operMaster={operMaster}
                 tabState={tabState}

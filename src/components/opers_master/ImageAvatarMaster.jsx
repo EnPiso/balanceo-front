@@ -12,6 +12,7 @@ const ImageAvatarMaster = ({ image }) => {
   return (
     <span>
         <Avatar
+          loading="lazy"
           size="md" 
           className="w-10 h-10 rounded-full"
           src={image ? image : `${userAvatarImage}`}

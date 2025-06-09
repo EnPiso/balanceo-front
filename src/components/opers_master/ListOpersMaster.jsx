@@ -8,6 +8,7 @@ import TrOperMaster from './TrOperMaster';
 import { masterOpersList } from '../../infraestructure/states/opers_states';
 import { useRecoilState } from 'recoil';
 import SearchOpersMaster from './SearchOpersMaster';
+import { TabLoadingBlock } from '../../infraestructure/states/states_questionnaires';
 
 
 const totalPaginate = [5, 10, 20, 50];
@@ -17,6 +18,8 @@ const totalPaginate = [5, 10, 20, 50];
 const ListOpersMaster = () => {
 
   const [masterOpers, setMasterOpers] = useRecoilState(masterOpersList)
+  const [tabLoading, setTabLoading] = useRecoilState(TabLoadingBlock)
+  
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -30,6 +33,7 @@ const ListOpersMaster = () => {
   useEffect(()=> {
     setIsLoading(true)
     const getData = async () => {
+        setTabLoading(true)
         try {
           const result = await fetchGetData(`${urlMain}opers/index_all?page=${currentPage}&per_page=${perPage}&q[name_or_id_oper_cont]=${encodeURIComponent(queryString)}`);
           //console.log(result)
@@ -42,6 +46,7 @@ const ListOpersMaster = () => {
           console.error('Error al obtener los datos:', error);
         } finally {
           setIsLoading(false)
+          setTabLoading(false)
         }
       };
 

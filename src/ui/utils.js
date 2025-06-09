@@ -14,6 +14,16 @@ export const formatDateRails = (isoDateString) => {
   }).format(date);
 };
 
+export const formatDateRailsShort = (isoDateString) => {
+  const date = new Date(isoDateString);
+  return new Intl.DateTimeFormat('es-ES', {
+    year: '2-digit',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(date);
+};
 
 const generatePastelColor = () => {
   const r = Math.floor(200 + Math.random() * 12); // Rango más cercano a blanco
