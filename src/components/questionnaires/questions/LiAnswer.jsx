@@ -1,4 +1,4 @@
-import { Checkbox, CircularProgress, Input, Slider, Tooltip } from '@nextui-org/react'
+import { Checkbox, CircularProgress, Code, Input, Slider, Textarea, Tooltip } from '@nextui-org/react'
 import React, { useState } from 'react'
 import { BsArrowDownRight, BsChatRight, BsCheck, BsCheckSquare, BsChevronBarUp, BsFastForward, BsFileEarmarkArrowDown, BsFileEarmarkArrowDownFill, BsFileExcel, BsFillArrowUpRightCircleFill, BsFillBagCheckFill, BsFillBagXFill, BsFillBarChartFill, BsFillCartCheckFill, BsFillChatRightFill, BsFillFileEarmarkArrowDownFill, BsFillPatchCheckFill, BsPieChart } from 'react-icons/bs'
 
@@ -20,7 +20,7 @@ const LiAnswer = ({ answer, idx }) => {
             >
               ¿{answer.question?.content}?
             </span>
-        
+            
         </div>
         
         <div className="flex-shrink-0 ml-2 flex justify-between items-center">
@@ -46,6 +46,14 @@ const LiAnswer = ({ answer, idx }) => {
           
         </div>
       </div>
+      {
+        answer.comment && 
+          <Textarea
+            isDisabled
+            className="w-full mt-2"
+            defaultValue={answer.comment}
+          />
+      }
 
       
     </li>

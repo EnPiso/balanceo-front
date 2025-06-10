@@ -51,12 +51,12 @@ const FormSelectQuesRes = ({setIsOpenResponses}) => {
         const result = await postData(urlMain + "questionnaire_responses", data);
         const questionnaire_response_id = result.questionnaire_response_id
         setQuesResId(questionnaire_response_id)
-        debugger
+        
         const initializedResponses = result.questions.map(q => ({
           question_id: q.id,
           value: q.question_type === "boolean" ? false : 0,
         }));
-
+        
         setQuestionsList(result.questions);
         setResponses(initializedResponses);
         setIsDisabled(true);
@@ -82,9 +82,10 @@ const FormSelectQuesRes = ({setIsOpenResponses}) => {
       question_id: r.question_id,
       questionnaire_response_id: quesResId,
       boolean_value: typeof r.value === "boolean" ? r.value : null,
-      integer_value: typeof r.value === "number" ? r.value : null
+      integer_value: typeof r.value === "number" ? r.value : null,
+      comment: r.comment || null, // Asegúrate de que 'comment' esté en el objeto de respuesta
     }));
-
+    
     const data = {
       answers: JSON.stringify(transformed)
     }
@@ -162,6 +163,7 @@ const FormSelectQuesRes = ({setIsOpenResponses}) => {
           {questionsList.length >= 1 && (
             <>
               <ListQuestionsResponses
+                setQuestionsList={setQuestionsList}
                 operQuestionnaire={operQuestionnaire}
                 operQuestion={operQuestion}
                 questionsList={questionsList}

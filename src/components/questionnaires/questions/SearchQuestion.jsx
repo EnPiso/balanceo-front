@@ -78,8 +78,9 @@ const SearchQuestion = ({setIsOpenQues,setIsOpenNew}) => {
       setIsLoading(true)
       const getData = async () => {
         try {
-          const result = await fetchGetData(`${urlMain}answers/show_answers?questionnaire_response_id=${questionnaire_response_id}`);
+          const result = await fetchGetData(`${urlMain}answers/show_snapshot_answers_for_response?questionnaire_response_id=${questionnaire_response_id}`);
           console.log(result)
+          
           setAnswers(result)
           
         } catch (error) {

@@ -3,6 +3,7 @@ import LiQuesResponse from './LiQuesResponse';
 import ImagesImport from '../orders/import/ImagesImport';
 
 const ListQuestionsResponses = ({
+  setQuestionsList,
   questionsList,
   operQuestion,
   operQuestionnaire,
@@ -10,15 +11,7 @@ const ListQuestionsResponses = ({
   setResponses
 }) => {
 
-  const handleChange = (questionId, value) => {
-    setResponses(prev =>
-      prev.some(r => r.question_id === questionId)
-        ? prev.map(r =>
-            r.question_id === questionId ? { ...r, value } : r
-          )
-        : [...prev, { question_id: questionId, value }]
-    );
-  };
+
 
   return (
     <div>
@@ -47,11 +40,14 @@ const ListQuestionsResponses = ({
           ) : (
             questionsList.map((q, idx) => (
               <LiQuesResponse
+                setResponses={setResponses}
+                setQuestionsList={setQuestionsList}
+                questionsList={questionsList}
                 key={q.id}
                 q={q}
                 idx={idx}
                 value={responses.find(r => r.question_id === q.id)?.value}
-                onChange={val => handleChange(q.id, val)}
+                
               />
             ))
           )}
