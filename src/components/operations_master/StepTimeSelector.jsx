@@ -81,7 +81,9 @@ const   StepTimeSelector = ({Obj,itemAll}) => {
           </h2>
         </div>
         
-        <WatchChrono onSaveTime={handleSaveTime} />
+       
+          <WatchChrono onSaveTime={handleSaveTime} />
+    
         
         <div className="space-y-4 mt-4">
           {steps.map((time, index) => (

@@ -95,6 +95,7 @@ const WatchChrono = ({ onSaveTime }) => {
     sphereRef.current.style.animation = "none";
     sphereRef.current.style.transform = "rotate(-90deg) translateX(60px)";
     
+    
     // Si estaba corriendo, iniciamos nuevamente
     if (isRunning) {
       start(false);
@@ -114,7 +115,7 @@ const WatchChrono = ({ onSaveTime }) => {
   };
   
   return (
-    <>
+    <div className="py-6">
       <main>
         <div className="circle">
           <div id="stopwatch" className="stopwatch">{displayTime}</div>
@@ -148,7 +149,7 @@ const WatchChrono = ({ onSaveTime }) => {
       
       
 
-    </>
+    </div>
   );
 };
 

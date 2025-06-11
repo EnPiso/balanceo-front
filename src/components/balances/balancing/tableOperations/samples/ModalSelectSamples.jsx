@@ -111,24 +111,17 @@ const ModalSelectSamples = ({isOpen, setIsOpen, Obj, itemAll}) => {
                 {
                   itemAll && operSelect && (
                     <>
-                      <div className="flex justify-between items-center  bg-primary_one lg:bg-zinc-100 px-2 mt-1 mb-1">
-
-                        <h1 className="text-lg sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-700 text-center  font-bold uppercase">  
-                          <span className="text-secondary_two ">
-                          { firstWordInString(operSelect.name) } 
+                      <div className="flex flex-col lg:flex-row justify-between items-center bg-primary_one lg:bg-zinc-100 px-2 mt-1 mb-1">
+                        <h1 className="text-lg sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-700 text-center font-bold uppercase mb-1 lg:mb-0">
+                          <span className="text-secondary_two">
+                            {firstWordInString(operSelect.name)}
                           </span>
                         </h1>
-                        
-                        <h1 className="text-md sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-700 text-center  font-bold capitalize">  
+                        <h1 className="text-md sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-700 text-center font-bold capitalize">
                           <span className="text-secondary_two">
                             {itemAll.operation}
                           </span>
                         </h1>
-
-                        
-
-                    
-                       
                       </div>
                       
                       <div className="py-4 bg-zinc-100 hidden lg:block">
@@ -155,7 +148,6 @@ const ModalSelectSamples = ({isOpen, setIsOpen, Obj, itemAll}) => {
                             setIsNewSamples(false)
                           }}
                         >
-                          <FaBackward color="red" className="mt-1 mr-1"/>
                           Cancelar
                         </button>
                         
