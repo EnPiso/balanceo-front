@@ -26,6 +26,8 @@ const SearchQuestion = ({setIsOpenQues,setIsOpenNew}) => {
   const [questionnairesDates, setQuestionnairesDates] = useState([]);
   const [selectedQuestionsDates, setSelectedQuestionsDates] = useState(null);
 
+  const [answerResult, setAnswerResult] = useState(null);
+
   const [answers, setAnswers] = useState([]);
   //questionnaire_response_id
 
@@ -81,8 +83,8 @@ const SearchQuestion = ({setIsOpenQues,setIsOpenNew}) => {
           const result = await fetchGetData(`${urlMain}answers/show_snapshot_answers_for_response?questionnaire_response_id=${questionnaire_response_id}`);
           console.log(result)
           
-          setAnswers(result)
-          
+          setAnswers(result.formatted_output)
+          setAnswerResult(result.questionnaire_response)
         } catch (error) {
           console.error("Error al obtener los datos:", error);
         } finally {
@@ -181,13 +183,29 @@ const SearchQuestion = ({setIsOpenQues,setIsOpenNew}) => {
                 <AnswersListResult
                   answers={answers}
                 />
+ 
+               {
+                  answerResult && answerResult.answers_result && 
+                    <div className="flex flex-col items-end min-w-[120px] py-4">
+                      <span className="text-secondary_two text-sm font-semibold mb-1">Total {answerResult.answers_result}</span>
+                      <div className="w-28 h-3 bg-gray-200 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-secondary_two transition-all"
+                          style={{
+                            width: `${Math.min(100, Math.max(0, answerResult.answers_result))}%`
+                          }}
+                        />
+                      </div>
+                    </div>
+               }
+                
               </>
             )}
           </>
         )
       }
 
-      
+    
       
     </div>
   );
