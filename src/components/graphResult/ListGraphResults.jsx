@@ -4,6 +4,9 @@ import { urlMain } from '../../infraestructure/data/const';
 import { machinesResultFormat } from '../../infraestructure/data/machinesResult';
 import { Checkbox, CircularProgress, Progress } from '@nextui-org/react';
 import ObjGraphResult from './ObjGraphResult';
+import CustomPaginator from '../../ui/CustomPaginator';
+
+const totalPaginate = [5, 10, 20, 50];
 
 const ListGraphResults = () => {
   const [opers, setOpers] = useState([]);
@@ -13,14 +16,27 @@ const ListGraphResults = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [currentPage, setCurrentPage] = useState(1); // Página actual
+  const [totalPages, setTotalPages] = useState(1); // Total de páginas
+  const [perPage, setPerPage] = useState(10); // Total de páginas
+  const [actualEntries, setActualEntries] = useState(0);
+
   useEffect(() => {
     const getData = async () => {
       setIsLoading(true);
       try {
-        const result = await fetchGetData(`${urlMain}graph_results`);
-        console.log(result);
+        //(`${urlMain}polyvalences_times?page=${currentPage}&per_page=${perPage}&q[name_or_id_oper_cont]=${encodeURIComponent(queryString)}`);
         
-        setOpers(result);
+        const result = await fetchGetData(`${urlMain}graph_results?page=${currentPage}&per_page=${perPage}`);
+
+        
+        result.total_pages && setTotalPages(result.total_pages)
+        result.current_page && setCurrentPage(result.current_page)
+        setOpers(result.data);
+        setActualEntries(result.actual_entries || 0);
+        setTimeout(()=> {
+          setActualEntries(0)
+        }, 4000)
       } catch (error) {
         console.error('Error al obtener los datos:', error);
       } finally {
@@ -29,7 +45,7 @@ const ListGraphResults = () => {
     };
 
     getData();
-  }, []);
+  }, [currentPage, perPage]);
 
   useEffect(() => {
     if (!isFormat) {
@@ -81,6 +97,11 @@ const ListGraphResults = () => {
     setFormatMachine(grouped);
   }, [isFormat, opers]);
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  
+  };
+
   return (
     <div>
       
@@ -110,6 +131,37 @@ const ListGraphResults = () => {
                 </>
                 
             }
+
+            <div className="flex justify-start py-4">
+              <CustomPaginator
+                total={totalPages}
+                initialPage={currentPage}
+                onChange={handlePageChange}
+              />
+            </div>
+            {
+              actualEntries > 0 &&
+                <div className="text-end mb-4 text-secondary_two">
+                  <small>
+                    {`Mostrando ${actualEntries} de ${perPage}`}
+                  </small>
+                </div>
+            }
+              
+          
+
+            <div className="flex justify-end space-x-4 mr-2"> {/* Alinea los elementos horizontalmente y agrega espacio */}
+              {totalPaginate.map((page, i) => (
+                <span
+                  onClick={() => setPerPage(page)}
+                  className={`cursor-pointer ${perPage === page && 'text-secondary_two'}`}
+                  key={i}
+                >
+                  {page}
+                </span>
+              ))}
+            </div>
+
             {(isFormat ? formatMachine : opers)
               .filter(oper => !operShow || oper.id_oper === operShow.id_oper)
               .map((oper, i) => (
@@ -126,7 +178,13 @@ const ListGraphResults = () => {
           </>
       }
 
-      
+      <div className="flex justify-start py-4">
+        <CustomPaginator
+          total={totalPages}
+          initialPage={currentPage}
+          onChange={handlePageChange}
+        />
+      </div> 
     </div>
   );
 };
