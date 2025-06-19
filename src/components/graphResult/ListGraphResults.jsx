@@ -18,7 +18,7 @@ const ListGraphResults = () => {
 
   const [currentPage, setCurrentPage] = useState(1); // Página actual
   const [totalPages, setTotalPages] = useState(1); // Total de páginas
-  const [perPage, setPerPage] = useState(10); // Total de páginas
+  const [perPage, setPerPage] = useState(5); // Total de páginas
   const [actualEntries, setActualEntries] = useState(0);
 
   useEffect(() => {
