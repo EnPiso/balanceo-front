@@ -10,6 +10,12 @@ import toast from 'react-hot-toast'
 import { timeToSeconds } from '../../ui/utils'
 import TextColorPercent from './TextColorPercent'
 import ModalOperPoly from './ModalOperPoly'
+import JoinMasterPolyvalence from '../opers_master/JoinMasterPolyvalence'
+import { opersListModules } from '../../infraestructure/states/opers_states'
+import ModalOperModule from '../opers_master/ModalOperModule'
+import JoinOperMaster from '../opers_master/JoinOperMaster'
+import JoinQuestionnaire from '../questionnaires/JoinQuestionnaire'
+import ModalJoinQuestionnaire from '../questionnaires/ModalJoinQuestionnaire'
 
 const TrObjPolyvalence = ({
   oper,
@@ -33,7 +39,12 @@ const TrObjPolyvalence = ({
 
   const [ percentZones, setPercentZones ] = useRecoilState(percentZonesOpers)
   
+  const [isOpen, setIsOpen] = useState(false);
+  const [opersModules, setOpersModules] = useRecoilState(opersListModules);
   
+  const [isOpenQuestionnaire, setIsOpenQuestionnaire] = useState(false);
+
+  const [operQuestion, setOperQuestion] = useState(null);
 
   const handlePolyvalence = (oper) => {
     
@@ -124,6 +135,22 @@ const TrObjPolyvalence = ({
           </td>
           <td className="p-1 border border-gray-300 pl-2 ">
             <span className='py-1 px-1 flex justify-end'>
+              <JoinOperMaster
+                oper={oper} 
+              />
+
+              <JoinMasterPolyvalence
+                oper={oper} 
+                setIsOpen={setIsOpen}
+                setOpersModules={setOpersModules}
+              />
+
+              <JoinQuestionnaire
+                oper={oper}
+                isOpen={isOpenQuestionnaire}
+                setIsOpen={setIsOpenQuestionnaire}
+                setOperQuestion={setOperQuestion}
+              />
               <ImageAvatarMaster 
                 image={oper.avatar}/>
             </span>
@@ -144,7 +171,22 @@ const TrObjPolyvalence = ({
           }
           
         </tr>
-      
+        {
+          isOpen && 
+            <ModalOperModule
+              isOpen={isOpen} 
+              setIsOpen={setIsOpen}
+            />
+        }
+        
+        {
+          isOpenQuestionnaire && 
+            <ModalJoinQuestionnaire
+              isOpen={isOpenQuestionnaire} 
+              setIsOpen={setIsOpenQuestionnaire}
+              operQuestion={operQuestion}
+            />
+        }
       </>
       
       

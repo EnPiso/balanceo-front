@@ -14,6 +14,12 @@ import { urlMain } from '../../infraestructure/data/const'
 import ButtonZonePoly from './ButtonZonePoly'
 import OpersZonesPolyList from './OpersZonesPolyList'
 import toast from 'react-hot-toast'
+import JoinOperMaster from '../opers_master/JoinOperMaster'
+import { opersListModules } from '../../infraestructure/states/opers_states'
+import JoinMasterPolyvalence from '../opers_master/JoinMasterPolyvalence'
+import ModalOperModule from '../opers_master/ModalOperModule'
+import JoinQuestionnaire from '../questionnaires/JoinQuestionnaire'
+import ModalJoinQuestionnaire from '../questionnaires/ModalJoinQuestionnaire'
 
 const CardPolyvalence = ({
   oper,
@@ -38,6 +44,12 @@ const CardPolyvalence = ({
 
   const [ percentZones, setPercentZones ] = useRecoilState(percentZonesOpers)
   
+  const [isOpen, setIsOpen] = useState(false);
+  const [opersModules, setOpersModules] = useRecoilState(opersListModules);
+
+  const [isOpenQuestionnaire, setIsOpenQuestionnaire] = useState(false);
+  
+  const [operQuestion, setOperQuestion] = useState(null);
 
   const handleZone = (oper) => {
 
@@ -81,6 +93,20 @@ const CardPolyvalence = ({
               {oper.name}
           </div>
           <div className="text-xs text-zinc-500">cc {oper.id_oper}</div>
+          <JoinOperMaster
+            oper={oper} 
+          />
+          <JoinMasterPolyvalence
+            oper={oper} 
+            setIsOpen={setIsOpen}
+            setOpersModules={setOpersModules}
+          />
+          <JoinQuestionnaire
+            oper={oper}
+            isOpen={isOpenQuestionnaire}
+            setIsOpen={setIsOpenQuestionnaire}
+            setOperQuestion={setOperQuestion}
+          />
         </div>
       </div>
       {
@@ -163,6 +189,24 @@ const CardPolyvalence = ({
           Regresar
         </button>
       </div>
+
+        {
+          isOpen && 
+            <ModalOperModule
+              isOpen={isOpen} 
+              setIsOpen={setIsOpen}
+            />
+        }
+
+        {
+          isOpenQuestionnaire && 
+            <ModalJoinQuestionnaire
+              isOpen={isOpenQuestionnaire} 
+              setIsOpen={setIsOpenQuestionnaire}
+              operQuestion={operQuestion}
+            />
+        }
+
     </div>
   )
 }

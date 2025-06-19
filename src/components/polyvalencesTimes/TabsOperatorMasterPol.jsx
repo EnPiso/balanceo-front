@@ -7,60 +7,53 @@ import QuestionnairesDashboard from '../questionnaires/QuestionnairesDashboard'
 import { useRecoilState } from 'recoil'
 import { TabLoadingBlock } from '../../infraestructure/states/states_questionnaires'
 import { useEffect } from 'react'
+import { GraphResultDashboard } from '../graphResult/GraphResultDashboard'
+import TabsSeleccion from './TabsSeleccion'
 
 const TabsOperatorMasterPol = ({tabState, setTabState, operMaster}) => {
   
   const [tabLoading, setTabLoading] = useRecoilState(TabLoadingBlock)
 
-  const disabledKeys = ["Detalle de los Operarios", "Polivalencia", "Cuestionarios"]
+  const disabledKeys = ["Polivalencia", "Resultados"]
 
   return (
     <div className="flex w-full flex-col">
-     
+
       <Tabs
         disabledKeys={tabLoading ? disabledKeys : []}
         aria-label="Options"
         selectedKey={tabState}
         onSelectionChange={setTabState}
       >
-        <Tab 
-          key="Detalle de los Operarios" 
-          title={
-              'Detalle de los Operarios'
-          }>
         
-        {
-          tabState === "Detalle de los Operarios" &&
-            <>
-              {
-                operMaster ? 
-                  <ShowOperMaster/> : 
-                  <ListOpersMaster/>
-              }
-            </>
-        }
-        
-         
-        </Tab>
         <Tab 
           key="Polivalencia" 
           title="Polivalencia">
             {
               tabState === "Polivalencia" &&
-                <ListUserPolyvalences/>
+              <>
+                {
+                  operMaster ? 
+                    <ShowOperMaster/> : 
+                    <ListUserPolyvalences/>
+                }
+              </>
+                
             }
             
         </Tab>
 
         <Tab 
-          key="Cuestionarios" 
-          title="Cuestionarios">
+          key="Resultados" 
+          title="Resultados">
             {
-              tabState === "Cuestionarios" &&
-                <QuestionnairesDashboard/>
+              tabState === "Resultados" &&
+                <GraphResultDashboard/>
             }
             
         </Tab>
+
+        
 
       </Tabs>
       

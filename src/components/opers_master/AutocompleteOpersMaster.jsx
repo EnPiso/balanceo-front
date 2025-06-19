@@ -5,6 +5,7 @@ import { listOpersCustom, masterOpersList, opersListModules } from '../../infrae
 import { updateData } from '../../infraestructure/call_api/crud';
 import { urlMain } from '../../infraestructure/data/const';
 import toast from 'react-hot-toast';
+import { OpersPolyvalences } from '../../infraestructure/states/states_polyvalence';
 
 const AutocompleteOpersMaster = ({setIsOpen}) => {
   const [opersModules, setOpersModules] = useRecoilState(opersListModules);
@@ -14,6 +15,8 @@ const AutocompleteOpersMaster = ({setIsOpen}) => {
   const [masterOpers, setMasterOpers] = useRecoilState(masterOpersList)
 
   const [opersCustom,setOpersCustom] = useRecoilState(listOpersCustom)
+  
+  const [opersList, setOpersList] = useRecoilState(OpersPolyvalences)
   
 
   const { oper, modules } = opersModules;
@@ -51,8 +54,29 @@ const AutocompleteOpersMaster = ({setIsOpen}) => {
   const updateOperModule = async (data) => { 
     try {
       const result = await updateData(urlMain + `production_modules/update_oper_production_modules`, data)
-      const  updateOpers = masterOpers.map(item => item.id === result.id ? result : item);
-      setMasterOpers(updateOpers)
+      const updatedOpers = masterOpers.map(item => {
+        if (item.id === result.id) {
+          return {
+            ...item,
+            ...result, // O solo lo que cambió, como { production_module_id: result.production_module_id }
+          };
+        }
+        return item;
+      });
+      setMasterOpers([...updatedOpers]);
+      
+
+      const updatedOpersList = opersList.map(item => {
+        if (item.id === result.id) {
+          return {
+            ...item,
+            ...result, // O solo lo que cambió, como { production_module_id: result.production_module_id }
+          };
+        }
+        return item;
+      });
+      setOpersList([...updatedOpersList])
+
       toast.success("Se ha actualizado el módulo del operario correctamente")
       setIsOpen(false)
       const updatedOpersCustom = opersCustom.filter((oper) => oper.id !== result.id);

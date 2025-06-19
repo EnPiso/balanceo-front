@@ -9,7 +9,7 @@ import ModalQuestionnaireResponses from '../questionnaireResponses/ModalQuestion
 import DashboardAnswers from './questions/DashboardAnswers'
 import SearchQuestion from './questions/SearchQuestion'
 
-const QuestionnairesDashboard = () => {
+const QuestionnairesDashboard = ({oper}) => {
 
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenNew, setIsOpenNew] = useState(false)
@@ -18,6 +18,7 @@ const QuestionnairesDashboard = () => {
     <div>
   
         <SearchQuestion
+          oper={oper}
           setIsOpenQues={setIsOpen}
           setIsOpenNew={setIsOpenNew}
         />

@@ -22,6 +22,9 @@ const FormSelectQuesRes = ({setIsOpenResponses}) => {
   const [responses, setResponses] = useState([]); // NUEVO
   const [quesResId, setQuesResId] = useState(0)
   const [isOpen, setIsOpen] = useState(false);
+
+  const [isLoadingSelect, setIsLoadingSelect] = useState(true);
+
   
 
   //questionnaire_response_id
@@ -29,9 +32,10 @@ const FormSelectQuesRes = ({setIsOpenResponses}) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const result = await fetchGetData(`${urlMain}questionnaire_responses`);
+        const result = await fetchGetData(`${urlMain}questionnaire_responses/questionnaire_responses_show`);
         setOpers(result.opers || []);
         setQuestionnaires(result.questionnaires || []);
+        setIsLoadingSelect(false)
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
@@ -112,33 +116,41 @@ const FormSelectQuesRes = ({setIsOpenResponses}) => {
               Selecciona un operario y un cuestionario para continuar.
             </p>
           </div>
-          <div className="flex justify-start">
-            <Autocomplete
-              isDisabled={isDisabled}
-              className="max-w-xs mr-1"
-              label="Selecciona un operario"
-              selectedKey={selectedOper}
-              onSelectionChange={setSelectedOper}
-            >
-              {opers.map((oper) => (
-                <AutocompleteItem key={oper.id}>
-                  {oper.name}
-                </AutocompleteItem>
-              ))}
-            </Autocomplete>
-            <Autocomplete
-              isDisabled={isDisabled}
-              className="max-w-xs ml-1"
-              label="Selecciona un cuestionario"
-              selectedKey={selectedQuestionnaire}
-              onSelectionChange={setSelectedQuestionnaire}
-            >
-              {questionnaires.map((q) => (
-                <AutocompleteItem key={q.id}>
-                  {q.title}
-                </AutocompleteItem>
-              ))}
-            </Autocomplete>
+          <div className="flex justify-center items-center space-x-4 mb-6">
+            {
+              isLoadingSelect ?
+                <CircularProgress size="lg" color="default" /> :
+                <>
+                  <Autocomplete
+                    isDisabled={isDisabled}
+                    className="max-w-xs mr-1"
+                    label="Selecciona un operario"
+                    selectedKey={selectedOper}
+                    onSelectionChange={setSelectedOper}
+                  >
+                    {opers.map((oper) => (
+                      <AutocompleteItem key={oper.id}>
+                        {oper.name}
+                      </AutocompleteItem>
+                    ))}
+                  </Autocomplete>
+                  <Autocomplete
+                    isDisabled={isDisabled}
+                    className="max-w-xs ml-1"
+                    label="Selecciona un cuestionario"
+                    selectedKey={selectedQuestionnaire}
+                    onSelectionChange={setSelectedQuestionnaire}
+                  >
+                    {questionnaires.map((q) => (
+                      <AutocompleteItem key={q.id}>
+                        {q.title}
+                      </AutocompleteItem>
+                    ))}
+                  </Autocomplete>
+                </>
+            }
+
+            
           </div>
         </>
       )}

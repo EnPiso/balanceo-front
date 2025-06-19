@@ -22,7 +22,7 @@ const ModalOpersMaster = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
   // Usa useState para controlar el estado del modal
   const [operMaster, setOperMaster] = useRecoilState(isShowOperMaster)
   
-  const [tabState, setTabState] = useState("detalles de los operarios");  
+  const [tabState, setTabState] = useState("");  
 
   const [operPoly, setOperPoly] = useRecoilState(setOperPolyvalence)
   const [operationsPoly, setOperationsPoly] = useRecoilState(MyOperationsPoly)

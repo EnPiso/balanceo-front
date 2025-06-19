@@ -12,7 +12,7 @@ import CustomButton from '../../../ui/CustomButton';
 import { formatDateRails, formatDateRailsShort } from '../../../ui/utils';
 import { AnswersListResult } from './AnswersListResult';
 
-const SearchQuestion = ({setIsOpenQues,setIsOpenNew}) => {
+const SearchQuestion = ({setIsOpenQues,setIsOpenNew, oper}) => {
   const [opers, setOpers] = useState([]);
   const [questionnaires, setQuestionnaires] = useState([]);
   const [selectedOper, setSelectedOper] = useState(null);
@@ -29,14 +29,16 @@ const SearchQuestion = ({setIsOpenQues,setIsOpenNew}) => {
   const [answerResult, setAnswerResult] = useState(null);
 
   const [answers, setAnswers] = useState([]);
+  const [isLoadingDates, setIsLoadingDates] = useState(false);
   //questionnaire_response_id
 
   useEffect(() => {
+
+    oper && setSelectedOper(oper.id)
     const getData = async () => {
       try {
         const result = await fetchGetData(`${urlMain}questionnaire_responses`);
-        setOpers(result.opers || []);
-        setQuestionnaires(result.questionnaires || []);
+        setQuestionnaires(result || []);
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       } finally {
@@ -48,7 +50,7 @@ const SearchQuestion = ({setIsOpenQues,setIsOpenNew}) => {
 
   useEffect(()=> {
     if(selectedOper && selectedQuestionnaire){
-      
+      setIsLoadingDates(true)
       const queryParamsObject = {
         oper_id: selectedOper,
         questionnaire_id: selectedQuestionnaire
@@ -66,7 +68,7 @@ const SearchQuestion = ({setIsOpenQues,setIsOpenNew}) => {
         } catch (error) {
           console.error("Error al obtener los datos:", error);
         } finally {
-
+          setIsLoadingDates(false)
         }
       }; // formatDateRails
       
@@ -102,23 +104,7 @@ const SearchQuestion = ({setIsOpenQues,setIsOpenNew}) => {
       <div className='max-w-2xl'> 
        <div className="flex flex-col md:flex-row md:items-end md:justify-start gap-2">
         <div className="flex flex-col md:flex-row gap-2">
-          <Autocomplete
-            isDisabled={isDisabled}
-            className="w-full md:max-w-xs"
-            label="Operario"
-            selectedKey={selectedOper}
-            onSelectionChange={(key) => {
-              setSelectedOper(key);
-              setAnswers([]);
-            }}
-          >
-            {opers.map((oper) => (
-              <AutocompleteItem key={oper.id}>
-                {oper.name}
-              </AutocompleteItem>
-            ))}
-          </Autocomplete>
-
+        
           <Autocomplete
             isDisabled={isDisabled}
             className="w-full md:max-w-xs"
@@ -135,22 +121,27 @@ const SearchQuestion = ({setIsOpenQues,setIsOpenNew}) => {
               </AutocompleteItem>
             ))}
           </Autocomplete>
-
-          {questionnairesDates.length >= 1 && (
-            <Autocomplete
-              isDisabled={isDisabled}
-              className="w-full md:max-w-xs"
-              label="Fecha"
-              selectedKey={selectedQuestionsDates}
-              onSelectionChange={setSelectedQuestionsDates}
-            >
-              {questionnairesDates.map((q) => (
-                <AutocompleteItem key={q.id}>
-                  {formatDateRailsShort(q.created_at)}
-                </AutocompleteItem>
-              ))}
-            </Autocomplete>
-          )}
+          {
+            isLoadingDates ? <CircularProgress size="lg" color="default" /> :
+              <>
+                {questionnairesDates.length >= 1 && (
+                  <Autocomplete
+                    isDisabled={isDisabled}
+                    className="w-full md:max-w-xs"
+                    label="Fecha"
+                    selectedKey={selectedQuestionsDates}
+                    onSelectionChange={setSelectedQuestionsDates}
+                  >
+                    {questionnairesDates.map((q) => (
+                      <AutocompleteItem key={q.id}>
+                        {formatDateRailsShort(q.created_at)}
+                      </AutocompleteItem>
+                    ))}
+                  </Autocomplete>
+                )}
+              </>
+          }
+          
         </div>
 
         <div className="flex gap-3 mt-2 md:mt-0 ml-0 md:ml-4">
@@ -184,20 +175,20 @@ const SearchQuestion = ({setIsOpenQues,setIsOpenNew}) => {
                   answers={answers}
                 />
  
-               {
-                  answerResult && answerResult.answers_result && 
-                    <div className="flex flex-col items-end min-w-[120px] py-4">
-                      <span className="text-secondary_two text-sm font-semibold mb-1">Total {answerResult.answers_result}</span>
-                      <div className="w-28 h-3 bg-gray-200 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-secondary_two transition-all"
-                          style={{
-                            width: `${Math.min(100, Math.max(0, answerResult.answers_result))}%`
-                          }}
-                        />
-                      </div>
+              {
+                answerResult && answerResult.answers_result && 
+                  <div className="flex flex-col items-end min-w-[120px] py-4">
+                    <span className="text-secondary_two text-sm font-semibold mb-1">Total {answerResult.answers_result}</span>
+                    <div className="w-28 h-3 bg-gray-200 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-secondary_two transition-all"
+                        style={{
+                          width: `${Math.min(100, Math.max(0, answerResult.answers_result))}%`
+                        }}
+                      />
                     </div>
-               }
+                  </div>
+              }
                 
               </>
             )}

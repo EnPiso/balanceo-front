@@ -29,7 +29,7 @@ const TrOperMaster = ({oper}) => {
   
 
   const handleOperMaster = (oper) => {
-   
+  
     setIsLoading(true)
   
     const getData = async () => {
@@ -60,6 +60,7 @@ const TrOperMaster = ({oper}) => {
           oper: oper,
           modules: result
         }
+        
         setOpersModules(data) ///acá
         setIsOpen(true)
       } catch (error) {
