@@ -175,15 +175,16 @@ const DragAndDropApp = ({onClose}) => {
               query={query}
               setQuery={setQuery}
             />
+            
             {
               cloneOperations.length >= 1 &&
-               <div>
-                 <Tooltip
-                   content="mueve los elementos de esta lista para la otra lista"
-                   showArrow={true}>
-                   <FaArrowDownUpAcrossLine size={28} className="text-secondary_two"/>
-                 </Tooltip>
-               </div>
+                <div>
+                  <Tooltip
+                    content="mueve los elementos de esta lista para la otra lista"
+                    showArrow={true}>
+                    <FaArrowDownUpAcrossLine size={28} className="text-secondary_two"/>
+                  </Tooltip>
+                </div>
 
             }
 
@@ -196,7 +197,11 @@ const DragAndDropApp = ({onClose}) => {
 
 
           {
-            cloneOperations.length >= 1 && <CloneCustom addOperation={addOperation} />
+            cloneOperations.length >= 1 && 
+              <CloneCustom 
+                cloneOperations={cloneOperations}
+                setCloneOperations={setCloneOperations}
+                addOperation={addOperation} />
           }
 
 

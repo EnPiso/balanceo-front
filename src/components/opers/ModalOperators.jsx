@@ -25,7 +25,7 @@ const ModalOperators = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
 
       <Modal
         placement="center"
-        size="5xl"
+        size="full"
         isOpen={isOpen}
         scrollBehavior={"inside"}
         onOpenChange={(isOpenState) => setIsOpen(isOpenState)} // Actualiza el estado

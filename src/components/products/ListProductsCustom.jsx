@@ -9,43 +9,20 @@ import GenerateImgPdf from "../orders/orderList/GenerateImgPdf.jsx";
 import {hourMinuteSecond, monthDayYear} from "../../infraestructure/utils/dateFormat.js";
 import FileArchiver from "../orders/orderList/FileArchiver.jsx";
 import TableProductsCustom from "./TableProductsCustom.jsx";
+import CustomPaginator from "../../ui/CustomPaginator.jsx";
 
-const ListProductsCustom = () => {
-    const [isLoading, setIsLoading] = useState(true)
-    const [products, setProducts] = useRecoilState(productsAll)
+const totalPaginate = [5, 10, 20, 50];
 
-    useEffect(() => {
 
-        const getData = async () => {
-            try {
-                //
-                const result = await fetchGetData(`${urlMain}products`);
-                setProducts(result)
-
-                //setOrders(result)
-                //setError(null);
-            } catch (error) {
-                console.error('Error al obtener los datos:', error);
-
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        getData();
-    }, []);
-
+const ListProductsCustom = ({handleProduct}) => {
 
     return(
         <>
             <div className="grow p-8 overflow-y-auto bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100">
-                {
-                    isLoading ? <div className={"flex justify-center"}>
-                        <Spinner size={"lg"} color={"default"}/>
-                    </div> : <TableProductsCustom/>
-                }
-            </div>
-
+                <TableProductsCustom
+                    handleProduct={handleProduct}
+                />
+            </div>      
         </>
     )
 }

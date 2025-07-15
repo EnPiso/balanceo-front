@@ -9,7 +9,7 @@ import {urlMain} from "../../infraestructure/data/const.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../infraestructure/data/toastMessage.js";
 import {useRecoilState} from "recoil";
-import {categoriesAllCustom} from "../../infraestructure/states/states_product.js";
+import {categoriesAll, categoriesAllCustom} from "../../infraestructure/states/states_product.js";
 
 const FormCategoryProduct = ({setIsNew}) => {
   const [categoryProduct,setCategoryProduct] = useState({
@@ -21,6 +21,11 @@ const FormCategoryProduct = ({setIsNew}) => {
   const [isError,setIsError] = useState(false)
 
   const [categories, setCategories] = useRecoilState(categoriesAllCustom);
+  //const [categories, setCategories] = useRecoilState(categoriesAll);
+
+  const [categoriesUp, setCategoriesUp] = useRecoilState(categoriesAll);
+  
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target; // Extraer el nombre y el valor del input
@@ -62,6 +67,16 @@ const FormCategoryProduct = ({setIsNew}) => {
             const updateAarray = [...categories, result]
             
             setCategories(updateAarray)
+            console.log(categoriesUp)
+
+            const data = {
+              key: result.name,
+              label: result.name,
+              id: result.id
+            }
+            const updateArrayUp = [...categoriesUp, data]
+            setCategoriesUp(updateArrayUp)
+            debugger
             toast.success(toastMessageCustom.operationsNew);
             setIsNew(false)
 
@@ -85,7 +100,7 @@ const FormCategoryProduct = ({setIsNew}) => {
       createCatProd(data);
 
     }else{
-      toast.error("Es necesario que hay un valor");
+      toast.error("Es necesario agregar una categoría");
     }
 
   }
@@ -107,7 +122,7 @@ const FormCategoryProduct = ({setIsNew}) => {
         <div className="max-w-[40px] mt-1 ml-4">
           <Tooltip placement={"top-start"} content={"Guardar categoría"}>
               <span className="cursor-pointer" onClick={handleClick}>
-                 <FaSave color="green" size={30}/>
+                <FaSave className="text-secondary_two" size={30}/>
               </span>
           </Tooltip>
         </div>

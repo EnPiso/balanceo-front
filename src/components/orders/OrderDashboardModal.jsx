@@ -87,7 +87,7 @@ const OrderDashboardModal = () => {
      
       <Modal
         placement="center"
-        size="5xl"
+        size="full"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         scrollBehavior="inside"
@@ -95,22 +95,21 @@ const OrderDashboardModal = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1 uppercase">
+              <ModalHeader className="flex flex-col gap-1">
                 {
                   isMultipleExcel ?  
-                   <h1 className="text-xl font-black">
-                      Ordenes de producción
-                   </h1>  :
+                      <>
+                        Ordenes de producción
+                      </>
+                    :
                     (
                       <>
                         {
                           operationsData.length < 1 && "Carga la orden de producción"
                         }
-                        <h1 className="text-xl font-black">
-                          {
-                            orderProOpe && `Orden de producción: ${orderProOpe.order}`
-                          }
-                        </h1>
+                        {
+                          orderProOpe && `Orden de producción: ${orderProOpe.order}`
+                        }
                       </>
                     )
                 }

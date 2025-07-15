@@ -33,7 +33,7 @@ const ModalOperationMaster = ({isOpen, setIsOpen,handleClose}) => {
 
     <Modal
       placement="center"
-      size="5xl"
+      size="full"
       isOpen={isOpen}
       scrollBehavior={"inside"}
       onOpenChange={(isOpenState) => {

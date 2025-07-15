@@ -18,8 +18,7 @@ import FormCategoryProduct from "./FormCategoryProduct.jsx";
 import ListCategoryProducts from "./ListCategoryProducts.jsx";
 
 
-const ModalCategoryCrud = () => {
-  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+const ModalCategoryCrud = ({ isOpen, onClose }) => {
 
   const [name,setName] = useState("")
   const [validate,setValidate] = useState(false)
@@ -35,24 +34,9 @@ const ModalCategoryCrud = () => {
     setName("")
   };
 
-  const openModal = () => {
-    onOpenChange(true); // Esto cerrará el modal
-    setName("")
-  };
-
-
+  
   return (
     <>
-
-      <Tooltip content={"Crear categoría"}>
-        <CustomButton
-          color="default"
-          variant="bordered"
-          startContent={<FaAcquisitionsIncorporated />}
-          onClick={openModal}
-          title="Personalizar Categorías"
-        />
-      </Tooltip>
 
       <Modal
         placement="center"
@@ -63,7 +47,7 @@ const ModalCategoryCrud = () => {
           backdrop: "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20",
         }}
         isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        onOpenChange={onClose}
       >
         <ModalContent>
           {(onClose) => (

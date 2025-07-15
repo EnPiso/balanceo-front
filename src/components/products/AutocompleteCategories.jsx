@@ -64,27 +64,27 @@ const AutocompleteCategories = ({setIsEdit, obj, valueDefault,handleFetchApi}) =
         isLoad ? <Spinner size={"lg"} color={"default"}/> : <>
          <span className="row flex items-center space-x-4">  {/* row: flex container */}
            <span className="col flex-1">  {/* col: first column takes available space */}
-             <Autocomplete
-               onKeyDown={handleKeyDown}
-               classNames="capitalize"
-               isRequired
-               className="w-full"
-               defaultItems={categories}
-               defaultSelectedKey={valueDefault} // Asegúrate de pasar el ID como string
-               label="Busca categoría"
-               onSelectionChange={(selectedKey) => {
-                 handleClick(selectedKey)
-               }}
+              <Autocomplete
+                onKeyDown={handleKeyDown}
+                classNames="capitalize"
+                isRequired
+                className="w-full"
+                defaultItems={categories}
+                defaultSelectedKey={valueDefault} // Asegúrate de pasar el ID como string
+                label="Busca categoría"
+                onSelectionChange={(selectedKey) => {
+                  handleClick(selectedKey)
+                }}
 
-               endContent={
-                 <button
-                   className="px-4 py-2 rounded text-2xl"
-                   onClick={() => setIsEdit(false)} // Restablece el estado y carga todos los datos
-                 >
-                   <FaDeleteLeft color="red"/>
-                 </button>
-               }
-             >
+                endContent={
+                  <button
+                    className="px-4 py-2 rounded text-2xl"
+                    onClick={() => setIsEdit(false)} // Restablece el estado y carga todos los datos
+                  >
+                    <FaDeleteLeft color="red"/>
+                  </button>
+                }
+              >
               {(item) => <AutocompleteItem key={item.key} textValue={item.label}> {item.label} </AutocompleteItem>}
             </Autocomplete>
           </span>
@@ -92,7 +92,7 @@ const AutocompleteCategories = ({setIsEdit, obj, valueDefault,handleFetchApi}) =
           <spn className="col">  {/* col: second column */}
             <ModalCategoryNew/>
           </spn>
-
+                  
         </span>
 
 

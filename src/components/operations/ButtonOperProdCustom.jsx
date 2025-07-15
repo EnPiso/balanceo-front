@@ -1,4 +1,4 @@
-import {FaBoxOpen} from "react-icons/fa";
+import {FaBoxOpen, FaPlus} from "react-icons/fa";
 import {Tooltip} from "@nextui-org/react";
 import React, {useState} from "react";
 import ModalOperationProduct from "./ModalOperationProduct.jsx";
@@ -54,7 +54,7 @@ const ButtonOperProdCustom = ({product}) => {
           className="px-4 py-2 rounded text-2xl "
           onClick={() => handleOperations(product)} // Restablece el estado y carga todos los datos
         >
-          <AiFillExperiment color="green"/>
+          <FaPlus className="text-secondary_two"/>
         </button>
       </Tooltip>
 

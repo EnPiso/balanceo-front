@@ -27,4 +27,17 @@ export const operationsProduct = atom({
 });
 
 
+export const listOperationsClone = atom({
+  key: 'listOperationsClone ',
+  default: [],
+});
+
+
+
+export const cloneObjData = atom({
+  key: 'cloneObjData ',
+  default: null,
+});
+
+
 

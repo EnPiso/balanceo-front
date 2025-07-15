@@ -10,7 +10,7 @@ import { useEffect } from 'react'
 import { GraphResultDashboard } from '../graphResult/GraphResultDashboard'
 import TabsSeleccion from './TabsSeleccion'
 
-const TabsOperatorMasterPol = ({tabState, setTabState, operMaster}) => {
+const TabsOperatorMasterPol = ({tabState, setTabState, operMaster, opers, setOpers}) => {
   
   const [tabLoading, setTabLoading] = useRecoilState(TabLoadingBlock)
 
@@ -29,13 +29,17 @@ const TabsOperatorMasterPol = ({tabState, setTabState, operMaster}) => {
         <Tab 
           key="Polivalencia" 
           title="Polivalencia">
+           
             {
               tabState === "Polivalencia" &&
               <>
                 {
                   operMaster ? 
                     <ShowOperMaster/> : 
-                    <ListUserPolyvalences/>
+                    <ListUserPolyvalences
+                      opers={opers}
+                      setOpers={setOpers}
+                    />
                 }
               </>
                 

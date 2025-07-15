@@ -16,6 +16,7 @@ import { isShowOperMaster } from "../../infraestructure/states/opers_states.js";
 import ShowOperMaster from "./ShowOperMaster.jsx";
 import TabsOperatorMasterPol from "../polyvalencesTimes/TabsOperatorMasterPol.jsx";
 import { MyOperationsPoly, percentZonesOpers, setOperPolyvalence } from "../../infraestructure/states/states_polyvalence.js";
+import NewButtonOperMaster from "./new_oper/NewButtonOperMaster.jsx";
 
 
 const ModalOpersMaster = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
@@ -28,6 +29,7 @@ const ModalOpersMaster = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
   const [operationsPoly, setOperationsPoly] = useRecoilState(MyOperationsPoly)
   const [ percentZones, setPercentZones ] = useRecoilState(percentZonesOpers)
   
+  const [opers, setOpers] = useState([]); 
 
   return (
     <div className="flex flex-col gap-2">
@@ -54,6 +56,7 @@ const ModalOpersMaster = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
             <>
               <ModalHeader className="flex justify-start">
                 Detalles de los operarios
+                
               </ModalHeader>
               <ModalBody>
                 
@@ -61,6 +64,8 @@ const ModalOpersMaster = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
                 operMaster={operMaster}
                 tabState={tabState}
                 setTabState={setTabState}
+                opers={opers}
+                setOpers={setOpers}
               />
 
               </ModalBody>

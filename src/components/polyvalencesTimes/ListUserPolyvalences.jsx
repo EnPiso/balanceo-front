@@ -11,10 +11,11 @@ import TrObjPolyvalence from './TrObjPolyvalence';
 import CardPolyvalence from './CardPolyvalence';
 import toast from 'react-hot-toast';
 import { useIsLargeScreen } from './useIsLargeScreen';
+import NewButtonOperMaster from '../opers_master/new_oper/NewButtonOperMaster';
 
 const totalPaginate = [5, 10, 20, 50];
 
-const ListUserPolyvalences = () => {
+const ListUserPolyvalences = ({opers, setOpers}) => {
 
 
   const [opersList, setOpersList] = useRecoilState(OpersPolyvalences)
@@ -114,14 +115,26 @@ const ListUserPolyvalences = () => {
   return (
     <div>
       <div className="space-y-8">
-        {
-          isShowCard === 0 && 
-            <SearchOpersMaster
-              searchData={searchData}
-              setSearchData={setSearchData}
-              setQueryString={setQueryString}
+        <div className="flex justify-between items-center py-2">
+          <div>
+            <NewButtonOperMaster
+              opers={opers}
+              setOpers={setOpers}
             />
-        }
+          </div>
+          <div>
+            {
+              isShowCard === 0 && 
+                <SearchOpersMaster
+                  searchData={searchData}
+                  setSearchData={setSearchData}
+                  setQueryString={setQueryString}
+                />
+            } 
+          </div>
+        </div>
+        
+        
         
         <div className="overflow-x-auto">
         <table className=" w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-md border border-gray-300">

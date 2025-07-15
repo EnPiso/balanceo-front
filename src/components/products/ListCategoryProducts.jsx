@@ -5,7 +5,7 @@ import {useRecoilState} from "recoil";
 import {categoriesAll, categoriesAllCustom} from "../../infraestructure/states/states_product.js";
 import {fetchGetData, updateData} from "../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../infraestructure/data/const.js";
-import {FaDeleteLeft} from "react-icons/fa6";
+import {FaDeleteLeft, FaPlus} from "react-icons/fa6";
 import InputTextEdit from "./InputTextEdit.jsx";
 import EditCategoryCrud from "./EditCategoryCrud.jsx";
 import CustomPaginator from "../../ui/CustomPaginator.jsx";
@@ -112,7 +112,7 @@ const ListCategoryProducts = () => {
                           <>
                                 <span
                                   onClick={() => handleTotalChange(page)}
-                                  className={`cursor-pointer ${perPage === page && 'text-green-600'}`}
+                                  className={`cursor-pointer ${perPage === page && 'text-secondary_two'}`}
                                   key={i}>
                                   {page}
                                 </span>
@@ -124,7 +124,7 @@ const ListCategoryProducts = () => {
                   </span>
 
                   <span onClick={() => setIsNew(true)} className="cursor-pointer ml-3">
-                    <FaPlusCircle color={"green"} size={23}/>
+                    <FaPlus className={"text-secondary_two"} size={23}/>
                   </span>
 
                 </span>

@@ -2,7 +2,7 @@ import {Autocomplete, AutocompleteItem, Spinner, Tooltip} from "@nextui-org/reac
 import {FaDeleteLeft} from "react-icons/fa6";
 import React, {useEffect, useState} from "react";
 import {useRecoilState} from "recoil";
-import {categoriesAll} from "../../infraestructure/states/states_product.js";
+import {categoriesAll, categoriesAllCustom} from "../../infraestructure/states/states_product.js";
 import {fetchGetData} from "../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../infraestructure/data/const.js";
 import {FaBackward, FaPlusCircle} from "react-icons/fa";
@@ -10,6 +10,9 @@ import ModalCategoryNew from "./ModalCategoryNew.jsx";
 
 const AutocompleteCategoryNew = ({handleCategory }) => {
   const [categories, setCategories] = useRecoilState(categoriesAll);
+
+  const [categoriesUp, setCategoriesUp] = useRecoilState(categoriesAllCustom);
+  
 
   const [isLoad, setIsLoad] = useState(false)
 
@@ -34,11 +37,9 @@ const AutocompleteCategoryNew = ({handleCategory }) => {
         console.error("Error al obtener los datos:", error);
       }
     };
-
-    if(categories.length < 1){
-      getData();
-    }
+    getData()
   }, []);
+
 
 
   const selectObj = (selectedKey) => {

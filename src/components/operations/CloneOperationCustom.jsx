@@ -1,24 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { fetchGetData } from "../../../../infraestructure/call_api/crud.js";
-import { urlMain } from "../../../../infraestructure/data/const.js";
-import CloneObjCustom from "./CloneObjCustom.jsx";
-import {useRecoilState} from "recoil";
-import {searchOperations} from "../../../../infraestructure/states/operation_states.js";
+import CloneObjCustom from "../balances/balancing/customProduct/CloneObjCustom";
+import CloneOperationObjCustom from "./CloneOperationObjCustom";
 
-const CloneCustom = ({ addOperation, cloneOperations, setCloneOperations  }) => {
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const result = await fetchGetData(`${urlMain}operations`);
-        setCloneOperations(result);
-      } catch (error) {
-        console.error("Error al obtener los datos:", error);
-      }
-    };
 
-    // getData();
-  }, []);
+
+const CloneOperationCustom = ({ addOperation, cloneOperations, setCloneOperations, setShowFormNew  }) => {
+
 
   return (
     <div className="overflow-auto max-h-[600px] bg-gray-50 p-4 rounded-md shadow-md">
@@ -38,10 +26,11 @@ const CloneCustom = ({ addOperation, cloneOperations, setCloneOperations  }) => 
         </thead>
         <tbody className="rounded-md text-zinc-700 font-semibold !cursor-grabbing divide-y divide-gray-200 uppercase">
         {cloneOperations.map((operation) => (
-          <CloneObjCustom
+          <CloneOperationObjCustom
             key={operation.id}
             operation={operation}
             addOperation={addOperation}
+            setShowFormNew={setShowFormNew}
           />
         ))}
         </tbody>
@@ -50,4 +39,4 @@ const CloneCustom = ({ addOperation, cloneOperations, setCloneOperations  }) => 
   );
 };
 
-export default CloneCustom;
+export default CloneOperationCustom;

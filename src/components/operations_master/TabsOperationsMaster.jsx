@@ -12,7 +12,7 @@ const TabsOperationsMaster = ({showOperation, tabState, setTabState}) => {
         onSelectionChange={setTabState}
       >
         <Tab 
-          key="detalles de las operaciones" 
+          key="Detalles de las operaciones" 
           title={
             showOperation && showOperation.operation ? 
               showOperation.operation :
@@ -20,16 +20,16 @@ const TabsOperationsMaster = ({showOperation, tabState, setTabState}) => {
           }>
           
           {
-            tabState && "detalles de las operaciones" && 
+            tabState && "Detalles de las operaciones" && 
               showOperation ? 
                 <ShowOperationMaster/> :
                 <ListOperationsMaster />
           }
          
         </Tab>
-        <Tab key="operaciones y vídeos" title="operaciones y vídeos">
+        <Tab key="Operaciones y vídeos" title="Operaciones y vídeos">
           {
-            tabState && "operaciones y vídeos" && 
+            tabState && "Operaciones y vídeos" && 
               <ListVideosMain/>
           }
           
