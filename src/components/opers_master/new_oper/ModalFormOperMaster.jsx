@@ -45,16 +45,10 @@ const ModalFormOperMaster = ({isOpen, setIsOpen}) => {
               </ModalHeader>
               <ModalBody>
                 
-                {
-                  newObjOper ? (
-                    <ShowNewOperCustom
-                      newObjOper={newObjOper}
-                    />
-                  ) :
-                  <FormOperNewCustom
-                    setNewObjOper={setNewObjOper}
-                  />
-                }
+                <FormOperNewCustom
+                  setNewObjOper={setNewObjOper}
+                  setIsOpen={setIsOpen}
+                />
               </ModalBody>
               <ModalFooter>
 

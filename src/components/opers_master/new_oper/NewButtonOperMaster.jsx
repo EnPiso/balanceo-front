@@ -12,7 +12,7 @@ const NewButtonOperMaster = () => {
           <button 
             onClick={()=> setIsOpen(true)}
           >
-              <FaPlus size={23} className={"ml-3 text-secondary_two"}/>
+            <FaPlus size={23} className={"ml-3 text-secondary_two"}/>
           </button>
       </Tooltip>
 

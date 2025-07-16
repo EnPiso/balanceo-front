@@ -1,4 +1,4 @@
-import {FaBackward, FaPlusCircle, FaUserAlt, FaUserCheck, FaWindowClose} from "react-icons/fa";
+import {FaBackward, FaPlus, FaPlusCircle, FaUserAlt, FaUserCheck, FaWindowClose} from "react-icons/fa";
 import React, {useEffect, useState} from "react";
 import toast from "react-hot-toast";
 import {Avatar, Input, Spinner, Tooltip} from "@nextui-org/react";
@@ -7,11 +7,13 @@ import { postDataFile } from "../../../infraestructure/call_api/crud.js";
 import FormDynamicField from "../../opers/FormDynamicField.jsx";
 import { OpersPolyvalences } from "../../../infraestructure/states/states_polyvalence.js";
 import { useRecoilState } from "recoil";
+import SelectModuleCustom from "./SelectModuleCustom.jsx";
 
-const FormOperNewCustom = ({setNewObjOper}) => {
+const FormOperNewCustom = ({setNewObjOper, setIsOpen}) => {
   const [nameData,setNameData] = useState('')
   const [idOper,setIdOper] = useState('')
   const [idOperError,setIdOperError] = useState(false)
+  const [idModule,setIdModule] = useState('')
 
   const [isRight,setIsRight] = useState(false)
   const [errorMessage, setErrorMessage] = useState("");
@@ -23,23 +25,16 @@ const FormOperNewCustom = ({setNewObjOper}) => {
 
 
   useEffect(() => {
-    const isFormatValid = nameData.length >= 2 && idOper.length >= 2;
+    const isFormatValid = nameData.length >= 2 && idOper.length >= 2 && idModule !== "";
     setIsRight(isFormatValid)
-    // const existingOper = opersList.some((oper) => oper.id_oper === idOper);
-  
-    // if (existingOper) {
-    //   setIsRight(false);
-    //   setErrorMessage("La cédula ya está en esta lista. Por favor elige otro.");
-    // } else {
-    //   setIsRight(isFormatValid);
-    //   setErrorMessage("");
-    // }
-  }, [nameData, idOper]);
+    
+  }, [nameData, idOper, idModule]);
 
   const handleSubmit = () => {
     const data = new FormData();
     data.append("oper[name]", nameData);
     data.append("oper[id_oper]", idOper);
+    data.append("oper[production_module_id]", idModule);
 
     if (fileImage) {
       data.append("oper[avatar]", fileImage); // Agrega el archivo
@@ -83,6 +78,7 @@ const FormOperNewCustom = ({setNewObjOper}) => {
         }
       } finally {
         setIsLoading(false)
+        setIsOpen(false) 
       }
 
 
@@ -158,15 +154,15 @@ const FormOperNewCustom = ({setNewObjOper}) => {
           </div>
           <div className="p-4 font-medium border border-gray-300text-zinc-800 ">
 
-           <span className="p-4">
-              <FormDynamicField
-                placeholder={"Nombre completo"}
-                value={nameData}
-                setState={setNameData}
-                valueDefault={""}
-                onKeyDown={() => console.log("onkeydown")}
-              />
-           </span>
+            <span className="p-4">
+                <FormDynamicField
+                  placeholder={"Nombre completo"}
+                  value={nameData}
+                  setState={setNameData}
+                  valueDefault={""}
+                  onKeyDown={() => console.log("onkeydown")}
+                />
+            </span>
             <span className="mt-3">
               <FormDynamicField
                 error={idOperError}
@@ -178,6 +174,13 @@ const FormOperNewCustom = ({setNewObjOper}) => {
               />
             </span>
 
+            <span>
+              <br />
+              <SelectModuleCustom
+                setIdModule={setIdModule}
+              />
+            </span>
+
             <span className="mt-3 mb-3">
               
               {
@@ -186,13 +189,15 @@ const FormOperNewCustom = ({setNewObjOper}) => {
 
                 {
                     isLoading ? (
-                      <div className="flex justify-center">
+                      <div className="flex justify-end items-center mt-4">
                         <Spinner color={"default"} size={"lg"}/>
                       </div>
                     ) : (
-                      <span onClick={handleSubmit} className={"ml-2"}>
-                      <FaPlusCircle size={23} color={"green"}/>
-                    </span>
+                      <span className="flex justify-end items-center mt-4">
+                        <span onClick={handleSubmit} className={"ml-2"}>
+                          <FaPlus size={28} className="text-secondary_two"/>
+                        </span>
+                      </span>
                     )
                   }
 
