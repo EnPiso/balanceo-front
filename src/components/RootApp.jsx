@@ -48,8 +48,6 @@ const RootApp = () => {
           )
         }
         
-
-
         {/* Contenido Principal */}
         <div className="flex-1 flex flex-col bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-white">
           <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
@@ -58,10 +56,8 @@ const RootApp = () => {
           </div>
         </div>
       </div>
-
       <ThemeContextProvider />
       <Toaster position="top-center" reverseOrder={true} />
-     
     </>
   );
 };

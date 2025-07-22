@@ -23,6 +23,7 @@ import {hourMinuteSecond, monthDayYear} from "../../../infraestructure/utils/dat
 import GoToBalanceProduct from "../../operations_master/GoToBalanceProduct.jsx";
 import MyCustomButton from "../../../ui/MyCustomButton.jsx";
 import { zonesMobile } from "../../../infraestructure/states/states_mobile.js";
+import { isOrderOrProduct } from "../../../infraestructure/states/states_manual_order.js";
 
 const OrderDetail = () => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
@@ -48,6 +49,7 @@ const OrderDetail = () => {
   const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
   const [zonesOperUpdate, setZonesOperUpdate] = useRecoilState(zonesMobile);
 
+  const [isOrderOr, setIsOrderOr] = useRecoilState(isOrderOrProduct);
 
 
   // Abre todas las secciones por defecto al cargar
@@ -249,13 +251,14 @@ const OrderDetail = () => {
             <div className="flex justify-between items-center">
               <div className="flex justify-between items-center text-xl lg:text-2xl">
                 <h1 className=" font-semibold  uppercase text-secondary_one">
-                  Orden 
+                  {
+                    isOrderOr ? 'Orden' : 'Producto'
+                  }
                   
                 </h1>
                 <span className="text-secondary_two font-bold  ml-2">{`${showOrder.order.code}`}</span>
               </div>
-           
-             
+          
             <span className="text-zinc-800 bg-zinc-200 p-2 rounded-lg font-bold">
                   {
                       showOrder.order.created_at && monthDayYear(showOrder.order.created_at)
@@ -270,23 +273,31 @@ const OrderDetail = () => {
             </div>
 
             <div className="mt-2">
-
               {
-                showOrder.order.image_url ? (
-                    <ImageLightbox
-                        thumbnailUrl={showOrder.order.image_url}
-                        fullSizeUrl={showOrder.order.image_url}
-                        alt={`medida ${showOrder.order.code}`}
-                        key={showOrder.order.code}
-                    />
-                ) : (
-                    <div className="flex gap-4">
-                      <Spinner
-                          color="default"
-                          size="lg"
-                      />
-                    </div>
+                isOrderOr && (
+                  <>
+                    {
+                      showOrder.order.image_url ? (
+                          <ImageLightbox
+                              thumbnailUrl={showOrder.order.image_url}
+                              fullSizeUrl={showOrder.order.image_url}
+                              alt={`medida ${showOrder.order.code}`}
+                              key={showOrder.order.code}
+                          />
+                      ) : (
+                          <div className="flex gap-4">
+                            <Spinner
+                                color="default"
+                                size="lg"
+                            />
+                          </div>
+                      )
+                    }
+                  </>
                 )
+              }
+              {
+                 
               }
 
 
@@ -351,7 +362,7 @@ const OrderDetail = () => {
             {/* Vista de Tarjetas para Pantallas Pequeñas */}
             <div className="h-10 w-full">
 
-             </div>
+            </div>
           </>
       )}
     </div>

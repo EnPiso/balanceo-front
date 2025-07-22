@@ -79,7 +79,7 @@ const OrderDashboardModal = () => {
             <span className="text-secondary_two flex flex-col items-center justify-center text-sm">
               <FaFileExcel className="text-secondary_two items-center block lg:hidden" size={24} />
               <FaFileExcel className="text-secondary_two items-center hidden lg:block" size={40} />
-            <span className="py-3 uppercase font-bold">Ordenes</span>
+            <span className="py-3 uppercase font-bold">Balanceos</span>
           </span>
         </button>
 

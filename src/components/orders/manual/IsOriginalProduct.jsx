@@ -5,7 +5,6 @@ export const IsOriginalProduct = ({isOriginal, setIsOriginal, titleTrue, titleFa
   return (
     <div>
       <span className="font-bold  flex justify-start">
-         
         <span className="ml-3 mr-3 uppercase text-secondary_two">
           {isOriginal ?  titleTrue : titleFalse}
         </span>

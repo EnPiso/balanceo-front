@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import ListManualOrderSelect from './ListManualOrderSelect'
-import { IsOriginalProduct } from './IsOriginalProduct'
-import SelectManualPlantModule from './SelectManualPlantModule'
-import SearchManualProducts from './SearchManualProducts'
-import { DateManualProduct } from './DateManualProduct'
-import ListOperationsManual from './ListOperationsManual'
 import { useRecoilState } from 'recoil'
-import { newManualObj, operationsProductManual, selectManualObj } from '../../../infraestructure/states/operation_master_state'
-import ModalNewManualOrder from './ModalNewManualOrder'
-import { FaPlayCircle, FaPlusCircle, FaSave } from 'react-icons/fa'
+import { FaPlay, FaPlayCircle, FaPlusCircle, FaSave } from 'react-icons/fa'
 import { FaBarsProgress, FaLeftRight, FaRightLong } from 'react-icons/fa6'
 import { Badge, Chip } from '@nextui-org/react'
-import PasteImageManual from './PasteImageManual'
+import { newManualObj, operationsProductManual, selectManualObj } from '../../../infraestructure/states/operation_master_state'
+import { IsOriginalProduct } from '../manual/IsOriginalProduct'
+import SelectManualPlantModule from '../manual/SelectManualPlantModule'
+import SearchManualProducts from '../manual/SearchManualProducts'
+import { DateManualProduct } from '../manual/DateManualProduct'
 import MyCustomButton from '../../../ui/MyCustomButton'
-import { isShowCreateProdBal } from '../../../infraestructure/states/states_manual_order'
+import ListManualOrderSelect from '../manual/ListManualOrderSelect'
+import ListOperationsManual from '../manual/ListOperationsManual'
+import ModalNewManualOrder from '../manual/ModalNewManualOrder'
 
-const DashboardManualOrder = ({setIsOpen}) => {
+
+const DashboardProductBalancing = ({setIsOpen}) => {
   const [searchData, setSearchData] = useState("");
   const [queryString, setQueryString] = useState("");
 
@@ -39,8 +38,6 @@ const DashboardManualOrder = ({setIsOpen}) => {
   const [selectObj, setSelectObj] = useRecoilState(selectManualObj)
   
   const [newManual, setNewManual] = useRecoilState(newManualObj);
-  
-  const [isShowCreate, setIsShowCreate] = useRecoilState(isShowCreateProdBal);
   
 
   const handleClean = () => {
@@ -128,18 +125,14 @@ const DashboardManualOrder = ({setIsOpen}) => {
         newManual.products.length >= 1 &&
           <MyCustomButton
             icon={null}
-            title={`${newManual.products.length} ${ newManual.products.length > 1 ? 'Productos seleccionados' : 'Producto seleccionado'} ${!isShowCreate && '/ Ver orden'}`} 
+            title={`${newManual.products[0].product.name.toUpperCase()} / Continuar ▶ `} 
             handleClick={()=> setIsOpenManualModal(true)}
-            value={`${newManual.products.length} ${ newManual.products.length > 1 ? 'Productos seleccionados' : 'Producto seleccionado'} ${!isShowCreate && '/ Ver orden'}`} 
+            value={`${newManual.products[0].product.name.toUpperCase()} / Continuar ▶`} 
             bgButton={"bg-zinc-800"}
             textButton={"text-secondary_two"}
           />
       }
-      
-      <PasteImageManual
-        image={image}
-        setImage={setImage}
-      />
+
       <div className="row grid grid-cols-2 gap-4">
         <div>
           <ListManualOrderSelect
@@ -160,6 +153,7 @@ const DashboardManualOrder = ({setIsOpen}) => {
             setIsOpen={setIsOpenManualModal}
             handleClean={handleClean}
             image={image}
+            setIsOpenMaster={setIsOpen}
 
           />
       }
@@ -169,4 +163,4 @@ const DashboardManualOrder = ({setIsOpen}) => {
   )
 }
 
-export default DashboardManualOrder
+export default DashboardProductBalancing

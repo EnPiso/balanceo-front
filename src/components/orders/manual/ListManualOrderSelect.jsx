@@ -4,6 +4,9 @@ import { urlMain } from '../../../infraestructure/data/const';
 import ObjManualProduct from './ObjManualProduct';
 import { FaRightLong } from 'react-icons/fa6';
 import CustomPaginator from '../../../ui/CustomPaginator';
+import MyCustomButton from '../../../ui/MyCustomButton';
+import { useRecoilState } from 'recoil';
+import { isShowCreateProdBal } from '../../../infraestructure/states/states_manual_order';
 
 const totalPaginate = [10, 20, 30, 40, 50];
 
@@ -16,6 +19,8 @@ const ListManualOrderSelect = ({ dataSearchList, setIsOpenManualModal, newManual
   const [totalPages, setTotalPages] = useState(1); // Total de páginas
   const [perPage, setPerPage] = useState(10); // Total de páginas
   const [currentPage, setCurrentPage] = useState(1);
+  
+  const [isShowCreate, setIsShowCreate] = useRecoilState(isShowCreateProdBal);
   
 
   useEffect(() => {
@@ -127,14 +132,16 @@ const ListManualOrderSelect = ({ dataSearchList, setIsOpenManualModal, newManual
           
       </tbody>
     </table>
-    <div className="flex justify-start py-4">
+    <div className="flex justify-between items-center py-4">
       <CustomPaginator
         total={totalPages}
         initialPage={currentPage}
         onChange={handlePageChange}
         // key={JSON.stringify(orders)}
       />
+     
     </div>
+    
   </div>;
 };
 

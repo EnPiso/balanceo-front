@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Card, CardHeader, CardBody, Image, Spinner, Tooltip } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Image, Spinner, Tooltip, Switch } from "@nextui-org/react";
 import CustomPaginator from "../../../ui/CustomPaginator.jsx";
 import { fetchGetData } from "../../../infraestructure/call_api/crud.js";
 import { urlMain } from "../../../infraestructure/data/const.js";
@@ -22,7 +22,8 @@ import { BsArrow90DegUp, BsArrowDown, BsArrowDownCircle, BsArrowUpCircle } from 
 import DashboardOrderMobile from "./responsive/DashboardOrderMobile.jsx";
 import ModalCloneNew from "../../balances/balancing/cloneBalancings/ModalCloneNew.jsx";
 import OrdersManualCreate from "../manual/OrdersManualCreate.jsx";
-import { isModalManual } from "../../../infraestructure/states/states_manual_order.js";
+import { isModalManual, isModalProdBalancing, isOrderOrProduct, isShowCreateProdBal } from "../../../infraestructure/states/states_manual_order.js";
+import ModalProductBalancing from "../isProduct/ModalProductBalancing.jsx";
 
 const totalPaginate = [5, 10, 20, 30, 40, 50];
 
@@ -36,6 +37,9 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useRecoilState(numberCurrentPage);
   const [isModalManualOrder, setIsModalManualOrder] = useRecoilState(isModalManual);
+  const [modalProdBalancing, setModalProdBalancing] = useRecoilState(isModalProdBalancing);
+  const [isShowCreate, setIsShowCreate] = useRecoilState(isShowCreateProdBal);
+  
   // Página actual
   const [totalPages, setTotalPages] = useState(1); // Total de páginas
   const [perPage, setPerPage] = useState(10); // Total de páginas
@@ -45,15 +49,18 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
   const [isSearchVisible, setIsSearchVisible] = useState(false); // Estado para controlar la visibilidad de SearchDateOrders
   const pdfDiv = useRef(null);
 
+  const [isOrderOr, setIsOrderOr] = useRecoilState(isOrderOrProduct);
+  
+
   useEffect(() => {
-    fetchOrders(currentPage, perPage, desc);
+    fetchOrders(currentPage, perPage, desc, isOrderOr);
   }, [queryDate, queryString]);
 
   useEffect(() => {
-    fetchOrders(currentPage, perPage, desc);
-  }, [desc]);
+    fetchOrders(currentPage, perPage, desc, isOrderOr);
+  }, [desc, isOrderOr]);
 
-  const fetchOrders = async (page, per_page, desc) => {
+  const fetchOrders = async (page, per_page, desc, is_order) => {
     setIsLoading(true);
 
     try {
@@ -61,7 +68,7 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
       const stringSearch = queryString;
 
       const result = await fetchGetData(
-        `${urlMain}orders?page=${page}&archive=${false}&per_page=${per_page}&desc=${desc}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_or_products_name_or_products_category_product_name_or_products_reference_cont]=${encodeURIComponent(stringSearch)}`
+        `${urlMain}orders?page=${page}&is_order=${is_order}&archive=${false}&per_page=${per_page}&desc=${desc}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_or_products_name_or_products_category_product_name_or_products_reference_cont]=${encodeURIComponent(stringSearch)}`
       );
 
       setOrders(result.orders);
@@ -95,7 +102,6 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
         {!isLoading && (
           <>
             <div className="block lg:hidden">
-             
               <div className="flex justify-between items-center">
               {
                 !showOrder && 
@@ -187,17 +193,64 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
                       <tr className="dark:bg-gray-100 bg-zinc-800 text-zinc-100 dark:text-zinc-800">
                         <th className="p-4 text-left font-medium border border-gray-300 text-secondary_two ">
                           <span className="flex justify-between items-center">
-                            Orden de producción
-                            <button
-                              onClick={()=> setIsModalManualOrder(true)}
-                            >
-                              <FaPlus className="text-secondary_two items-center" size={28} />
-                            </button>
+                            {
+                              isOrderOr ? 'Orden de producción' : 'Balanceo por producto'
+                            }
+                            
+                            <Tooltip content="Crear nueva orden de producción">
+                              <button
+                                onClick={()=> {
+                                  setIsModalManualOrder(true)
+                                  setIsShowCreate(false)
+                                }}
+                              >
+                                <FaPlus className="text-secondary_two items-center" size={28} />
+                              </button>
+                            </Tooltip>
+                            
                           </span>
                           
                         </th>
                         <th className="p-4 text-left font-medium border border-gray-300 text-secondary_two">
-                          Referencias
+                          <span className="flex justify-between items-center">  
+                            Referencias
+                            <span className="flex justify-between items-center">
+                              
+                              <span className="font-bold  flex justify-start">
+                                <small className="mt-1 mr-3 uppercase text-secondary_two">
+                                  {!isOrderOr ?  "Ordenes de producción" : "Balanceos por producto"}
+                                </small>
+
+                                
+                                <Switch
+                                  isSelected={isOrderOr}
+                                  onValueChange={setIsOrderOr}
+                                  color="default"
+                                  size="sm"
+                                />
+                                
+                              </span>
+                              {
+                                  !isOrderOr &&
+                                    <Tooltip content="Crear nuevo balanceo">
+                                      <button
+                                        className="mr-4"
+                                        onClick={()=> {
+                                          setModalProdBalancing(true)
+                                          setIsShowCreate(true)
+                                        }}
+                                      >
+                                        <FaPlus className="text-secondary_two items-center" size={28} />
+                                      </button>
+                                    </Tooltip>
+                                }   
+                              
+                              
+
+                            </span>
+                            
+
+                          </span>
                         </th>
                         <th className="p-4 text-left font-medium border border-gray-300 flex justify-between items-center">
                           <span className="text-secondary_two">Creación</span>
@@ -304,8 +357,13 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
             <OrdersManualCreate
               isOpen={isModalManualOrder}
               setIsOpen={setIsModalManualOrder} />
-          }
-      
+        }
+        {
+          modalProdBalancing && 
+            <ModalProductBalancing
+              isOpen={modalProdBalancing}
+              setIsOpen={setModalProdBalancing} />
+        }
     </div>
   );
 };

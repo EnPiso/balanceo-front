@@ -8,11 +8,15 @@ import { FaArrowCircleRight, FaMinus, FaPlus, FaTimes } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import { FaCheck } from 'react-icons/fa6';
 import { CircularProgress } from '@nextui-org/react';
+import { isShowCreateProdBal } from '../../../infraestructure/states/states_manual_order';
 
 const ObjManualProduct = ({product, dataSearchList}) => {
   const [operations, setOperations] = useRecoilState(operationsProductManual)
   const [selectObj, setSelectObj] = useRecoilState(selectManualObj)
   const [newManual, setNewManual] = useRecoilState(newManualObj)
+
+  const [isShowCreate, setIsShowCreate] = useRecoilState(isShowCreateProdBal);
+  
 
   const [isLoading,setIsLoading] = useState(false)
   const [canContinue,setCanContinue] = useState(true)
@@ -50,23 +54,37 @@ const ObjManualProduct = ({product, dataSearchList}) => {
     e.stopPropagation(); // Detener la propagación del evento
     
     if(canContinue){
-      // Actualizar el estado de newManual agregando el producto al array products si no existe
       const objUpdate = { product: product, operations: operations };
-      setNewManual((prevState) => {
-        const products = Array.isArray(prevState.products) ? prevState.products : [];
-    
-        // Verificar si el producto ya existe en el array
-        const exists = products.some((p) => p.product.id === product.id);
-        if (exists) {
-          toast.error("El producto ya existe en la lista.");
-          return prevState; // No agregar duplicados
-        }
-    
-        // Agregar el producto si no existe
-        const updatedProducts = [...products, objUpdate];
-        toast.success("El producto se ha agregado correctamente.")
-        return { ...prevState, products: updatedProducts };
-      });
+
+      if(isShowCreate){
+          setNewManual((prevState) => {
+            // Agregar el producto si no existe
+            const updatedProducts = [objUpdate];
+            toast.success("El producto se ha agregado correctamente.")
+            return { ...prevState, products: updatedProducts };
+          });
+      }  else {
+        setNewManual((prevState) => {
+          const products = Array.isArray(prevState.products) ? prevState.products : [];
+      
+          // Verificar si el producto ya existe en el array
+          const exists = products.some((p) => p.product.id === product.id);
+          if (exists) {
+            toast.error("El producto ya existe en la lista.");
+            return prevState; // No agregar duplicados
+          }
+      
+          // Agregar el producto si no existe
+          const updatedProducts = [...products, objUpdate];
+          toast.success("El producto se ha agregado correctamente.")
+          return { ...prevState, products: updatedProducts };
+        });
+      }
+
+
+      // Actualizar el estado de newManual agregando el producto al array products si no existe
+      
+      
     } else{
       toast.error(`No se puede agregar ${product.name}, porque no tiene operaciones asociadas.`);
     }

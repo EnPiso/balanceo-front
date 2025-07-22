@@ -7,9 +7,12 @@ import { FaBackward } from "react-icons/fa";
 import InputOrderManual from "./InputOrderManual";
 import ButtonSaveManualOrder from "./ButtonSaveManualOrder";
 import ImageLightbox from "../import/ImageLightBox";
+import { isShowCreateProdBal } from "../../../infraestructure/states/states_manual_order";
+import ButtonCreateProdOrder from "./ButtonCreateProdOrder";
 
-const ModalNewManualOrder = ({ isOpen, setIsOpen, handleClean, image }) => {
+const ModalNewManualOrder = ({ isOpen, setIsOpen, handleClean, image, setIsOpenMaster }) => {
   const [newManual] = useRecoilState(newManualObj);
+  const [isShowCreate, setIsShowCreate] = useRecoilState(isShowCreateProdBal);
 
   const handleClose = (e) => {
     e.stopPropagation(); // Detener la propagación del evento
@@ -36,27 +39,44 @@ const ModalNewManualOrder = ({ isOpen, setIsOpen, handleClean, image }) => {
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1 uppercase">
-              Agregar nueva orden
+              {isShowCreate ? 'Agregar balanceo' : 'Agregar nueva orden'}
+              
             </ModalHeader>
             <ModalBody>
               <div className="mt-2">
-                <div className="flex justify-start">
-                  <InputOrderManual/>
-                  
-                  <ButtonSaveManualOrder
-                    handleClean={handleClean}
-                    image={image}
-                  />
-                </div>
-                <ImageLightbox
-                  thumbnailUrl={image}
-                  fullSizeUrl={image}
-                  alt={`medida medidas`}
-                  key={'98'}
-                />
+                
+                {
+                  !isShowCreate && (
+                    <>
+                      <div className="flex justify-start">
+                        <InputOrderManual/>
+                        <ButtonSaveManualOrder
+                          handleClean={handleClean}
+                          image={image}
+                        />
+                      </div>
+                      <ImageLightbox
+                        thumbnailUrl={image}
+                        fullSizeUrl={image}
+                        alt={`medida medidas`}
+                        key={'98'}
+                      />
+                    </>
+                  )
+                }
+
+                
+                
                 
                 
                 <ListModalNew/>
+                {
+                  isShowCreate && 
+                    <ButtonCreateProdOrder 
+                      handleCloseMaster={()=> setIsOpenMaster(false)} 
+                      handleClose={()=> setIsOpen(false)}/>
+                }
+                
               </div>
             </ModalBody>
             <ModalFooter>

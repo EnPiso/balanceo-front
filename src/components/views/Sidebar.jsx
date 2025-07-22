@@ -21,6 +21,7 @@ import { FaEyeSlash } from 'react-icons/fa6';
 import OrdersManualCreate from '../orders/manual/OrdersManualCreate.jsx';
 import DashboardVideoMain from '../balances/balancing/tableOperations/videoOperations/videoSidebarMain/DashboardVideoMain.jsx';
 import { PolyvalencesDashboard } from '../polyvalencesTimes/PolyvalencesDashboard.jsx';
+import { isOrderOrProduct } from '../../infraestructure/states/states_manual_order.js';
 
 
 const Sidebar = ({toggleSidebar}) => {
@@ -44,6 +45,9 @@ const Sidebar = ({toggleSidebar}) => {
 		const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
 
 		const [isOpen, setIsOpen] = useState(false);
+
+		const [isOrderOr, setIsOrderOr] = useRecoilState(isOrderOrProduct);
+		
 		
 			// Función para abrir y cerrar el lightbox
 		const toggleLightbox = () => setIsOpen(!isOpen);
@@ -91,14 +95,18 @@ const Sidebar = ({toggleSidebar}) => {
 					{objBalancing ? (
 						<>
 							<InfoBoxBalancing />
-							<div className="mt-2">
-								<ImageLightbox
-									thumbnailUrl={showOrder.order.image_url}
-									fullSizeUrl={showOrder.order.image_url}
-									alt={`medida ${showOrder.order.code}`}
-									key={showOrder.order.code}
-								/>
-							</div>
+							{
+								isOrderOr && 
+									<div className="mt-2">
+										<ImageLightbox
+											thumbnailUrl={showOrder.order.image_url}
+											fullSizeUrl={showOrder.order.image_url}
+											alt={`medida ${showOrder.order.code}`}
+											key={showOrder.order.code}
+										/>
+									</div>
+							}
+							
 						</>
 					) : (
 						<div>

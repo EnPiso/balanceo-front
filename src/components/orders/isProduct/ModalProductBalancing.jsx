@@ -1,16 +1,17 @@
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, CircularProgress } from "@nextui-org/react";
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import ListManualOrderSelect from "./ListManualOrderSelect";
-import DashboardManualOrder from "./DashboardManualOrder";
-import { useRecoilState } from "recoil";
-import { newManualObj } from "../../../infraestructure/states/operation_master_state";
 
-const OrdersManualCreate = ({isOpen, setIsOpen}) => {
+import { useRecoilState } from "recoil";
+import DashboardManualOrder from "../manual/DashboardManualOrder";
+import { newManualObj } from "../../../infraestructure/states/operation_master_state";
+import DashboardProductBalancing from "./DashboardProductBalancing";
+
+
+const ModalProductBalancing = ({isOpen, setIsOpen}) => {
   const [newManual, setNewManual] = useRecoilState(newManualObj)
   
   const handleOpen = () => setIsOpen(true); // Abrir el modal
-
   const handleClose = () => {
     setIsOpen(false)
     cleanObjs()
@@ -23,7 +24,6 @@ const OrdersManualCreate = ({isOpen, setIsOpen}) => {
       }
     )
   }
-
 
   return (
       <Modal
@@ -47,13 +47,13 @@ const OrdersManualCreate = ({isOpen, setIsOpen}) => {
                   alt="shirt"
                 /> 
                 <span className="mt-1 ml-2">
-                  Seleccionar los productos 
+                  Selecciona el producto
                 </span>
               </ModalHeader>
               
               <ModalBody>
                 <div className="mt-2">
-                  <DashboardManualOrder
+                  <DashboardProductBalancing
                     setIsOpen={setIsOpen}
                   />
                 </div>
@@ -76,4 +76,4 @@ const OrdersManualCreate = ({isOpen, setIsOpen}) => {
   );
 };
 
-export default OrdersManualCreate;
+export default ModalProductBalancing;
