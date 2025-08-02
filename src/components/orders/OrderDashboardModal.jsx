@@ -158,21 +158,21 @@ const OrderDashboardModal = () => {
                               <>
                               {
                                 isLoadingMulti ?
-                                 <div className="mr-3">
-                                  <CircularProgress
-                                    color="success"
-                                    showValueLabel={true}
-                                    size="lg"
-                                    value={valueLoading}
+                                  <div className="mr-3">
+                                    <CircularProgress
+                                      color="success"
+                                      showValueLabel={true}
+                                      size="lg"
+                                      value={valueLoading}
+                                    />
+                                  </div> : 
+                                  <OrderSubmitMultiple
+                                    filesData={filesData}  
+                                    processData={processData}
+                                    onClose={()=> handleCloseMulti(onClose)}
+                                    setIsLoadingMulti={setIsLoadingMulti}
+                                    setValueLoading={setValueLoading}
                                   />
-                                 </div> : 
-                                 <OrderSubmitMultiple
-                                  filesData={filesData}  
-                                  processData={processData}
-                                  onClose={()=> handleCloseMulti(onClose)}
-                                  setIsLoadingMulti={setIsLoadingMulti}
-                                  setValueLoading={setValueLoading}
-                                />
                               }
 
 
@@ -203,7 +203,6 @@ const OrderDashboardModal = () => {
                                 images={images}
                                 onClose={onClose}
                                 eraseData={eraseDataSubmit}
-                               
                               />
 
                               <CustomButton

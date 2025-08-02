@@ -347,7 +347,7 @@ const OrderDetail = () => {
                           {product.operations.map((operationData, opIndex) => (
                               <tr key={opIndex}>
                                 <td className="p-1 border border-gray-300">{operationData.name || operationData.operation}</td>
-                                <td className="p-1 border border-gray-300">{operationData.machine}</td>
+                                <td className="p-1 border border-gray-300">{operationData.machine_name}</td>
                                 <td className="p-1 border border-gray-300">{operationData.sam}</td>
                               </tr>
                           ))}

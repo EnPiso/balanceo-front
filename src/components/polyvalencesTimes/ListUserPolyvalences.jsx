@@ -115,7 +115,7 @@ const ListUserPolyvalences = ({opers, setOpers}) => {
   return (
     <div>
       <div className="space-y-8">
-        <div className="flex justify-between items-center py-2">
+        <div className="flex justify-between items-center  bg-zinc-50 px-1 rounded-md shadow-sm py-1 mb-2">
           <div>
             <NewButtonOperMaster
               opers={opers}

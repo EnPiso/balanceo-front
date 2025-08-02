@@ -88,94 +88,110 @@ const PlantsCustom = () => {
           </div>
         ) : (
           <>
-            {listPlants.map((plant, i) => (
-              <div
-                key={i}
-                className="flex flex-col bg-white border border-gray-300 shadow-lg rounded-lg p-4 hover:shadow-xl transition duration-300">
+          
+            <div className="bg-gray-50 p-4 rounded-md shadow-md">
+              <table className="min-w-full border-collapse text-small">
+                <thead className="bg-gradient-to-r from-zinc-700 to-zinc-900 text-white sticky top-0 z-10">
+                <tr>
+                  <th className="px-4 py-2 text-left font-bold flex justify-between items-center text-secondary_two">
+                    Plantas
+                  </th>
+                  <th className="px-4 py-2 text-left font-bold text-secondary_two">
+                    Módulos
+                  </th>
+                </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {
+                    listPlants.map((plant, i)=> {
+                      return(
+                        <tr key={i} className={`hover:bg-zinc-100 dark:hover:bg-zinc-700 `}>
+                          <td className={`px-4 py-2 border border-gray-300 `}>
+                            <PlantEditCustom
+                              plant={plant}
+                              listPlants={listPlants}
+                              setListPlants={setListPlants}
+                              setProdPlant={setProdPlant}
+                              prodPlant={prodPlant}
+                            />
+                          </td>
+                          <td className="px-4 py-2 border border-gray-300">
+                            <p className="mt-2 text-medium text-gray-500">
+                              {plant.production_modules.map((module, j) => (
+                                <>
+                                  <button
+                                    onClick={() => {
+                                      setProdPlant(
+                                        {
+                                          plant: plant,
+                                          module: module
+                                        }
+                                      )
+                                      setIsLoading(true)
+                                    }}
+                                    key={j}>
+                                    <span
+                                      className={`font-bold hover:underline !cursor-pointer my-1 mr-1 ${prodPlant && (prodPlant.module.id === module.id) && 'text-secondary_two' }`}>
+                                      {module.name}
+                                      {j < plant.production_modules.length - 1 && ", "}
+                                    </span>
+                                  </button>
+                                </>
+                              ))}
+                            </p>
+                            <NewModuleFormInput
+                              listPlants={listPlants}
+                              setListPlants={setListPlants}
+                              plant={plant}/>
 
-                <PlantEditCustom
-                  plant={plant}
-                  listPlants={listPlants}
-                  setListPlants={setListPlants}
-                  setProdPlant={setProdPlant}
-                />
-
-                <p className="mt-2 text-medium text-gray-500">
-                  {plant.production_modules.map((module, j) => (
-                    <>
-                      <button
-                        onClick={() => {
-                          setProdPlant(
                             {
-                              plant: plant,
-                              module: module
+                              prodPlant && prodPlant.plant.id ===  plant.id && (
+                                <>
+                                  <div>
+                                    <div className="bg-zinc-50 py-4 ">
+                                      <div>
+                                      
+                                        <div>
+                                          <ModuleEditCustom
+                                            listPlants={listPlants}
+                                            setListPlants={setListPlants}
+                                            prodPlant={prodPlant}
+                                            setProdPlant={setProdPlant}
+                                          />
+                                        </div>
+
+
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                </>
+                              )
                             }
-                          )
-                          setIsLoading(true)
-                        }}
-                        key={j}>
-                        <span
-                          className={`font-bold hover:underline !cursor-pointer my-1 mr-1`}>
-                          {module.name}
-                          {j < plant.production_modules.length - 1 && ", "}
-                        </span>
-                      </button>
-                    </>
-                  ))}
-                </p>
-            
-                  <NewModuleFormInput
-                    listPlants={listPlants}
-                    setListPlants={setListPlants}
-                    plant={plant}/>
-             
-              </div>
-            ))}
 
-           
-          </>
-        )
-      }
+                            {
+                              prodPlant && prodPlant.plant.id ===  plant.id &&  <ListOpersCustom
+                                isLoading={isLoading}
+                                setIsLoading={setIsLoading}
+                                prodPlant={prodPlant}
+                              />
+                            }
 
-
-
-
-      {
-        prodPlant && (
-          <>
-            <div>
-              <div className="bg-zinc-50 py-4 px-2">
-                <div className="grid grid-cols-6 gap-4">
-                  <div className="col-start-1 col-end-3 ">
-                    <h1 className="text-left text-2xl col-span-8 flex justify-start">
-                      <FaCheck color="green"/> <span className="font-bold ml-3">  {prodPlant.plant.name}</span>
-                    </h1>
-                  </div>
-                  <div className="col-end-7 col-span-2 ">
-                    <ModuleEditCustom
-                      listPlants={listPlants}
-                      setListPlants={setListPlants}
-                      prodPlant={prodPlant}
-                      setProdPlant={setProdPlant}
-                    />
-                  </div>
-
-
-                </div>
-              </div>
-
+                              
+                          </td>
+                        </tr>
+                      )
+                    })
+                  }
+                </tbody>
+              </table>
             </div>
+
+
           </>
         )
       }
 
-      {
-        prodPlant &&  <ListOpersCustom
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          prodPlant={prodPlant}
-        />
-      }
 
 
 

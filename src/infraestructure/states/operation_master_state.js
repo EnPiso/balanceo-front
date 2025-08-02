@@ -47,3 +47,11 @@ export const isLoadingTimeByZone = atom({
   key: 'isLoadingTimeByZone',
   default: false,
 });
+
+
+export const operationsArrayMaster = atom({
+  key: 'operationsArrayMaster',
+  default: [],
+});
+
+

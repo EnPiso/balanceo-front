@@ -33,6 +33,9 @@ const OrderSubmit = ({operationsData, orderProOpe, images, onClose, eraseData}) 
     const postDataOrder = async (formData) => {
       try {
         const result = await postData(urlMain + "/orders/create_order", formData)
+
+        debugger
+
         const order = result.order_products
 
         setOrders([order,...orders])

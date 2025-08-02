@@ -10,7 +10,7 @@ import FormEditInput from "../balances/balancing/sidebarForm/FormEditInput.jsx";
 import {Spinner} from "@nextui-org/react";
 
 
-const PlanEditCustom = ({ plant, listPlants, setListPlants,setProdPlant }) => {
+const PlanEditCustom = ({ plant, listPlants, setListPlants,setProdPlant, prodPlant }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [objEdit, setObjEdit] = useState(null);
 
@@ -102,9 +102,9 @@ const PlanEditCustom = ({ plant, listPlants, setListPlants,setProdPlant }) => {
                   handleClick(plant)
                 }}
                 className="flex justify-between items-center cursor-pointer" >
-                <h1 className={`text-lg font-semibold flex justify-between items-center`} >
-                  {plant.name}
-                  <FaEdit color={"green"} className={"ml-2"}/>
+                <h1 className={`text-lg flex justify-between items-center ${prodPlant && (prodPlant.plant.id === plant.id) ? 'text-secondary_two font-bold' : 'font-semibold'}`} >
+                  {plant.name} 
+                  <FaEdit className={`ml-2 text-secondary_two`} />
                 </h1>
 
               </div>

@@ -48,7 +48,9 @@ const OrderSubmitMultiple = ({filesData, processData, onClose, setIsLoadingMulti
           return order.order_products
         })
         
-        const updateOrders = [...orders, ...updateResult]
+        const updateOrders = [...updateResult, ...orders]
+
+      
         setOrders(updateOrders)
         toast.success("Las ordenes fueron agregadas con éxito")
         setIsLoadingMulti(false)

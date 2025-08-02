@@ -29,10 +29,24 @@ const CloneOperationObjCustom = ({ operation, addOperation, setShowFormNew }) =>
       toast.error("Ya existe una operación con los mismos datos");
       return;
     }
-    const data = {
-      operation: operation,
-      product_id: operations.product.id
+    let operation_update = null
+    let data 
+
+    if(operation.is_manual){
+      operation_update = operation.id
+      data = {
+        operation: operation,
+        product_id: operations.product.id,
+        operation_is_manual: operation.id
+      }
+    } else {
+      data = {
+        operation: operation,
+        product_id: operations.product.id
+      }
     }
+
+    
     debugger
     const postDataOrder = async (data) => {
       setIsLoading(true)

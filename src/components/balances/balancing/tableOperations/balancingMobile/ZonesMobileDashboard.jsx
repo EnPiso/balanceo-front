@@ -203,7 +203,7 @@ const ZonesMobileDashboard = () => {
     
                         <div className="flex justify-between items-start">
                             <div className="text-sm text-gray-600 dark:text-gray-400">
-                              <p>Máquina: {operationDetail.operation.machine}</p>
+                              <p>Máquina: {operationDetail.operation.machine_name}</p>
                               <p>Minutos: {operationDetail.detailObj && operationDetail.detailObj.detail.minutes} </p>
                             </div>
                           <pre className="text-xs text-gray-500">

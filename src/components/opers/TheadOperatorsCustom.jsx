@@ -100,9 +100,9 @@ const TheadOperatorsCustom = ({moduleId, opers, setOpers, setIsNewOperator}) => 
                         className="w-48 h-48"
                         src={URL.createObjectURL(fileImage)}
                       />
-                     <Tooltip content={"Cancelar"} placement={"left"}>
-                       <button onClick={() => setFileImage(null)} className={"mt-1"}> <FaBackward size={23} color={"red"}/></button>
-                     </Tooltip>
+                      <Tooltip content={"Cancelar"} placement={"left"}>
+                        <button onClick={() => setFileImage(null)} className={"mt-1"}> <FaBackward size={23} color={"red"}/></button>
+                      </Tooltip>
                     </span>
                   </div>
                 ) : (

@@ -105,7 +105,6 @@ const CloneBalancingDashboard = () => {
       operations: JSON.stringify(operations)
     }
 
-    
     cloneOrder(data)
   }
 

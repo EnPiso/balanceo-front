@@ -129,7 +129,7 @@ const   DraggableRow = ({ operation, index, handleDragStart, handleDragOver, han
           {operation.operation}
         </div>
       </td>
-      <td className="px-4 py-2 border-l-1">{operation.machine}</td>
+      <td className="px-4 py-2 border-l-1">{operation.machine_name}</td>
       <EditSamCustom
         operation={operation}
       />

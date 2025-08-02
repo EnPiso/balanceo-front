@@ -32,13 +32,13 @@ const ExcelImagesLoaders = ({ fileMultiple, setFileMultiple, filesData, setFiles
     worksheet.eachRow((row, rowNumber) => {
       if (rowNumber > 1) {
         const operation = row.getCell(1).value;
-        const machine = row.getCell(2).value;
+        const machine_name = row.getCell(2).value;
         const sam = row.getCell(8).value;
 
-        if (operation && machine && sam) {
+        if (operation && machine_name && sam) {
           operations.push({
             operation,
-            machine,
+            machine_name,
             repetitions: row.getCell(3).value,
             observations: row.getCell(4).value,
             guideType: row.getCell(6).value,
@@ -80,7 +80,7 @@ const ExcelImagesLoaders = ({ fileMultiple, setFileMultiple, filesData, setFiles
         }
 
         if (extractedImages.length === 0) {
-          toast.warning(`${file.name}: ${toastMessageCustom.no_images}`);
+          toast.error(`${file.name}: ${toastMessageCustom.no_images}`);
         }
 
         // Agregar el objeto con la estructura requerida

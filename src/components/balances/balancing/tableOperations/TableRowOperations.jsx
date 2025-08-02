@@ -146,7 +146,7 @@ const TableRowOperations = ({
           </div>
 
         </td>
-        <td className="px-4 py-4 border border-gray-300">{item.machine}</td>
+        <td className="px-4 py-4 border border-gray-300">{item.machine_name}</td>
         <td
           onClick={() => handleSam(item, true)}
           className={`px-4 py-2 border border-gray-300 cursor-pointer ${item.is_sam_minutes && "font-bold"}`}

@@ -1,26 +1,51 @@
 import React, { useEffect, useState } from "react";
-import { Input } from "@nextui-org/react";
+import { CircularProgress, Input } from "@nextui-org/react";
 import { FaSave } from "react-icons/fa";
 import CustomButton from "../../../../ui/CustomButton.jsx";
 import InputFormCustom from "./InputFormCustom.jsx";
 import { useRecoilState } from "recoil";
 import { dataObjClone } from "../../../../infraestructure/states/states_navigation.js";
 import {orderObjBalancing} from "../../../../infraestructure/states/order_states.js";
-import {postData} from "../../../../infraestructure/call_api/crud.js";
+import {fetchGetData, postData} from "../../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../../infraestructure/data/const.js";
 import {assignColorsToArray} from "../../../../ui/utils.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../../infraestructure/data/toastMessage.js";
 import {searchOperations} from "../../../../infraestructure/states/operation_states.js";
 import MyCustomButton from "../../../../ui/MyCustomButton.jsx";
+import SelectListMachines from "../../../operations_master/SelectListMachines.jsx";
+import { selectAllMachines } from "../../../../infraestructure/states/states_machine.js";
 
 const FormOperationCustom = () => {
-  const [operation, setOperation] = useState({ operation: "", machine: "", sam: "", original: true });
+  const [operation, setOperation] = useState({ operation: "", machine_id: "", machine_name: "", sam: "", original: true });
   const [isValid, setIsValid] = useState(false);
   const [dataObj, setDataObjClone] = useRecoilState(dataObjClone);
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
 
   const [cloneOperations, setCloneOperations] = useRecoilState(searchOperations);
+
+  const [allMachines, setAllMachines] = useRecoilState(selectAllMachines);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(()=> {
+
+    const getData = async () => {
+      
+      try {
+        const result = await fetchGetData(`${urlMain}machines/all_machines`);
+        console.log(result);
+        
+        setAllMachines(result)
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      } finally {
+        setIsLoading(false)
+      }
+    };
+    
+    getData();  
+
+  }, [])
 
 
   useEffect(() => {
@@ -58,8 +83,8 @@ const FormOperationCustom = () => {
       errors.operation = "Debe tener más de 3 caracteres.";
     }
 
-    if (!operation?.machine || operation.machine.trim().length <= 3) {
-      errors.machine = "Debe tener más de 3 caracteres.";
+    if (!operation?.machine_id) {
+      errors.machine_id = "Debe seleccionar la máquina.";
     }
 
     const regexNumber = /^\d+(\.\d{1,2})?$/; // Permitir hasta 15 decimales
@@ -101,10 +126,39 @@ const FormOperationCustom = () => {
   }
 
   return (
-    <div className="flex  justify-between items-center py-2">
-      <InputFormCustom name="operation" label="Operación" operation={operation} setOperation={setOperation} validateOperation={validateOperation} setIsValid={setIsValid} />
-      <InputFormCustom name="machine" label="Máquina" operation={operation} setOperation={setOperation} validateOperation={validateOperation} setIsValid={setIsValid} />
-      <InputFormCustom name="sam" label="Sam" operation={operation} setOperation={setOperation} validateOperation={validateOperation} setIsValid={setIsValid} />
+    <div className={`flex  py-2 ${isLoading ? 'justify-center' : 'justify-between items-center'}`}>
+
+      {
+        isLoading ? <CircularProgress color="default" size="23"/> : (
+          <>
+            <InputFormCustom 
+              name="operation" 
+              label="Operación" 
+              operation={operation} 
+              setOperation={setOperation} 
+              validateOperation={validateOperation} 
+              setIsValid={setIsValid} />
+
+            <div className="mr-2 mt-2 w-full">
+              <SelectListMachines
+                operation={operation}
+                setOperation={setOperation}
+              />
+            </div>
+            
+            
+            <InputFormCustom 
+              name="sam" 
+              label="Sam" 
+              operation={operation} 
+              setOperation={setOperation} 
+              validateOperation={validateOperation} 
+              setIsValid={setIsValid} />
+          
+          </>
+        )
+      }
+      
       {isValid && (
     
           <button onClick={handleSubmit} >

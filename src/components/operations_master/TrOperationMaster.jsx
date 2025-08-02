@@ -59,7 +59,7 @@ const TrOperationMaster = ({operation}) => {
       </td>
       <td className="p-1 border border-gray-300 cursor-pointer">
         <span className="py-2 px-1">
-          {operation.machine}
+          {operation.machine_name}
         </span>
       </td>
       <td className="p-1 border border-gray-300 cursor-pointer">
@@ -68,7 +68,7 @@ const TrOperationMaster = ({operation}) => {
         </span>
       </td>
       <td className="p-1 border border-gray-300 cursor-pointer">
-        <span className="ml-6">
+        <span className="ml-6 flex justify-end">
           <button className="text-gray-500 group-hover:text-green-600">
             <AiFillExperiment 
               size={23} 

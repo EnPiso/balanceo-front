@@ -6,11 +6,11 @@ import { toastMessageCustom } from "../../../../../infraestructure/data/toastMes
 import {FaArrowDownUpAcrossLine} from "react-icons/fa6";
 
 const OperationListDrag = ({
-                             operations,
-                             setOperations,
-                             operationsCreate,
-                             setOperationsCreate,
-                           }) => {
+                            operations,
+                            setOperations,
+                            operationsCreate,
+                            setOperationsCreate,
+                          }) => {
   const [draggedIndex, setDraggedIndex] = useState(null); // Para el reordenamiento interno
 
   const handleDragOver = (e) => {

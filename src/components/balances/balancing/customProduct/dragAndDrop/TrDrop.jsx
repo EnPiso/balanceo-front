@@ -115,7 +115,7 @@ const TrDrop = ({
           </button>
         )}
       </td>
-      <td className="px-4 py-2 border-l-1">{operation.machine}</td>
+      <td className="px-4 py-2 border-l-1">{operation.machine_name} &&& </td>
       <td className="px-4 py-2 border-l-1">{operation.sam}</td>
     </tr>
   );

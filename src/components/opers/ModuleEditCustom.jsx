@@ -96,7 +96,7 @@ const ModuleEditCustom = ({listPlants, setListPlants, prodPlant, setProdPlant}) 
           <>
             {
               isEdit ?
-                <div className=" py-2 px-2 rounded">
+                <div className=" py-2 rounded">
                   <FormEditInput
                     onKeyDown={handleKeyDown}
                     valueDefault={prodPlant && prodPlant.module.name}
@@ -107,10 +107,10 @@ const ModuleEditCustom = ({listPlants, setListPlants, prodPlant, setProdPlant}) 
                   setIsEdit(true)
                   setObjEdit(prodPlant.module)
                 }} className="flex justify-between items-center cursor-pointer">
-                  <h1 className="font-bold text-2xl capitalizetext-zinc-500 mr-5 mt-1">
-                    {prodPlant.module.name}
+                  <h1 className="font-bold text-2xl capitalize text-secondary_two mr-5 mt-1">
+                    {prodPlant.module.name} 
                   </h1>
-                  <FaEdit size={23} color={"green"}/>
+                  <FaEdit size={23} className="text-secondary_two"/>
                 </div>
             }
           </>

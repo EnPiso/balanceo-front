@@ -31,7 +31,7 @@ const ListMultipleImport = ({ productOperations, setProcessData }) => {
           garment: garment,
           operation: operationData.operation,
           sam: operationData.sam,
-          machine: operationData.machine,
+          machine_name: operationData.machine_name,
           repetitions: operationData.repetitions,
           observations: operationData.observations,
           guideType: operationData.guideType
@@ -95,7 +95,7 @@ const ListMultipleImport = ({ productOperations, setProcessData }) => {
                       {group.operations.map((op, opIndex) => (
                         <div key={opIndex} className="text-sm bg-gray-50 p-3 rounded">
                           <p className="font-medium">{op.operation}</p>
-                          <p className="text-gray-600">Máquina: {op.machine}</p>
+                          <p className="text-gray-600">Máquina: {op.machine_name}</p>
                           <p className="text-gray-600">SAM: {op.sam}</p>
                           {op.repetitions && <p className="text-gray-600">Repeticiones: {op.repetitions}</p>}
                           {op.observations && <p className="text-gray-600">Observaciones: {op.observations}</p>}

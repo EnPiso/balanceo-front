@@ -6,13 +6,25 @@ import {useRecoilState} from "recoil";
 import {operationsProduct} from "../../infraestructure/states/operation_states.js";
 import BtnDeleteOperationCustom from "./BtnDeleteOperationCustom.jsx";
 import toast from "react-hot-toast";
+import SelectListMachines from "../operations_master/SelectListMachines.jsx";
+import SelectListEditMachine from "./SelectListEditMachine.jsx";
+import { FaBackward, FaBackwardStep, FaX } from "react-icons/fa6";
+import { FaBackspace, FaWindowClose } from "react-icons/fa";
+import ModalMachineEdit from "./ModalMachineEdit.jsx";
 
 const FormOperationProduction = ({ operation }) => {
+  const [showOperation, setShowOperation] = useState(false)
+  const [showSam, setShowSam] = useState(false)
+  const [showMachine, setShowMachine] = useState(false)
+
   const [fields, setFields] = useState({
     operationData: false,
     machine: false,
     sam: false,
   });
+
+  const [isOpen, setIsOpen] = useState(false)
+
 
   const [operationUpdate,setOperationUpdate] = useState(null)
 
@@ -31,10 +43,10 @@ const FormOperationProduction = ({ operation }) => {
     setOperationUpdate(data)
   };
 
-  const handleSubmit = (operation) => {
-    // console.log(operationUpdate, operation.id)
+  const handleSubmit = (operation, setShow) => {
+    
     const operation_id = operation.id
-
+    
     const data = {
       operation: operationUpdate
     }
@@ -49,7 +61,8 @@ const FormOperationProduction = ({ operation }) => {
           operations: updatedItems, // Actualiza solo el atributo `name`
         }));
         toast.success("La operación ha sido actualizada con éxito")
-        // guardar imagen de la tabla del balanceo en product
+        setShow(false)
+        
       } catch (error) {
         console.error('Error setting data', error);
       }
@@ -61,36 +74,65 @@ const FormOperationProduction = ({ operation }) => {
 
   return (
     <tr className="p-2 border border-gray-300 cursor-pointer lowercase">
-      {["operation", "machine", "sam"].map((field) => (
-        <td key={field} className="px-1 py-1">
-          {fields[field] ? (
+      <td className="px-1 py-1">
+        {
+          showOperation ? 
             <InputUpdateOperations
-              valueDefault={operation && operation[field]}
+              valueDefault={operation.operation}
               operation={operation}
-              label={field.charAt(0).toUpperCase() + field.slice(1)} // Capitaliza la etiqueta
-              setClose={() => handleEditToggle(field)}
-              name={field}
+              label={"operation"} // Capitaliza la etiqueta
+              setClose={() => handleEditToggle("operation")}
+              name={"operation"}
               handleChange={handleChange}
-              handleSubmit={handleSubmit}
-            />
-          ) : (
-            <span className={"flex justify-between items-center"}>
-              <span onClick={() => handleEditToggle(field)}>
-                {operation[field]}
-              </span>
-              {
-                field === "sam" &&
-                  <BtnDeleteOperationCustom
-                    operation={operation}
-                  />
-              }
+              handleSubmit={()=> handleSubmit(operation, setShowOperation)}
+            /> : <>
+              <button onClick={()=> setShowOperation(true)}>
+                {operation.operation}
+              </button>
+            </>
+        }
+        
+      </td>
+      <td>
+        <button onClick={()=> setIsOpen(true)}>
+          {operation.machine_name}
+        </button>
+      </td>
 
-            </span>
-
-          )}
-        </td>
-      ))}
-
+      <td className="px-1 py-1 flex justify-between items-center">
+        {
+          showSam ? 
+            <InputUpdateOperations
+              valueDefault={operation.sam}
+              operation={operation}
+              label={"sam"} // Capitaliza la etiqueta
+              setClose={() => handleEditToggle("sam")}
+              name={"sam"}
+              handleChange={handleChange}
+              handleSubmit={()=> handleSubmit(operation, setShowSam)}
+            /> : 
+            <>
+              <button onClick={()=> setShowSam(true)}>
+                {operation.sam}
+              </button>
+            </>
+        }
+        
+        <span>  
+          <BtnDeleteOperationCustom
+            operation={operation}
+          />
+        </span>
+      </td>
+      {
+        isOpen && 
+          <ModalMachineEdit
+            setIsOpen={setIsOpen}
+            isOpen={isOpen}
+            operation={operation}
+          />
+      }
+      
     </tr>
   );
 };

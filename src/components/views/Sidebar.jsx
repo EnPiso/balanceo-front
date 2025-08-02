@@ -17,11 +17,14 @@ import { detailOperOperations } from '../../infraestructure/states/states_balanc
 import { checkOperationsBalancing } from '../../infraestructure/states/states_videos.js';
 import OpersMaster from '../opers_master/OpersMaster.jsx';
 import { Avatar } from '@nextui-org/react';
-import { FaEyeSlash } from 'react-icons/fa6';
+import { FaEyeSlash, FaUserGroup } from 'react-icons/fa6';
 import OrdersManualCreate from '../orders/manual/OrdersManualCreate.jsx';
 import DashboardVideoMain from '../balances/balancing/tableOperations/videoOperations/videoSidebarMain/DashboardVideoMain.jsx';
 import { PolyvalencesDashboard } from '../polyvalencesTimes/PolyvalencesDashboard.jsx';
 import { isOrderOrProduct } from '../../infraestructure/states/states_manual_order.js';
+import { GiSewingMachine  } from 'react-icons/gi';
+import MachinesMaster from '../machines/MachinesMaster.jsx';
+
 
 
 const Sidebar = ({toggleSidebar}) => {
@@ -115,7 +118,7 @@ const Sidebar = ({toggleSidebar}) => {
 							<DashboardOpers />
 							<OperationsMaster />
 							<OpersMaster />
-							
+							<MachinesMaster/>
 						</div>
 					)}
 				</div>

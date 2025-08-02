@@ -81,7 +81,7 @@ const EditImageOperator = ({url_image, toggleLightbox,oper, opers, setOpers,setI
             }
 
           </> :
-          <Badge content={<FaEdit color={"green"} onClick={handleEdit}/>} shape="circle">
+          <Badge content={<FaEdit className="text-secondary_two" onClick={handleEdit}/>} shape="circle">
             <Button isIconOnly aria-label="more than 99 notifications" radius="full" variant="light">
               <Avatar
                 src={url_image}

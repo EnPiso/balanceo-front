@@ -24,7 +24,7 @@ const ShowOderProdOperations = ({orderProOpe}) => {
       operations: operations.map(operation => ({
         operation: operation.operation,
         sam: operation.sam,
-        machine: operation.machine,
+        machine_name: operation.machine_name,
         repetitions: operation.repetitions,
         observations: operation.observations,
         guideType: operation.guideType

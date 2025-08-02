@@ -78,13 +78,13 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
         
         const stringFormat  = formatearString(row.getCell(1).value)
         const operation = stringFormat;
-        const machine = row.getCell(2).value;
+        const machine_name = row.getCell(2).value;
         const sam = row.getCell(8).value;
 
-        if (operation && machine && sam) { // Validar columnas requeridas
+        if (operation && machine_name && sam) { // Validar columnas requeridas
           operations.push({
             operation,
-            machine,
+            machine_name,
             repetitions: row.getCell(3).value,
             observations: row.getCell(4).value,
             guideType: row.getCell(6).value,

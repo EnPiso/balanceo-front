@@ -56,14 +56,14 @@ const ListOpersCustom = ({prodPlant, isLoading, setIsLoading}) => {
           <th className="p-4 font-medium border border-gray-300">Nombre</th>
           <th className="p-4 font-medium border border-gray-300 flex justify-between items-center">
             <span>Cédula</span>
-            <span onClick={() => setIsNewOperator(!isNewOperator)} className="cursor-pointer flex items-center">
+            <span onClick={() => setIsNewOperator(!isNewOperator)} className={`cursor-pointer flex items-center font-bold `}>
               {!isNewOperator ? (
                 <>
-                  Agregar operario <FaPlusCircle size={23} color="green" className="ml-2"/>
+                  Agregar operario <FaPlusCircle size={23} className="ml-2 text-secondary_two"/>
                 </>
               ) : (
                 <>
-                  Cancelar <FaBackward size={18} className="ml-2"/>
+                 <FaBackward color="red" className="mr-2"/> Cancelar 
                 </>
               )}
             </span>
