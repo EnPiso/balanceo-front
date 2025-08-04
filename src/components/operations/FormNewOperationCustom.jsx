@@ -8,9 +8,19 @@ import { operationsProduct } from "../../infraestructure/states/operation_states
 import { postData } from "../../infraestructure/call_api/crud.js";
 import { urlMain } from "../../infraestructure/data/const.js";
 import toast from "react-hot-toast";
+import SelectListMachines from "../operations_master/SelectListMachines.jsx";
+
+const initForm = { 
+  operation: "",
+  machine_id: "", 
+  machine_name: "", 
+  sam: "", 
+  original: true 
+}
 
 const FormNewOperationCustom = () => {
-  const [operation, setOperation] = useState({ operation: "", machine: "", sam: "", original: true });
+
+  const [operation, setOperation] = useState(initForm);
   const [isValid, setIsValid] = useState(false);
   const [dataObj, setDataObjClone] = useRecoilState(dataObjClone);
   const [operations, setOperations] = useRecoilState(operationsProduct)
@@ -21,14 +31,16 @@ const FormNewOperationCustom = () => {
     if (dataObj) {
       const data = {
         operation: dataObj.operation || "",
-        machine: dataObj.machine || "",
+        machine_id: dataObj.machine_id || "",
+        machine_name: dataObj.machine_name || "",
         sam: dataObj.sam || "",
       };
       console.log("Nuevo dataObj recibido:", data);
       setOperation((prevOperation) => {
         if (
           prevOperation?.operation !== data.operation ||
-          prevOperation?.machine !== data.machine ||
+          prevOperation?.machine_id !== data.machine_id ||
+          prevOperation?.machine_name !== data.machine_name ||
           prevOperation?.sam !== data.sam
         ) {
           return data;
@@ -52,8 +64,8 @@ const FormNewOperationCustom = () => {
       errors.operation = "Debe tener más de 3 caracteres.";
     }
 
-    if (!operation?.machine || operation.machine.trim().length <= 3) {
-      errors.machine = "Debe tener más de 3 caracteres.";
+    if (!operation?.machine_id) {
+      errors.machine_id = "Debe seleccionar la máquina.";
     }
 
     const regexNumber = /^\d+(\.\d{1,2})?$/; // Permitir hasta 15 decimales
@@ -75,7 +87,6 @@ const FormNewOperationCustom = () => {
       operation: operation,
       product_id: operations.product.id
     }
-
     const postDataOrder = async (data) => {
       setIsLoading(true)
       try {
@@ -92,7 +103,7 @@ const FormNewOperationCustom = () => {
           return updatedOperation;
         });
 
-        setOperation({ operation: "", machine: "", sam: "", original: true })
+        setOperation(initForm)
 
 
         toast.success("Se ha guardado con exito la operación")
@@ -119,13 +130,12 @@ const FormNewOperationCustom = () => {
         setOperation={setOperation} 
         validateOperation={validateOperation} 
         setIsValid={setIsValid} />
-      <InputFormCustom 
-        name="machine" 
-        label="Máquina" 
-        operation={operation} 
-        setOperation={setOperation} 
-        validateOperation={validateOperation} 
-        setIsValid={setIsValid} />
+      <div className="mr-2 mt-2 w-full">
+        <SelectListMachines
+          operation={operation}
+          setOperation={setOperation}
+        />
+      </div>
       <InputFormCustom 
         name="sam" 
         label="Sam" 

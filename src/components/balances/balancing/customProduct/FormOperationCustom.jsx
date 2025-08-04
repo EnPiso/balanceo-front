@@ -33,8 +33,7 @@ const FormOperationCustom = () => {
       
       try {
         const result = await fetchGetData(`${urlMain}machines/all_machines`);
-        console.log(result);
-        
+       
         setAllMachines(result)
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -131,6 +130,7 @@ const FormOperationCustom = () => {
       {
         isLoading ? <CircularProgress color="default" size="23"/> : (
           <>
+          
             <InputFormCustom 
               name="operation" 
               label="Operación" 
@@ -163,7 +163,6 @@ const FormOperationCustom = () => {
     
           <button onClick={handleSubmit} >
             <FaSave className="text-secondary_two mr-2 mt-8" size={30}/>
-           
           </button>
           
       )}

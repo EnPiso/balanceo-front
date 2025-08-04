@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import InputUpdateOperations from "./InputUpdateOperations";
-import {updateData} from "../../infraestructure/call_api/crud.js";
+import {fetchGetData, updateData} from "../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../infraestructure/data/const.js";
 import {useRecoilState} from "recoil";
 import {operationsProduct} from "../../infraestructure/states/operation_states.js";
@@ -11,6 +11,7 @@ import SelectListEditMachine from "./SelectListEditMachine.jsx";
 import { FaBackward, FaBackwardStep, FaX } from "react-icons/fa6";
 import { FaBackspace, FaWindowClose } from "react-icons/fa";
 import ModalMachineEdit from "./ModalMachineEdit.jsx";
+import { selectAllMachines } from "../../infraestructure/states/states_machine.js";
 
 const FormOperationProduction = ({ operation }) => {
   const [showOperation, setShowOperation] = useState(false)
@@ -29,6 +30,8 @@ const FormOperationProduction = ({ operation }) => {
   const [operationUpdate,setOperationUpdate] = useState(null)
 
   const [operations, setOperations] = useRecoilState(operationsProduct)
+
+  
 
 
   const handleEditToggle = (field) => {
@@ -72,6 +75,8 @@ const FormOperationProduction = ({ operation }) => {
 
   }
 
+
+
   return (
     <tr className="p-2 border border-gray-300 cursor-pointer lowercase">
       <td className="px-1 py-1">
@@ -87,7 +92,7 @@ const FormOperationProduction = ({ operation }) => {
               handleSubmit={()=> handleSubmit(operation, setShowOperation)}
             /> : <>
               <button onClick={()=> setShowOperation(true)}>
-                {operation.operation}
+                {operation.operation} 
               </button>
             </>
         }

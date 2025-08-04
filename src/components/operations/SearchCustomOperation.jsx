@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {Input} from "@nextui-org/react";
+import {CircularProgress, Input} from "@nextui-org/react";
 import {FaClosedCaptioning, FaMagnifyingGlass} from "react-icons/fa6";
 import {useRecoilState} from "recoil";
 import {FaLess, FaPlus, FaWindowClose} from "react-icons/fa";
@@ -8,11 +8,15 @@ import { dataObjClone } from '../../infraestructure/states/states_navigation';
 import { cloneObjData, listOperationsClone, searchOperations } from '../../infraestructure/states/operation_states';
 import { fetchGetData } from '../../infraestructure/call_api/crud';
 import { urlMain } from '../../infraestructure/data/const';
+import { selectAllMachines } from '../../infraestructure/states/states_machine';
 
 const SearchCustomOperation = ({setShowFormNew,showFormNew,query,setQuery}) => {
   const [cloneOperations, setCloneOperations] = useRecoilState(listOperationsClone);
   const [dataObj, setDataObjClone] = useRecoilState(cloneObjData);
   const [debouncedQuery, setDebouncedQuery] = useState(""); // Estado para la búsqueda retrasada
+  const [allMachines, setAllMachines] = useRecoilState(selectAllMachines);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // Configurar un temporizador para retrasar la búsqueda
@@ -33,15 +37,16 @@ const SearchCustomOperation = ({setShowFormNew,showFormNew,query,setQuery}) => {
 
   const fetchResults = (debouncedQuery) => {
     const getData = async () => {
+    
       try {
         const result = await fetchGetData(`${urlMain}operations?q[operation_cont]=${encodeURIComponent(debouncedQuery)}`);
-        console.log(result);
         
         setCloneOperations(result);
         setShowFormNew(false)
+        
       } catch (error) {
         console.error("Error al obtener los datos:", error);
-      }
+      } 
     };
 
     getData();
@@ -49,11 +54,34 @@ const SearchCustomOperation = ({setShowFormNew,showFormNew,query,setQuery}) => {
   }
 
   const handlePlus = () => {
-    setShowFormNew(!showFormNew)
+    
     if(!showFormNew === false){
       setDataObjClone(null)
+      setShowFormNew(false)
+    }else{
+      handleMachine()
     }
     console.log(!showFormNew)
+  }
+
+
+  const handleMachine = () => {
+    const getData = async () => {
+      setIsLoading(true)  
+      try {
+        const result = await fetchGetData(`${urlMain}machines/all_machines`);
+      
+        setAllMachines(result)
+        
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      } finally {
+        setIsLoading(false)
+        setShowFormNew(true)
+      }
+    };
+    
+    getData();
   }
 
   return (
@@ -73,14 +101,22 @@ const SearchCustomOperation = ({setShowFormNew,showFormNew,query,setQuery}) => {
         }
         className="max-w-xs mr-5"
       />
-      <button onClick={handlePlus}>
-        {
-          showFormNew ? <FaWindowClose size={30}/> : <FaPlus className='text-secondary_two' size={30}/>
-        }
+
+      {
+        isLoading ? 
+          <CircularProgress
+            size={24}
+            color={"default"}  
+          /> : 
+          <button onClick={handlePlus}>
+            {
+              showFormNew ? <FaWindowClose size={30}/> : <FaPlus className='text-secondary_two' size={30}/>
+            }
 
 
-      </button>
-
+          </button>
+      }
+      
     </div>
   )
 }
