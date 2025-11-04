@@ -73,33 +73,43 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
 
   const extractOperations = (worksheet) => {
     const operations = [];
+
     worksheet.eachRow((row, rowNumber) => {
-      if (rowNumber > 1) { // Saltar la fila de encabezado
-        
-        const stringFormat  = formatearString(row.getCell(1).value)
-        const operation = stringFormat;
+      if (rowNumber > 1) { // Saltar encabezado
+        const firstCell = row.getCell(1).value;
         const machine_name = row.getCell(2).value;
         const sam = row.getCell(8).value;
 
-        if (operation && machine_name && sam) { // Validar columnas requeridas
-          operations.push({
-            operation,
-            machine_name,
-            repetitions: row.getCell(3).value,
-            observations: row.getCell(4).value,
-            guideType: row.getCell(6).value,
-            garment: `${row.getCell(7).value} [${row.getCell(10).value}] {${row.getCell(11).value}}`,
-            sam,
-            order: row.getCell(9).value,
-            reference: row.getCell(10).value
-          });
-        }
+        // Validar que sea una fila de operación real
+        const isValidRow =
+          typeof firstCell === "string" &&
+          firstCell.trim().length > 0 &&
+          typeof machine_name === "string" &&
+          machine_name.trim().length > 0 &&
+          typeof sam === "number";
+
+        if (!isValidRow) return;
+
+        const stringFormat = formatearString(firstCell);
+
+        operations.push({
+          operation: stringFormat,
+          machine_name,
+          repetitions: row.getCell(3).value,
+          observations: row.getCell(4).value,
+          needleType: row.getCell(5).value,
+          guideType: row.getCell(6).value,
+          garment: `${row.getCell(7).value} [${row.getCell(10).value}] {${row.getCell(11).value}}`,
+          sam,
+          order: row.getCell(9).value,
+          reference: row.getCell(10).value
+        });
       }
     });
 
-
     return operations;
   };
+
 
   // Drag and Drop Handlers
   const handleDrop = (event) => {

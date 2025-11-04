@@ -3,8 +3,9 @@ import { FaClock } from 'react-icons/fa6'
 import { useRecoilState } from 'recoil'
 import { automaticByOper, isOpenModalSampleByOper, openByOper, operationsSamples, operByOper } from '../../../../../infraestructure/states/states_samples'
 import { orderObjBalancing } from '../../../../../infraestructure/states/order_states'
-import { fetchGetData } from '../../../../../infraestructure/call_api/crud'
+import { fetchGetData, fetchGetDataToken } from '../../../../../infraestructure/call_api/crud'
 import { urlMain } from '../../../../../infraestructure/data/const'
+import { tokenMemory } from '../../../../../infraestructure/states/states_views'
 
 const ZonesMobileClockOper = ({zone}) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -23,7 +24,7 @@ const ZonesMobileClockOper = ({zone}) => {
   const [selectOperByOper, setSelectOperByOper] = useRecoilState(operByOper);
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
     
-
+  const [token, setToken] = useRecoilState(tokenMemory);
 
   const handleSample = (oper) => {
       
@@ -34,7 +35,7 @@ const ZonesMobileClockOper = ({zone}) => {
     const getData = async () => {
       setIsLoading(true)
       try {
-        const result = await fetchGetData(`${urlMain}samplings/index_samples_by_oper?balancing_id=${balancing_id}&oper_id=${oper_id}`);
+        const result = await fetchGetDataToken(`${urlMain}samplings/index_samples_by_oper?balancing_id=${balancing_id}&oper_id=${oper_id}`, token);
         // console.log(result,oper)
         setSamplesOperations(result.operations)
         

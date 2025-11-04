@@ -50,17 +50,21 @@ const ShowOrder = ({order}) => {
     <>
       {
         isLoading ? <Spinner color={"default"} size={"lg"}/> : (
+          <span>
             <button onClick={() => handleShowOrder(order.id)}>
               <h4 className="font-bold text-lg uppercase flex justify-between items-center text-secondary_two">
                 {
                   order.code
                 }
-               <FaArrowRight className='ml-2'/>
+                <FaArrowRight className='ml-2'/>
               </h4>
-              
             </button>
+          </span>
         )
       }
+
+      
+
     </>
   )
 }

@@ -14,12 +14,14 @@ import FormNewPlantModules from "./FormNewPlantModules.jsx";
 import ModuleEdit from "../balances/balancing/sidebarForm/ModuleEdit.jsx";
 import ModuleEditCustom from "./ModuleEditCustom.jsx";
 import ListOpersCustom from "./ListOpersCustom.jsx";
-import {Spinner, Tooltip} from "@nextui-org/react";
+import {CircularProgress, Progress, Spinner, Tooltip} from "@nextui-org/react";
 import NewModuleFormInput from "./NewModuleFormInput.jsx";
+import { plantsArray } from "../../infraestructure/states/plants_modules_states.js";
+import { useRecoilState } from "recoil";
 
-const PlantsCustom = () => {
+const PlantsCustom = ({topView}) => {
 
-  const [listPlants, setListPlants] = useState([])
+  const [listPlants, setListPlants] = useRecoilState(plantsArray)
 
   const [prodPlant, setProdPlant] = useState(null)
   const [updateModule, setUpdateModule] = useState( ""); // Inicializa con el nombre de la planta
@@ -30,6 +32,7 @@ const PlantsCustom = () => {
 
   const [isNewModule,setIsNewModule] = useState(false)
 
+  const [isLoadingModules,setIsLoadingModules] = useState(null)
 
   useEffect(() => {
 
@@ -102,6 +105,7 @@ const PlantsCustom = () => {
                 </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
+   
                   {
                     listPlants.map((plant, i)=> {
                       return(
@@ -119,6 +123,7 @@ const PlantsCustom = () => {
                             <p className="mt-2 text-medium text-gray-500">
                               {plant.production_modules.map((module, j) => (
                                 <>
+                                  
                                   <button
                                     onClick={() => {
                                       setProdPlant(
@@ -128,17 +133,38 @@ const PlantsCustom = () => {
                                         }
                                       )
                                       setIsLoading(true)
+                                      setIsLoadingModules(module.id)
                                     }}
                                     key={j}>
                                     <span
-                                      className={`font-bold hover:underline !cursor-pointer my-1 mr-1 ${prodPlant && (prodPlant.module.id === module.id) && 'text-secondary_two' }`}>
-                                      {module.name}
-                                      {j < plant.production_modules.length - 1 && ", "}
+                                      className={`inline-flex items-center font-bold hover:underline !cursor-pointer my-1 mr-1 ${
+                                        prodPlant && prodPlant.module.id === module.id ? "text-secondary_two" : ""
+                                      }`}
+                                    >
+                                      {module.id === isLoadingModules ? (
+                                        <Progress
+                                          color="default"
+                                          isIndeterminate
+                                          aria-label="Loading..."
+                                          size="sm"
+                                          className="w-16" // dale ancho fijo
+                                        />
+                                      ) : (
+                                        <>
+                                          {module.name}
+                                          {j < plant.production_modules.length - 1 && ", "}
+                                        </>
+                                      )}
                                     </span>
+
                                   </button>
+                                  
                                 </>
                               ))}
+                              
+
                             </p>
+                            
                             <NewModuleFormInput
                               listPlants={listPlants}
                               setListPlants={setListPlants}
@@ -174,6 +200,8 @@ const PlantsCustom = () => {
                                 isLoading={isLoading}
                                 setIsLoading={setIsLoading}
                                 prodPlant={prodPlant}
+                                setIsLoadingModules={setIsLoadingModules}
+                                isLoadingModules={isLoadingModules}
                               />
                             }
 

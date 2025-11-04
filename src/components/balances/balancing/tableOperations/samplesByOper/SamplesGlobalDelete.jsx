@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useRecoilState } from 'recoil';
 import { samplingsCircleList, samplingsCircleObj } from '../../../../../infraestructure/states/states_mobile';
 import { FaDeleteLeft } from 'react-icons/fa6';
-import { updateData } from '../../../../../infraestructure/call_api/crud';
+import { updateData, updateDataToken } from '../../../../../infraestructure/call_api/crud';
 import { urlMain } from '../../../../../infraestructure/data/const';
 import toast from 'react-hot-toast';
 import { ModalConfirmSample } from '../samples/ModalConfirmSample';
@@ -10,6 +10,7 @@ import { SamplesGlobalConfirm } from './SamplesGlobalConfirm';
 import { orderObjBalancing } from '../../../../../infraestructure/states/order_states';
 import { selectOpers } from '../../../../../infraestructure/states/opers_states';
 import { samplesGlobalShared } from '../../../../../infraestructure/utils/samplesGlobal';
+import { tokenMemory } from '../../../../../infraestructure/states/states_views';
 
 const SamplesGlobalDelete = ({sampling, index}) => {
   const [samplingsCircle, setSamplingsCircle] = useRecoilState(samplingsCircleList);
@@ -20,6 +21,7 @@ const SamplesGlobalDelete = ({sampling, index}) => {
   const [isOpenConfirm, setIsOpenConfirm] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
+  const [token, setToken] = useRecoilState(tokenMemory);
 
   const handleDelete = (sampling) => {
 
@@ -32,7 +34,7 @@ const SamplesGlobalDelete = ({sampling, index}) => {
     const updateSamplingCircle = async () => {
       setIsLoading(true)
       try {
-        const result = await updateData(urlMain + `samplings_cycles`, data)
+        const result = await updateDataToken(urlMain + `samplings_cycles`, data, token)
         // Eliminar el objeto del array local
 
         setSamplingsCircle(prev => [...prev.filter(item => item.id !== result.id_destroy)]);

@@ -18,7 +18,7 @@ import {
   selectProdPlantOriginal
 } from "../../../../infraestructure/states/opers_states.js";
 import {orderObjBalancing, showOrderObj} from "../../../../infraestructure/states/order_states.js";
-import {postData} from "../../../../infraestructure/call_api/crud.js";
+import {postData, postDataToken} from "../../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../../infraestructure/data/const.js";
 import useModal from "./useModal.jsx";
 import {FaBackward, FaEdit, FaSave, FaUsers} from "react-icons/fa";
@@ -33,6 +33,7 @@ import {imageTableBalancing} from "../../../../infraestructure/states/states_pro
 import {nameImageDateNow} from "../../../../infraestructure/utils/imagesFormat.js";
 import MyCustomButton from "../../../../ui/MyCustomButton.jsx";
 import { useRef } from "react";
+import { tokenMemory } from "../../../../infraestructure/states/states_views.js";
 
 const ModalDragOpers = () => {
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
@@ -67,6 +68,8 @@ const ModalDragOpers = () => {
   const [imageTable, setImageTable] = useRecoilState(imageTableBalancing)
 
   const [isOpenModalOpers, setIsOpenModalOpers] = useRecoilState(openModalOpers)
+
+  const [token, setToken] = useRecoilState(tokenMemory);
 
  
 
@@ -121,10 +124,10 @@ const ModalDragOpers = () => {
         plant: prodPlant.plant.id,
       },
     };
-
+    // token
     const postDataOrder = async (data) => {
       try {
-        const result = await postData(urlMain + "/opers_balancings/create_opers", data);
+        const result = await postDataToken(urlMain + "/opers_balancings/create_opers", data, token);
         const detail = assignColorsToArray(result.data_detail_end);
         setDetailOperOpera(detail);
         setProdPlantOriginal(prodPlant); // Actualiza el módulo original al nuevo módulo
@@ -134,6 +137,20 @@ const ModalDragOpers = () => {
         setTimeout(()=> {
           setImageTable(nameImageDateNow)
         },1000)
+        console.log(objBalancing, result)
+        
+        // setObjBalancing
+        if(result.user_name){
+          setObjBalancing(prev => ({
+            ...prev,
+            balancing: {
+              ...prev.balancing,
+              user_name: result.user_name 
+            }
+          }));
+        }
+
+        
 
       } catch (error) {
         console.error("Error al guardar datos", error);

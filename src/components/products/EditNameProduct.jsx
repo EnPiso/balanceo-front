@@ -75,7 +75,7 @@ const EditNameProduct = ({product}) => {
                             }
 
                         </>
-                         :
+                        :
                         <>
                             <Tooltip
                                 placement={"left"}

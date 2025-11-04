@@ -8,6 +8,8 @@ import toast from 'react-hot-toast';
 import { ConfirmOpen } from '../../../sidebarForm/ConfirmOpers';
 import { ZonesCyclesModalConfirm } from './ZonesCyclesModalConfirm';
 import PercentZonesByZone from './PercentZonesByZone';
+import { currentUser } from '../../../../../../infraestructure/states/states_views';
+import TagCreateUserName from '../../../../../../ui/TagCreateUserName';
 
 
 const ZoneCyclesObj = ({cycleIndex, cycle}) => {
@@ -17,6 +19,9 @@ const ZoneCyclesObj = ({cycleIndex, cycle}) => {
   const [isOpenConfirm, setIsOpenConfirm] = useState(false)
 
   const [isLoading, setIsLoading] = useState(false)
+
+  const [user, setUser] = useRecoilState(currentUser);
+  
   
 
   const handleDelete = (cycle) => {
@@ -56,7 +61,15 @@ const ZoneCyclesObj = ({cycleIndex, cycle}) => {
     <tr key={cycleIndex}  className="hover:bg-gray-100">
       {/* Ciclo */}
       <td className="border border-gray-300 px-4 py-2">
-        Ciclo {cycleIndex + 1}
+        <span className="text-start">
+          <span className="font-bold">
+            {cycleIndex + 1}
+          </span>
+          <span className="ml-2">
+            { cycle?.time_cycle_oper?.user_name && <TagCreateUserName user_name={cycle?.time_cycle_oper?.user_name}/> }
+          </span>
+        </span>
+        
       </td>
       {/* Zonas */}
       <td className="border border-gray-300 px-4 py-2">
@@ -73,18 +86,21 @@ const ZoneCyclesObj = ({cycleIndex, cycle}) => {
           ))}
         </ul>
       </td>
-      <td className="border border-gray-300 px-4 py-2">
-        <span  className='flex justify-center'>
-          <button
-            onClick={() => setIsOpenConfirm(true)}
-          > 
-            <FaDeleteLeft
-              size={30}
-              className='text-red-500'/>
-          </button>    
-        </span>
-        
-      </td>
+      {
+        user && (user.role === 'admin' || user.role === 'supervisor') &&
+          <td className="border border-gray-300 px-4 py-2">
+            <span  className='flex justify-center'>
+              <button
+                onClick={() => setIsOpenConfirm(true)}
+              > 
+                <FaDeleteLeft
+                  size={30}
+                  className='text-red-500'/>
+              </button>    
+            </span>
+          </td>
+      }
+      
 
       <ZonesCyclesModalConfirm
         isOpen={isOpenConfirm}

@@ -106,8 +106,6 @@ const DragAndDropApp = ({onClose}) => {
       const replacement = operations.find(obj => obj.id === operation.id);
       return replacement ? replacement : operation; 
     })
-    debugger
-  
     const data = {
       operations_balancings: {
         operations: JSON.stringify(operations),

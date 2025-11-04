@@ -12,6 +12,8 @@ import { Spinner, Tooltip } from "@nextui-org/react";
 import CustomPaginator from "../../ui/CustomPaginator.jsx";
 import SearchOpersMaster from "../opers_master/SearchOpersMaster.jsx";
 import { FaPlus, FaTimes } from "react-icons/fa";
+import { currentUser } from "../../infraestructure/states/states_views.js";
+import ProductTdShow from "./ProductTdShow.jsx";
 
 const totalPaginate = [5, 10, 20, 50];
 
@@ -28,6 +30,8 @@ const TableProductsCustom = ({handleProduct}) => {
     const [searchData, setSearchData] = useState("");
     const [queryString, setQueryString] = useState("");
 
+    const [user, setUser] = useRecoilState(currentUser);
+
     const handlePageChange = (page) => { 
         setCurrentPage(page);
     }  
@@ -39,7 +43,7 @@ const TableProductsCustom = ({handleProduct}) => {
         const getData = async () => {
             try {
                 //
-                const result = await fetchGetData(`${urlMain}products?page=${currentPage}&per_page=${perPage}&q[name_cont]=${encodeURIComponent(queryString)}`);
+                const result = await fetchGetData(`${urlMain}products?page=${currentPage}&per_page=${perPage}&q[name_or_reference_cont]=${encodeURIComponent(queryString)}`);
                 
                 setProducts(result.products)
                 setTotalPages(result.total_pages)
@@ -67,21 +71,26 @@ const TableProductsCustom = ({handleProduct}) => {
                     </div> : 
                     <>
                     <div className="flex justify-between items-center py-2">
+                        
                         <div>
-                            <Tooltip placement={"right-end"} content={isNewProduct ? "Cancelar" : "Agregar nuevo producto"}>
-                                <button onClick={handleProduct}>
-                                    {
-                                        isNewProduct ? <FaTimes size={23} className={"ml-3"}/> : <FaPlus className={"ml-3 text-secondary_two"} size={23}/>
-                                    }
-                                    
-                                </button>
-                            </Tooltip>
+                            {
+                                user && user.role === 'admin' &&
+                                    <Tooltip placement={"right-end"} content={isNewProduct ? "Cancelar" : "Agregar nuevo producto"}>
+                                        <button onClick={handleProduct}>
+                                            {
+                                                isNewProduct ? <FaTimes size={23} className={"ml-3"}/> : <FaPlus className={"ml-3 text-secondary_two"} size={23}/>
+                                            }
+                                            
+                                        </button>
+                                    </Tooltip>
+                            }
                         </div>
                         <div>
                             <SearchOpersMaster
                                 searchData={searchData}
                                 setSearchData={setSearchData}
                                 setQueryString={setQueryString}
+                                tooltipText={"Buscar producto o referencia"}
                             />
                         </div>
                     </div>
@@ -121,15 +130,26 @@ const TableProductsCustom = ({handleProduct}) => {
                                         return (
                                             <>
                                                 <tr key={product.id}>
-                                                    <EditNameProduct
-                                                    product={product}
-                                                    />
-                                                    <EditReferenceProduct
-                                                    product={product}
-                                                    />
-                                                    <EditCateroryProduct
-                                                    product={product}
-                                                    />
+                                                    {
+                                                        user && user.role === 'admin' ? 
+                                                            <>
+                                                                <EditNameProduct
+                                                                    product={product}
+                                                                />
+                                                                <EditReferenceProduct
+                                                                    product={product}
+                                                                />
+                                                                <EditCateroryProduct
+                                                                    product={product}
+                                                                />
+                                                            </>
+                                                            :
+                                                            <>
+                                                                <ProductTdShow product={product}/>
+                                                            </>
+                                                    }
+                                                    
+                                                    
                                                 </tr>
                                             </>
                                         )

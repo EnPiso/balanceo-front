@@ -3,7 +3,7 @@ import { FaArrowAltCircleRight, FaCheck, FaClock, FaRegWindowClose, FaSave, FaWi
 import WatchChrono from '../../../../samples/WatchChrono'
 import CustomButton from '../../../../../ui/CustomButton'
 import ListSamplesClock from './ListSamplesClock'
-import { postData, updateData } from '../../../../../infraestructure/call_api/crud'
+import { postData, postDataToken, updateData } from '../../../../../infraestructure/call_api/crud'
 import { urlMain } from '../../../../../infraestructure/data/const'
 import toast from 'react-hot-toast'
 import EditWatchChrono from '../../../../samples/EditWatchChrono'
@@ -13,6 +13,7 @@ import TableSamplesByOper from './TableSamplesByOper'
 import { operationsSamples } from '../../../../../infraestructure/states/states_samples'
 import { useRecoilState } from 'recoil'
 import { detailOperOperations } from '../../../../../infraestructure/states/states_balancing'
+import { currentUser, tokenMemory } from '../../../../../infraestructure/states/states_views'
 
 const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock, setSamplesClock}) => {
   const {operation} = sampleOperation
@@ -28,6 +29,9 @@ const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock
   const [samplesOperations, setSamplesOperations] = useRecoilState(operationsSamples)
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations)
   
+  const [user, setUser] = useRecoilState(currentUser);
+  
+  const [token, setToken] = useRecoilState(tokenMemory);
 
   const handleSample = (sample) => {
     setIsSample(sample)
@@ -37,7 +41,7 @@ const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock
   }
 
   const handleSaveTime = (time, setIsLoading) => {
-    console.log(time)
+    
     const detail_oper_operation_id = sampleOperation.detail_oper_operation_id
 
     const data = {
@@ -50,7 +54,7 @@ const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock
     const createSampling = async () => {
 
       try {
-        const result = await postData(urlMain + "/samplings", data)
+        const result = await postDataToken(urlMain + "/samplings", data, token)
         setSamplesClock([...samplesClock, result])
        // console.log(samplesOperations)
         const detail_oper_operation_id = data.sampling.detail_oper_operation_id
@@ -193,16 +197,23 @@ const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock
           isSample && operation.id === isSample.operation.id ? (
             <>
              <div className="py-3">
+              {
+                user && (user.role === "admin" || user.role === "supervisor") && (
+                  <>
+                    {
+                      isEdit ? (
+                        <EditWatchChrono
+                          setIsEdit={setIsEdit}
+                          timeData={isEdit} 
+                          onUpdateTime={handleUpdateTime} />
+                      ) : (
+                        <WatchChrono onSaveTime={handleSaveTime} />
+                      )
+                    }
+                  </>
+                )
+              }
               
-              {isEdit ? (
-                <EditWatchChrono
-                  setIsEdit={setIsEdit}
-                  timeData={isEdit} 
-                  onUpdateTime={handleUpdateTime} />
-              ) : (
-                <WatchChrono onSaveTime={handleSaveTime} />
-              )
-            }
              </div>
               <ListSamplesClock 
                 isLoading={isLoading}

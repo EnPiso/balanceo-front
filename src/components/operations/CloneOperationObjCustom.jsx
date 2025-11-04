@@ -46,8 +46,6 @@ const CloneOperationObjCustom = ({ operation, addOperation, setShowFormNew }) =>
       }
     }
 
-    
-    debugger
     const postDataOrder = async (data) => {
       setIsLoading(true)
       try {

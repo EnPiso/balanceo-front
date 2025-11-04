@@ -23,6 +23,7 @@ import { updateData } from "../../../../../infraestructure/call_api/crud";
 import { urlMain } from "../../../../../infraestructure/data/const";
 import toast from "react-hot-toast";
 import { firstWordInString } from "../../../../../ui/utils";
+import { currentUser } from "../../../../../infraestructure/states/states_views";
 
 
 
@@ -40,6 +41,9 @@ const ModalSelectSamples = ({isOpen, setIsOpen, Obj, itemAll}) => {
   const [isEdit, setIsEdit] = useState(null);
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [user, setUser] = useRecoilState(currentUser);
+  
   
 
   useEffect(()=> {
@@ -183,29 +187,33 @@ const ModalSelectSamples = ({isOpen, setIsOpen, Obj, itemAll}) => {
                       obj={Obj} isEdit={isEdit} 
                       isLoadingEdit={isLoading}
                     />
-
-                      <div
-                       
-                        className="flex justify-end text-secondary_two font-bold mb-5 text-md mt-4 ">
-                        <button 
-                          className="mr-1 flex justify-end"
-                          onClick={()=> {
-                            setIsNewSamples(true)
-                          }}
-                        >
-                          <span className="hidden lg:block mr-2">
-                            Agregar muestras
-                          </span>
-                          <div className="block lg:hidden">
-                            <FaPlus className="mt-1" size={50}/>
-                          </div>
-                          <div className="hidden lg:block">
-                            <FaPlus className="mt-1"/>  
-                          </div>
-                        </button>
-                       
+                  {
+                    user && (user.role === "admin" || user.role === "supervisor") && (
+                      <>
+                        <div
+                          className="flex justify-end text-secondary_two font-bold mb-5 text-md mt-4 ">
+                          <button 
+                            className="mr-1 flex justify-end"
+                            onClick={()=> {
+                              setIsNewSamples(true)
+                            }}
+                          >
+                            <span className="hidden lg:block mr-2">
+                              Agregar muestras
+                            </span>
+                            <div className="block lg:hidden">
+                              <FaPlus className="mt-1" size={50}/>
+                            </div>
+                            <div className="hidden lg:block">
+                              <FaPlus className="mt-1"/>  
+                            </div>
+                          </button>
                         
-                      </div>
+                        </div>
+                      </>
+                    )
+                  }
+                      
                     
                   </div>
 

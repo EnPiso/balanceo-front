@@ -8,11 +8,14 @@ import {urlMain} from "../../../../../infraestructure/data/const.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../../../infraestructure/data/toastMessage.js";
 import MyCustomButton from '../../../../../ui/MyCustomButton.jsx';
+import { currentUser } from '../../../../../infraestructure/states/states_views.js';
 
 const CommentVideoInput = ({setCommentsVideos, commentsVideos}) => {
   const [videoObjOperation, setVideoObjOperation] = useRecoilState(videoOperation);
 
   const [comments, setComments] = useState('');
+
+  const [user, setUser] = useRecoilState(currentUser);
 
   const handleComment = () => {
 
@@ -61,16 +64,17 @@ const CommentVideoInput = ({setCommentsVideos, commentsVideos}) => {
         onKeyDown={handleKeyDown} // Agrega el evento aquí
 
       ></textarea>
-
-        <MyCustomButton
-          icon={ <FaSave className='mt-1 mr-1 text-secondary_two'/>}
-          title={"Guardar comentario"}
-          handleClick={handleComment}
-          value={null}
-          bgButton={"bg-zinc-800"}
-          textButton={"text-secondary_two "}
-        />
-     
+      {
+        user && (user.role === 'admin' || user.role === 'supervisor') &&
+          <MyCustomButton
+            icon={ <FaSave className='mt-1 mr-1 text-secondary_two'/>}
+            title={"Guardar comentario"}
+            handleClick={handleComment}
+            value={null}
+            bgButton={"bg-zinc-800"}
+            textButton={"text-secondary_two "}
+          />
+      }
     </div>
   )
 }

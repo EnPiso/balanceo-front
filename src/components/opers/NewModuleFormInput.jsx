@@ -1,4 +1,4 @@
-import { Textarea, Tooltip } from '@nextui-org/react';
+import { CircularProgress, Textarea, Tooltip } from '@nextui-org/react';
 import React,{useState} from 'react'
 import CustomButton from '../../ui/CustomButton';
 import { FaArrowLeft, FaBackward, FaLess, FaPlus, FaSave } from 'react-icons/fa';
@@ -12,6 +12,8 @@ const NewModuleFormInput = ({ plant, listPlants, setListPlants }) => {
   const [isNewModule,setIsNewModule] = useState(false)
     
   const [modulesText, setModulesText] = useState(""); // Captura el texto del Textarea
+
+  const [isLoading,setIsLoading] = useState(false)
     
   const handleSave = () => {
     
@@ -24,12 +26,12 @@ const NewModuleFormInput = ({ plant, listPlants, setListPlants }) => {
 
        // delete_operation_balancing
        const updateModules = async () => {
-  
+        setIsLoading(true)
         try {
-          const result = await updateData(urlMain + "production_modules/create_modules_in_plant", data)
+            const result = await updateData(urlMain + "production_modules/create_modules_in_plant", data)
        
             // Actualizar el objeto
-          const updateObjects = listPlants.map(obj => {
+            const updateObjects = listPlants.map(obj => {
                 if (obj.id === plant.id) {
                 return {
                     ...obj,
@@ -46,6 +48,8 @@ const NewModuleFormInput = ({ plant, listPlants, setListPlants }) => {
   
         } catch (error) {
           console.error('Error setting data', error);
+        } finally {
+            setIsLoading(false)
         }
       };
   
@@ -87,13 +91,22 @@ const NewModuleFormInput = ({ plant, listPlants, setListPlants }) => {
                 isNewModule && (
                     <>
                         {
-                            modulesText.length >= 2 &&  <CustomButton
-                                color="default"
-                                variant="bordered"
-                                startContent={<FaSave color="green"/>}
-                                onClick={handleSave} // Guarda los datos
-                                title="Guardar"
-                            />
+                            modulesText.length >= 2 &&  
+                                <>
+                                    {
+                                        isLoading ?
+                                            <CircularProgress color='default' /> :
+                                            <CustomButton
+                                                color="default"
+                                                variant="bordered"
+                                                startContent={<FaSave color="green"/>}
+                                                onClick={handleSave} // Guarda los datos
+                                                title="Guardar"
+                                            />
+
+                                    }
+                                    
+                                </>
                         }
 
                     </>

@@ -130,21 +130,18 @@ const TableRowOperations = ({
             
             {item.operation}
           </span>
-           
-          <div className="flex justify-end">
-          <ButtonPlayVideos
-            item={item}
-            showVideos={showVideos}
-            setShowVideos={setShowVideos}
-            isScreenShot={isScreenShot}
-            handleOperationBalancing={handleOperationBalancing}
-
-          />
-
-          
-
-          </div>
-
+          {
+            selectedOperDetails.length >= 1 && 
+              <div className="flex justify-end">
+                <ButtonPlayVideos
+                  item={item}
+                  showVideos={showVideos}
+                  setShowVideos={setShowVideos}
+                  isScreenShot={isScreenShot}
+                  handleOperationBalancing={handleOperationBalancing}
+                />
+              </div>
+          }
         </td>
         <td className="px-4 py-4 border border-gray-300">{item.machine_name}</td>
         <td
@@ -165,7 +162,7 @@ const TableRowOperations = ({
         {opersSelect.size >= 1 && balancing && (
           <>
             <td className="px-4 py-4 border border-gray-300">
-              {(item.sam * balancing.gol_hour).toFixed(2)}
+              {(item.sam * balancing.gol_hour).toFixed(2)} 
             </td>
             {[...opersSelect].map((operatorId, index) => {
               // Busca el detalle correspondiente en `detailOperOpera`

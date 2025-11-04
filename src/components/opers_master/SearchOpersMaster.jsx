@@ -2,7 +2,7 @@ import { Input, Tooltip } from '@nextui-org/react'
 import React from 'react'
 import { FaArrowLeftLong, FaMagnifyingGlass, FaReplyAll, FaTentArrowLeftRight } from 'react-icons/fa6';
 
-const SearchOpersMaster = ({searchData, setSearchData, setQueryString}) => {
+const SearchOpersMaster = ({searchData, setSearchData, setQueryString, tooltipText, setRoleSearch, setIsSearch}) => {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -17,6 +17,8 @@ const SearchOpersMaster = ({searchData, setSearchData, setQueryString}) => {
   const handleReset = () => {
     setSearchData("")
     setQueryString("")
+    setRoleSearch && setRoleSearch("")
+    setIsSearch && setIsSearch(true)
   }
 
 
@@ -26,9 +28,9 @@ const SearchOpersMaster = ({searchData, setSearchData, setQueryString}) => {
         <button onClick={handleReset} className="focus:outline-none mr-2">
           <FaReplyAll className='text-secondary_two' size={24}/>
         </button>
-        <Tooltip content="Buscar Operario/CC (ENTER)">
+        <Tooltip content={tooltipText ? tooltipText : "Buscar Operario/CC (ENTER)"}>
           <Input
-            size="lg"
+            size="sm"
             value={searchData}
             onKeyDown={handleKeyDown}
             onChange={(e) => setSearchData(e.target.value)}

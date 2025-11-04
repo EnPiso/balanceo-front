@@ -1,13 +1,14 @@
 import React,{useState} from 'react'
 import { FaSave } from 'react-icons/fa'
 import CustomButton from '../../ui/CustomButton'
-import { postData } from '../../infraestructure/call_api/crud'
+import { postData, postDataToken } from '../../infraestructure/call_api/crud'
 import { urlMain } from '../../infraestructure/data/const'
 import { useRecoilState } from 'recoil'
 import { newSamples, openOperaClock, stepsSamples } from '../../infraestructure/states/states_samples'
 import toast from 'react-hot-toast'
 import { CircularProgress, Tooltip } from '@nextui-org/react'
 import { detailOperOperations } from '../../infraestructure/states/states_balancing'
+import { tokenMemory } from '../../infraestructure/states/states_views'
 
 const SaveStep = ({steps, Obj, setIsOpen, itemAll}) => {
   const [samples, setSamples] = useRecoilState(stepsSamples)
@@ -19,6 +20,7 @@ const SaveStep = ({steps, Obj, setIsOpen, itemAll}) => {
   
   const [operaClock, setOperaClock] = useRecoilState(openOperaClock)
   
+  const [token, setToken] = useRecoilState(tokenMemory);
 
   const handleSaveTime = () => {
    
@@ -31,11 +33,10 @@ const SaveStep = ({steps, Obj, setIsOpen, itemAll}) => {
     const postDataSampling = async (data) => {
       setIsLoading(true)
       try {
-          const result = await postData(urlMain + "samplings/create_multiple", data)
+          const result = await postDataToken(urlMain + "samplings/create_multiple", data, token)
           console.log(result, detailOperOpera, data.operation_balancing_id)
           setSamples([...samples, ...result.samples])
-          
-
+       
           // ID que deseas actualizar
    
           

@@ -11,6 +11,7 @@ import { orderObjBalancing } from '../../../../../../infraestructure/states/orde
 import { fetchGetData } from '../../../../../../infraestructure/call_api/crud';
 import { urlMain } from '../../../../../../infraestructure/data/const';
 import { isLoadingTime } from '../../../../../../infraestructure/states/operation_master_state';
+import { currentUser } from '../../../../../../infraestructure/states/states_views';
 
 const ListZonesCycles = () => {
   const [zonesCycles, setZonesCycles] = useRecoilState(zoneCyclesList);
@@ -23,6 +24,9 @@ const ListZonesCycles = () => {
   const [cycleObjAdd,setCycleObjAdd] = useState(false)
 
   const [ isLoading, setIsLoading ] = useState(false)
+
+  const [user, setUser] = useRecoilState(currentUser);
+  
 
   useEffect(()=> {
     
@@ -74,23 +78,28 @@ const ListZonesCycles = () => {
                     <thead className="bg-gray-200">
                       <tr>
                         <th className="border border-gray-300 px-4 py-2 text-left">
-                          Ciclo 
+                          Ciclo
                         </th>
                         <th className="border border-gray-300 px-4 py-2 text-left">
                           Operarios
                         </th>
-                        <th className="border text-secondary_two border-gray-300 px-4 py-2 flex justify-center">
+                        {
+                          user && (user.role === 'admin' || user.role === 'supervisor') && (
+                            <th className="border text-secondary_two border-gray-300 px-4 py-2 flex justify-center">
                               {/* groupIndex + 1 */} 
-                            {/* new Date(group.created_at).toLocaleString() */}
-                      
-                          <button 
-                            onClick={()=> {
-                              setIsOpen(true)
-                              setCycleObjAdd(group)
-                            }}>
-                            <FaPlus size={24} className=''/>
-                          </button>
-                        </th>
+                                {/* new Date(group.created_at).toLocaleString() */}
+                          
+                              <button 
+                                onClick={()=> {
+                                  setIsOpen(true)
+                                  setCycleObjAdd(group)
+                                }}>
+                                <FaPlus size={24} className=''/>
+                              </button>
+                            </th>
+                          )
+                        }
+                        
                       </tr>
                     </thead>
                     <tbody>

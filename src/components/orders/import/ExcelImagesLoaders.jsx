@@ -7,6 +7,7 @@ import { Badge, Chip } from '@nextui-org/react';
 import { FaFileExcel } from 'react-icons/fa';
 import { FaRegFileExcel } from 'react-icons/fa6';
 import { RiFileExcel2Fill } from "react-icons/ri";
+import { formatearString } from './utils.js';
 
 
 const ExcelImagesLoaders = ({ fileMultiple, setFileMultiple, filesData, setFilesData, setProcessData }) => {
@@ -29,29 +30,43 @@ const ExcelImagesLoaders = ({ fileMultiple, setFileMultiple, filesData, setFiles
 
   const extractOperations = (worksheet) => {
     const operations = [];
+
     worksheet.eachRow((row, rowNumber) => {
-      if (rowNumber > 1) {
-        const operation = row.getCell(1).value;
+      if (rowNumber > 1) { // Saltar encabezado
+        const firstCell = row.getCell(1).value;
         const machine_name = row.getCell(2).value;
         const sam = row.getCell(8).value;
 
-        if (operation && machine_name && sam) {
-          operations.push({
-            operation,
-            machine_name,
-            repetitions: row.getCell(3).value,
-            observations: row.getCell(4).value,
-            guideType: row.getCell(6).value,
-            garment: `${row.getCell(7).value} [${row.getCell(10).value}] {${row.getCell(11).value}}`,
-            sam,
-            order: row.getCell(9).value,
-            reference: row.getCell(10).value
-          });
-        }
+        // Validar que sea una fila de operación real
+        const isValidRow =
+          typeof firstCell === "string" &&
+          firstCell.trim().length > 0 &&
+          typeof machine_name === "string" &&
+          machine_name.trim().length > 0 &&
+          typeof sam === "number";
+
+        if (!isValidRow) return;
+
+        const stringFormat = formatearString(firstCell);
+
+        operations.push({
+          operation: stringFormat,
+          machine_name,
+          repetitions: row.getCell(3).value,
+          observations: row.getCell(4).value,
+          needleType: row.getCell(5).value,
+          guideType: row.getCell(6).value,
+          garment: `${row.getCell(7).value} [${row.getCell(10).value}] {${row.getCell(11).value}}`,
+          sam,
+          order: row.getCell(9).value,
+          reference: row.getCell(10).value
+        });
       }
     });
+
     return operations;
   };
+
 
   const processFiles = async () => {
     if (!fileMultiple || fileMultiple.length === 0) return;
@@ -110,7 +125,7 @@ const ExcelImagesLoaders = ({ fileMultiple, setFileMultiple, filesData, setFiles
     }
   }, [fileMultiple]);
 
-  // Para debugging
+  
   useEffect(() => {
     console.log('Datos procesados:', filesData);
   }, [filesData]);

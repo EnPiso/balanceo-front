@@ -9,6 +9,7 @@ import {updateData} from "../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../infraestructure/data/const.js";
 import toast from "react-hot-toast";
 import {Spinner} from "@nextui-org/react";
+import { currentUser } from "../../../infraestructure/states/states_views.js";
 
 
 const CommentBalancing = ({isShow}) => {
@@ -21,8 +22,9 @@ const CommentBalancing = ({isShow}) => {
 
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
 
-    const [isPDFMode, setIsPDFMode] = useRecoilState(isPDFGenerate);
+  const [isPDFMode, setIsPDFMode] = useRecoilState(isPDFGenerate);
   
+  const [user, setUser] = useRecoilState(currentUser);
 
   useEffect(() => {
     if(objBalancing && objBalancing.balancing && objBalancing.balancing.comment){
@@ -44,7 +46,7 @@ const CommentBalancing = ({isShow}) => {
     const updateComment = async () => {
       setIsLoading(true)
       try {
-        const result = await updateData(urlMain + `/balancings/${balancing_id}`, data)
+        const result = await updateData(urlMain + `balancings/${balancing_id}`, data)
         console.log(result)
         console.log(objBalancing.balancing)
 
@@ -125,7 +127,10 @@ const CommentBalancing = ({isShow}) => {
                   <>
                     {comment && (
                       <div
-                        onClick={() => !isEdit && setIsEdit(true)}
+                        onClick={() => {
+                          user && (user.role === 'admin' || user.role === 'supervisor') &&
+                            !isEdit && setIsEdit(true)
+                        }}
                         className="ql-editor cursor-pointer"
                         style={{
                           padding: "10px",
@@ -139,23 +144,29 @@ const CommentBalancing = ({isShow}) => {
                 )
               }
             
-      
                 {
-                !isShow && !isEdit && (
+                  user && (user.role === 'admin' || user.role === 'supervisor') && (
                     <>
-                      <div className={"flex justify-end items-center font-bold uppercase mb-2 mt-2"}>
-                        <CustomButton
-                          color="default"
-                          variant="bordered"
-                          startContent={<FaPencil color={"green"}/>}
-                          onClick={() => setIsEdit(true)}
-                          title="Editar"
-                        />
+                      {
+                        !isShow && !isEdit && (
+                          <>
+                            <div className={"flex justify-end items-center font-bold uppercase mb-2 mt-2"}>
+                              <CustomButton
+                                color="default"
+                                variant="bordered"
+                                startContent={<FaPencil color={"green"}/>}
+                                onClick={() => setIsEdit(true)}
+                                title="Editar"
+                              />
 
-                      </div>
+                            </div>
+                          </>
+                        )
+                      }
                     </>
-                    )
+                  )
                 }
+                
 
 
 

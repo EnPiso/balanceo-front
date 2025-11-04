@@ -11,17 +11,21 @@ import ConfirmDeleteSample from './ConfirmDeleteSample'
 import { timeToSeconds } from '../../../../../ui/utils'
 import ObjForPolyvalence from './ObjForPolyvalence'
 import LastObjForPolyvalence from './LastObjForPolyvalence'
+import { currentUser } from '../../../../../infraestructure/states/states_views'
 
 const ListSamples = ({obj,setIsEdit, isEdit, isLoadingEdit, itemAll}) => {
 
   const [samples, setSamples] = useRecoilState(stepsSamples)
   const [isLoading, setIsLoading] = useState(false);
 
+  const [user, setUser] = useRecoilState(currentUser);
+  
+
   useEffect(() => {
     
     const getData = async () => {
       setIsLoading(true)
-      try {
+      try { 
         const result = await fetchGetData(`${urlMain}samplings/index_samples?operation_balancing_id=${obj.operation_balancing_id}&oper_id=${obj.oper_id}`);
         
         setSamples(result.samples);
@@ -60,7 +64,7 @@ const ListSamples = ({obj,setIsEdit, isEdit, isLoadingEdit, itemAll}) => {
                   samples.length >= 1 && (
                     <thead className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white">
                       <tr>
-                        <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Toma</th>
+                        <th className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-left">Toma</th>
                         <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Segundos</th>
                         <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Meta</th>
                         <th className="px-4 py-2 border border-gray-300 dark:border-gray-600 flex justify-end"> 
@@ -68,7 +72,13 @@ const ListSamples = ({obj,setIsEdit, isEdit, isLoadingEdit, itemAll}) => {
                             %
                           </span>
                         </th>
-                        <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">{""}</th>
+                        {
+                          user && (user.role === "admin" || user.role === "supervisor") && 
+                            <>
+                              <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">{""}</th>
+                            </>
+                        }
+                        
                       </tr>
                     </thead>  
                   )

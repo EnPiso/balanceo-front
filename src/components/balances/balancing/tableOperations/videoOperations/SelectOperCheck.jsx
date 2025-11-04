@@ -1,13 +1,18 @@
 import { Spinner } from '@nextui-org/react'
 import React, { useState } from 'react'
 import { firstWordInString } from '../../../../../ui/utils'
+import { currentUser } from '../../../../../infraestructure/states/states_views'
+import { useRecoilState } from 'recoil'
 
 const SelectOperCheck = ({selected, oper, handleOperVideo}) => {
   const [isLoading, setIsLoading] = useState(false)
-
+  
+  const [user, setUser] = useRecoilState(currentUser);
+  
   return (
     <>
-     {
+    
+    {
         isLoading ? 
           <Spinner size='lg' color='default'/> :
           <label
@@ -22,7 +27,12 @@ const SelectOperCheck = ({selected, oper, handleOperVideo}) => {
               name="tag-radio"
               value={oper.name}
               checked={selected && selected.id === oper.id}
-              onChange={() => handleOperVideo(oper, setIsLoading)}
+              onChange={() => {
+                  if(user && (user.role === 'admin' || user.role === 'supervisor')){
+                    handleOperVideo(oper, setIsLoading)
+                  }
+                  
+              }}
               className="hidden"
             />
             <span className="flex justify-between items-center">

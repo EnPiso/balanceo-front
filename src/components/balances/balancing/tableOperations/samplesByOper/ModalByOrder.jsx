@@ -20,11 +20,12 @@ import ListOperationsSamples from "./ListOperationsSamples";
 import DashboardSamplesAutomatic from "../samplesAutomatic/DashboardSamplesAutomatic";
 import MyCustomButton from "../../../../../ui/MyCustomButton";
 import { orderObjBalancing } from "../../../../../infraestructure/states/order_states";
-import { fetchGetData } from "../../../../../infraestructure/call_api/crud";
+import { fetchGetData, fetchGetDataToken } from "../../../../../infraestructure/call_api/crud";
 import { urlMain } from "../../../../../infraestructure/data/const";
 import SelectOpersForTimes from "../samplesZones/SelectOpersForTimes";
 import { zoneOperSampleObj, zonesSamplesDetail, zonesSamplesList } from "../../../../../infraestructure/states/states_samples_zones";
 import { zonesMobile } from "../../../../../infraestructure/states/states_mobile";
+import { currentUser, tokenMemory } from "../../../../../infraestructure/states/states_views";
 
 
 
@@ -46,6 +47,9 @@ const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) =>
 
   const [isShowDetail, setIsShowDetail] = useState(true);
 
+  const [user, setUser] = useRecoilState(currentUser);
+  
+  const [token, setToken] = useRecoilState(tokenMemory);
 
   useEffect(()=> {
    // console.log(oper, samplesOperations, isSample)
@@ -61,7 +65,7 @@ const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) =>
     const getData = async () => {
       setIsLoading(true)
       try {
-        const result = await fetchGetData(`${urlMain}samplings/index_samples_by_oper?balancing_id=${balancing_id}&oper_id=${oper_id}`);
+        const result = await fetchGetDataToken(`${urlMain}samplings/index_samples_by_oper?balancing_id=${balancing_id}&oper_id=${oper_id}`, token);
         // console.log(result,oper)
         setSamplesOperations(result.operations)
         setIsShowDetail(false)
@@ -173,36 +177,41 @@ const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) =>
               
             </ModalBody>
             <ModalFooter>
-
               {
-                isAutomatic ? (
+                user && (user.role === 'admin' || user.role === 'supervisor') && 
                   <>
-                    <MyCustomButton
-                        icon={null}
-                        title={"Regresar"}
-                        handleClick={()=> setIsAutomatic(false)}
-                        value={null}
-                        bgButton={"bg-zinc-800"}
-                        textButton={"text-secondary_two"}
-                      />
-                    
+                    {
+                      isAutomatic ? (
+                        <>
+                          <MyCustomButton
+                              icon={null}
+                              title={"Regresar"}
+                              handleClick={()=> setIsAutomatic(false)}
+                              value={null}
+                              bgButton={"bg-zinc-800"}
+                              textButton={"text-secondary_two"}
+                            />
+                          
+                        </>
+                        
+                      ) : (
+                        <>
+                          
+                            <MyCustomButton
+                              icon={""}
+                              title={"Automatizar operaciones"}
+                              handleClick={()=> setIsAutomatic(true)}
+                              value={null}
+                              bgButton={"bg-zinc-800"}
+                              textButton={"text-secondary_two"}
+                            />
+                        </>
+                        
+                      )
+                    }
                   </>
-                  
-                ) : (
-                  <>
-                    
-                      <MyCustomButton
-                        icon={""}
-                        title={"Automatizar operaciones"}
-                        handleClick={()=> setIsAutomatic(true)}
-                        value={null}
-                        bgButton={"bg-zinc-800"}
-                        textButton={"text-secondary_two"}
-                      />
-                  </>
-                  
-                )
               }
+              
               <MyCustomButton
                 icon={""}
                 title={"Salir"}

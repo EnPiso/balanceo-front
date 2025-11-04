@@ -1,10 +1,46 @@
-import React, {  } from 'react'
-import { FaEye, FaEyeSlash, FaMoon, FaSun } from 'react-icons/fa'
+import React, { useEffect, useState } from 'react'
+import { FaEye, FaEyeSlash, FaMoon, FaSun, FaUser, FaUserAltSlash } from 'react-icons/fa'
 import {useRecoilState} from "recoil";
-import {mainTheme} from "../../infraestructure/states/states_views.js";
+import {currentUser, isLoadingUser, isShowModalLogIn, mainTheme} from "../../infraestructure/states/states_views.js";
+import ModalUserLogin from '../users/ModalUserLogin.jsx';
+import IconMain from './IconMain.jsx';
+import { fetchGetData, fetchGetUser } from '../../infraestructure/call_api/crud.js';
+import { urlMain } from '../../infraestructure/data/const.js';
+import toast from 'react-hot-toast';
+import { ConfirmOpen } from '../balances/balancing/sidebarForm/ConfirmOpers.jsx';
+import { CloseSession } from './CloseSession.jsx';
+import { CircularProgress } from '@nextui-org/react';
+import ModalCustomUsers from '../users/ModalCustomUsers.jsx';
 
 const Navbar = ({toggleSidebar,isSidebarOpen}) => {
-  const [theme, setTheme] = useRecoilState(mainTheme); // Usa el átomo de Recoil
+  const [theme, setTheme] = useRecoilState(mainTheme); 
+  const [isModalLogIn, setIsModalLogIn] = useRecoilState(isShowModalLogIn); 
+  const [user, setUser] = useRecoilState(currentUser);
+
+  const [isOpen, setIsOpen] = useState(false)
+  const [isLoading, setIsLoading] = useRecoilState(isLoadingUser)
+  
+  useEffect(()=> {
+    const getData = async () => {
+          
+          try {
+            const result = await fetchGetUser(`${urlMain}current_user`);
+            
+            if(result && result.data.user){
+              setUser(result.data.user)
+              toast.success(`¡Bienvenido ${result.data.user.name}!`)
+            }
+            
+          } catch (error) {
+            console.error("Error al obtener los datos:", error);
+          } finally {
+            setIsLoading(false)
+          }
+        };
+        
+        getData();  
+  }, [])
+
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
@@ -21,24 +57,9 @@ const Navbar = ({toggleSidebar,isSidebarOpen}) => {
               {
                 !isSidebarOpen ?
                 <>
-                
-                <div className='flex justify-start'>
-                  <img
-                    className="w-14 h-14 object-contain "
-                    src="/icon/icon.jpeg"
-                    alt="Icono de Balance"
-                  />
-                  <div className='ml-2 py-1'>
-                    <p className="text-primary_two font-black text-xl text-start m-0">
-                      <span>
-                        <span className="text-secondary_two">En</span>
-                        <span className="text-primary_two">Piso</span>
-                      </span>
-                    </p>
-                    <p className="text-secondary_two text-xs text-center m-0">BALANCEOS</p>
-                  </div>
-                </div>
-                  
+                  <div className='flex justify-start'>
+                    <IconMain/>
+                  </div> 
                 </> :
                 <div className="w-14 h-14 object-contain">
 
@@ -49,15 +70,42 @@ const Navbar = ({toggleSidebar,isSidebarOpen}) => {
           </div>
           
         </div>
-       
-        <button
-          className='text-2xl text-dark'
-          onClick={toggleTheme}>
+        
+        <div className="flex items-center gap-2">
+          <button className="text-2xl text-dark" onClick={toggleTheme}>
+            {theme === 'light' ? <FaMoon className="text-secondary_two" /> : <FaSun className="text-secondary_two" />}
+          </button>
+
           {
-            theme === 'light'  ? <FaMoon  color='white'/> : <FaSun color='white'/>
+            isLoading ? 
+              <CircularProgress color='default' size='sm'/> :
+              <>
+                {
+                  user ? (
+                    <span onClick={()=> setIsOpen(true)} className="text-sm text-secondary_two cursor-pointer font-bold">{user.name}</span>
+                  ) : (
+                    <button className="text-2xl text-dark" onClick={() => setIsModalLogIn(!isModalLogIn)}>
+                      <FaUser className="text-secondary_two" />
+                    </button>
+                  )
+                }
+              </>
           }
 
-        </button>
+          
+        </div>
+
+        <ModalCustomUsers
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />    
+        
+        {
+          isModalLogIn && 
+            <ModalUserLogin/> 
+        }
+      
+        
     </div>
   )
 }

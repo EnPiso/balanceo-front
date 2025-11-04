@@ -10,6 +10,8 @@ import SamplesGlobalDelete from './SamplesGlobalDelete';
 import SamplesGlobalFooter from './SamplesGlobalFooter';
 import { Spinner } from '@nextui-org/react';
 import PercentSamplesZones from '../../../../../ui/PercentageBox';
+import { currentUser } from '../../../../../infraestructure/states/states_views';
+import TagCreateUserName from '../../../../../ui/TagCreateUserName';
 
 const SamplesGlobalList = () => {
 
@@ -17,6 +19,8 @@ const SamplesGlobalList = () => {
   const [samplingsCircle, setSamplingsCircle] = useRecoilState(samplingsCircleList);
   const [isLoadingSamplings, setIsLoadingSamplings] = useRecoilState(loadingSamplingsCircle)
 
+  const [user, setUser] = useRecoilState(currentUser);
+  
 
   useEffect(()=> {
     const balancing_id = objBalancing.balancing_id
@@ -78,7 +82,13 @@ const SamplesGlobalList = () => {
                         <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Ciclo</th>
                         <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Segundos</th>
                         <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">{""}</th>
-                        <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">{""}</th>
+                        {
+                          user && (user.role === 'admin' || user.role === 'supervisor') && (
+                            <>
+                              <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">{""}</th>
+                            </>
+                          )
+                        }
                       </tr>
                     </thead>  
                 }
@@ -89,8 +99,16 @@ const SamplesGlobalList = () => {
                     return(
                       <tr key={i} className="border border-gray-300 dark:border-gray-600">
                         <td className="px-4 py-2 border-l-1">
-                            <span className="flex justify-center text-zinc-800 font-bold">
-                              { i + 1 }
+                            <span className=" text-zinc-800">
+                              <span className="text-start">
+                                <span className='font-bold'>
+                                  { i + 1 }
+                                </span>
+                                <span className='ml-2'>
+                                  {sampling.user_name && <TagCreateUserName user_name={sampling.user_name}/>}
+                                </span>
+                              </span>
+                              
                             </span>
                         </td>
                         <td className="px-4 py-2 border-l-1">
@@ -107,12 +125,16 @@ const SamplesGlobalList = () => {
                          
                           <PercentSamplesZones value={formatPercent(sampling.sample)} />  
                         </td>
-                        <td className="px-4 py-2 border-l-1">
-                          <SamplesGlobalDelete
-                            sampling={sampling}
-                            index={ i + 1 }
-                          />
-                        </td>
+                        {
+                          user && (user.role === 'admin' || user.role === 'supervisor') && 
+                            <td className="px-4 py-2 border-l-1">
+                              <SamplesGlobalDelete
+                                sampling={sampling}
+                                index={ i + 1 }
+                              />
+                            </td>
+                        }
+                        
                       </tr>
                     )
                   })

@@ -3,21 +3,24 @@ import React, { useState } from 'react'
 import { FaDeleteLeft } from 'react-icons/fa6'
 import { useRecoilState } from 'recoil'
 import { zonesSamplesList } from '../../../../../infraestructure/states/states_samples_zones'
-import { postData, updateData } from '../../../../../infraestructure/call_api/crud'
+import { postData, updateData, updateDataToken } from '../../../../../infraestructure/call_api/crud'
 import { urlMain } from '../../../../../infraestructure/data/const'
 import toast from 'react-hot-toast'
 import { SamplesGlobalConfirm } from '../samplesByOper/SamplesGlobalConfirm'
+import { tokenMemory } from '../../../../../infraestructure/states/states_views'
 
 const SamplesZoneDelete = ({sample,index}) => {
   const [isOpenConfirm, setIsOpenConfirm] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [zonesSamples, setZonesSamples] = useRecoilState(zonesSamplesList)
 
+  const [token, setToken] = useRecoilState(tokenMemory);
+
   const handleDelete = (sample) => {
     const deleteSample = async () => {
       setIsLoading(true)
       try {
-        const result = await updateData(`${urlMain}opers_zones/${sample.id}/destroy_sample`);
+        const result = await updateDataToken(`${urlMain}opers_zones/${sample.id}/destroy_sample`, token);
   
         const updateSamples = zonesSamples.filter(item => item.id !== sample.id);
         

@@ -76,7 +76,7 @@ const FormCategoryProduct = ({setIsNew}) => {
             }
             const updateArrayUp = [...categoriesUp, data]
             setCategoriesUp(updateArrayUp)
-            debugger
+            
             toast.success(toastMessageCustom.operationsNew);
             setIsNew(false)
 

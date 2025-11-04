@@ -4,11 +4,12 @@ import { useRecoilState } from 'recoil';
 import { operationsSamples } from '../../../../../infraestructure/states/states_samples';
 import ObjSampleAutomatic from './ObjSampleAutomatic';
 import { Spinner, Tooltip } from '@nextui-org/react';
-import { postData } from '../../../../../infraestructure/call_api/crud';
+import { postData, postDataToken } from '../../../../../infraestructure/call_api/crud';
 import { urlMain } from '../../../../../infraestructure/data/const';
 import toast from 'react-hot-toast';
 import CustomButton from '../../../../../ui/CustomButton';
 import { detailOperOperations } from '../../../../../infraestructure/states/states_balancing';
+import { tokenMemory } from '../../../../../infraestructure/states/states_views';
 
 const ListSamplesAutomatic = ({setIsAutomatic}) => {
   const [isSample, setIsSample] = useState(false);
@@ -21,6 +22,9 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
+
+  const [token, setToken] = useRecoilState(tokenMemory);
+
 
   useEffect(() => {
     if (isAutoplay && currentIndex < samplesOperations.length) {
@@ -100,7 +104,7 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
     const createAutoplay = async () => {
       setIsLoading(true)
       try {
-        const result = await postData(urlMain + "samplings/create_autoplay", data);
+        const result = await postDataToken(urlMain + "samplings/create_autoplay", data, token);
      
          // Actualizar samplesOperations con los datos recibidos
          setSamplesOperations((prevSamplesOperations) =>

@@ -8,6 +8,7 @@ import ItemBoxBalancing from "./ItemBoxBalancing.jsx";
 import {samSumOperation} from "../../../../infraestructure/states/operation_states.js";
 import {balancingData} from "../../../../infraestructure/states/states_balancing.js";
 import useModal from "./useModal.jsx";
+import { currentUser } from "../../../../infraestructure/states/states_views.js";
 
 const InfoBoxBalancing = () => {
 
@@ -16,7 +17,7 @@ const InfoBoxBalancing = () => {
   const [samSum, setSamSum] = useRecoilState(samSumOperation);
   const [balancing, setBalancing] = useRecoilState(balancingData);
 
-
+  const [user, setUser] = useRecoilState(currentUser);
 
   useEffect(() => {
     // const objetosFiltrados = opers.filter(objeto => opersSelect.has(objeto.id));
@@ -34,9 +35,13 @@ const InfoBoxBalancing = () => {
 
   return (
     <div>
-      <div className="hidden lg:block">
-        <ModalDragOpers/>
-      </div>
+      {
+        user && (user.role === 'admin' || user.role === 'supervisor') && 
+          <div className="hidden lg:block">
+            <ModalDragOpers/>
+          </div>
+      }
+      
       
       <div className="mt-3">
         {

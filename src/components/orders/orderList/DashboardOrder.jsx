@@ -24,6 +24,8 @@ import ModalCloneNew from "../../balances/balancing/cloneBalancings/ModalCloneNe
 import OrdersManualCreate from "../manual/OrdersManualCreate.jsx";
 import { isModalManual, isModalProdBalancing, isOrderOrProduct, isShowCreateProdBal } from "../../../infraestructure/states/states_manual_order.js";
 import ModalProductBalancing from "../isProduct/ModalProductBalancing.jsx";
+import { currentUser } from "../../../infraestructure/states/states_views.js";
+import TagCreateUserName from "../../../ui/TagCreateUserName.jsx";
 
 const totalPaginate = [5, 10, 20, 30, 40, 50];
 
@@ -50,6 +52,8 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
   const pdfDiv = useRef(null);
 
   const [isOrderOr, setIsOrderOr] = useRecoilState(isOrderOrProduct);
+
+  const [user, setUser] = useRecoilState(currentUser);
   
 
   useEffect(() => {
@@ -95,6 +99,10 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
     setIsSearchVisible(!isSearchVisible);
   };
 
+
+  // order.products.map((product, i)
+  // countTrue = arr.filter(item => item.has_opers_balancing === true).length;
+
   
   return (
     <div>
@@ -126,26 +134,36 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
             </div>
             
             { 
-              !showOrder && (
-                <div className="hidden lg:block">
-                  <span className="flex justify-start items-center ">
-                    <button onClick={() => setIsArchive(false)}>
-                      <h3 className="text-md lg:text-2xl font-semibold py-6 uppercase text-secondary_one hover:text-zinc-800 flex justify-between hover:underline">
-                        Ordenes de producción
-                        <FaFile className="mt-1 ml-1" />
-                      </h3>
-                    </button>
-                    <button
-                      onClick={() => setIsArchive(true)} 
-                      className="ml-4">
-                      <h3 className="text-md lg:text-2xl font-semibold py-6 uppercase text-secondary_one hover:text-zinc-800 flex justify-between hover:underline">
-                        Archivadas
-                        <FaFileArchive color="red" className="mt-1 ml-1" />
-                      </h3>
-                    </button>
-                  </span>
-                </div>
-              )
+              !user ? <>
+                <h3 className={`text-secondary_one text-md lg:text-2xl font-semibold py-6`}>
+                  Ordenes de producción
+                </h3>
+              </> :
+               <>
+                {
+                  !showOrder && (
+                    <div className="hidden lg:block">
+                      <span className="flex justify-start items-center ">
+                          <button onClick={() => setIsArchive(false)}>
+                            <h3 className={`${!isArchive ? 'text-zinc-800': 'text-secondary_one'} text-md lg:text-2xl font-semibold py-6 flex justify-between`}>
+                              Ordenes de producción
+                              <FaFile className="mt-1 ml-1" />
+                            </h3>
+                          </button>
+                          <button
+                            onClick={() => setIsArchive(true)} 
+                            className="ml-4">
+                            <h3 className={`${isArchive ? 'text-zinc-800': 'text-secondary_one'} text-md lg:text-2xl font-semibold py-6  text-secondary_one hover:text-zinc-800 flex justify-between`}>
+                              Archivadas
+                              <FaFileArchive color="red" className="mt-1 ml-1" />
+                            </h3>
+                          </button>
+                      </span>
+                    </div>
+                )
+                }
+              </>
+              
             }
            
           </>
@@ -196,17 +214,25 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
                             {
                               isOrderOr ? 'Orden de producción' : 'Balanceo por producto'
                             }
+
+                            {
+                              user && (user.role === 'admin' || user.role === 'supervisor') && (
+                                <>
+                                  <Tooltip content="Crear nueva orden de producción">
+                                    <button
+                                      onClick={()=> {
+                                        setIsModalManualOrder(true)
+                                        setIsShowCreate(false)
+                                      }}
+                                    >
+                                      <FaPlus className="text-secondary_two items-center" size={28} />
+                                    </button>
+                                  </Tooltip>
+                                </>
+                              )
+                            }
                             
-                            <Tooltip content="Crear nueva orden de producción">
-                              <button
-                                onClick={()=> {
-                                  setIsModalManualOrder(true)
-                                  setIsShowCreate(false)
-                                }}
-                              >
-                                <FaPlus className="text-secondary_two items-center" size={28} />
-                              </button>
-                            </Tooltip>
+                            
                             
                           </span>
                           
@@ -299,18 +325,31 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
                           </td>
                           <td className="p-2 border border-gray-300">
                             <span className="flex justify-between items-center">
-                              <div className="flex justify-start">
+                              <div className="flex justify-start items-center">
                                 <span>
                                   {order.created_at && monthDayYear(order.created_at)}
                                   <small className="ml-2 font-bold text-black">
                                     {order.created_at && hourMinuteSecond(order.created_at)}
                                   </small>
+                                  
                                 </span>
-                               
+                                <small className="text-secondary_two ml-2">
+                                  {
+                                    order.user_name && 
+                                      <TagCreateUserName
+                                        user_name={order.user_name}/>
+                                  }
+                                
+                                </small>
                               </div>
+                              <span>
+                                
+                                {
+                                  user && (user.role === 'admin' || user.role === 'supervisor') && 
+                                    <FileArchiver order={order} />
+                                }
+                              </span>
                               
-
-                              <FileArchiver order={order} />
                             </span>
                           </td>
                         </tr>
@@ -329,7 +368,6 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
                 </div>
               </div>
             )}
-
             <div className="flex justify-start py-4">
               <CustomPaginator
                 total={totalPages}

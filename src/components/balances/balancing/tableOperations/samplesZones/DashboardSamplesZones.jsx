@@ -11,6 +11,7 @@ import SamplesZonesFooter from './SamplesZonesFooter'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import SelectOpersForTimes from './SelectOpersForTimes'
 import { zonesMobile } from '../../../../../infraestructure/states/states_mobile'
+import { currentUser } from '../../../../../infraestructure/states/states_views'
 
 const DashboardSamplesZones = () => {
   const [steps, setSteps] = useState([]);
@@ -28,6 +29,9 @@ const DashboardSamplesZones = () => {
   const [isShowDetail, setIsShowDetail] = useState(true);
 
   const [operTemporal, setoperTemporal] = useState(null);
+
+  const [user, setUser] = useRecoilState(currentUser);
+  
 
   useEffect(()=> {
     if(zoneOperSample?.operator){
@@ -102,17 +106,20 @@ const DashboardSamplesZones = () => {
       }
        
      
-      
     {
-      operTemporal && 
-        <div className="mt-4 py-4">
-          <WatchChrono
-              onSaveTime={handleSaveTime}
-            />
-        </div>
+      user && (user.role === 'admin' || user.role === 'supervisor') &&
+        <>
+          {
+            operTemporal && 
+              <div className="mt-4 py-4">
+                <WatchChrono
+                    onSaveTime={handleSaveTime}
+                  />
+              </div>
+          }
+        </>
     }
-      
-       
+    
       <div className="py-6">
         {steps.map((time, index) => (
           <div
@@ -122,6 +129,7 @@ const DashboardSamplesZones = () => {
             <span className={`font-bold text-zinc-800`}>
               {index + 1} - {time}               
             </span>
+            
             <div className="flex items-center gap-2">
               <button
                 onClick={() => handleDelete(index)}

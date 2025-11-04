@@ -13,3 +13,13 @@ export const validateProduct = (product) => {
 
   return { valid: true };
 };
+
+export const isValidEmail = (email) => {
+  const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+  return regex.test(email);
+};
+
+
+export const validateEmail = (email) => {
+  return email.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
+};

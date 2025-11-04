@@ -11,6 +11,7 @@ import CommentVideoInput from "./CommentVideoInput.jsx";
 import {fetchGetData} from "../../../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../../../infraestructure/data/const.js";
 import {formatDateRails} from "../../../../../ui/utils.js";
+import { currentUser } from '../../../../../infraestructure/states/states_views.js';
 
 const TrDinamycVideo = ({item}) => {
   const [videoObjOperation, setVideoObjOperation] = useRecoilState(videoOperation);
@@ -18,6 +19,9 @@ const TrDinamycVideo = ({item}) => {
   const [OpersTags, setOpersTags] = useRecoilState(listVideosOpers)
 
   const [commentsVideos, setCommentsVideos] = useState([])
+
+  const [user, setUser] = useRecoilState(currentUser);
+  
 
   useEffect(() => {
     if (videoRef.current) {
@@ -95,14 +99,15 @@ const TrDinamycVideo = ({item}) => {
                 })
               }
 
+              {
+                user && (user.role === 'admin' || user.role === 'supervisor') &&
+                  <CommentVideoInput
+                    commentsVideos={commentsVideos}
+                    setCommentsVideos={setCommentsVideos}
+                    key={`${JSON.stringify(videoObjOperation)}`}
 
-             <CommentVideoInput
-               commentsVideos={commentsVideos}
-               setCommentsVideos={setCommentsVideos}
-               key={`${JSON.stringify(videoObjOperation)}`}
-
-             />
-
+                  />
+              }
 
             </>
 

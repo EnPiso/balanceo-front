@@ -54,6 +54,7 @@ import { FaRegClock, FaUserClock } from 'react-icons/fa';
 import SecuentialZoneDash from './balancingMobile/SecuentialZoneDash.jsx';
 import { isLoadingTime, isLoadingTimeByZone, timeDataCyclesNum } from '../../../../infraestructure/states/operation_master_state.js';
 import { isShowModalZoneSample } from '../../../../infraestructure/states/states_samples_zones.js';
+import MachinesBalancing from './machinesBalancing/MachinesBalancing.jsx';
 
 
 
@@ -318,8 +319,9 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
   return (
     <div>
       <div
+          style={{ minWidth: "800px", minHeight: "600px" }}
           ref={componentPDF}
-          className={`bg-zinc-100 overflow-x-auto overflow-hidden hidden lg:block ${isPDFMode && 'text-1xl'}`}>
+          className={`pdf-capture bg-zinc-100 overflow-x-auto overflow-hidden ${isPDFMode && 'text-1xl'}`}>
 
         {
             isPDFMode ? (
@@ -387,37 +389,49 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
         }
 
         {
-          selectedOperDetails.length > 0 && (
+
+          !isPDFMode && <>
+            {
+              selectedOperDetails.length > 0 && (
+                <>
+                  { samplingsGlobal ? 
+                    <FooterCycles handleFunction={handleGlobalClock}/> :
+                        <div className="py-4">
+                          <Tooltip placement="right-end" content="Ciclos de producto">
+                            <button
+                              onClick={handleGlobalClock}
+                              className='ml-2 mt-2 flex justify-between items-center'>
+                                <span className="font-bold text-primary_one mr-2">
+                                  Ciclos de producto 
+                                </span>
+                              <FaClock style={{
+                                border: `6px solid #073034`, // Azul personalizado con 6px de grosor
+                              }}
+                              className="w-10 h-10 rounded-full object-cover text-primary_one"/>
+                            </button>
+                          </Tooltip>
+                        </div>
+                  }
+                </>
+              )
+            }
+          </>
+          
+        }
+
+        {
+          selectedOperDetails.length >= 1 && (
             <>
-              { samplingsGlobal ? 
-                <FooterCycles handleFunction={handleGlobalClock}/> :
-                    <div className="py-4">
-                      <Tooltip placement="right-end" content="Ciclos de producto">
-                        <button
-                          onClick={handleGlobalClock}
-                          className='ml-2 mt-2 flex justify-between items-center'>
-                            <span className="font-bold text-primary_one mr-2">
-                              Ciclos de producto 
-                            </span>
-                          <FaClock style={{
-                            border: `6px solid #073034`, // Azul personalizado con 6px de grosor
-                          }}
-                          className="w-10 h-10 rounded-full object-cover text-primary_one"/>
-                        </button>
-                      </Tooltip>
-                    </div>
-              }
+              <SecuentialZoneDash/>
+              <div className={` ${isPDFMode && 'px-10 py-10'}`}>
+                <CommentBalancing
+                  isShow={isPDFMode}
+                />
+              </div>
+              <MachinesBalancing/>
             </>
           )
         }
-        <SecuentialZoneDash/>
-        
-         
-        <div className={` ${isPDFMode && 'px-10 py-10'}`}>
-          <CommentBalancing
-            isShow={isPDFMode}
-          />
-        </div>
         
 
         {

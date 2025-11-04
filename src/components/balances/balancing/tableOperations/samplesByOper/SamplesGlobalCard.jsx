@@ -3,6 +3,8 @@ import { FaClock } from 'react-icons/fa6'
 import { colorFormatPercent } from '../../../../../infraestructure/utils/colors'
 import { Chip } from '@nextui-org/react'
 import PercentSamplesZones from '../../../../../ui/PercentageBox'
+import { useRecoilState } from 'recoil'
+import { isPDFGenerate } from '../../../../../infraestructure/states/order_states'
 
 const CardSample = ({title, description}) => (
   <div className="text-center">
@@ -32,6 +34,8 @@ const CardSamplePercent = ({title, description}) => (
 
 
 const SamplesGlobalCard = ({cycles, totalSeconds, total_sam, potential, potentialUds, handleFunction}) => {
+  const [isPDFMode, setIsPDFMode] = useRecoilState(isPDFGenerate);
+  
   return (
     <div>
       <hr className="border-secondary_two"/>
@@ -54,33 +58,43 @@ const SamplesGlobalCard = ({cycles, totalSeconds, total_sam, potential, potentia
           title={"Potencial uds"}
           description={`${potentialUds}`}
         />
-
-        <CardSamplePercent
-          title={"Potencial"}
-          description={`${potential}`}
-        />
         {
-          handleFunction && 
-            <div className="flex justify-center">
-              <button onClick={handleFunction} className="relative">
-                <FaClock
-                  className="w-11 h-11 rounded-full object-cover text-primary_one"
-                  style={{
-                    border: `3px solid #fb2c36`, // Azul personalizado con 6px de grosor
-                  }}
-                />
-                <span className="absolute bottom-0 left-6 w-8 h-8 flex items-center justify-center rounded-full">
-                  <img
-                    className="w-full h-full object-contain"
-                    src="https://balance-assets.sfo3.digitaloceanspaces.com/assets/shirt.png"
-                    alt="shirt"
-                  />
-                </span>
-              </button>
-            </div>
+          isPDFMode ? 
+            <CardSample
+              title={"Potencial"}
+              description={`${potential}`}
+            /> :
+            <CardSamplePercent
+              title={"Potencial"}
+              description={`${potential}`}
+            />
         }
         
-        
+        {
+          !isPDFMode && <>
+              {
+                handleFunction && 
+                  <div className="flex justify-center">
+                    <button onClick={handleFunction} className="relative">
+                      <FaClock
+                        className="w-11 h-11 rounded-full object-cover text-primary_one"
+                        style={{
+                          border: `3px solid #fb2c36`, // Azul personalizado con 6px de grosor
+                        }}
+                      />
+                      <span className="absolute bottom-0 left-6 w-8 h-8 flex items-center justify-center rounded-full">
+                        <img
+                          className="w-full h-full object-contain"
+                          src="https://balance-assets.sfo3.digitaloceanspaces.com/assets/shirt.png"
+                          alt="shirt"
+                        />
+                      </span>
+                    </button>
+                  </div>
+              }
+
+          </>
+        }
       </div>
       <hr className="border-secondary_two"/>
     </div>

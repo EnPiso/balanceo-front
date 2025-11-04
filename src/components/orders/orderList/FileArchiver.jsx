@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {Spinner, Tooltip} from "@nextui-org/react";
-import {FaFileArchive} from "react-icons/fa";
+import {FaCheckDouble, FaFileArchive} from "react-icons/fa";
 import {ConfirmOpen} from "../../balances/balancing/sidebarForm/ConfirmOpers.jsx";
 import ConfirmArchive from "./ConfirmArchive.jsx";
 import {fetchGetData} from "../../../infraestructure/call_api/crud.js";
@@ -9,7 +9,8 @@ import {useRecoilState} from "recoil";
 import {orderList} from "../../../infraestructure/states/order_states.js";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../infraestructure/data/toastMessage.js";
-import {FaFile} from "react-icons/fa6";
+import {FaDeleteLeft, FaFile} from "react-icons/fa6";
+import { ModalDeleteGlobal } from '../../opers/ModalDeleteGlobal.jsx';
 
 const FileArchiver = ({order,archive}) => {
   const [isOpenConfirm, setIsOpenConfirm] = useState(false);
@@ -43,24 +44,25 @@ const FileArchiver = ({order,archive}) => {
 
   return (
     <>
-      <ConfirmArchive
+
+      <ModalDeleteGlobal
+        isLoading={isLoading}
         isOpen={isOpenConfirm}
         setIsOpen={setIsOpenConfirm}
-        handleSubmit={handleSubmit}
-        title={`¿ Quieres ${archive ? "Activar" : "Archivar"}?`}
-        description={`${archive ? "Agregar" : "Quitar"} de la lista ${order.code}`}
-        isLoading={isLoading}
+        handleSave={handleSubmit}
+        title={`¿Quieres ${archive ? "Activar" : "Eliminar"}?`}
+        description={`${order.code}`}
       />
-      <Tooltip content={`${archive ? 'Desarchivar':'Archivar'}`} placement="right-end">
+      <Tooltip content={`${archive ? 'Activar':'Eliminar'}`} placement="right-end">
         {
           isLoading ? <Spinner size="lg"/> : <button className="mr-2">
             {
-              archive ? <FaFile
-                className="!cursor-pointer"
+              archive ? <FaCheckDouble
+                className="!cursor-pointer text-secondary_two"
                 size={20}
                 onClick={() => setIsOpenConfirm(true)}
-                color="#444444"
-              /> : <FaFileArchive
+                
+              /> : <FaDeleteLeft
                 className="!cursor-pointer"
                 size={20}
                 onClick={() => setIsOpenConfirm(true)}

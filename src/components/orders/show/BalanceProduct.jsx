@@ -14,6 +14,7 @@ import MyCustomButton from '../../../ui/MyCustomButton.jsx';
 import toast from 'react-hot-toast';
 import { FaDoorClosed, FaNotEqual } from 'react-icons/fa';
 import { loadingSamplingsCircle, samplingsCircleObj } from '../../../infraestructure/states/states_mobile.js';
+import { currentUser } from '../../../infraestructure/states/states_views.js';
 
 const BalanceProduct = ({product}) => {
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
@@ -32,6 +33,8 @@ const BalanceProduct = ({product}) => {
   const [toUpdateBalance, setToUpdateBalance] = useRecoilState(goToUpdateBalance)
   
   const [isShowButton, setIsShowButton] = useRecoilState(isShowButtonOpers)
+
+
   
   useEffect(()=> {
     if(toUpdateBalance){
@@ -84,8 +87,6 @@ const BalanceProduct = ({product}) => {
           balancing_id: result.balancing_id,
           balancing: result.balancing
         }
-
-        
 
         const detail = assignColorsToArray(result.details_data)
 
@@ -170,10 +171,10 @@ const BalanceProduct = ({product}) => {
               />
           </div>
           <div className="hidden lg:block">
+            
             <MyCustomButton
-                icon={!isLoading && <FaCalendar className=" mt-1 mr-3 "/>}
+                icon={<FaCalendar className=" mt-1 mr-3 "/>}
                 title={ 
-                  isLoading ? <Spinner color={"default"} size={"lg"}/> :
                     <div>
                       Balancear {" "}
                       <span className="uppercase">
@@ -181,6 +182,9 @@ const BalanceProduct = ({product}) => {
                       </span> 
                       <span className="font-bold"> 
                         {product.product.reference} 
+                      </span>
+                      <span>
+                        {isLoading && <Spinner color={"default"} size={"sm"} className='ml-3'/>}
                       </span>
                     </div>
                 }

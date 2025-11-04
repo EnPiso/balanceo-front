@@ -5,10 +5,14 @@ import { FaClock, FaPlay } from 'react-icons/fa6'
 import ListZonesCycles from './ListZonesCycles'
 import { isCycleList } from '../../../../../../infraestructure/states/states_samples'
 import { useRecoilState } from 'recoil'
+import { currentUser } from '../../../../../../infraestructure/states/states_views'
 
 const ZonesByZoneDashboard = () => {
   
   const [isCycleCreate, setIsCycleCreate] = useRecoilState(isCycleList)
+
+  const [user, setUser] = useRecoilState(currentUser);
+
 
   return (
     <>
@@ -25,16 +29,16 @@ const ZonesByZoneDashboard = () => {
                 />
                 
             </div>
-            
-            <MyCustomButton
-              icon={isCycleCreate && <FaPlay className='mt-1 mr-1 text-secondary_two'/>}
-              title={"Tomar muestras"}
-              handleClick={()=> setIsCycleCreate(true)}
-              value={null}
-              bgButton={isCycleCreate ? "bg-primary_one" : "bg-zinc-200"}
-                  textButton={isCycleCreate ? "text-secondary_two" : "text-zinc-800"}
-            />
-        
+            {
+              user && (user.role === 'admin' || user.role === 'supervisor') && 
+                <MyCustomButton
+                  icon={isCycleCreate && <FaPlay className='mt-1 mr-1 text-secondary_two'/>}
+                  title={"Tomar muestras"}
+                  handleClick={()=> setIsCycleCreate(true)}
+                  value={null}
+                  bgButton={isCycleCreate ? "bg-primary_one" : "bg-zinc-200"}
+                  textButton={isCycleCreate ? "text-secondary_two" : "text-zinc-800"}/>
+            }
         </div> 
           
        

@@ -150,7 +150,7 @@ const GenerateImgPdf = ({product, order, pdfDiv}) => {
                 ) : (
                     <>
                         {
-                           product.has_opers_balancing ? (
+                            product.has_opers_balancing ? (
                                 
                                     <span
                                         key={product.id}

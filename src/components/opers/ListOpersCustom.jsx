@@ -13,7 +13,7 @@ import EditOperFormEdit from "./EditOperFormEdit.jsx";
 import { listOpersCustom } from "../../infraestructure/states/opers_states.js";
 import { useRecoilState } from "recoil";
 
-const ListOpersCustom = ({prodPlant, isLoading, setIsLoading}) => {
+const ListOpersCustom = ({prodPlant, isLoading, setIsLoading, setIsLoadingModules}) => {
   const [opers,setOpers] = useRecoilState(listOpersCustom)
 
   const [isNewOperator,setIsNewOperator] = useState(false)
@@ -32,6 +32,8 @@ const ListOpersCustom = ({prodPlant, isLoading, setIsLoading}) => {
 
       } catch (error) {
         console.error('Error al obtener los datos:', error);
+      } finally {
+        setIsLoadingModules(null)
       }
     };
 

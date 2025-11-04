@@ -8,6 +8,7 @@ import SamplesGlobalList from './SamplesGlobalList';
 import { Accordion, AccordionItem } from '@nextui-org/react';
 import { useRecoilState } from 'recoil';
 import { samplingsCircleList } from '../../../../../infraestructure/states/states_mobile';
+import { currentUser } from '../../../../../infraestructure/states/states_views';
 
 const SamplesGlobalChrono = () => {
   const [steps, setSteps] = useState([]);
@@ -18,6 +19,9 @@ const SamplesGlobalChrono = () => {
   const [expandedKeys, setExpandedKeys] = useState(new Set([""])); // Estado para controlar el accordion
 
   const [samplingsCircle, setSamplingsCircle] = useRecoilState(samplingsCircleList);
+
+  const [user, setUser] = useRecoilState(currentUser);
+  
 
   // Función para manejar la expansión del accordion
   const handleAccordionChange = (keys) => {
@@ -56,12 +60,17 @@ const SamplesGlobalChrono = () => {
 
   return (
     <div className="w-full max-w-2xl mx-auto p-4">
+
+      {
+        user && (user.role === "admin" || user.role === "supervisor") &&
+          <div className="py-2 mb-2">
+            <WatchChrono 
+              key={JSON.stringify(samplingsCircle)}
+              onSaveTime={handleSaveTime} />
+          </div>
+      }
       
-      <div className="py-2 mb-2">
-        <WatchChrono 
-          key={JSON.stringify(samplingsCircle)}
-          onSaveTime={handleSaveTime} />
-      </div>
+      
       
       {steps.map((time, index) => (
         <div

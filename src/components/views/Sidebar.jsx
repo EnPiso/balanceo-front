@@ -24,6 +24,7 @@ import { PolyvalencesDashboard } from '../polyvalencesTimes/PolyvalencesDashboar
 import { isOrderOrProduct } from '../../infraestructure/states/states_manual_order.js';
 import { GiSewingMachine  } from 'react-icons/gi';
 import MachinesMaster from '../machines/MachinesMaster.jsx';
+import { currentUser, isLoadingUser } from '../../infraestructure/states/states_views.js';
 
 
 
@@ -32,30 +33,29 @@ const Sidebar = ({toggleSidebar}) => {
 	const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
 	const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
 
-		const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
-	
-		// Estado para controlar la expansión de cada producto
-	
-	
-		const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
-		const [product, setProduct] = useRecoilState(selectProduct)
-	
-		const [samSum, setSamSum] = useRecoilState(samSumOperation);
-	
-		const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
-		const [selOpeVideos, setSelOpeVideos] = useRecoilState(checkOperationsBalancing);
-	
-		const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
+	const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
 
-		const [isOpen, setIsOpen] = useState(false);
+	// Estado para controlar la expansión de cada producto
 
-		const [isOrderOr, setIsOrderOr] = useRecoilState(isOrderOrProduct);
-		
-		
-			// Función para abrir y cerrar el lightbox
-		const toggleLightbox = () => setIsOpen(!isOpen);
+
+	const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
+	const [product, setProduct] = useRecoilState(selectProduct)
+
+	const [samSum, setSamSum] = useRecoilState(samSumOperation);
+
+	const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
+	const [selOpeVideos, setSelOpeVideos] = useRecoilState(checkOperationsBalancing);
+
+	const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
+
+	const [isOpen, setIsOpen] = useState(false);
+
+	const [isOrderOr, setIsOrderOr] = useRecoilState(isOrderOrProduct);
 	
+	const toggleLightbox = () => setIsOpen(!isOpen);
 
+	const [user, setUser] = useRecoilState(currentUser);
+  const [isLoading, setIsLoading] = useRecoilState(isLoadingUser)
 
 	const handleSideBar = () => {
 		setObjBalancing(null)
@@ -95,11 +95,12 @@ const Sidebar = ({toggleSidebar}) => {
         </button>
 
 				<div className='mt-5'>
+				
 					{objBalancing ? (
 						<>
 							<InfoBoxBalancing />
 							{
-								isOrderOr && 
+								isOrderOr && showOrder.order.image_url &&
 									<div className="mt-2">
 										<ImageLightbox
 											thumbnailUrl={showOrder.order.image_url}
@@ -113,12 +114,20 @@ const Sidebar = ({toggleSidebar}) => {
 						</>
 					) : (
 						<div>
-							<OrderDashboardModal />
-							<DashboardProducts />
-							<DashboardOpers />
-							<OperationsMaster />
-							<OpersMaster />
-							<MachinesMaster/>
+							{
+								user && (user.role === 'admin' || user.role === 'supervisor') && (
+									<>
+										<OrderDashboardModal />
+										<DashboardProducts />
+										<DashboardOpers />
+										<OperationsMaster />
+										<OpersMaster />
+										<MachinesMaster/>
+									</>
+								)
+									
+							}
+							
 						</div>
 					)}
 				</div>

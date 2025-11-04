@@ -38,7 +38,9 @@ const ModalOperators = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
 
               </ModalHeader>
               <ModalBody>
-                <PlantsCustom/>
+                <PlantsCustom
+                  topView={true}
+                />
               </ModalBody>
               <ModalFooter>
 

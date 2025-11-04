@@ -12,6 +12,7 @@ import BalanceProduct from "./BalanceProduct.jsx";
 import {
   checkOpersPosition,
   selectOpers,
+  selectProdPlant,
   selectProdPlantOriginal
 } from "../../../infraestructure/states/opers_states.js";
 import {allOperationsProduct, samSumOperation} from "../../../infraestructure/states/operation_states.js";
@@ -51,7 +52,8 @@ const OrderDetail = () => {
 
   const [isOrderOr, setIsOrderOr] = useRecoilState(isOrderOrProduct);
 
-
+  const [prodPlant, setProdPlant] = useRecoilState(selectProdPlant)
+  
   // Abre todas las secciones por defecto al cargar
   useEffect(() => {
     if (showOrder) {
@@ -110,6 +112,9 @@ const OrderDetail = () => {
     setDetailOperOpera([])
     setSelOpeVideos(null)
     setZonesOperUpdate([])
+    setProdPlantOriginal(null)
+    setProdPlant(null)
+    setOperationsProduct([])
   }
 
 

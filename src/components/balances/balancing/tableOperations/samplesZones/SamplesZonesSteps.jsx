@@ -3,15 +3,18 @@ import React from 'react'
 import { FaSave } from 'react-icons/fa'
 import { zoneOperSampleObj, zonesSamplesList } from '../../../../../infraestructure/states/states_samples_zones'
 import { useRecoilState } from 'recoil'
-import { postData } from '../../../../../infraestructure/call_api/crud'
+import { postData, postDataToken } from '../../../../../infraestructure/call_api/crud'
 import { urlMain } from '../../../../../infraestructure/data/const'
 import toast from 'react-hot-toast'
 import { useState } from 'react'
+import { tokenMemory } from '../../../../../infraestructure/states/states_views'
 
 const SamplesZonesSteps = ({steps, setSteps, setCurrentStep}) => {
   const [zoneOperSample, setZoneOperSample] = useRecoilState(zoneOperSampleObj)
   const [zonesSamples, setZonesSamples] = useRecoilState(zonesSamplesList)
   const [isLoading, setIsLoading] = useState(false)
+
+  const [token, setToken] = useRecoilState(tokenMemory);
 
   const handleSave = () => {
     const opers_balancing_id = zoneOperSample?.detailObj.detail.opers_balancing_id
@@ -25,7 +28,7 @@ const SamplesZonesSteps = ({steps, setSteps, setCurrentStep}) => {
     const postDataSampleZone = async () => {
       setIsLoading(true)
       try {
-        const result = await postData(urlMain + "opers_zones/create_samples", data);
+        const result = await postDataToken(urlMain + "opers_zones/create_samples", data, token);
         
         const zonesUpdate = [...zonesSamples, ...result]
         setZonesSamples(zonesUpdate)

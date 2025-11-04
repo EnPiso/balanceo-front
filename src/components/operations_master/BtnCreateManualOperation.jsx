@@ -21,7 +21,7 @@ const BtnCreateManualOperation = ({operation, setIsOpen}) => {
     const data = {
       operation: operation
     }
-    debugger
+    
     const postDataOrder = async (data) => {
       setIsLoading(true)
       try {

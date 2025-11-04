@@ -3,12 +3,13 @@ import React from 'react'
 import { FaSave } from 'react-icons/fa'
 import { useRecoilState } from 'recoil'
 import { orderObjBalancing } from '../../../../../infraestructure/states/order_states'
-import { postData } from '../../../../../infraestructure/call_api/crud'
+import { postData, postDataToken } from '../../../../../infraestructure/call_api/crud'
 import { urlMain } from '../../../../../infraestructure/data/const'
 import { clockGlobalModal, samplingsCircleList, samplingsCircleObj } from '../../../../../infraestructure/states/states_mobile'
 import toast from 'react-hot-toast'
 import { samplesGlobalShared } from '../../../../../infraestructure/utils/samplesGlobal'
 import { selectOpers } from '../../../../../infraestructure/states/opers_states'
+import { tokenMemory } from '../../../../../infraestructure/states/states_views'
 
 const SamplesGlobalSave = ({isLoading,steps,setSteps,setCurrentStep}) => {
 
@@ -20,6 +21,7 @@ const SamplesGlobalSave = ({isLoading,steps,setSteps,setCurrentStep}) => {
 
   const [samplingsGlobal, setSamplingsGlobal] = useRecoilState(samplingsCircleObj)
   
+  const [token, setToken] = useRecoilState(tokenMemory);
 
   const handleSave = () => {
     const data = {
@@ -29,7 +31,7 @@ const SamplesGlobalSave = ({isLoading,steps,setSteps,setCurrentStep}) => {
     
     const postDataSamplings = async () => {
           try {
-            const result = await postData(urlMain + "samplings_cycles", data);
+            const result = await postDataToken(urlMain + "samplings_cycles", data, token);
             const updateSamplings = [...samplingsCircle, ...result]
             setSamplingsCircle(updateSamplings);
             

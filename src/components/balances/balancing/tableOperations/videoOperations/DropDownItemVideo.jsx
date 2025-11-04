@@ -11,6 +11,7 @@ import { urlMain } from '../../../../../infraestructure/data/const';
 import { listVideosOperations, videoShow } from '../../../../../infraestructure/states/states_videos';
 import toast from 'react-hot-toast';
 import { ConfirmOpen } from '../../sidebarForm/ConfirmOpers';
+import { currentUser } from '../../../../../infraestructure/states/states_views';
 
 const DropDownItemVideo = ({isOpen, setIsOpen, handleVideo, handleDelete}) => {
   
@@ -19,6 +20,9 @@ const DropDownItemVideo = ({isOpen, setIsOpen, handleVideo, handleDelete}) => {
 
   const [isOpenConfirm, setIsOpenConfirm] = useState(false);
   const [objVideo, setObjVideo] = useState(null);
+
+  const [user, setUser] = useRecoilState(currentUser);
+  
   
   const handleFavorite = (video) => {
     const video_id = video.id
@@ -101,16 +105,20 @@ const DropDownItemVideo = ({isOpen, setIsOpen, handleVideo, handleDelete}) => {
                       <span className="truncate text-center uppercase text-zinc-600 font-bold bg-zinc-300">
                         video # <span className="text-secondary_two">{i + 1}</span>
                       </span>
-                      <button onClick={()=> {
-                          handleConfirmFavorite(video)
-                        }}>
-                        {
-                          video.favorite ? 
-                            <FaStar size={30} className='text-yellow-400'/> : 
-                            <FaStar size={30} className='text-secondary_two animate-pulse'/>
-                        }
-                        
-                      </button>
+                      {
+                        user && (user.role === 'admin' || user.role === 'supervisor') &&
+                          <button onClick={()=> {
+                              handleConfirmFavorite(video)
+                            }}>
+                            {
+                              video.favorite ? 
+                                <FaStar size={30} className='text-yellow-400'/> : 
+                                <FaStar size={30} className='text-secondary_two animate-pulse'/>
+                            }
+                            
+                          </button>
+                      }
+                      
                     </div>
                     
 
@@ -122,23 +130,23 @@ const DropDownItemVideo = ({isOpen, setIsOpen, handleVideo, handleDelete}) => {
                         Tu navegador no soporta el elemento de video.
                       </video>
                     </span>
-                   
-                  
 
                     <SelectionOperVideo
                       setVideosOperations={setVideosOperations}
                       videosOperations={videosOperations}
                       video={video}
                     />
-                    <div className="flex justify-end">
-                      <Tooltip content="Eliminar vídeo" placement='bottom'>
-                        <button onClick={()=> handleDelete(video, i + 1)} className='py-4'>
-                          <FaDeleteLeft color="red" size={30} />
-                        </button>
-                      </Tooltip>
-                     
-                    </div>
-                     
+                    {
+                      user && (user.role === 'admin' || user.role === 'supervisor') &&
+                        <div className="flex justify-end">
+                          <Tooltip content="Eliminar vídeo" placement='bottom'>
+                            <button onClick={()=> handleDelete(video, i + 1)} className='py-4'>
+                              <FaDeleteLeft color="red" size={30} />
+                            </button>
+                          </Tooltip>
+                        </div>
+                    }
+                    
                   </div>
 
                 </DropdownItem>

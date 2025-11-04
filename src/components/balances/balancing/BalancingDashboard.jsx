@@ -24,7 +24,7 @@ import {FaFilePdf} from "react-icons/fa6";
 import {Button, Spinner, Tooltip} from "@nextui-org/react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import {FaBackward, FaCircleNotch, FaClone, FaTruckLoading} from "react-icons/fa";
+import {FaBackward, FaBook, FaCircleNotch, FaClone, FaCrown, FaTruckLoading} from "react-icons/fa";
 import ScreenshotComponent from "./ScreenshotComponent.jsx";
 import {toPng} from "html-to-image";
 import * as htmlToImage from "html-to-image";
@@ -40,6 +40,8 @@ import SamplesZonesModal from './tableOperations/samplesZones/SamplesZonesModal.
 import ZonesByZoneModal from './tableOperations/balancingMobile/clockZonesByZone/ZonesByZoneModal.jsx';
 import CloneBalancingDashboard from './cloneBalancings/CloneBalancingDashboard.jsx';
 import { BalancingSideBar } from './BalancingSideBar.jsx';
+import { currentUser } from '../../../infraestructure/states/states_views.js';
+import { allOperationsProduct } from '../../../infraestructure/states/operation_states.js';
 
 export const BalancingDashboard = ({backward}) => {
 
@@ -70,6 +72,10 @@ export const BalancingDashboard = ({backward}) => {
   
   const [zoneByZoneModal, setZoneByZoneModal]  = useRecoilState(clockZoneByZoneModal)
   const [opersSelect, setOpersSelect] = useRecoilState(selectOpers)
+  
+  const [user, setUser] = useRecoilState(currentUser);
+  const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
+  
   
 
   useEffect(() => {
@@ -112,16 +118,40 @@ export const BalancingDashboard = ({backward}) => {
 
   const generatePDF = async () => {
     setIsLoadPDF(true);
-    const element = componentPDF.current;
 
-    const canvas = await html2canvas(element, {
-  
+    // 1. Verificar que el ref existe
+    if (!componentPDF.current) {
+      console.error("componentPDF.current es null o undefined");
+      setIsLoadPDF(false);
+      return;
+    }
+
+    // 2. Verificar que los datos ya están cargados
+    if (!objBalancing || operationsProduct.length === 0) {
+      console.error("El contenido aún no está listo para el PDF");
+      setIsLoadPDF(false);
+      return;
+    }
+
+    // 3. Verificar dimensiones visibles
+    const rect = componentPDF.current.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) {
+      console.error("El elemento tiene tamaño 0");
+      setIsLoadPDF(false);
+      return;
+    }
+
+    // Esperar un momento por si React aún pinta el contenido
+    await new Promise(r => setTimeout(r, 500));
+
+    // html2canvas
+    const canvas = await html2canvas(componentPDF.current, {
       scale: 1,
-      useCORS: true, // Habilitar uso de CORS
-      allowTaint: false, // Evitar tainting para imágenes externas
-      imageTimeout: 15000, // Aumentar tiempo de espera para cargar imágenes
-      backgroundColor: null, // Fondo transparente
-      logging: true, // Para depurar si hay errores
+      useCORS: true,
+      allowTaint: false,
+      imageTimeout: 15000,
+      backgroundColor: null,
+      logging: true,
     });
 
     const imgData = canvas.toDataURL("image/jpeg", 0.5);
@@ -135,8 +165,10 @@ export const BalancingDashboard = ({backward}) => {
 
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    
 
-    pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
+    pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+
 
     const name = objBalancing.product.name;
     const order = showOrder.order.code;
@@ -145,10 +177,14 @@ export const BalancingDashboard = ({backward}) => {
     );
 
     pdf.save(`${order}_${name}_${created}.pdf`);
+
     setIsPDFMode(false);
     setIsLoadPDF(false);
     setImageUrl('');
   };
+
+
+
 
   useEffect(() => {
     isPDFMode && generatePDF()
@@ -163,6 +199,7 @@ export const BalancingDashboard = ({backward}) => {
   const handleScreenshot = async () => {
 
     if (imagePdfRef.current) {
+
       try {
         const blob = await htmlToImage.toBlob(imagePdfRef.current, {
           useCORS: true,
@@ -242,18 +279,22 @@ export const BalancingDashboard = ({backward}) => {
           <div className="pr-6 pb-2 flex justify-end fixed bottom-0 w-full z-50 left-1">
             <MyCustomButton
               icon={<FaBackward className=" mt-1 mr-3 "/>}
-              title={ "Regresar a " + showOrder.order.code} 
+              title={ "Regresar " + showOrder.order.code} 
               handleClick={backward}
-              value={"Regresar a " + showOrder.order.code} 
+              value={"Regresar " + showOrder.order.code} 
               bgButton={"bg-zinc-800"}
               textButton={"text-secondary_two"}
             />
               
           </div>
           <div className="flex justify-start">
-            <div className="hidden lg:block">
-              <ModalCustomProduct />
-            </div>
+            {
+              user && (user.role === 'admin' || user.role === 'supervisor') && 
+                <div className="hidden lg:block">
+                  <ModalCustomProduct />
+                </div>
+            }
+            
             <div>
               {
               objBalancing && (
@@ -279,17 +320,20 @@ export const BalancingDashboard = ({backward}) => {
                               <>
                                 <Tooltip content="Descargar PDF" placement="top">
                                   <Button
-                                    className="ml-5 font-bold uppercase"
+                                    className={`${user && (user.role === 'admin' || user.role === 'supervisor') && 'ml-5'}  font-bold uppercase`}
                                     onPress={()=> {
                                       setIsScreenShot(true)
-                                    
                                     }}>
                                     descargar 
                                     <FaFilePdf className='text-secondary_two'/>
                                   </Button>
                                 </Tooltip>
-
-                                <CloneBalancingDashboard/>
+                                
+                                {
+                                  user && (user.role === 'admin' || user.role === 'supervisor') && 
+                                    <CloneBalancingDashboard/>
+                                }
+                                
                                     
                               </>
                             )
@@ -300,9 +344,15 @@ export const BalancingDashboard = ({backward}) => {
                         </>
                       )
                     }
-
+                    {
+                      objBalancing.balancing.user_name &&
+                        <span
+                          className="ml-5 font-light capitalize text-secondary_two bg-secondary_one">
+                            
+                          {objBalancing.balancing.user_name}
+                        </span>
+                    }
                 </div>
-                   
                 </>
               )
             }

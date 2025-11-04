@@ -3,13 +3,14 @@ import React, { useState } from 'react'
 import { FaDeleteLeft } from 'react-icons/fa6'
 import { ConfirmDeleteOper } from '../../../../opers/ConfirmDeleteOper'
 import { Tooltip } from '@nextui-org/react'
-import { deleteData, postData } from '../../../../../infraestructure/call_api/crud'
+import { deleteData, postData, postDataToken } from '../../../../../infraestructure/call_api/crud'
 import { urlMain } from '../../../../../infraestructure/data/const'
 import toast from 'react-hot-toast'
-import { ModalConfirmSample } from './ModalConfirmSample'
+
 import { useRecoilState } from 'recoil'
 import { openOperaClock, operationsSamples } from '../../../../../infraestructure/states/states_samples'
 import { detailOperOperations } from '../../../../../infraestructure/states/states_balancing'
+import { tokenMemory } from '../../../../../infraestructure/states/states_views'
 
 const ConfirmDeleteSample = ({sample, index, setSamples, samples}) => {
   const [isDelete, setIsDelete] = useState(false)
@@ -24,6 +25,7 @@ const ConfirmDeleteSample = ({sample, index, setSamples, samples}) => {
   
   const [operaClock, setOperaClock] = useRecoilState(openOperaClock)
   
+  const [token, setToken] = useRecoilState(tokenMemory);
   
   const handleConfirm = (sample) => {
     setIsDelete(true)
@@ -36,7 +38,7 @@ const ConfirmDeleteSample = ({sample, index, setSamples, samples}) => {
     const deleteSample = async () => {
           setIsLoading(true)
           try {
-            const result = await postData(`${urlMain}samplings/${sample.id}/delete_sample`);
+            const result = await postDataToken(`${urlMain}samplings/${sample.id}/delete_sample`, token);
             
             if(result.delete){
               const updateSamples = samples.filter(item => item.id !== sample.id);
@@ -104,7 +106,7 @@ const ConfirmDeleteSample = ({sample, index, setSamples, samples}) => {
 
       
       {
-        isDelete && <ModalConfirmSample
+        isDelete && <ConfirmDeleteOper
           isLoading={isLoading}
           isOpen={isOpenConfirm}
           setIsOpen={setIsOpenConfirm}

@@ -10,6 +10,8 @@ import {updateData} from "../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../infraestructure/data/const.js";
 import {toastMessageCustom} from "../../infraestructure/data/toastMessage.js";
 import FormEditInput from "../balances/balancing/sidebarForm/FormEditInput.jsx";
+import { FaDeleteLeft } from "react-icons/fa6";
+import DeleteModule from "./DeleteModule.jsx";
 
 
 
@@ -89,7 +91,7 @@ const ModuleEditCustom = ({listPlants, setListPlants, prodPlant, setProdPlant}) 
     <>
       {
         isLoading ? (
-          <div className={"flex justify-center"}>
+          <div className={"flex justify-start ml-4"}>
             <Spinner size={"lg"} color={"default"}/>
           </div>
         ): (
@@ -100,24 +102,35 @@ const ModuleEditCustom = ({listPlants, setListPlants, prodPlant, setProdPlant}) 
                   <FormEditInput
                     onKeyDown={handleKeyDown}
                     valueDefault={prodPlant && prodPlant.module.name}
-                    value={moduleName}
+                    value={moduleName}  
                     setState={setModuleName}/>
                 </div> :
-                <div onClick={() => {
-                  setIsEdit(true)
-                  setObjEdit(prodPlant.module)
-                }} className="flex justify-between items-center cursor-pointer">
-                  <h1 className="font-bold text-2xl capitalize text-secondary_two mr-5 mt-1">
-                    {prodPlant.module.name} 
-                  </h1>
-                  <FaEdit size={23} className="text-secondary_two"/>
+                <div className="flex items-center space-x-4">
+                  {/* Botón Editar */}
+                  <button
+                    onClick={() => {
+                      setIsEdit(true);
+                      setObjEdit(prodPlant.module);
+                    }}
+                    className="flex items-center text-secondary_two hover:underline cursor-pointer"
+                  >
+                    <span className="font-bold text-lg uppercase">{prodPlant.module.name}</span>
+                    <FaEdit size={20} className="ml-2" />
+                  </button>
+
+                  <DeleteModule
+                    module={prodPlant.module}
+                    prodPlant={prodPlant}
+                    setProdPlant={setProdPlant}
+                    
+                  />
                 </div>
             }
           </>
         )
       }
 
-
+      
 
     </>
   )

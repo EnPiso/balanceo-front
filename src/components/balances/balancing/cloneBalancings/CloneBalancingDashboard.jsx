@@ -5,7 +5,7 @@ import ModalCloneNew from './ModalCloneNew'
 import { orderObjBalancing, showOrderObj } from '../../../../infraestructure/states/order_states'
 import { useRecoilState } from 'recoil'
 import toast from 'react-hot-toast'
-import { postData } from '../../../../infraestructure/call_api/crud'
+import { postData, postDataToken } from '../../../../infraestructure/call_api/crud'
 import { urlMain } from '../../../../infraestructure/data/const'
 import { goToBalance } from '../../../../infraestructure/states/operation_master_state'
 import { selectProduct } from '../../../../infraestructure/states/states_product'
@@ -14,6 +14,7 @@ import { detailOperOperations, goToUpdateBalance, isCloneModal } from '../../../
 import { checkOperationsBalancing } from '../../../../infraestructure/states/states_videos'
 import { checkOpersPosition, selectProdPlantOriginal } from '../../../../infraestructure/states/opers_states'
 import { zonesMobile } from '../../../../infraestructure/states/states_mobile'
+import { tokenMemory } from '../../../../infraestructure/states/states_views'
 
 const CloneBalancingDashboard = () => {
 
@@ -36,6 +37,9 @@ const CloneBalancingDashboard = () => {
   const [zonesOperUpdate, setZonesOperUpdate] = useRecoilState(zonesMobile)
   const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
   
+  const [token, setToken] = useRecoilState(tokenMemory);
+
+
 
   const backward = (goToBalance) => {
     const showOrderProducts = showOrder.products
@@ -82,7 +86,6 @@ const CloneBalancingDashboard = () => {
     setIsClone(true)
     
     console.log(operationsProduct)
-   
     const product_id = objBalancing.product.id
     const formatOperation = (op, item) => ({
       ...op,
@@ -112,7 +115,7 @@ const CloneBalancingDashboard = () => {
 
     const postDataOrder = async () => {
       try {
-        const result = await postData(urlMain + "/orders/create_order_clone", data)
+        const result = await postDataToken(urlMain + "/orders/create_order_clone", data, token)
         const product_name = objBalancing.product.name
         const resultFilter = result.products.find(prod => prod.product.name === product_name);
         const updateOperations = resultFilter.operations.map((res)=> res.operation)

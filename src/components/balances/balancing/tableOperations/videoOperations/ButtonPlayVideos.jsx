@@ -10,6 +10,7 @@ import {
 } from "../../../../../infraestructure/states/states_videos.js";
 import { Badge, Tooltip } from '@nextui-org/react';
 import { FaFileVideo, FaPlayCircle, FaPlaystation, FaRegPlayCircle } from 'react-icons/fa';
+import { currentUser } from '../../../../../infraestructure/states/states_views.js';
 
 const ButtonPlayVideos = ({item,showVideos,setShowVideos, isScreenShot, handleOperationBalancing}) => {
 
@@ -17,6 +18,7 @@ const ButtonPlayVideos = ({item,showVideos,setShowVideos, isScreenShot, handleOp
   const [OpersTags, setOpersTags] = useRecoilState(listVideosOpers)
   const [videoObjOperation, setVideoObjOperation] = useRecoilState(videoOperation)
 
+  const [user, setUser] = useRecoilState(currentUser);
 
   const handleOperation = (item) => {
     
@@ -89,29 +91,34 @@ const ButtonPlayVideos = ({item,showVideos,setShowVideos, isScreenShot, handleOp
         )
         }
       </button>
-
-       {
-          !isScreenShot && (
+        {
+          user && (user.role === 'admin' || user.role === 'supervisor') && 
             <>
-              
-              <Tooltip content="Subir vídeos">
-                <button
-                  className="mt-2"
-                  onClick={()=> {
-                    handleOperationBalancing(item)
-                    setShowVideos(item)
-                    // console.log(item.operation_balancing_id)
-                    handleApi(item.operation_balancing_id)
-                  }}>
-                  <FaFileVideo 
-                    size={24}
-                  />
-                </button>
-              </Tooltip>
-              
+              {
+                !isScreenShot && (
+                  <>
+                    
+                    <Tooltip content="Subir vídeos">
+                      <button
+                        className="mt-2"
+                        onClick={()=> {
+                          handleOperationBalancing(item)
+                          setShowVideos(item)
+                          // console.log(item.operation_balancing_id)
+                          handleApi(item.operation_balancing_id)
+                        }}>
+                        <FaFileVideo 
+                          size={24}
+                        />
+                      </button>
+                    </Tooltip>
+                    
+                  </>
+                )
+              }
             </>
-          )
         }
+        
       
     </>
    

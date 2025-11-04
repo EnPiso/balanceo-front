@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { FaSave } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
 import { newManualObj } from '../../../infraestructure/states/operation_master_state';
-import { postData } from '../../../infraestructure/call_api/crud';
+import { postData, postDataToken } from '../../../infraestructure/call_api/crud';
 import { urlMain } from '../../../infraestructure/data/const';
 import { orderList } from '../../../infraestructure/states/order_states';
 import toast from 'react-hot-toast';
 import { CircularProgress } from '@nextui-org/react';
+import { tokenMemory } from '../../../infraestructure/states/states_views';
 
 const ButtonSaveManualOrder = ({handleClean, image}) => {
   const [newManual] = useRecoilState(newManualObj);
@@ -16,6 +17,8 @@ const ButtonSaveManualOrder = ({handleClean, image}) => {
   const [isValidate, setIsValidate] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [token, setToken] = useRecoilState(tokenMemory);
 
   useEffect(() => {
     // Validar que haya algo escrito en order y al menos un producto
@@ -60,7 +63,7 @@ const ButtonSaveManualOrder = ({handleClean, image}) => {
     };
   
     try {
-      const result = await postData(urlMain + "/orders/create_order", data);
+      const result = await postDataToken(urlMain + "/orders/create_order", data, token);
       const order = result.order_products;
   
       setOrders([order, ...orders]);

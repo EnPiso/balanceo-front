@@ -6,9 +6,10 @@ import toast from 'react-hot-toast';
 import { CircularProgress } from '@nextui-org/react';
 import { newManualObj } from '../../../infraestructure/states/operation_master_state';
 import { orderList } from '../../../infraestructure/states/order_states';
-import { postData } from '../../../infraestructure/call_api/crud';
+import { postData, postDataToken } from '../../../infraestructure/call_api/crud';
 import { urlMain } from '../../../infraestructure/data/const';
 import CustomButton from '../../../ui/CustomButton';
+import { tokenMemory } from '../../../infraestructure/states/states_views';
 
 const ButtonCreateProdOrder = ({handleClose, handleCloseMaster}) => {
   const [newManual] = useRecoilState(newManualObj);
@@ -18,6 +19,9 @@ const ButtonCreateProdOrder = ({handleClose, handleCloseMaster}) => {
   const [isValidate, setIsValidate] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [token, setToken] = useRecoilState(tokenMemory);
+  
 
   useEffect(() => {
     // Validar que haya algo escrito en order y al menos un producto
@@ -30,7 +34,7 @@ const ButtonCreateProdOrder = ({handleClose, handleCloseMaster}) => {
     
     const order = `${newManual.products[0].product.name}-balanceo`;
     const products = newManual.products;
-    debugger
+    
     const combinedOperations = products.flatMap((product) =>
       product.operations.map((operation) => ({
         ...operation,
@@ -40,7 +44,7 @@ const ButtonCreateProdOrder = ({handleClose, handleCloseMaster}) => {
         order: order,
       }))
     );
-    debugger
+    
     const data = {
       order: {
         orderProOpe: order,
@@ -50,7 +54,7 @@ const ButtonCreateProdOrder = ({handleClose, handleCloseMaster}) => {
     };
   
     try {
-      const result = await postData(urlMain + "/orders/create_order", data);
+      const result = await postDataToken(urlMain + "/orders/create_order", data, token);
       const order = result.order_products;
   
       setOrders([order, ...orders]);

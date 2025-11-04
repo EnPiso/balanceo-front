@@ -63,6 +63,7 @@ const ObjSampleAutomatic = ({
               onSaveTime={handleSaveTimeWrapper}
               autoStart={true}
             />
+              
           </div>
         </>
       )}

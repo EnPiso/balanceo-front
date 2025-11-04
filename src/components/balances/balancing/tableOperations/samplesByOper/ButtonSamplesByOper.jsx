@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { fetchGetData } from '../../../../../infraestructure/call_api/crud';
+import { fetchGetData, fetchGetDataToken } from '../../../../../infraestructure/call_api/crud';
 import { urlMain } from '../../../../../infraestructure/data/const';
 import { Spinner, Tooltip } from '@nextui-org/react';
 import ModalByOrder from './ModalByOrder';
@@ -8,6 +8,7 @@ import { automaticByOper, isOpenModalSampleByOper, openByOper, operationsSamples
 import { FaRegTimesCircle, FaTimes, FaTimesCircle } from 'react-icons/fa';
 import { FaClock, FaTimeline } from 'react-icons/fa6';
 import { firstWordInString } from '../../../../../ui/utils';
+import { tokenMemory } from '../../../../../infraestructure/states/states_views';
 
 const ButtonSamplesByOper = ({oper,objBalancing}) => {
 
@@ -26,7 +27,7 @@ const ButtonSamplesByOper = ({oper,objBalancing}) => {
   const [openModalSampleByOper, setOpenModalSampleByOper] = useRecoilState(isOpenModalSampleByOper);
   const [selectOperByOper, setSelectOperByOper] = useRecoilState(operByOper);
 
-  
+  const [token, setToken] = useRecoilState(tokenMemory);
 
   const handleSample = (oper) => {
     
@@ -37,7 +38,7 @@ const ButtonSamplesByOper = ({oper,objBalancing}) => {
     const getData = async () => {
       setIsLoading(true)
       try {
-        const result = await fetchGetData(`${urlMain}samplings/index_samples_by_oper?balancing_id=${balancing_id}&oper_id=${oper_id}`);
+        const result = await fetchGetDataToken(`${urlMain}samplings/index_samples_by_oper?balancing_id=${balancing_id}&oper_id=${oper_id}`, token);
         // console.log(result,oper)
         setSamplesOperations(result.operations)
         

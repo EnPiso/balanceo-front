@@ -4,11 +4,12 @@ import { FaSave } from 'react-icons/fa'
 import { useRecoilState } from 'recoil';
 import { orderObjBalancing } from '../../../../../../infraestructure/states/order_states';
 import { detailOperOperations } from '../../../../../../infraestructure/states/states_balancing';
-import { postData, updateData } from '../../../../../../infraestructure/call_api/crud';
+import { postData, postDataToken, updateData } from '../../../../../../infraestructure/call_api/crud';
 import { urlMain } from '../../../../../../infraestructure/data/const';
 import { isCycleList, zoneCyclesList } from '../../../../../../infraestructure/states/states_samples';
 import toast from 'react-hot-toast';
 import { CircularProgress } from '@nextui-org/react';
+import { tokenMemory } from '../../../../../../infraestructure/states/states_views';
 
 const SaveZonesByZone = ({ciclos}) => {
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
@@ -17,6 +18,9 @@ const SaveZonesByZone = ({ciclos}) => {
 
   const [isCycleCreate, setIsCycleCreate] = useRecoilState(isCycleList)
   const [isLoading, setIsLoading] = useState(false)
+
+  const [token, setToken] = useRecoilState(tokenMemory);
+
   
 
   const handleSave = () => { 
@@ -51,7 +55,7 @@ const SaveZonesByZone = ({ciclos}) => {
     setIsLoading(true)
     const postZonesCycles = async () => {
       try {
-        const result = await postData(urlMain + "zones_cycles", data)
+        const result = await postDataToken(urlMain + "zones_cycles", data, token)
         
         setZonesCycles((prevZonesCycles) => [
           ...prevZonesCycles,
