@@ -1,0 +1,85 @@
+import React, {useState} from 'react'
+import {FaSave} from "react-icons/fa";
+import CustomButton from "../../ui/CustomButton.jsx";
+import {urlMain} from "../../infraestructure/data/const.js";
+import {postData, postDataToken} from "../../infraestructure/call_api/crud.js";
+import {useRecoilState} from "recoil";
+import {orderList} from "../../infraestructure/states/order_states.js";
+import toast from "react-hot-toast";
+import {toastMessageCustom} from "../../infraestructure/data/toastMessage.js";
+import SpinnerLoaderCustom from "../../ui/SpinnerLoaderCustom.jsx";
+import { currentUser, tokenMemory } from '../../infraestructure/states/states_views.js';
+
+const OrderSubmit = ({operationsData, orderProOpe, images, onClose, eraseData}) => {
+  const [orders, setOrders] = useRecoilState(orderList);
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  const [token, setToken] = useRecoilState(tokenMemory);
+  const [user, setUser] = useRecoilState(currentUser); 
+  
+
+  const handleSubmit = () => {
+    setIsLoading(true)
+    const formData = new FormData();
+    
+    const user_id = user.id
+    
+    formData.append('order[operationsData]', JSON.stringify(operationsData));
+    formData.append('order[orderProOpe]', orderProOpe.order);
+    formData.append('order[user_id]', user_id);
+    formData.append('order[image]', images[0])
+    // Llamar a `createOrder` pasando el `FormData`
+
+    createOrder(formData);
+
+  };
+
+  const createOrder =  (formData) => {
+    
+
+    const postDataOrder = async (formData) => {
+      try {
+        const result = await postDataToken(urlMain + "/orders/create_order", formData, token)
+
+        const order = result.order_products
+        debugger
+        setOrders([order,...orders])
+
+        toast.success(toastMessageCustom.order_create)
+        onClose()
+        eraseData()
+      } catch (error) {
+        console.error('Error setting data', error);
+        setIsLoading(false)
+      }
+    };
+
+    postDataOrder(formData);
+
+  };
+
+
+  return (
+    <>
+      {
+        isLoading ? (
+          <>
+            <div className="flex justify-center mr-5">
+              <SpinnerLoaderCustom/>
+            </div>
+          </>
+        ) : <CustomButton
+          color="default"
+          variant="bordered"
+          startContent={<FaSave color="green"/>}
+          onClick={handleSubmit}
+          title="Guardar"
+        />
+      }
+
+
+    </>
+  )
+}
+export default OrderSubmit

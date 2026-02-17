@@ -1,0 +1,46 @@
+import {atom} from "recoil";
+
+export const checkOperationsBalancing = atom({
+  key: 'checkOperationsBalancing',
+  default: null,
+});
+
+export const listVideosOperations = atom({
+  key: 'listVideosOperations',
+  default: [],
+});
+export const listVideosOpers = atom({
+  key: 'listVideosOpers',
+  default: [],
+});
+
+export const videoOperation = atom({
+  key: 'videoOperation',
+  default: null,
+});
+
+
+export const videoShow   = atom({
+  key: 'videoShow',
+  default: false,
+});
+
+export const modalInputAdd   = atom({
+  key: 'modalInputAdd',
+  default: false,
+});
+
+export const isVideosShow   = atom({
+  key: 'isVideosShow',
+  default: false,
+});
+
+export const isOpenModalRec   = atom({
+  key: 'isOpenModalRec',
+  default: false,
+});
+
+export const operationRecVideo   = atom({
+  key: 'operationRecVideo',
+  default: null,
+});

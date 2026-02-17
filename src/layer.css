@@ -1,0 +1,14 @@
+
+@layer utilities {
+    /* Hover para modo claro */
+    .table-hover-columns td:hover {
+        background-color: #e4e4e7; /* Color para modo claro */
+    }
+
+    /* Hover para modo oscuro */
+    .dark .table-hover-columns td:hover {
+        background-color: #71717a; /* Color para modo oscuro */
+    }
+}
+
+
