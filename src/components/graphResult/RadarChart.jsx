@@ -21,8 +21,11 @@ export const RadarChart = ({ data, size = 300, setArraySamplings }) => {
     const x = center + valueRadius * Math.cos(angle);
     const y = center + valueRadius * Math.sin(angle);
 
-    const shortKey = item.machine?.toLowerCase() || '';
-    const label = machineNames[shortKey] || item.machine;
+    const machineRaw = item.machine != null && typeof item.machine === 'object'
+      ? item.machine.machine
+      : item.machine;
+    const shortKey = machineRaw != null ? String(machineRaw).toLowerCase() : '';
+    const label = machineNames[shortKey] || String(machineRaw ?? '');
 
     return {
       x,

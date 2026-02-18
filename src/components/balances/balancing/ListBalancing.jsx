@@ -60,7 +60,12 @@ const ListBalancing = ({componentPDF,imagePdfRef}) => {
             <BalancedOperationsTable
               imagePdfRef={imagePdfRef}
               componentPDF={componentPDF}
-              key={`${JSON.stringify(operationsProduct)}-${JSON.stringify(detailOperOpera)}-${JSON.stringify(selectedOperDetails)}-${JSON.stringify(objBalancing)}`}
+              key={[
+                objBalancing?.balancing_id,
+                operationsProduct.map(op => `${op.id}:${op.operation_position}:${op.color}`).join(','),
+                detailOperOpera.map(d => `${d.oper_id}:${d.detail?.color}:${d.detail?.polyvalence}`).join(','),
+                selectedOperDetails.map(o => o.id).join(',')
+              ].join('|')}
               data={operationsProduct}
               samSum={samSum}
             />

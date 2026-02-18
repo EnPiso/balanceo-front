@@ -366,11 +366,11 @@ export const BalancingDashboard = ({backward}) => {
          
 
           {
-             objBalancing && 
+             objBalancing &&
                 <ListBalancing
                   componentPDF={componentPDF}
                   imagePdfRef={imagePdfRef}
-                  key={JSON.stringify(objBalancing)}
+                  key={objBalancing?.balancing_id}
                 />
           }
         </div>
