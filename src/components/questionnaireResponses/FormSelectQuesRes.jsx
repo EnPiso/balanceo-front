@@ -97,7 +97,7 @@ const FormSelectQuesRes = ({setIsOpenResponses}) => {
     const createAnswers = async () => {
       try {
         const result = await postData(urlMain + "answers", data);
-        console.log(result)
+
         setIsOpenResponses(false)
         toast.success("El cuestionario ha sido creado correctamente")
       } catch (error) {

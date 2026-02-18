@@ -97,9 +97,6 @@ const ModalDragOpers = () => {
 
   const handleSave = (onClose) => {
     setIsLoading(true);
-    console.log(isNewInModuleTempo)
-    console.log(selectedOperDetails)
-    console.log(opersSelect)
     // Filtra los objetos en `selectedOperDetails` cuyos IDs estén presentes en `opersSelect`
     const filteredDetails = selectedOperDetails.filter((detail) =>
         opersSelect.has(detail.id)
@@ -111,7 +108,6 @@ const ModalDragOpers = () => {
 // Actualizar el estado de opersSelect
     setOpersSelect(updatedOpersSelect);
 
-    console.log(filteredDetails);
 
     const data = {
       opers_balancing: {
@@ -137,7 +133,6 @@ const ModalDragOpers = () => {
         setTimeout(()=> {
           setImageTable(nameImageDateNow)
         },1000)
-        console.log(objBalancing, result)
         
         // setObjBalancing
         if(result.user_name){

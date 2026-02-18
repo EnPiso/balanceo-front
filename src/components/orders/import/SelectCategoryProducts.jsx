@@ -25,7 +25,6 @@ const SelectCategoryProducts = ({ setSearchModules, setIsModuleSearch }) => {
             return; // No ejecutar la búsqueda inicial
         }
 
-         console.log(debouncedQuery);
     }, [debouncedQuery]);
 
     const handleClear = () => {

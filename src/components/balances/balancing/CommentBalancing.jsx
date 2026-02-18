@@ -47,8 +47,6 @@ const CommentBalancing = ({isShow}) => {
       setIsLoading(true)
       try {
         const result = await updateData(urlMain + `balancings/${balancing_id}`, data)
-        console.log(result)
-        console.log(objBalancing.balancing)
 
         setObjBalancing((prevState) => ({
           ...prevState, // Copia el objeto actual

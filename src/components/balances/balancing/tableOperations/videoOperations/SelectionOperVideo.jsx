@@ -36,13 +36,11 @@ const SelectionOperVideo = ({ video, setVideosOperations, videosOperations }) =>
       },
     };
 
-    console.log(data);
 
     const updateVideoOper = async () => {
       setIsLoading(true)
       try {
         const result = await updateData(`${urlMain}videos/${video_id}/video_oper`, data);
-        console.log(result);
         const updateItem = () => {
           return videosOperations.map(item => 
             item.id === result.id ? { ...item, ...result } : item

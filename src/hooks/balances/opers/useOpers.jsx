@@ -18,7 +18,6 @@ const useOpers = () => {
       try {
         const data = await fetchGetData(`${urlMain}opers?module_id=${module_id}`);
         setOpers(data);
-        console.log(data);
       } catch (error) {
         console.error('Error al obtener los datos:', error);
       }

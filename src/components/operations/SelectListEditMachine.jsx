@@ -22,7 +22,6 @@ const SelectListEditMachine = ({ operation, setShowMachine }) => {
       setIsLoading(true)
       try {
         const result = await fetchGetData(`${urlMain}machines/all_machines`);
-        console.log(result);
         
         setAllMachines(result)
       } catch (error) {
@@ -52,8 +51,6 @@ const SelectListEditMachine = ({ operation, setShowMachine }) => {
       setIsLoading(true)
       try {
         const result = await updateData(`${urlMain}operations/${operation_id}`, data)
-        console.log(result)
-        console.log(operations)
 
         const upOperations = operations.operations
 

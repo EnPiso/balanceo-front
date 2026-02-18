@@ -74,12 +74,9 @@ const OrderDetail = () => {
 
 
   const backward = () => {
-    // console.log(showOrder.products)
+    
     const showOrderProducts = showOrder.products
-    // console.log(objBalancing.operations)
-    // console.log(product)
-    // console.log(samSum)
-
+    
     const data = {
       operations: objBalancing.operations,
       product: product,

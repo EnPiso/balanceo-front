@@ -86,7 +86,6 @@ const ListUserPolyvalences = ({opers, setOpers}) => {
     const getData = async () => {
       try {
         const result = await fetchGetData(`${urlMain}polyvalences_times/update_unique_machines?oper_id=${oper_id}`);
-        // console.log(result);
         
         setOperPoly(oper)
         setAllMachines(result.samplings)

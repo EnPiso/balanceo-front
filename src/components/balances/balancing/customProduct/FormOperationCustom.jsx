@@ -54,7 +54,7 @@ const FormOperationCustom = () => {
         machine: dataObj.machine || "",
         sam: dataObj.sam || "",
       };
-      console.log("Nuevo dataObj recibido:", data);
+  
       setOperation((prevOperation) => {
         if (
           prevOperation?.operation !== data.operation ||
@@ -112,7 +112,6 @@ const FormOperationCustom = () => {
         const result = await postData(urlMain + "/operations", data)
         setCloneOperations([...cloneOperations, result])
         
-        // console.log(result)
         setDataObjClone(null)
         setOperation({ operation: "", machine: "", sam: "" })
         toast.success(toastMessageCustom.operationsNew)

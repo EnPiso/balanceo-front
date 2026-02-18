@@ -26,7 +26,6 @@ const NewTableProduct = () => {
   useEffect(() => {
     const isValid = validateProduct(product)
     setIsRight(isValid.valid)
-    console.log(isValid)
 
   }, [product]);
 
@@ -60,12 +59,11 @@ const NewTableProduct = () => {
 
 
   const handleApi = (data) => {
-    console.log(data)
 
     const postDataOrder = async (data) => {
       try {
         const result = await postData(urlMain + "/products", data)
-        console.log(result)
+      
         const updateObj = [...products, result]
 
         setProducts(updateObj)

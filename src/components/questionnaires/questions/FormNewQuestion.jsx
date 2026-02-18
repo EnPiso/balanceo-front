@@ -38,7 +38,7 @@ const FormNewQuestion = ({ setIsNew, questions, setQuestions }) => {
       setIsLoading(true)
       try {
         const result = await postData(urlMain + "questions", data)
-        console.log([...questions, result])
+
         setQuestions([...questions, result])
         toast.success("La pregunta ha sido creada con éxito")
         setContent("")

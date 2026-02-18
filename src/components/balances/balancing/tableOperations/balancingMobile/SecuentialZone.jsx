@@ -17,7 +17,6 @@ const SecuentialZone = ({setIsLoading}) => {
   
 
   const clockZoneByZone = () => {
-    //console.log(!zoneByZoneModal)
     getApiZonesCycles()
   }
 

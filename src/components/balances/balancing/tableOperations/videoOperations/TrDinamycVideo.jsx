@@ -60,7 +60,6 @@ const TrDinamycVideo = ({item}) => {
                      <TagButton
                        key={i}
                        label={oper.name}
-                       onClose={()=> console.log("select")}
                      />
                    )
                  })
@@ -116,7 +115,6 @@ const TrDinamycVideo = ({item}) => {
             <div className="px-2 py-2 flex  justify-start">
               <button
                 className="w-12 h-12 flex justify-center items-center focus:outline-none  transition-colors"
-                //onClick="console.log('Button clicked!')"
               >
                 <FaPlay
                   className="h-4 w-4"

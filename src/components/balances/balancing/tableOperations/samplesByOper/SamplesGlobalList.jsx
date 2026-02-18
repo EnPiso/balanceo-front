@@ -28,7 +28,6 @@ const SamplesGlobalList = () => {
     const getData = async () => {
           try {
             const result = await fetchGetData(`${urlMain}samplings_cycles?balancing_id=${balancing_id}`);
-            console.log(result)
             setSamplingsCircle(result)
           } catch (error) {
             console.error("Error al obtener los datos:", error);

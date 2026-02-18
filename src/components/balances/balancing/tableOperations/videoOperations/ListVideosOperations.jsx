@@ -51,7 +51,6 @@ const ListVideosOperations = () => {
               <TagButton
                 key={i}
                 label="henry"
-                onClose={()=> console.log("select")}
               />
             )
           })

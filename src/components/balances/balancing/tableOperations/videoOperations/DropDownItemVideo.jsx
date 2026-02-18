@@ -66,7 +66,6 @@ const DropDownItemVideo = ({isOpen, setIsOpen, handleVideo, handleDelete}) => {
          
           <button
             className="w-12 h-12 flex justify-center items-center focus:outline-none  transition-colors"
-            //onClick="console.log('Button clicked!')"
           >
             <Badge content={videosOperations.length} shape="rectangle" showOutline={false} className='bg-secondary_two'>
               <FaRegPlayCircle

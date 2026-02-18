@@ -24,7 +24,7 @@ const FileArchiver = ({order,archive}) => {
       try {
         //setLoading(true);
         const result = await fetchGetData(`${urlMain}/orders/${order.id}/archive_order/`);
-        // console.log(result)
+       
 
         setOrders((prevItems) => prevItems.filter((item) => item.id !== result.id));
         toast(toastMessageCustom.archiveOrder)

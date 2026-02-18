@@ -29,7 +29,6 @@ const EditCategoryCrud = ({category}) => {
       handleFetchApi()
     }
     if (e.key === "Escape") {
-      console.log("Escape pressed");
      // handleClear(); // Limpia el campo de entrada al presionar Escape
       setIsEditCategory(false)
     }

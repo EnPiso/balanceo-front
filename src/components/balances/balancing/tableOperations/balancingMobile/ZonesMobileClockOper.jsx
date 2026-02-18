@@ -36,7 +36,7 @@ const ZonesMobileClockOper = ({zone}) => {
       setIsLoading(true)
       try {
         const result = await fetchGetDataToken(`${urlMain}samplings/index_samples_by_oper?balancing_id=${balancing_id}&oper_id=${oper_id}`, token);
-        // console.log(result,oper)
+       
         setSamplesOperations(result.operations)
         
         // setIsShowModal(true)

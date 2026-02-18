@@ -33,7 +33,6 @@ const EditCateroryProduct = ({product}) => {
       try {
         const result = await updateData(urlMain + "products/" + product_id, data)
 
-        ///  console.log(result)
         setProducts((prevProducts) => {
           // Verifica si el producto ya existe en el array
           const existingIndex = prevProducts.findIndex((product) => product.id === result.id);

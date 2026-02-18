@@ -22,13 +22,11 @@ const SaveBalance = () => {
         operations: JSON.stringify(operationsProduct)
       }
     }
-    console.log(data)
-
 
     const postDataOrder = async (data) => {
       try {
         const result = await postData(urlMain + "/balancings", data)
-        console.log(result)
+      
       } catch (error) {
         console.error('Error setting data', error);
       }

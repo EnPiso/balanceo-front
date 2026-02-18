@@ -36,7 +36,6 @@ const ListOpersMaster = () => {
         setTabLoading(true)
         try {
           const result = await fetchGetData(`${urlMain}opers/index_all?page=${currentPage}&per_page=${perPage}&q[name_or_id_oper_cont]=${encodeURIComponent(queryString)}`);
-          //console.log(result)
       
           setMasterOpers(result.opers)
           result.total_pages && setTotalPages(result.total_pages)

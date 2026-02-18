@@ -135,7 +135,7 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
   // Ejecuta la acción final cuando todos los componentes hayan cargado
   useEffect(() => {
     if (isComponentsLoaded && !isFinalActionDone) {
-      console.log("Todos los componentes han cargado. Ejecutando acción final...");
+      
       setIsLoadingTimeModal(true)
       setIsLoadingByZone(true)
     }
@@ -229,7 +229,6 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
     e.dataTransfer.setData('application/json', JSON.stringify(draggedItem)); // Almacena como JSON
     e.target.classList.add('opacity-50'); // Indicador visual opcional
 
-   // console.log("Objeto arrastrado en drag start:", draggedItem); // Depuración
   };
 
 
@@ -244,7 +243,6 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
     // Recupera el objeto arrastrado desde dataTransfer
     const draggedItem = JSON.parse(e.dataTransfer.getData('application/json'));
 
-   //  console.log("Objeto arrastrado recibido en drop:", draggedItem);
       // Recupera el elemento en la posición de destino
     const operationBalancingBefore = operationsProduct[targetIndex].id;
 
@@ -265,7 +263,6 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
       position: index + 1, // Ajusta la posición
     }));
 
-    //console.log(draggedItem.operation_balancing_id, operationsBalancings);
 
     handleApi(operationsBalancings, draggedItem.operation_balancing_id, detailOperOpera, operationBalancingBefore);
   };
@@ -288,15 +285,12 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
     const postDataOrder = async (data) => {
       try {
         const result = await updateData(urlMain + "/balancings/update_operations_balancing", data)
-       //  console.log(result)
-        // console.log(operationsProduct)
-
+     
         setOperationsProduct(result.sorted_operations)
         const formatted_objects = assignColorsToArray(result.formatted_objects)
 
         setDetailOperOpera(formatted_objects)
 
-        //console.log(detailOperOpera)
         toast.success(toastMessageCustom.oper_drag)
 
 

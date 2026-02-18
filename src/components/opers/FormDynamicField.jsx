@@ -9,7 +9,6 @@ const FormDynamicField = ({ value, setState, valueDefault, onKeyDown, placeholde
   }, []);
   const handleChange = (e) => {
     const val = e.target.value
-    console.log(val)
     setState(val)
   }
 

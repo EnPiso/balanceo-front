@@ -39,7 +39,7 @@ export const BalancingSideBar = () => {
         orderId: showOrder.order.id
       }));
       setProductsSideBar(products);
-      console.log(objBalancing);
+      
     }
   }, [showOrder, objBalancing, setProductsSideBar]);
 
@@ -53,8 +53,7 @@ export const BalancingSideBar = () => {
   };
 
   const handleProductClick = (product) => {
-    console.log(product)
-  
+
     setToUpdateBalance(product)
     handleReset()
   }

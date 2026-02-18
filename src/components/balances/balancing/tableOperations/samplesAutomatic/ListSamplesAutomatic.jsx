@@ -118,7 +118,6 @@ const ListSamplesAutomatic = ({setIsAutomatic}) => {
             };
           })
         );
-        //console.log(detailOperOpera)
 
         // Actualizar detailOperOpera con los datos recibidos
         const updatedDetailOperOpera = detailOperOpera.map((targetItem) => {

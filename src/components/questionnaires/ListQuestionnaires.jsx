@@ -20,7 +20,7 @@ const ListQuestionnaires = () => {
       setIsLoading(true)
       try {
         const result = await fetchGetData(`${urlMain}questionnaires`);
-        console.log(result);
+    
         setQuestionnairesList(result)
       } catch (error) {
         console.error("Error al obtener los datos:", error);

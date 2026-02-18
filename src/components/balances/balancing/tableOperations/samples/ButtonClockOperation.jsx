@@ -30,7 +30,6 @@ const ButtonClockOperation = ({item, selectedOperDetails, i, samplingsCount}) =>
    <>
   
     <button onClick={()=>{ 
-        console.log(item, detailOperOpera)
         setItemAll(item)
         
         const oper_id = selectedOperDetails[i].id
@@ -43,7 +42,6 @@ const ButtonClockOperation = ({item, selectedOperDetails, i, samplingsCount}) =>
         };
         const detail = searchDetailObj(oper_id, operation_balancing_id)        
         
-        // console.log(selectedOperDetails[i])
         const data = {
           operation_balancing_id: item.operation_balancing_id,
           oper_id: selectedOperDetails[i].id,

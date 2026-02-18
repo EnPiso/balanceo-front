@@ -57,7 +57,6 @@ const FormNewUser = ({ setIsOpen }) => {
     const postUser = async () => {
       try {
         const result = await postDataToken(urlMain + "users", newUser)
-        console.log(result)
         
         const updatedUsers = [...users, result.user];
         setUsers(updatedUsers);

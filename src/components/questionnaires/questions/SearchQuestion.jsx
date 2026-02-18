@@ -62,7 +62,7 @@ const SearchQuestion = ({setIsOpenQues,setIsOpenNew, oper}) => {
       const getData = async () => {
         try {
           const result = await fetchGetData(`${urlMain}answers?${queryParams}`);
-          console.log(result)
+         
           setQuestionnairesDates(result)
           
         } catch (error) {
@@ -83,8 +83,7 @@ const SearchQuestion = ({setIsOpenQues,setIsOpenNew, oper}) => {
       const getData = async () => {
         try {
           const result = await fetchGetData(`${urlMain}answers/show_snapshot_answers_for_response?questionnaire_response_id=${questionnaire_response_id}`);
-          console.log(result)
-          
+         
           setAnswers(result.formatted_output)
           setAnswerResult(result.questionnaire_response)
         } catch (error) {

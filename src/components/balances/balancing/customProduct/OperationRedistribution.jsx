@@ -60,7 +60,6 @@ const OperationRedistribution = ({operation}) => {
         const detail = assignColorsToArray(result.details)
         setDetailOperOpera(detail)
 
-        // console.log(detailOperOpera)
         setObjBalancing((prevState) => ({
           ...prevState, // Copia el objeto actual
           operations: result.updated_operations, // Copia el array actual y agrega el nuevo elemento

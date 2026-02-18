@@ -65,7 +65,6 @@ const THeadNewOperation = () => {
 
       try {
         const result = await postData(urlMain + "operations", data)
-        console.log(result,operations)
         const arr = operations.operations
         const updateArr = [... arr, result]
 

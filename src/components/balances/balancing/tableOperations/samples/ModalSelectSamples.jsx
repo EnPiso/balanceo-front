@@ -53,7 +53,6 @@ const ModalSelectSamples = ({isOpen, setIsOpen, Obj, itemAll}) => {
   }, [])
   
   const handleUpdateTime = (updatedData) => {
-    // console.log(updatedData)
     const data = {
       sampling: {
         sample: updatedData.sample

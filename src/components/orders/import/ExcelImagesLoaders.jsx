@@ -126,9 +126,6 @@ const ExcelImagesLoaders = ({ fileMultiple, setFileMultiple, filesData, setFiles
   }, [fileMultiple]);
 
   
-  useEffect(() => {
-    console.log('Datos procesados:', filesData);
-  }, [filesData]);
 
   return (
     <div className="space-y-4">

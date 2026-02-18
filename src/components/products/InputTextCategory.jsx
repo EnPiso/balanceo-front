@@ -7,7 +7,6 @@ const InputTextCategory = ({label, placeholder, name, onChange, isInvalid, handl
       handleApi()
     }
     if (e.key === "Escape") {
-      console.log("Escape pressed");
       setIsNew(false)
     }
   };

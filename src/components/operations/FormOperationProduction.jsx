@@ -39,7 +39,7 @@ const FormOperationProduction = ({ operation }) => {
   };
 
   const handleChange = (e) => {
-    // console.log(`${e.target.name}: ${e.target.value}`);
+
     const data = {
       [e.target.name] : e.target.value
     }

@@ -35,7 +35,6 @@ const FormNewOperationCustom = () => {
         machine_name: dataObj.machine_name || "",
         sam: dataObj.sam || "",
       };
-      console.log("Nuevo dataObj recibido:", data);
       setOperation((prevOperation) => {
         if (
           prevOperation?.operation !== data.operation ||
@@ -91,7 +90,6 @@ const FormNewOperationCustom = () => {
       setIsLoading(true)
       try {
         const result = await postData(urlMain + "operations", data)
-        console.log(result,operations)
         const arr = operations.operations
         const updateArr = [... arr, result]
 

@@ -56,7 +56,6 @@ const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock
       try {
         const result = await postDataToken(urlMain + "/samplings", data, token)
         setSamplesClock([...samplesClock, result])
-       // console.log(samplesOperations)
         const detail_oper_operation_id = data.sampling.detail_oper_operation_id
 
         // Actualizar el array de samplesOperations
@@ -95,7 +94,6 @@ const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock
   };
 
   const handleUpdateTime = (updatedData) => {
-    // console.log(updatedData)
     const data = {
       sampling: {
         sample: updatedData.sample
@@ -126,8 +124,6 @@ const ObjOperationSample = ({sampleOperation, setIsSample, isSample,samplesClock
 
     updateSample()
 
-
-    console.log(data)
 
   }
 

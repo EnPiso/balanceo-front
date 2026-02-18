@@ -49,7 +49,6 @@ const InputFormCategory = ({ isEdit, setIsEdit, label, valueDefault, obj, handle
             // Aquí puedes agregar la lógica para manejar Enter
         }
         if (e.key === "Escape") {
-            console.log("Escape pressed");
             handleClear(); // Limpia el campo de entrada al presionar Escape
             setIsEdit(false)
         }

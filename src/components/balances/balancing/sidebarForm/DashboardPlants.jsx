@@ -62,7 +62,6 @@ const   DashboardPlants = () => {
             module,
         }
         setProdPlant(data)
-        console.log(data)
     }
 
     const handleModuleSelect = (module) => {
@@ -74,7 +73,6 @@ const   DashboardPlants = () => {
             module: module
         }
 
-        console.log(data)
         setProdPlant(data)
     }
 

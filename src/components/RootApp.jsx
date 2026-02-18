@@ -17,7 +17,6 @@ const RootApp = () => {
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
-    console.log(!isSidebarOpen);
   };
 
   return (

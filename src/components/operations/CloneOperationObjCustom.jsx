@@ -50,7 +50,6 @@ const CloneOperationObjCustom = ({ operation, addOperation, setShowFormNew }) =>
       setIsLoading(true)
       try {
         const result = await postData(urlMain + "operations", data)
-        console.log(result,operations)
         const arr = operations.operations
         const updateArr = [... arr, result]
 

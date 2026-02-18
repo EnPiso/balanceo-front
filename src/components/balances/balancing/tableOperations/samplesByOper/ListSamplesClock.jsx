@@ -40,7 +40,6 @@ const ListSamplesClock = (
     setIsloading(true)
     
     const detail_oper_operation_id = isSample.detail_oper_operation_id
-    console.log(detail_oper_operation_id)
     
     const getData = async () => {
       try {
@@ -116,7 +115,6 @@ const ListSamplesClock = (
                                   <Tooltip content="Editar muestra" placement='right'>
                                     <span onClick={() => {
                                       setIsEdit(sample)
-                                      console.log(sample)
                                     }} className={`flex justify-between items-center cursor-pointer ${isEdit && isEdit.id === sample.id && 'text-secondary_two'}`}>
                                       {sample.sample}    
                                       <div className="hidden lg:block">

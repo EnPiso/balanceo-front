@@ -19,8 +19,7 @@ const AutocompleteCategories = ({setIsEdit, obj, valueDefault,handleFetchApi}) =
       setIsLoad(true)
       try {
         const result = await fetchGetData(`${urlMain}category_products`);
-        console.log(result);
-
+       
         // Mapea los datos para que sean compatibles con Autocomplete
         const formattedCategories = result.map((cat) => ({
           key: cat.name, // Convierte el ID a string si es necesario

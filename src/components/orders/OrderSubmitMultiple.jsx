@@ -42,7 +42,7 @@ const OrderSubmitMultiple = ({filesData, processData, onClose, setIsLoadingMulti
 
       try {
         const result = await postData(urlMain + "orders/create_multiple_order", data)
-        console.log(result)
+      
         
         const updateResult = result.orders.map((order)=> {
           return order.order_products

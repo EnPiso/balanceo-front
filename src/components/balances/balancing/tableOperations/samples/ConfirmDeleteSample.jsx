@@ -33,7 +33,6 @@ const ConfirmDeleteSample = ({sample, index, setSamples, samples}) => {
   }
 
   const handleDelete = (sample) => {
-    console.log(sample)
    
     const deleteSample = async () => {
           setIsLoading(true)
@@ -56,9 +55,7 @@ const ConfirmDeleteSample = ({sample, index, setSamples, samples}) => {
                 )
               );
             }
-            
-            // console.log(operaClock)
-            
+                        
 
             const detail_id = operaClock.obj.detail_id
           
@@ -74,7 +71,6 @@ const ConfirmDeleteSample = ({sample, index, setSamples, samples}) => {
             
           
             setDetailOperOpera(updatedDetail)
-           // console.log(detailOperOpera, operaClock)
             
            toast("La muestra ha sida eliminada")
           } catch (error) {

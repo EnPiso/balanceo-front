@@ -18,7 +18,7 @@ const DeleteProductCustom = ({product}) => {
 
 
   const handleConfirm = (product) => {
-    console.log(product)
+  
     setSelectProduct(product)
     setIsOpenConfirm(true)
   }

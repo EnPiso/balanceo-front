@@ -34,14 +34,12 @@ const SaveStep = ({steps, Obj, setIsOpen, itemAll}) => {
       setIsLoading(true)
       try {
           const result = await postDataToken(urlMain + "samplings/create_multiple", data, token)
-          console.log(result, detailOperOpera, data.operation_balancing_id)
           setSamples([...samples, ...result.samples])
        
           // ID que deseas actualizar
    
           
           const newSamplingsCount = result.samples.length;
-          // console.log(operaClock)
           const detail_id = operaClock.obj.detail_id
           
           // Actualizar el `samplings_count` en el objeto correspondiente

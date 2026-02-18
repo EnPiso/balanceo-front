@@ -30,7 +30,6 @@ const SelectOpersForTimes = ({
   
   
   const handleOperClick = (oper) => {
-    console.log(oper.name)
     if(isOnlyOper){
       handleSample(oper)
       return true
@@ -57,7 +56,6 @@ const SelectOpersForTimes = ({
         const filteredUpdate = operationsProduct.filter(item =>
           ids.includes(item.operation_balancing_id)
         );
-        console.log(zonesOperUpdate)
         const result = zonesOperUpdate.flatMap(array => array).find(item => item.operator.id === oper.id);
         setZoneOperSample(result)
         

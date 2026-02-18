@@ -19,7 +19,6 @@ const NewBtnOperationMaster = () => {
       setIsLoading(true)
       try {
         const result = await fetchGetData(`${urlMain}machines/all_machines`);
-        // console.log(result);
         setAllMachines(result)
         
         setIsOpen(true)

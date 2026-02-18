@@ -45,7 +45,6 @@ const ListVideosMain = () => {
       setIsLoading(true);
       try {
         const result = await fetchGetData(`${urlMain}videos/index_videos?${queryParams.toString()}`);
-        console.log(result)
        
         setOperationsVideos(result.operations)
         setTotalPages(result.total_pages)
@@ -59,9 +58,6 @@ const ListVideosMain = () => {
     getData();
   }, [dataSearchList, currentPage, perPage]) // <-- Agrega las dependencias
 
-  useEffect(()=> {
-    console.log(dataSearchList)
-  }, [dataSearchList])
 
   const handlePerPageChange = (page) => { 
 

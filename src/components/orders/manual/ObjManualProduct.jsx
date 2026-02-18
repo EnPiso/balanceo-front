@@ -29,7 +29,7 @@ const ObjManualProduct = ({product, dataSearchList}) => {
     const getData = async () => {
       try {
         const result = await fetchGetData(`${urlMain}products/${product_id}/product_operations`);
-        console.log(result);
+     
         
         if(result.length === 0) {
           setCanContinue(false);

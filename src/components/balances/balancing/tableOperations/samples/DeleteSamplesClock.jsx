@@ -31,7 +31,6 @@ const DeleteSamplesClock = ({sample, index, setSamples, samples, isSample}) => {
   }
 
   const handleDelete = (sample) => {
-    console.log(sample)
    
     const deleteSample = async () => {
           setIsLoading(true)
@@ -66,7 +65,6 @@ const DeleteSamplesClock = ({sample, index, setSamples, samples, isSample}) => {
             setDetailOperOpera(updatedDetail)
            
            // setDetailOperOpera(updatedDetail)
-           // console.log(detailOperOpera, operaClock)
             
            toast("La muestra ha sida eliminada")
           } catch (error) {

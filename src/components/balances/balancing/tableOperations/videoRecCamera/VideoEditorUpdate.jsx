@@ -7,9 +7,6 @@ const VideoEditorUpdate = ({ videoBlob, videoDuration }) => {
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(videoDuration);
 
-  useEffect(() => {
-    console.log(videoDuration);
-  }, [videoDuration]);
 
   const handleTrimChange = (newValue) => {
     const [newStart, newEnd] = newValue;

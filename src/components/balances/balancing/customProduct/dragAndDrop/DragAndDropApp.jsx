@@ -82,10 +82,6 @@ const DragAndDropApp = ({onClose}) => {
     }
   }, [objBalancing]);
 
-  useEffect(() => {
-    console.log(selectedOperDetails)
-
-  }, [selectedOperDetails]);
 
   // Función para agregar nuevas operaciones desde `CloneCustom`
   const addOperation = (newOperation) => {

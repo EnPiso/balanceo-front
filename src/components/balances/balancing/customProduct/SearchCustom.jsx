@@ -35,7 +35,7 @@ const SearchCustom = ({setShowFormNew,showFormNew,query,setQuery}) => {
     const getData = async () => {
       try {
         const result = await fetchGetData(`${urlMain}operations?q[operation_cont]=${encodeURIComponent(debouncedQuery)}`);
-        // console.log(result);
+ 
         setCloneOperations(result);
         setShowFormNew(false)
       } catch (error) {
@@ -52,7 +52,6 @@ const SearchCustom = ({setShowFormNew,showFormNew,query,setQuery}) => {
     if(!showFormNew === false){
       setDataObjClone(null)
     }
-    console.log(!showFormNew)
   }
 
   return (

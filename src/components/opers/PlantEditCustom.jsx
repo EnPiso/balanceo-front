@@ -32,7 +32,6 @@ const PlanEditCustom = ({ plant, listPlants, setListPlants,setProdPlant, prodPla
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
 
-      console.log(objEdit.id); // Aquí puedes manejar la lógica para guardar
       setIsLoading(true)
       const data = {
         name: plantName
@@ -47,7 +46,6 @@ const PlanEditCustom = ({ plant, listPlants, setListPlants,setProdPlant, prodPla
   };
 
   const fetchUpdate = (data, id) => {
-    console.log(data)
 
     const production_plant = {
       production_plant: data
@@ -55,8 +53,7 @@ const PlanEditCustom = ({ plant, listPlants, setListPlants,setProdPlant, prodPla
     const updatePlant = async (data) => {
       try {
         const result = await updateData(urlMain + `production_plants/${id}/update_plant/`, production_plant)
-        // console.log(result)
-        // console.log(result)
+
         const updatedItems = listPlants.map((item) =>
           item.id === result.id ? result : item
         );

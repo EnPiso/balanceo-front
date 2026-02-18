@@ -31,7 +31,6 @@ const ButtonPlayVideos = ({item,showVideos,setShowVideos, isScreenShot, handleOp
 
     }else{
       setShowVideos(item)
-      // console.log(item.operation_balancing_id)
       handleApi(item.operation_balancing_id)
     }
 
@@ -45,7 +44,6 @@ const ButtonPlayVideos = ({item,showVideos,setShowVideos, isScreenShot, handleOp
       try {
         //setLoading(true);
         const result = await fetchGetData(`${urlMain}/videos/show_videos?operation_balancing_id=${operation_balancing_id}`);
-        console.log(result)
         setVideosOperations(result.videos)
         setOpersTags(result.opers_balancings)
         //setOrders(result)
@@ -104,7 +102,6 @@ const ButtonPlayVideos = ({item,showVideos,setShowVideos, isScreenShot, handleOp
                         onClick={()=> {
                           handleOperationBalancing(item)
                           setShowVideos(item)
-                          // console.log(item.operation_balancing_id)
                           handleApi(item.operation_balancing_id)
                         }}>
                         <FaFileVideo 

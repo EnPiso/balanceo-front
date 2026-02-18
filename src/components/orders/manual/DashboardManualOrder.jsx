@@ -70,7 +70,6 @@ const DashboardManualOrder = ({setIsOpen}) => {
       }
       setOperations([])
       setSelectObj(null)
-      //console.log(dataSearch)
   },[isOriginal])
 
   useEffect(()=> {

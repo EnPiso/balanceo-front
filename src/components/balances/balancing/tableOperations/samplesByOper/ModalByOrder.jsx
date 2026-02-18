@@ -52,7 +52,6 @@ const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) =>
   const [token, setToken] = useRecoilState(tokenMemory);
 
   useEffect(()=> {
-   // console.log(oper, samplesOperations, isSample)
     oper && setIsShowDetail(false)
   },[])
 
@@ -66,7 +65,6 @@ const ModalByOrder = ({isOpen, setIsOpen, oper, isAutomatic, setIsAutomatic}) =>
       setIsLoading(true)
       try {
         const result = await fetchGetDataToken(`${urlMain}samplings/index_samples_by_oper?balancing_id=${balancing_id}&oper_id=${oper_id}`, token);
-        // console.log(result,oper)
         setSamplesOperations(result.operations)
         setIsShowDetail(false)
       } catch (error) {

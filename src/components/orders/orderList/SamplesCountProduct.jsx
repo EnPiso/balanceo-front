@@ -66,7 +66,7 @@ const SamplesCountProduct = ({value, style, tooltip, product, timeCyclesGo, orde
       product: product
     }
     
-    // console.log(toBalance, timeCyclesGo, order.id)
+    
     
     setBoToBalanceObj(toBalance)
     setNumTimeDataCycles(timeCyclesGo)

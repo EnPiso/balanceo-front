@@ -65,7 +65,6 @@ const ProfileUser = ({ handleClose }) => {
       setIsLoadingEdit(true)
       try {
         const result = await updateDataToken(urlMain + `users/${user_id}`, data, token)
-        console.log(user)
         setUser(result.user)
         toast.success( `Se actualizó ${result.user.name},  correctamente`)
       } catch (error) {

@@ -11,7 +11,6 @@ const InputUpdateOperations = ({
      handleSubmit}) => {
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      console.log(operation);
       handleSubmit(operation)
       setClose();
     } else if (event.key === "Escape") {

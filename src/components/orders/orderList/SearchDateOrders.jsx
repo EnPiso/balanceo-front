@@ -10,7 +10,6 @@ const SearchDateOrders = ({queryDate, setQueryDate, isLoading, queryString, setQ
   const handleDateChange = (date) => {
     setQueryString("")
     setQueryDate(date);
-    console.log("Fecha seleccionada:", date);
   };
 
 

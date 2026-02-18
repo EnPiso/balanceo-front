@@ -7,13 +7,6 @@ import DeleteManualProduct from './DeleteManualProduct';
 
 const ListModalNew = () => {
   const [newManual, setNewManual] = useRecoilState(newManualObj);
-
-  useEffect(()=> {
-    if(newManual){
-      console.log(newManual)
-      
-    }
-  },[newManual])
   
   return (
     <div>

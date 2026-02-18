@@ -22,8 +22,6 @@ const DeleteModule = ({module, prodPlant, setProdPlant}) => {
   
   const handleDelete = () => {
     const module_id = module.id
-    console.log(module_id)
-    console.log(listPlants)
 
     const data = {
       production_module: {
@@ -40,7 +38,6 @@ const DeleteModule = ({module, prodPlant, setProdPlant}) => {
       setIsLoading(true)
       try {
         const result = await updateDataToken(urlMain + `production_modules/${module_id}`, data, token)
-        console.log(result, listPlants)
 
 
         const removeModuleById = (plants, moduleId) => {

@@ -67,7 +67,6 @@ const DashboardProductBalancing = ({setIsOpen}) => {
       }
       setOperations([])
       setSelectObj(null)
-      //console.log(dataSearch)
   },[isOriginal])
 
   useEffect(()=> {

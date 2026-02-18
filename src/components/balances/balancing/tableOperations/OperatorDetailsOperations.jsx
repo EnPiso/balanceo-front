@@ -25,7 +25,6 @@ const OperatorDetailsOperations = ({ zone, index, zonesOperUpdate }) => {
 
   // Efecto para actualizar los datos del operador en zonesOpersData
   useEffect(() => {
-    // console.log("Ejecución del useEffect", { selectedOperDetails, totalMinutes, index, zone });
 
     const operatorData = {
       operator: selectedOperDetails[index]?.id,
@@ -41,11 +40,9 @@ const OperatorDetailsOperations = ({ zone, index, zonesOperUpdate }) => {
 
       if (!operatorExists && operatorData.operator !== undefined) {
         filteredData.push(operatorData);
-        console.log("Nuevo operador agregado:", operatorData);
       } else if (operatorExists) {
         const existingIndex = filteredData.findIndex((data) => data.operator === operatorData.operator);
         filteredData[existingIndex] = operatorData;
-        console.log("Operador actualizado:", operatorData);
       } else {
         console.warn(`Se intentó agregar un objeto con 'operator: undefined' en el índice ${index}`);
       }
@@ -76,9 +73,6 @@ const OperatorDetailsOperations = ({ zone, index, zonesOperUpdate }) => {
       console.error("IDs no válidos", { operation_balancing_id, oper_id });
       return null;
     }
-
-    // console.log(operationsProduct)
-
    
 
    const detailOperation = operationsProduct.find(

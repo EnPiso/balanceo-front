@@ -28,7 +28,6 @@ const CommentVideoInput = ({setCommentsVideos, commentsVideos}) => {
     const postDataOrder = async (data) => {
       try {
         const result = await postData(urlMain + `/videos/${video_id}/comment_videos`, data)
-        //console.log(result)
         setCommentsVideos([...commentsVideos, result.comment])
 
         setComments('')

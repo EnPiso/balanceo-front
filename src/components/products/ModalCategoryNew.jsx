@@ -62,7 +62,6 @@ const ModalCategoryNew = () => {
             return labelA.localeCompare(labelB);
           });
 
-          console.log(sortedArray);
 
           const sortedCategories = sortedArray.sort((a, b) => a.label.localeCompare(b.label));
 

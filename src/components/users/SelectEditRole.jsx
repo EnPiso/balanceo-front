@@ -26,12 +26,12 @@ const SelectEditRole = ({user}) => {
 
 
   const handleEdit = () => {
-    console.log(user)
+
     setIsEdit(true)
   }
 
   const handleSelect = (id) => {
-    console.log(id)
+
     const user_id = user.id
 
     const data = {

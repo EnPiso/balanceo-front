@@ -30,7 +30,6 @@ const SelectManualPlantModule = (
         (item) => item.plant_module_name && item.plant_module_name.trim() !== ''
       );
       setModulesPlant(filteredResult);
-      console.log(filteredResult);
     } catch (error) {
       console.error('Error al obtener los datos:', error);
     } finally {
@@ -51,7 +50,6 @@ const SelectManualPlantModule = (
     if (value === "") {
       // Si el valor es vacío, significa que se hizo clic en la "X"
       setSelectModule(""); // Limpiar el módulo seleccionado
-      console.log("El valor del Autocomplete fue borrado.");
     }
   };
 

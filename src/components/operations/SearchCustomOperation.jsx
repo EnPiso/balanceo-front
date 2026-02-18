@@ -61,7 +61,6 @@ const SearchCustomOperation = ({setShowFormNew,showFormNew,query,setQuery}) => {
     }else{
       handleMachine()
     }
-    console.log(!showFormNew)
   }
 
 

@@ -67,7 +67,6 @@ const FormCategoryProduct = ({setIsNew}) => {
             const updateAarray = [...categories, result]
             
             setCategories(updateAarray)
-            console.log(categoriesUp)
 
             const data = {
               key: result.name,

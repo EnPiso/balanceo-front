@@ -49,7 +49,7 @@ const ZonesMobileDashboardVideos = () => {
 
     }else{
       setShowVideos(item)
-      // console.log(item.operation_balancing_id)
+      
       handleApi(item.operation_balancing_id)
     }
 
@@ -61,7 +61,7 @@ const ZonesMobileDashboardVideos = () => {
         try {
           //setLoading(true);
           const result = await fetchGetData(`${urlMain}/videos/show_videos?operation_balancing_id=${operation_balancing_id}`);
-          console.log(result)
+       
           setVideosOperations(result.videos)
           setOpersTags(result.opers_balancings)
           //setOrders(result)
@@ -137,7 +137,7 @@ const ZonesMobileDashboardVideos = () => {
                         onClick={()=> {
                           handleOperationBalancing(operation)
                           setShowVideos(operation)
-                          // console.log(item.operation_balancing_id)
+
                           handleApi(operation.operation_balancing_id)
                         }}>
                         <FaFileVideo

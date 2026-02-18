@@ -42,7 +42,6 @@ const ZonesMobileClock = ({operationDetail, zone, opIndex}) => {
     };
     const detail = searchDetailObj(oper_id, operation_balancing_id)        
     
-    // console.log(selectedOperDetails[i])
     
     const data = {
       operation_balancing_id: item.operation_balancing_id,

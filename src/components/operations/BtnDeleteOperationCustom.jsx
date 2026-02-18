@@ -39,8 +39,6 @@ const BtnDeleteOperationCustom = ({operation}) => {
           (operation) => operation.id !== result.id
         );
 
-        console.log(operations)
-
         // Actualizar el estado de las operaciones
         setOperations((prevOperations) => ({
           ...prevOperations,

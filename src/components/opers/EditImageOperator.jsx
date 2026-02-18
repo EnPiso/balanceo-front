@@ -18,7 +18,6 @@ const EditImageOperator = ({url_image, toggleLightbox,oper, opers, setOpers,setI
 
     const value = e.target.files[0]
 
-    console.log(e, oper)
 
     if (value) {
       setIsLoad(true)
@@ -29,7 +28,6 @@ const EditImageOperator = ({url_image, toggleLightbox,oper, opers, setOpers,setI
       const updateAvatar = async () => {
         try {
           const result = await updateData(urlMain + `opers/${id}/purge_update_img`, data);
-          console.log(result)
           const updatedItems = opers.map((item) =>
             item.id === id ? result : item
           );

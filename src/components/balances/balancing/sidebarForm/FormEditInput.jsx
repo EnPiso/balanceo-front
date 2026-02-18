@@ -11,7 +11,6 @@ const FormEditInput = ({ value, setState, valueDefault, onKeyDown}) => {
     }, []);
     const handleChange = (e) => {
         const val = e.target.value
-        console.log(val)
         setState(val)
     }
 

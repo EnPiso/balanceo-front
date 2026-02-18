@@ -25,7 +25,6 @@ const PolyvalenceOperation = ({item}) => {
     const postDataOrder = async (data) => {
       try {
         const result = await updateData(urlMain + "/balancings/update_polyvalence", data)
-        // console.log(result)
         const id = result.id
 
 

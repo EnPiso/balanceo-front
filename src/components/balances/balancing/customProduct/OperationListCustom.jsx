@@ -64,17 +64,11 @@ const   DraggableRow = ({ operation, index, handleDragStart, handleDragOver, han
     const udateOperationsIndex = async (data, updatedList) => {
       try {
         const result = await postData(urlMain + "/operations_balancings/update_index", data)
-        console.log(result.operations_balance)
-
+       
         const detail = assignColorsToArray(result.details)
 
         setDetailOperOpera(detail)
         toast.success(toastMessageCustom.oper_drag)
-
-        // console.log(detailOperOpera)
-
-
-        console.log(objBalancing)
 
         setObjBalancing((prevState) => ({
           ...prevState, // Copia el objeto actual
@@ -101,7 +95,6 @@ const   DraggableRow = ({ operation, index, handleDragStart, handleDragOver, han
 
   const handleDestribuye = (e, operation) => {
     e.preventDefault()
-    console.log(operation)
   }
 
 

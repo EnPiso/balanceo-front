@@ -61,7 +61,7 @@ const OperationDeleteCustom = ({operation}) => {
 
         setDetailOperOpera(detail)
         toast.error(toastMessageCustom.operationsDragDelete)
-        // console.log(detailOperOpera)
+      
 
         setObjBalancing((prevState) => ({
           ...prevState, // Copia el objeto actual

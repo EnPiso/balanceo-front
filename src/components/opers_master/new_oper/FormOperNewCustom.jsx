@@ -160,7 +160,6 @@ const FormOperNewCustom = ({setNewObjOper, setIsOpen}) => {
                   value={nameData}
                   setState={setNameData}
                   valueDefault={""}
-                  onKeyDown={() => console.log("onkeydown")}
                 />
             </span>
             <span className="mt-3">
@@ -170,7 +169,6 @@ const FormOperNewCustom = ({setNewObjOper, setIsOpen}) => {
                 value={idOper}
                 setState={setIdOper}
                 valueDefault={""}
-                onKeyDown={() => console.log("onkeydown")}
               />
             </span>
 

@@ -85,7 +85,6 @@ const CloneBalancingDashboard = () => {
   const handleClone = () => {
     setIsClone(true)
     
-    console.log(operationsProduct)
     const product_id = objBalancing.product.id
     const formatOperation = (op, item) => ({
       ...op,

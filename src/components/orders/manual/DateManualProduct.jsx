@@ -8,7 +8,6 @@ export const DateManualProduct = ({queryDate, setQueryDate, isOriginal}) => {
 
   const handleDateChange = (date) => {
     setQueryDate(date);
-    console.log("Fecha seleccionada:", date);
   };
 
  

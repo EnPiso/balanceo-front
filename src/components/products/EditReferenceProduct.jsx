@@ -25,7 +25,7 @@ const EditReferenceProduct = ({product}) => {
         const updateProduct = async (data) => {
             try {
                 const result = await updateData(urlMain + "products/" + obj.id, data)
-                ///  console.log(result)
+         
                 setProducts((prevProducts) => {
                     // Verifica si el producto ya existe en el array
                     const existingIndex = prevProducts.findIndex((product) => product.id === result.id);

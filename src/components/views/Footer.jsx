@@ -18,7 +18,7 @@ const Footer = () => {
         size="lg"
         className="mx-1 bg-zinc-100"
         variant="bordered"
-        onClick={() => console.log("Regresar")}>
+        >
         <span className="font-bold uppercase text-zinc-800 flex justify-between items-center">
           <FaBackward className="text-secondary_two mr-2" /> Regresar
         </span>

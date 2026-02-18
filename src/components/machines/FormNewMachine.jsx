@@ -84,7 +84,6 @@ const FormNewMachine = ({setIsOpen}) => {
                   value={machine}
                   setState={setMachine}
                   valueDefault={""}
-                  onKeyDown={() => console.log("onkeydown")}
                 />
             </span>
             <span className="mt-3 mb-3">

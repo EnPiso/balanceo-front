@@ -61,7 +61,6 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
           id_oper: idOper
         }
       }
-      // console.log(data, oper.id)
       fetchApi(data, operTempo.id)
 
     }else if ((event.key === "Escape")){

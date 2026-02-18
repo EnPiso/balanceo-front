@@ -223,7 +223,7 @@ export const BalancingDashboard = ({backward}) => {
     if (imageBlob) {
       const formData = new FormData();
       formData.append("file", imageBlob, "screenshot.png");
-      console.log(formData)
+      
     }
   };
 
@@ -235,7 +235,7 @@ export const BalancingDashboard = ({backward}) => {
           useCORS: true,
           cacheBust: true,
         }); // Captura el contenido como Blob
-        // console.log(blob); // Almacena el Blob en el estado
+        
         if(blob){
           fetchUpdateImageTable(blob)
         }
@@ -255,7 +255,7 @@ export const BalancingDashboard = ({backward}) => {
     const updatePlant = async () => {
       try {
         const result = await updateData(urlMain + `/products/${productId}`, formData)
-        console.log(result)
+       
         // guardar imagen de la tabla del balanceo en product
       } catch (error) {
         console.error('Error setting data', error);

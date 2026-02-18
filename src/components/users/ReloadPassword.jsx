@@ -31,7 +31,6 @@ const ReloadPassword = ({user}) => {
         setIsLoading(true)
         try {
           const result = await updateDataToken(urlMain + `users/${user_id}`, data, token)
-          console.log(result)
   
           
           toast.success(`ya puedes iniciar sesión con ${user.name} y cambiar la contraseña `)

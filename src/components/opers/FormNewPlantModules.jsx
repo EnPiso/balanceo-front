@@ -25,7 +25,6 @@ const FormNewPlantModules = ({listPlants, setListPlants}) => {
     };
     setPlantAndModules(data);
     fetchApi(data);
-    // console.log("Saved data:", data); // Aquí puedes enviar los datos al backend
   };
 
 
@@ -33,7 +32,6 @@ const FormNewPlantModules = ({listPlants, setListPlants}) => {
     const postDataOrder = async (data) => {
       try {
         const result = await postData(urlMain + "/production_plants/create_plants_and_modules", data)
-        console.log(listPlants)
 
         setListPlants([...listPlants, result])
         setPlantName("")

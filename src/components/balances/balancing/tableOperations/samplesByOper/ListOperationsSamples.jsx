@@ -15,14 +15,9 @@ const ListOperationsSamples = () => {
 
   const [samplesOperations, setSamplesOperations] = useRecoilState(operationsSamples)
   
-  useEffect(()=> {
-    console.log(samplesOperations)
-    
-  }, [])
 
   const handleSample = (sample) => {
     setIsSample(sample)
-    console.log(sample)
   }
 
 

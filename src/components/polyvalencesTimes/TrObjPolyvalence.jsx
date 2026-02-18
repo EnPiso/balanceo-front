@@ -53,7 +53,7 @@ const TrObjPolyvalence = ({
     const getData = async () => {
       try {
         const result = await fetchGetData(`${urlMain}polyvalences_times/operations_by_oper?oper_id=${oper_id}`);
-        console.log(result);
+        
         setAllMachines(result.machines)
         
         
@@ -73,7 +73,7 @@ const TrObjPolyvalence = ({
     const getData = async () => {
       try {
         const result = await fetchGetData(`${urlMain}polyvalences_times/update_unique_machines?oper_id=${oper_id}`);
-        // console.log(result);
+        
         
         setOperPoly(oper)
         setAllMachines(result.samplings)

@@ -22,7 +22,6 @@ const VideoObjMain = ({operation,key,operationTemp, setOperationTemp, isFavorite
       setIsLoading(true);
       try {
         const result = await fetchGetData(`${urlMain}videos/get_videos_operations?operation_id=${operation_id}&favorite=${isFavorite}`);
-        console.log(result.videos)
         setVideos(result.videos)
         setIsOpen(true)
         setOperationTemp(operation)

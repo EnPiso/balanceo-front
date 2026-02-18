@@ -118,9 +118,7 @@ export const nameReferenceProduct = (garment) => {
       reference: inside,
       categoryProduct: categoryProduct,
     };
-  } else {
-    console.log("Formato no coincide");
-  }
+  } 
 };
 
 

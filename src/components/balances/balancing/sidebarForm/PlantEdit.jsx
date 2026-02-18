@@ -21,9 +21,6 @@ const PlanEdit = ({ plant }) => {
     const handleKeyDown = (event) => {
         event.stopPropagation()
         if (event.key === "Enter") {
-            console.log(prodPlant.plant.id); // Aquí puedes manejar la lógica para guardar
-            console.log(objEdit.id); // Aquí puedes manejar la lógica para guardar
-
             const data = {
                 name: plantName
             }
@@ -37,7 +34,6 @@ const PlanEdit = ({ plant }) => {
     };
 
     const fetchUpdate = (data, id) => {
-        console.log(data)
 
         const production_plant = {
             production_plant: data
@@ -45,8 +41,7 @@ const PlanEdit = ({ plant }) => {
         const updatePlant = async (data) => {
             try {
                 const result = await updateData(urlMain + `production_plants/${id}/update_plant/`, production_plant)
-                // console.log(result)
-               // console.log(result)
+            
                 const updatedItems = listPlants.map((item) =>
                     item.id === result.id ? result : item
                 );

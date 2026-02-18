@@ -145,7 +145,6 @@ const TheadOperatorsCustom = ({moduleId, opers, setOpers, setIsNewOperator}) => 
                 value={nameData}
                 setState={setNameData}
                 valueDefault={""}
-                onKeyDown={() => console.log("onkeydown")}
               />
            </span>
             <span className="mt-3">
@@ -155,7 +154,6 @@ const TheadOperatorsCustom = ({moduleId, opers, setOpers, setIsNewOperator}) => 
                   value={idOper}
                   setState={setIdOper}
                   valueDefault={""}
-                  onKeyDown={() => console.log("onkeydown")}
                 />
             </span>
 

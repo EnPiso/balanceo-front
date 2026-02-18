@@ -19,7 +19,6 @@ const ArchiveUser = ({user}) => {
   const [token, setToken] = useRecoilState(tokenMemory);
 
   const handleDelete = () => {
-    console.log(user)
 
     const deleteUser = async () => {
       setIsLoading(true)
@@ -33,7 +32,6 @@ const ArchiveUser = ({user}) => {
 
       try {
         const result = await updateDataToken(urlMain + `users/${user_id}`, data, token);
-        // console.log(result)
         const updatedUsers = users.filter(u => u.id !== user_id);
         setUsers(updatedUsers);
         

@@ -21,7 +21,7 @@ const InfoBoxBalancing = () => {
 
   useEffect(() => {
     // const objetosFiltrados = opers.filter(objeto => opersSelect.has(objeto.id));
-    // console.log(objetosFiltrados)
+  
 
     const data = {
       minutesHour: opersSelect.size * 60,

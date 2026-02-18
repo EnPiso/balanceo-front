@@ -51,7 +51,6 @@ const ModalOperPoly = ({
       setIsLoading(true)
       try {
         const result = await fetchGetData(`${urlMain}polyvalences_times/opers_zones?oper_id=${oper_id}`);
-        console.log(result);
         
         setOpersZonesPolyvalence(result)
         setPercentZones(result.percent_general)

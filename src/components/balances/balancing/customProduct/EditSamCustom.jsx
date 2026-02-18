@@ -83,7 +83,7 @@ const EditSamCustom = ({ operation }) => {
         const detail = assignColorsToArray(result.data_detail)
         setDetailOperOpera(detail)
         setSamSum(result.total_sam)
-        // console.log(operation)
+       
         const operation_update = {
           ...operation, // Copia todos los valores de "operation"
           sam: sam, // Sobrescribe "sam"

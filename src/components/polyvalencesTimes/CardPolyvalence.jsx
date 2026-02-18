@@ -59,7 +59,7 @@ const CardPolyvalence = ({
       setIsLoadingZones(true)
       try {
         const result = await fetchGetData(`${urlMain}polyvalences_times/opers_zones?oper_id=${oper_id}`);
-        // console.log(result);
+        
         setOpersZonesPolyvalence(result)
         if(result.opers_zones_by_opers_balancing?.length < 1) {
           toast.error("No hay tiempos en la zona")

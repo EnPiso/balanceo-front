@@ -53,10 +53,7 @@ const OrderDashboardModal = () => {
     onOpen();
   }
 
-  const handleSubmit = () => {
-    console.log({operationsData, orderProOpe, images})
-  }
-
+ 
   const handleMultipleFile = (files) => {
     setIsMultipleExcel(true)
     setFileMultiple(files)
