@@ -172,26 +172,39 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
         };
       });
     });
-    
-    // Verificar si los detalles han cambiado antes de actualizar el estado
-    if (JSON.stringify(details) !== JSON.stringify(zonesOperUpdate)) {
-      setZonesOperUpdate(details);
-      
-    }
-  }, [zones, detailOperOpera, selectedOperDetails, operationsProduct, zonesOperUpdate]);
+    setZonesOperUpdate(prev => {
+      if (
+        prev.length === details.length &&
+        prev.every((zone, i) =>
+          zone.length === details[i].length &&
+          zone.every((item, j) =>
+            item.operation?.operation_balancing_id === details[i][j].operation?.operation_balancing_id &&
+            item.operator?.id === details[i][j].operator?.id &&
+            item.detailObj?.detail?.color === details[i][j].detailObj?.detail?.color
+          )
+        )
+      ) {
+        return prev;
+      }
+      return details;
+    });
+  }, [zones, detailOperOpera, selectedOperDetails, operationsProduct]);
 
 
 
   useEffect(()=> {
     const updateDetails = detailOperOpera.map((detail) => detail.detail);
-
-    const mergeOperations = mergeOperationsWithColors(operationsProduct, updateDetails);
-
-    // Compara el nuevo estado con el actual antes de actualizar
-    if (JSON.stringify(mergeOperations) !== JSON.stringify(operationsProduct)) {
-        setOperationsProduct(mergeOperations); /// aca
-    }
-  },[detailOperOpera, operationsProduct])
+    setOperationsProduct(prev => {
+      const merged = mergeOperationsWithColors(prev, updateDetails);
+      if (
+        prev.length === merged.length &&
+        prev.every((op, i) => op.color === merged[i].color && op.is_repeat === merged[i].is_repeat)
+      ) {
+        return prev;
+      }
+      return merged;
+    });
+  }, [detailOperOpera])
 
   const mergeOperationsWithColors = (operations, attributes) => {
     // Crear un mapa para agrupar colores por operation_id

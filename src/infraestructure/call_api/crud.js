@@ -42,22 +42,20 @@ export const fetchGetData = async (url, params = {}) => {
 };
 
 // Función en flecha para manejar la solicitud POST
-export const  postData = async (url,data) => {
+export const postData = async (url, data) => {
   try {
     const response = await axios.post(url, data, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    return response.data // Guardar los datos de la respuesta
+    return response.data;
   } catch (err) {
-    console.log(err); // Guardar cualquier error
-  } finally {
-    // setLoading(false); // Detener el indicador de carga
+    throw err;
   }
 };
 
-export const postDataToken = async (url,data, tokenState) => {
+export const postDataToken = async (url, data, tokenState) => {
   try {
     const response = await axios.post(url, data, {
       headers: {
@@ -65,11 +63,9 @@ export const postDataToken = async (url,data, tokenState) => {
         'Content-Type': 'application/json',
       },
     });
-    return response.data // Guardar los datos de la respuesta
+    return response.data;
   } catch (err) {
-    console.log(err); // Guardar cualquier error
-  } finally {
-    // setLoading(false); // Detener el indicador de carga
+    throw err;
   }
 };
 
@@ -87,30 +83,26 @@ export const postDataFile = async (url, data) => {
   }
 };
 
-export const updateDataToken = async (url,data, tokenTemporal) => {
+export const updateDataToken = async (url, data, tokenTemporal) => {
   try {
     const response = await axios.patch(url, data, {
       headers: {
         'Authorization': `Bearer ${tokenTemporal ? tokenTemporal : token}`,
       },
     });
-    return response.data // Guardar los datos de la respuesta
+    return response.data;
   } catch (err) {
-    console.log(err); // Guardar cualquier error
-  } finally {
-    // setLoading(false); // Detener el indicador de carga
+    throw err;
   }
 };
 
 
-export const updateData = async (url,data) => {
+export const updateData = async (url, data) => {
   try {
     const response = await axios.patch(url, data);
-    return response.data // Guardar los datos de la respuesta
+    return response.data;
   } catch (err) {
-    console.log(err); // Guardar cualquier error
-  } finally {
-    // setLoading(false); // Detener el indicador de carga
+    throw err;
   }
 };
 

@@ -35,13 +35,16 @@ const useGenerateZones = ({ opersSelect, balancing, zones }) => {
 
       // **Evita actualizaciones redundantes comparando los datos**
       setZonesOpersData((prevData) => {
-        
-        // Si los datos no han cambiado, no actualizamos
-        if (JSON.stringify(prevData) === JSON.stringify(filteredData)) {
+        if (
+          prevData.length === filteredData.length &&
+          prevData.every((z, i) =>
+            z.operator === filteredData[i].operator &&
+            z.totalMinutes === filteredData[i].totalMinutes &&
+            z.operations.length === filteredData[i].operations.length
+          )
+        ) {
           return prevData;
         }
-
-
         return filteredData;
       });
     }
