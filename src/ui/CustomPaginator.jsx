@@ -21,17 +21,17 @@ const CustomPaginator = ({ total, initialPage, onChange }) => {
 
   return (
     <Pagination
-    classNames={{
-      wrapper: "gap-0 overflow-visible h-8 rounded border border-divider",
-      item: "w-8 h-8 text-small rounded-none bg-gray-200 text-gray-700 dark:bg-gray-800 dark:text-gray-300", // Personaliza el color de los números
-      cursor:
-        "bg-primary_one text-white font-bold shadow-lg", // Color del número seleccionado
-      next: "text-primary_one hover:bg-blue-100 dark:hover:bg-blue-800", // Flecha de siguiente página
-      prev: "text-primary_one hover:bg-blue-100 dark:hover:bg-blue-800", // Flecha de página anterior
-    }}
+      size="sm"
+      classNames={{
+        wrapper: "gap-0 overflow-visible h-7 rounded border border-zinc-300 dark:border-zinc-600",
+        item: "w-7 h-7 text-xs rounded-none bg-transparent text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700",
+        cursor: "bg-primary_one text-white font-semibold",
+        next: "text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700",
+        prev: "text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700",
+      }}
       total={total}
-      page={currentPage} // Convertido en controlado
-      onChange={handlePageChange} // Controlar el cambio de página
+      page={currentPage}
+      onChange={handlePageChange}
     />
   );
 };

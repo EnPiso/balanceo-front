@@ -71,7 +71,7 @@ const Sidebar = ({toggleSidebar}) => {
 
 
 	return (
-		<div className="bg-white text-slate-700 h-screen fixed w-[var(--sidebar-width)] border-r border-slate-200 z-50">
+		<div className="bg-white dark:bg-zinc-900 text-slate-700 dark:text-slate-200 h-screen fixed w-[var(--sidebar-width)] border-r border-slate-200 dark:border-zinc-800 z-50">
 			<div className="flex flex-col h-full">
 				<div className="px-4 pt-2">
 					<button onClick={handleSideBar} className="flex flex-col items-center text-center gap-2 w-full">

@@ -157,7 +157,7 @@ const GenerateImgPdf = ({product, order, pdfDiv}) => {
                                 
                                     <span
                                         key={product.id}
-                                        className="flex justify-between items-center hover:bg-zinc-200 py-1 px-1 cursor-pointer uppercase">
+                                        className="flex justify-between items-center hover:bg-zinc-200 dark:hover:bg-zinc-700 py-1 px-1 cursor-pointer uppercase">
                                         <Tooltip 
                                             placement="left-end" 
                                             content={`Descargar PDF 

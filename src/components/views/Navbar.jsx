@@ -48,7 +48,7 @@ const Navbar = ({toggleSidebar,isSidebarOpen}) => {
 
 
   return (
-    <div className='z-40 bg-white/30 backdrop-blur-lg text-gray-900  p-4 flex justify-between items-center sticky top-0'>
+    <div className='z-40 bg-white/30 dark:bg-zinc-900/80 backdrop-blur-lg text-gray-900 dark:text-slate-100 p-4 flex justify-between items-center sticky top-0'>
         <div>
           <div className="block lg:hidden">
 

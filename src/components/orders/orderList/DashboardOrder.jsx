@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Card, CardHeader, CardBody, Image, Spinner, Tooltip, Switch } from "@nextui-org/react";
+import { Spinner, Tooltip } from "@nextui-org/react";
+import PerPageSelector from "../../../ui/PerPageSelector.jsx";
+
+const totalPaginate = [5, 10, 20, 30, 40, 50];
 import CustomPaginator from "../../../ui/CustomPaginator.jsx";
 import { fetchGetData } from "../../../infraestructure/call_api/crud.js";
 import { urlMain } from "../../../infraestructure/data/const.js";
@@ -7,7 +10,7 @@ import { useRecoilState } from "recoil";
 import { orderList, showOrderObj } from "../../../infraestructure/states/order_states.js";
 import FileArchiver from "./FileArchiver.jsx";
 import { FaDownLong, FaFolderClosed, FaUpLong } from "react-icons/fa6";
-import { FaDoorClosed, FaPlus, FaSearch, FaSearchLocation, FaWindowClose } from "react-icons/fa";
+import { FaDoorClosed, FaSearch, FaSearchLocation, FaWindowClose } from "react-icons/fa";
 import ShowOrder from "../show/ShowOrder.jsx";
 import OrderDetail from "../show/OrderDetail.jsx";
 import { AiFillCheckCircle, AiFillDatabase, AiFillStop, AiOutlineSortDescending, AiTwotoneStop } from "react-icons/ai";
@@ -28,7 +31,6 @@ import { currentUser } from "../../../infraestructure/states/states_views.js";
 import TagCreateUserName from "../../../ui/TagCreateUserName.jsx";
 import OrdersBreadcrumb from "./OrdersBreadcrumb.jsx";
 
-const totalPaginate = [5, 10, 20, 30, 40, 50];
 
 const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
   const [orders, setOrders] = useRecoilState(orderList);
@@ -179,115 +181,48 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
                     setQueryDate={setQueryDate}
                     isLoading={isLoading}
                     setIsLoading={setIsLoading}
+                    user={user}
+                    isOrderOr={isOrderOr}
+                    setIsOrderOr={setIsOrderOr}
+                    setIsModalManualOrder={setIsModalManualOrder}
+                    setIsShowCreate={setIsShowCreate}
+                    setModalProdBalancing={setModalProdBalancing}
                   />
-                  <table className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg  mt-2">
+                  <table className="w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100 rounded-lg mt-2">
                     <thead>
-                      <tr className="dark:bg-gray-100 text-zinc-800 ">
-                        <th className="p-4 text-left font-medium  ">
-                          <span className="flex justify-between items-center uppercase">
-                            {
-                              isOrderOr ? 'Orden de producción' : 'Balanceo por producto'
-                            }
-
-                            {
-                              user && (user.role === 'admin' || user.role === 'supervisor') && (
-                                <>
-                                  <Tooltip content="Crear nueva orden de producción">
-                                    <button
-                                      onClick={()=> {
-                                        setIsModalManualOrder(true)
-                                        setIsShowCreate(false)
-                                      }}
-                                    >
-                                      <FaPlus className="text-secondary_two items-center" size={28} />
-                                    </button>
-                                  </Tooltip>
-                                </>
-                              )
-                            }
-                            
-                            
+                      <tr className="bg-transparent text-zinc-800 dark:text-zinc-400 border-b border-zinc-300 dark:border-zinc-600">
+                        <th className="text-left font-medium uppercase">
+                          <Tooltip content={desc ? "Más recientes primero" : "Más antiguos primero"}>
+                            <button
+                              onClick={() => setDesc(!desc)}
+                              className="p-1.5 rounded-md text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-secondary_two transition-colors"
+                            >
+                              {desc
+                                ? <FaDownLong size={14} className="text-secondary_two" />
+                                : <FaUpLong size={14} className="text-secondary_two" />
+                              }
+                            </button>
+                          </Tooltip>
+                          {isOrderOr ? 'Orden de producción' : 'Balanceo por producto'}
+                        </th>
+                        <th className="text-left font-medium uppercase">
+                          Referencias
+                        </th>
+                        <th className="text-left font-medium  flex justify-between items-center">
+                          <span className="text-zinc-600 font-medium uppercase">
                             
                           </span>
                           
-                        </th>
-                        <th className="p-4 text-left font-medium">
-                          <span className="flex justify-between items-center font-medium uppercase">  
-                            Referencias
-                            <span className="flex justify-between items-center">
-                              
-                              <span className="font-bold  flex justify-start">
-                                <small className="mt-1 mr-3  text-zinc-600">
-                                  {!isOrderOr ?  "Ordenes de producción" : "Balanceos por producto"}
-                                </small>
-
-                                
-                                <Switch
-                                  isSelected={isOrderOr}
-                                  onValueChange={setIsOrderOr}
-                                  color="default"
-                                  size="sm"
-                                />
-                                
-                              </span>
-                              {
-                                  !isOrderOr &&
-                                    <Tooltip content="Crear nuevo balanceo">
-                                      <button
-                                        className="mr-4"
-                                        onClick={()=> {
-                                          setModalProdBalancing(true)
-                                          setIsShowCreate(true)
-                                        }}
-                                      >
-                                        <FaPlus className="text-secondary_two items-center" size={28} />
-                                      </button>
-                                    </Tooltip>
-                                }   
-                              
-                              
-
-                            </span>
-                            
-
-                          </span>
-                        </th>
-                        <th className="p-4 text-left font-medium border border-gray-100 flex justify-between items-center">
-                          <span className="text-zinc-600 font-medium uppercase">Creación</span>
-                          <Tooltip content="Cantidad de balanceos">
-                            <span className="flex space-x-2">
-                              {totalPaginate.map((page, i) => (
-                                  <span
-                                    onClick={() => handlePerPageChange(page)}
-                                    className={`cursor-pointer  ${perPage === page && 'text-secondary_two'}`}
-                                    key={i}
-                                  >
-                                    {page}
-                                  </span>
-                              ))}
-                              <span>
-                                {desc ? (
-                                  <button onClick={() => setDesc(false)}>
-                                    <FaDownLong size={28} className="text-secondary_two" />
-                                  </button>
-                                ) : (
-                                  <button onClick={() => setDesc(true)}>
-                                    <FaUpLong size={28} className="text-secondary_two" />
-                                  </button>
-                                )}
-                              </span>
-                            </span>
-                          </Tooltip>
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {orders.map((order) => (
-                        <tr key={order.id}>
-                          <td className="p-2 border border-gray-100">
+                        <tr key={order.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-600 transition-colors">
+                          <td className="p-2 border border-gray-100 dark:border-transparent">
                             <ShowOrder order={order} />
                           </td>
-                          <td className="p-2 border border-gray-100">
+                          <td className="p-2 border border-gray-100 dark:border-transparent">
                             {order.products.map((product, i) => (
                               <GenerateImgPdf
                                 pdfDiv={pdfDiv}
@@ -297,12 +232,12 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
                               />
                             ))}
                           </td>
-                          <td className="p-2 border border-gray-100">
+                          <td className="p-2 border border-gray-100 dark:border-transparent">
                             <span className="flex justify-between items-center">
                               <div className="flex justify-start items-center">
                                 <span>
                                   {order.created_at && monthDayYear(order.created_at)}
-                                  <small className="ml-2 font-bold text-black">
+                                  <small className="ml-2 font-bold text-zinc-700 dark:text-zinc-300">
                                     {order.created_at && hourMinuteSecond(order.created_at)}
                                   </small>
                                   
@@ -342,13 +277,14 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
                 </div>
               </div>
             )}
-            <div className="flex justify-start py-4">
+            <div className="flex justify-end items-center gap-3 px-2 py-4">
               <CustomPaginator
                 total={totalPages}
                 initialPage={currentPage}
                 onChange={handlePageChange}
-                key={JSON.stringify(orders)}
+                key={currentPage}
               />
+              <PerPageSelector perPage={perPage} onChange={handlePerPageChange} />
             </div>
           </>
         )}

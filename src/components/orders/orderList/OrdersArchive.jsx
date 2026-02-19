@@ -1,54 +1,42 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Card, CardHeader, CardBody, Image, Spinner } from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
+import { Spinner, Tooltip } from "@nextui-org/react";
 import CustomPaginator from "../../../ui/CustomPaginator.jsx";
+import PerPageSelector from "../../../ui/PerPageSelector.jsx";
 import { fetchGetData } from "../../../infraestructure/call_api/crud.js";
 import { urlMain } from "../../../infraestructure/data/const.js";
 import { useRecoilState } from "recoil";
-import {orderList, showOrderObj} from "../../../infraestructure/states/order_states.js";
+import { orderList, showOrderObj } from "../../../infraestructure/states/order_states.js";
 import FileArchiver from "./FileArchiver.jsx";
-import {FaDownLong, FaUpLong} from "react-icons/fa6";
-import {FaArrowRight, FaWindowClose} from "react-icons/fa";
-import OrderDetail from "../show/OrderDetail.jsx";
-import ShowOrder from "../show/ShowOrder.jsx";
-import toast from "react-hot-toast";
-import {toastMessageCustom} from "../../../infraestructure/data/toastMessage.js";
-import {AiFillDatabase, AiTwotoneStop} from "react-icons/ai";
-import SearchDateOrders from "./SearchDateOrders.jsx";
-import SearchArchive from "./SearchArchive.jsx";
+import { FaDownLong, FaUpLong } from "react-icons/fa6";
 import OrdersBreadcrumb from "./OrdersBreadcrumb.jsx";
+import SearchArchive from "./SearchArchive.jsx";
+import { AiFillDatabase, AiTwotoneStop } from "react-icons/ai";
 
 
-const totalPaginate = [5, 10, 20, 30, 40, 50];
-
-
-const OrdersArchive = ({setIsArchive,isArchive }) => { 
+const OrdersArchive = ({ setIsArchive, isArchive }) => {
   const [orders, setOrders] = useRecoilState(orderList);
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1); // Página actual
-  const [totalPages, setTotalPages] = useState(1); // Total de páginas
-  const [perPage, setPerPage] = useState(10); // Total de páginas
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [perPage, setPerPage] = useState(10);
   const [desc, setDesc] = useState(true);
   const [queryString, setQueryString] = useState("");
   const [queryDate, setQueryDate] = useState("");
-  
 
   const fetchOrders = async (page, per_page, desc, is_order = true) => {
     setIsLoading(true);
-        
+
     try {
       const formattedDate = queryDate ? queryDate.toString() : '';
-      const stringSearch = queryString;
-
       const result = await fetchGetData(
-        `${urlMain}orders?page=${page}&is_order=${is_order}&archive=${false}&per_page=${per_page}&desc=${desc}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_or_products_name_or_products_category_product_name_or_products_reference_cont]=${encodeURIComponent(stringSearch)}`
+        `${urlMain}orders?page=${page}&is_order=${is_order}&archive=${false}&per_page=${per_page}&desc=${desc}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_or_products_name_or_products_category_product_name_or_products_reference_cont]=${encodeURIComponent(queryString)}`
       );
 
       setOrders(result.orders);
       setTotalPages(result.total_pages);
       setCurrentPage(result.current_page);
-      //result.orders.length < 1 && toast.error(toastMessageCustom.noArchiveOrder)
     } catch (error) {
       console.error("Error al obtener los datos:", error);
     } finally {
@@ -57,10 +45,9 @@ const OrdersArchive = ({setIsArchive,isArchive }) => {
   };
 
   useEffect(() => {
-      fetchOrders(currentPage, perPage, desc);
-    }, [queryDate, queryString, desc, currentPage]);
-  
-  
+    fetchOrders(currentPage, perPage, desc);
+  }, [queryDate, queryString, desc, currentPage]);
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -70,119 +57,93 @@ const OrdersArchive = ({setIsArchive,isArchive }) => {
     fetchOrders(1, page, desc);
   };
 
-  
-
-
   return (
     <div>
-      <div className="grow  overflow-y-auto bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100">
+      <div className="grow overflow-y-auto bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100">
         {isLoading ? (
-                <div className="flex items-center justify-center h-screen">
-                  <Spinner color="default" size="lg" />
-                </div>
-                ) : (
-                  <div>
-                  <OrdersBreadcrumb
-                    isArchive={isArchive}
-                    setIsArchive={setIsArchive}
-                  />
-                  <div className="flex justify-end">
-                    <SearchArchive setQueryString={setQueryString}/>
-                  </div>
-                  
+          <div className="flex items-center justify-center h-screen">
+            <Spinner color="default" size="lg" />
+          </div>
+        ) : (
+          <div>
+            <OrdersBreadcrumb isArchive={isArchive} setIsArchive={setIsArchive} />
 
-                    <table className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-md ">
-                      <thead>
-                      <tr className="text-zinc-800 uppercase">
-                        <th className="p-4 text-left font-medium ">Orden de producción</th>
-                        <th className="p-4 text-left font-medium ">Referencias</th>
-                        <th className="p-4 text-left font-medium  flex justify-between items-center">
+            <div className="flex justify-end px-4 pb-2">
+              <SearchArchive setQueryString={setQueryString} />
+            </div>
+
+            <table className="w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100 rounded-lg mt-2">
+              <thead>
+                <tr className="bg-transparent text-zinc-800 dark:text-zinc-400 border-b border-zinc-300 dark:border-zinc-600">
+                  <th className="text-left font-medium uppercase">Orden de producción</th>
+                  <th className="text-left font-medium uppercase">Referencias</th>
+                  <th className="text-left font-medium flex justify-between items-center">
+                    <span className="uppercase">Creación</span>
+                    <Tooltip content={desc ? "Más recientes primero" : "Más antiguos primero"}>
+                      <button
+                        onClick={() => setDesc(!desc)}
+                        className="p-1.5 rounded-md text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-secondary_two transition-colors"
+                      >
+                        {desc
+                          ? <FaDownLong size={14} className="text-secondary_two" />
+                          : <FaUpLong size={14} className="text-secondary_two" />
+                        }
+                      </button>
+                    </Tooltip>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order) => (
+                  <tr key={order.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-600 transition-colors">
+                    <td className="p-2 border border-gray-100 dark:border-transparent">
+                      <h4 className="font-bold text-lg uppercase">
+                        {order.code}
+                      </h4>
+                    </td>
+                    <td className="p-2 border border-gray-100 dark:border-transparent">
+                      {order.products.map((product) => (
+                        <span
+                          key={product.id}
+                          className="flex justify-between items-center hover:bg-zinc-200 dark:hover:bg-zinc-700 py-1 px-1"
+                        >
                           <span>
-                            Creación
+                            {product.name}{" "}
+                            <span className="font-bold">{product.reference}</span>
                           </span>
-                          
-
-                          <span className="flex space-x-2">
-                            {totalPaginate.map((page, i) => (
-                                <span
-                                  onClick={() => handlePerPageChange(page)}
-                                  className={`cursor-pointer  ${perPage === page && 'text-secondary_two'}`}
-                                  key={i}
-                                >
-                                  {page}
-                                </span>
-                            ))}
-                            <span>
-                              {desc ? (
-                                <button onClick={() => setDesc(false)}>
-                                  <FaDownLong size={28} className="text-secondary_two" />
-                                </button>
-                              ) : (
-                                <button onClick={() => setDesc(true)}>
-                                  <FaUpLong size={28} className="text-secondary_two" />
-                                </button>
-                              )}
-                            </span>
+                          <span>
+                            {product.has_opers_balancing
+                              ? <AiFillDatabase className="text-secondary_two" />
+                              : <AiTwotoneStop className="text-zinc-400" />
+                            }
                           </span>
-
-                        </th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      {orders.map((order) => (
-                        <tr key={order.id}>
-                          <td className="p-4 border">
-                            <span>
-                              <h4 className="font-bold text-lg uppercase flex justify-between items-center">
-                                {
-                                  order.code
-                                }
-                              </h4>
-                            </span>
-                          </td>
-                          <td className="p-4">
-                            {order.products.map((product) => (
-                              <span key={product.id} className="flex justify-between items-center hover:bg-zinc-200 py-1 px-1">
-                                  <span>
-                                    {product.name} {" "}
-                                    <span className="font-bold">{product.reference}</span>
-                                  </span>
-                                  <span>
-                                    {product.has_opers_balancing ? <AiFillDatabase/> : <AiTwotoneStop/> }
-                                  </span>
-                                </span>
-                            ))}
-                          </td>
-                          <td className="p-4">
-
+                        </span>
+                      ))}
+                    </td>
+                    <td className="p-2 border border-gray-100 dark:border-transparent">
                       <span className="flex justify-between items-center">
-                        <span>
+                        <span className="text-zinc-700 dark:text-zinc-300">
                           {new Intl.DateTimeFormat("es-ES").format(new Date(order.created_at))}
                         </span>
-
-                        <FileArchiver
-                          archive={true}
-                          order={order}
-                        />
+                        <FileArchiver archive={true} order={order} />
                       </span>
-                          </td>
-                        </tr>
-                      ))}
-                      </tbody>
-                    </table>
-                    <div className="flex justify-start py-4">
-                      <CustomPaginator
-                        total={totalPages}
-                        initialPage={currentPage}
-                        onChange={handlePageChange}
-                      />
-                    </div>
-                  </div>
-                )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
+            <div className="flex justify-end items-center gap-3 px-2 py-4">
+              <CustomPaginator
+                total={totalPages}
+                initialPage={currentPage}
+                onChange={handlePageChange}
+              />
+              <PerPageSelector perPage={perPage} onChange={handlePerPageChange} />
+            </div>
+          </div>
+        )}
       </div>
-
-
     </div>
   );
 };
