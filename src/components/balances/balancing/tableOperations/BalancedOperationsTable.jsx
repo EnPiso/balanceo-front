@@ -1,5 +1,5 @@
 // components/BalancedOperationsTable.jsx
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import { useRecoilState } from "recoil";
 
 import jsPDF from "jspdf";
@@ -21,7 +21,7 @@ import {allOperationsProduct} from "../../../../infraestructure/states/operation
 import {postData, updateData} from "../../../../infraestructure/call_api/crud.js";
 import {urlMain} from "../../../../infraestructure/data/const.js";
 import SaveBalance from "../../../orders/show/SaveBalance.jsx";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import {toastMessageCustom} from "../../../../infraestructure/data/toastMessage.js";
 import ModalVideoInput from "./videoOperations/ModalVideoInput.jsx";
 import TrDinamycVideo from "./videoOperations/TrDinamycVideo.jsx";
@@ -41,7 +41,7 @@ import {useScreenshot} from "use-react-screenshot";
 import CommentBalancing from "../CommentBalancing.jsx";
 import ImageUrlFormat from './ImageUrlFormat.jsx';
 import { videoShow, modalInputAdd } from '../../../../infraestructure/states/states_videos.js';
-import { automaticByOper, isOpenModalSample, isOpenModalSampleByOper, openByOper, openOperaClock, operByOper } from '../../../../infraestructure/states/states_samples.js';
+import { isOpenModalSample, isOpenModalSampleByOper, openByOper, openOperaClock } from '../../../../infraestructure/states/states_samples.js';
 import ModalSelectSamples from './samples/ModalSelectSamples.jsx';
 import ModalByOrder from './samplesByOper/ModalByOrder.jsx';
 import SimpleBalancedOperationsTable from './balancingMobile/SimpleBalancedOperationsTable .jsx';
@@ -50,7 +50,6 @@ import ZonesMobileDashboard from './balancingMobile/ZonesMobileDashboard.jsx';
 import { ModalRecOutside } from './balancingMobile/ModalRecOutside.jsx';
 import FooterCycles from './FooterCycles.jsx';
 import { Tooltip } from '@nextui-org/react';
-import { FaRegClock, FaUserClock } from 'react-icons/fa';
 import SecuentialZoneDash from './balancingMobile/SecuentialZoneDash.jsx';
 import { isLoadingTime, isLoadingTimeByZone, timeDataCyclesNum } from '../../../../infraestructure/states/operation_master_state.js';
 import { isShowModalZoneSample } from '../../../../infraestructure/states/states_samples_zones.js';
@@ -116,30 +115,10 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
   const [openModalSampleByOper, setOpenModalSampleByOper] = useRecoilState(isOpenModalSampleByOper);
   const [isOpenModalByOper, setIsOpenModalByOper] = useRecoilState(openByOper)
     
-  const [isComponentsLoaded, setIsComponentsLoaded] = useState(false); // Estado para rastrear si los componentes han cargado
-  const [isFinalActionDone, setIsFinalActionDone] = useState(false); // Estado para rastrear si la acción final se ejecutó
-
-  
-
-  // Simula la carga de otros componentes
   useEffect(() => {
-    const loadOtherComponents = async () => {
-      // Simula la carga de otros componentes con un retraso
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simula 2 segundos de carga
-      setIsComponentsLoaded(true); // Indica que los componentes han cargado
-    };
-
-    loadOtherComponents();
+    setIsLoadingTimeModal(true);
+    setIsLoadingByZone(true);
   }, []);
-
-  // Ejecuta la acción final cuando todos los componentes hayan cargado
-  useEffect(() => {
-    if (isComponentsLoaded && !isFinalActionDone) {
-      
-      setIsLoadingTimeModal(true)
-      setIsLoadingByZone(true)
-    }
-  }, [isComponentsLoaded, isFinalActionDone]);
 
   
   const handleGlobalClock = () => {
