@@ -51,7 +51,7 @@ const EditMachineForm = ({machine}) => {
     return(
         <>
             <td
-                className="p-1 cursor-pointer">
+                className="p-2 border border-gray-100 dark:border-transparent cursor-pointer">
                 {
                     isEditName ?
                         <>

@@ -70,7 +70,7 @@ const ListMultipleImport = ({ productOperations, setProcessData }) => {
         <div key={fileIndex} className="border rounded-lg p-4 bg-white shadow-sm">
           <h3 className="text-lg font-semibold mb-2 text-right">
             <Chip>
-                {fileIndex + 1}
+                {fileIndex + 1}  
             </Chip> 
           </h3>
 

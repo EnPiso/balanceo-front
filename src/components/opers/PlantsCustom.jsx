@@ -92,25 +92,24 @@ const PlantsCustom = ({topView}) => {
         ) : (
           <>
           
-            <div className="bg-gray-50 p-4 rounded-md shadow-md">
+            <div className="bg-gray-50 dark:bg-zinc-800 p-4 rounded-md shadow-md">
               <table className="min-w-full border-collapse text-small">
-                <thead className="text-zinc-900 sticky top-0 z-10">
-                <tr>
-                  <th className="px-4 py-2 text-left font-bold flex justify-between items-center text-secondary_two">
-                    Plantas
-                  </th>
-                  <th className="px-4 py-2 text-left font-bold text-secondary_two">
-                    Módulos
-                  </th>
-                </tr>
+                <thead className="bg-gray-50 dark:bg-zinc-800 sticky top-0 z-10">
+                  <tr className="border-b border-zinc-300 dark:border-zinc-600">
+                    <th className="px-4 py-2 text-left font-medium uppercase text-secondary_two">
+                      Plantas
+                    </th>
+                    <th className="px-4 py-2 text-left font-medium uppercase text-secondary_two">
+                      Módulos
+                    </th>
+                  </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
-   
+                <tbody>
                   {
                     listPlants.map((plant, i)=> {
                       return(
-                        <tr key={i} className={`hover:bg-zinc-100 dark:hover:bg-zinc-700 `}>
-                          <td className={`px-4 py-2 border border-gray-300 `}>
+                        <tr key={i} className="hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors">
+                          <td className="px-4 py-2 border border-gray-100 dark:border-zinc-700">
                             <PlantEditCustom
                               plant={plant}
                               listPlants={listPlants}
@@ -119,8 +118,8 @@ const PlantsCustom = ({topView}) => {
                               prodPlant={prodPlant}
                             />
                           </td>
-                          <td className="px-4 py-2 border border-gray-300">
-                            <p className="mt-2 text-medium text-gray-500">
+                          <td className="px-4 py-2 border border-gray-100 dark:border-zinc-700">
+                            <p className="mt-2 text-medium text-gray-500 dark:text-zinc-400">
                               {plant.production_modules.map((module, j) => (
                                 <>
                                   
@@ -174,7 +173,7 @@ const PlantsCustom = ({topView}) => {
                               prodPlant && prodPlant.plant.id ===  plant.id && (
                                 <>
                                   <div>
-                                    <div className="bg-zinc-50 py-4 ">
+                                    <div className="bg-zinc-50 dark:bg-zinc-700 py-4">
                                       <div>
                                       
                                         <div>

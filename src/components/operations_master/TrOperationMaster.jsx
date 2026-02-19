@@ -38,41 +38,40 @@ const TrOperationMaster = ({operation}) => {
   }
 
   return (
-    <tr 
+    <tr
       onClick={() => handleOperation(operation)}
-      key={operation.id} 
-      className="border border-gray-300 hover:text-green-600 group"
+      key={operation.id}
+      className="hover:bg-zinc-50 dark:hover:bg-zinc-600 transition-colors cursor-pointer group"
     >
-      <td className="p-1 border border-gray-300 cursor-pointer">
+      <td className="p-2 border border-gray-100 dark:border-transparent">
         {
           isLoading ? (
             <div className="flex justify-start ml-2">
               <CircularProgress size="lg" color="default" />
             </div>
           ):(
-            <span className="py-2 px-1">
+            <span className="py-1 px-1">
               {operation.operation}
             </span>
           )
         }
-       
       </td>
-      <td className="p-1 border border-gray-300 cursor-pointer">
-        <span className="py-2 px-1">
+      <td className="p-2 border border-gray-100 dark:border-transparent">
+        <span className="py-1 px-1">
           {operation.machine_name}
         </span>
       </td>
-      <td className="p-1 border border-gray-300 cursor-pointer">
-        <span className="py-2 px-1">
+      <td className="p-2 border border-gray-100 dark:border-transparent">
+        <span className="py-1 px-1">
           {operation.sam}
         </span>
       </td>
-      <td className="p-1 border border-gray-300 cursor-pointer">
-        <span className="ml-6 flex justify-end">
+      <td className="p-2 border border-gray-100 dark:border-transparent">
+        <span className="flex justify-end">
           <button className="text-gray-500 group-hover:text-green-600">
-            <AiFillExperiment 
-              size={23} 
-              style={{ color: "currentColor" }} 
+            <AiFillExperiment
+              size={23}
+              style={{ color: "currentColor" }}
             />
           </button>
         </span>

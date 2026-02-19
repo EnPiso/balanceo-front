@@ -148,8 +148,8 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
   return(
     <>
       <tr
-        className="hover:bg-zinc-200 dark:hover:bg-zinc-700 ">
-        <td  className="p-3  text-zinc-800 ">
+        className="hover:bg-zinc-50 dark:hover:bg-zinc-600 transition-colors">
+        <td className="p-2 border border-gray-100 dark:border-transparent text-zinc-800 dark:text-zinc-100">
             <span className="flex justify-between items-center">
 
               {
@@ -184,7 +184,7 @@ const EditOperFormEdit = ({oper, opers, setOpers}) => {
 
             </span>
         </td>
-        <td className="p-5  text-zinc-800 flex justify-between items-center">
+        <td className="p-2 border border-gray-100 dark:border-transparent text-zinc-800 dark:text-zinc-100 flex justify-between items-center">
           <span>
 
               {

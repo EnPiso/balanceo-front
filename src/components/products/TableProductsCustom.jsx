@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {useRecoilState} from "recoil";
 import {newFormProduct, productsAll} from "../../infraestructure/states/states_product.js";
-import InputTextEdit from "./InputTextEdit.jsx";
 import EditNameProduct from "./EditNameProduct.jsx";
 import EditReferenceProduct from "./EditReferenceProduct.jsx";
 import EditCateroryProduct from "./EditCategoryProduct.jsx";
@@ -10,12 +9,11 @@ import { fetchGetData } from "../../infraestructure/call_api/crud.js";
 import { urlMain } from "../../infraestructure/data/const.js";
 import { Spinner, Tooltip } from "@nextui-org/react";
 import CustomPaginator from "../../ui/CustomPaginator.jsx";
+import PerPageSelector from "../../ui/PerPageSelector.jsx";
 import SearchOpersMaster from "../opers_master/SearchOpersMaster.jsx";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import { currentUser } from "../../infraestructure/states/states_views.js";
 import ProductTdShow from "./ProductTdShow.jsx";
-
-const totalPaginate = [5, 10, 20, 50];
 
 
 const TableProductsCustom = ({handleProduct}) => {
@@ -98,75 +96,39 @@ const TableProductsCustom = ({handleProduct}) => {
 
                         
 
-                        <table className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg">
-                            {
-                                isNewProduct && 
-                                    <NewTableProduct/> 
-                            }
+                        <table className="w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100 rounded-lg">
+                            {isNewProduct && <NewTableProduct />}
                             <thead>
-                                <tr className="dark:bg-gray-100 text-zinc-800 dark:text-zinc-800">
-                                    <th className="p-1 text-left font-bold">Nombre</th>
-                                    <th className="p-1 text-left font-bold">Referencia</th>
-                                    <th
-                                        className="p-1 text-left font-bold  flex justify-between items-center">
-                                        <span>Categoría</span>
-                                        <div className="flex justify-end space-x-4 mr-2"> {/* Alinea los elementos horizontalmente y agrega espacio */}
-                                            {totalPaginate.map((page, i) => (
-                                            <span
-                                                onClick={() => setPerPage(page)}
-                                                className={`cursor-pointer ${perPage === page && 'text-secondary_two'}`}
-                                                key={i}
-                                            >
-                                                {page}
-                                            </span>
-                                            ))}
-                                        </div>
-                                    </th>
+                                <tr className="bg-transparent text-zinc-800 dark:text-zinc-400 border-b border-zinc-300 dark:border-zinc-600">
+                                    <th className="p-2 text-left font-medium uppercase">Nombre</th>
+                                    <th className="p-2 text-left font-medium uppercase">Referencia</th>
+                                    <th className="p-2 text-left font-medium uppercase">Categoría</th>
                                 </tr>
-                                </thead>
-                                <tbody>
-                                {
-                                    products.map((product) => {
-                                        return (
+                            </thead>
+                            <tbody>
+                                {products.map((product) => (
+                                    <tr key={product.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-600 transition-colors">
+                                        {user && user.role === 'admin' ? (
                                             <>
-                                                <tr key={product.id}>
-                                                    {
-                                                        user && user.role === 'admin' ? 
-                                                            <>
-                                                                <EditNameProduct
-                                                                    product={product}
-                                                                />
-                                                                <EditReferenceProduct
-                                                                    product={product}
-                                                                />
-                                                                <EditCateroryProduct
-                                                                    product={product}
-                                                                />
-                                                            </>
-                                                            :
-                                                            <>
-                                                                <ProductTdShow product={product}/>
-                                                            </>
-                                                    }
-                                                    
-                                                    
-                                                </tr>
+                                                <EditNameProduct product={product} />
+                                                <EditReferenceProduct product={product} />
+                                                <EditCateroryProduct product={product} />
                                             </>
-                                        )
-                                    })
-                                }
-
+                                        ) : (
+                                            <ProductTdShow product={product} />
+                                        )}
+                                    </tr>
+                                ))}
                             </tbody>
-
-
                         </table>
-                        <div className="flex justify-start py-4">
+                        <div className="flex justify-end items-center gap-3 px-2 py-4">
                             <CustomPaginator
                                 total={totalPages}
                                 initialPage={currentPage}
                                 onChange={handlePageChange}
-                                />
-                        </div> 
+                            />
+                            <PerPageSelector perPage={perPage} onChange={(p) => { setPerPage(p); setCurrentPage(1); }} />
+                        </div>
                     </>
             }
 

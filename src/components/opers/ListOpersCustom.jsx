@@ -44,7 +44,7 @@ const ListOpersCustom = ({prodPlant, isLoading, setIsLoading, setIsLoadingModule
   return(
     <>
 
-      <table className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-md border border-gray-300">
+      <table className="w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100 rounded-lg">
         {isNewOperator && (
           <TheadOperatorsCustom
             opers={opers}
@@ -54,18 +54,18 @@ const ListOpersCustom = ({prodPlant, isLoading, setIsLoading, setIsLoadingModule
           />
         )}
         <thead>
-        <tr className="dark:bg-gray-100 bg-zinc-200 text-zinc-800 sticky top-0">
-          <th className="p-4 font-medium border border-gray-300">Nombre</th>
-          <th className="p-4 font-medium border border-gray-300 flex justify-between items-center">
+        <tr className="bg-transparent text-zinc-800 dark:text-zinc-400 border-b border-zinc-300 dark:border-zinc-600 sticky top-0">
+          <th className="p-2 text-left font-medium uppercase">Nombre</th>
+          <th className="p-2 text-left font-medium uppercase flex justify-between items-center">
             <span>Cédula</span>
-            <span onClick={() => setIsNewOperator(!isNewOperator)} className={`cursor-pointer flex items-center font-bold `}>
+            <span onClick={() => setIsNewOperator(!isNewOperator)} className="cursor-pointer flex items-center gap-2 font-bold">
               {!isNewOperator ? (
                 <>
-                  Agregar operario <FaPlusCircle size={23} className="ml-2 text-secondary_two"/>
+                  Agregar operario <FaPlusCircle size={23} className="text-secondary_two"/>
                 </>
               ) : (
                 <>
-                 <FaBackward color="red" className="mr-2"/> Cancelar 
+                  <FaBackward color="red"/> Cancelar
                 </>
               )}
             </span>

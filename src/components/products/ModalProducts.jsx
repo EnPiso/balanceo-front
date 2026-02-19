@@ -57,7 +57,7 @@ const ModalProducts = ({isOpen, setIsOpen,handleClose,handleOpen}) => {
                                     </div>
                                 </span>
 
-                                <span className="text-lg font-semibold text-zinc-600">
+                                <span className="text-lg font-semibold text-zinc-600 dark:text-zinc-100">
                                     {
                                         isNewProduct ? "Nuevo producto" : "Personalizar productos"
                                     }

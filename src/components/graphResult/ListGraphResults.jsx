@@ -5,8 +5,7 @@ import { machinesResultFormat } from '../../infraestructure/data/machinesResult'
 import { Checkbox, CircularProgress, Progress } from '@nextui-org/react';
 import ObjGraphResult from './ObjGraphResult';
 import CustomPaginator from '../../ui/CustomPaginator';
-
-const totalPaginate = [5, 10, 20, 50];
+import PerPageSelector from '../../ui/PerPageSelector';
 
 const ListGraphResults = () => {
   const [opers, setOpers] = useState([]);
@@ -132,13 +131,6 @@ const ListGraphResults = () => {
                 
             }
 
-            <div className="flex justify-start py-4">
-              <CustomPaginator
-                total={totalPages}
-                initialPage={currentPage}
-                onChange={handlePageChange}
-              />
-            </div>
             {
               actualEntries > 0 &&
                 <div className="text-end mb-4 text-secondary_two">
@@ -147,20 +139,6 @@ const ListGraphResults = () => {
                   </small>
                 </div>
             }
-              
-          
-
-            <div className="flex justify-end space-x-4 mr-2"> {/* Alinea los elementos horizontalmente y agrega espacio */}
-              {totalPaginate.map((page, i) => (
-                <span
-                  onClick={() => setPerPage(page)}
-                  className={`cursor-pointer ${perPage === page && 'text-secondary_two'}`}
-                  key={i}
-                >
-                  {page}
-                </span>
-              ))}
-            </div>
 
             {(isFormat ? formatMachine : opers)
               .filter(oper => !operShow || oper.id_oper === operShow.id_oper)
@@ -178,13 +156,14 @@ const ListGraphResults = () => {
           </>
       }
 
-      <div className="flex justify-start py-4">
+      <div className="flex justify-end items-center gap-3 px-2 py-4">
         <CustomPaginator
           total={totalPages}
           initialPage={currentPage}
           onChange={handlePageChange}
         />
-      </div> 
+        <PerPageSelector perPage={perPage} onChange={(p) => { setPerPage(p); setCurrentPage(1); }} />
+      </div>
     </div>
   );
 };

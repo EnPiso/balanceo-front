@@ -36,13 +36,13 @@ const VideoObjMain = ({operation,key,operationTemp, setOperationTemp, isFavorite
   }
 
   return (
-    <tr key={key} className="hover:bg-zinc-50 dark:hover:bg-zinc-700">
-      <td className="px-4 py-2 border border-gray-300 flex justify-between items-center">
-        <span className={`${ 
-          operationTemp && operation.id === 
-            operationTemp.id ? 
-              'text-secondary_two' : 
-              'text-zinc-800'}
+    <tr key={key} className="hover:bg-zinc-50 dark:hover:bg-zinc-600 transition-colors">
+      <td className="px-4 py-2 border border-gray-100 dark:border-transparent flex justify-between items-center">
+        <span className={`${
+          operationTemp && operation.id ===
+            operationTemp.id ?
+              'text-secondary_two' :
+              'text-zinc-800 dark:text-zinc-100'}
           `}>
           {operation.operation} 
         </span>

@@ -6,14 +6,13 @@ import { masterOpersList } from '../../infraestructure/states/opers_states';
 import { MyOperationsPoly, OpersPolyvalences, percentZonesOpers, setOperPolyvalence } from '../../infraestructure/states/states_polyvalence';
 import SearchOpersMaster from '../opers_master/SearchOpersMaster';
 import CustomPaginator from '../../ui/CustomPaginator';
+import PerPageSelector from '../../ui/PerPageSelector';
 import { CircularProgress } from '@nextui-org/react';
 import TrObjPolyvalence from './TrObjPolyvalence';
 import CardPolyvalence from './CardPolyvalence';
 import toast from 'react-hot-toast';
 import { useIsLargeScreen } from './useIsLargeScreen';
 import NewButtonOperMaster from '../opers_master/new_oper/NewButtonOperMaster';
-
-const totalPaginate = [5, 10, 20, 50];
 
 const ListUserPolyvalences = ({opers, setOpers}) => {
 
@@ -114,7 +113,7 @@ const ListUserPolyvalences = ({opers, setOpers}) => {
   return (
     <div>
       <div className="space-y-8">
-        <div className="flex justify-between items-center  bg-zinc-50 px-1 rounded-md shadow-sm py-1 mb-2">
+        <div className="flex justify-between items-center bg-zinc-50 dark:bg-zinc-800 px-1 rounded-md shadow-sm py-1 mb-2">
           <div>
             <NewButtonOperMaster
               opers={opers}
@@ -136,29 +135,12 @@ const ListUserPolyvalences = ({opers, setOpers}) => {
         
         
         <div className="overflow-x-auto">
-        <table className=" w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-md ">
+        <table className="w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100 rounded-lg">
           <thead>
-            <tr className="text-zinc-800 uppercase">
-                <th className="hidden md:table-cell p-1 text-left font-medium ">Nombre</th>
-                <th className="hidden md:table-cell p-1 text-left font-medium ">Cédula</th>
-                {
-                  isShowCard === 0 && 
-                    <th className="p-1 text-left font-medium ">
-                      <div className="flex justify-end space-x-4 mr-2"> {/* Alinea los elementos horizontalmente y agrega espacio */}
-                        {totalPaginate.map((page, i) => (
-                          <span
-                            onClick={() => setPerPage(page)}
-                            className={`cursor-pointer ${perPage === page && 'text-secondary_two'}`}
-                            key={i}
-                          >
-                            {page}
-                          </span>
-                        ))}
-                      </div>
-                    </th>
-                }
-                
-
+            <tr className="bg-transparent text-zinc-800 dark:text-zinc-400 border-b border-zinc-300 dark:border-zinc-600">
+              <th className="hidden md:table-cell p-2 text-left font-medium uppercase">Nombre</th>
+              <th className="hidden md:table-cell p-2 text-left font-medium uppercase">Cédula</th>
+              {isShowCard === 0 && <th className="p-2"></th>}
             </tr>
           </thead>
           <tbody className='hidden md:table-row-group'>
@@ -258,13 +240,16 @@ const ListUserPolyvalences = ({opers, setOpers}) => {
         
           
       </div>
-      <div style={{ display: !isShowCard ? 'block' : 'none' }} className="flex justify-start py-4">
-        <CustomPaginator
-          total={totalPages}
-          initialPage={currentPage}
-          onChange={handlePageChange}
-        />
-      </div>  
+      {!isShowCard && (
+        <div className="flex justify-end items-center gap-3 px-2 py-4">
+          <CustomPaginator
+            total={totalPages}
+            initialPage={currentPage}
+            onChange={handlePageChange}
+          />
+          <PerPageSelector perPage={perPage} onChange={(p) => { setPerPage(p); setCurrentPage(1); }} />
+        </div>
+      )}  
     </div>
   )
 }

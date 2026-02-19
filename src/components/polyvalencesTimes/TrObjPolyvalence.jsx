@@ -103,15 +103,15 @@ const TrObjPolyvalence = ({
   return (
       <>
         
-        <tr 
-          key={oper.id} 
-          className="hover:text-secondary_two group capitalize">
+        <tr
+          key={oper.id}
+          className="hover:bg-zinc-50 dark:hover:bg-zinc-600 transition-colors group capitalize">
           <td
-            className="p-1 cursor-pointer">
+            className="p-2 border border-gray-100 dark:border-transparent cursor-pointer">
               <span className="flex justify-between items-center">
                 {
-                  isLoading ? 
-                    <CircularProgress color='success'/> :
+                  isLoading ?
+                    <CircularProgress color='default'/> :
                     <button
                       onClick={() => {
                         handleMachine(oper)
@@ -127,13 +127,13 @@ const TrObjPolyvalence = ({
               
             
           </td>
-          <td 
-            className="p-1 cursor-pointer">
+          <td
+            className="p-2 border border-gray-100 dark:border-transparent cursor-pointer">
             <span className="py-1 px-1">
               {oper.id_oper}
             </span>
           </td>
-          <td className="p-1 pl-2 ">
+          <td className="p-2 border border-gray-100 dark:border-transparent">
             <span className='py-1 px-1 flex justify-end'>
               <JoinOperMaster
                 oper={oper} 

@@ -62,8 +62,8 @@ const ShowOderProdOperations = ({orderProOpe}) => {
           return(
             <>
               <div className="mt-3">
-                <div className="bg-zinc-200 rounded flex justify-between items-center pl-2 pt-4 pr-2">
-                  <h2 className=' mb-4 capitalize text-xl'>
+                <div className="bg-zinc-200 dark:bg-zinc-700 rounded flex justify-between items-center pl-2 pt-4 pr-2 text-zinc-800 dark:text-zinc-100">
+                  <h2 className='mb-4 capitalize text-xl'>
                     <span className="font-bold">{name}</span>
                   </h2>
                   <h3 className='text-lg mb-4 capitalize'>
@@ -73,7 +73,6 @@ const ShowOderProdOperations = ({orderProOpe}) => {
                     Categoría: <span className="font-bold">{categoryProduct}</span>
                   </h4>
                 </div>
-
               </div>
 
 

@@ -89,8 +89,8 @@ const TheadOperatorsCustom = ({moduleId, opers, setOpers, setIsNewOperator}) => 
   return(
     <>
       <thead>
-        <tr className="dark:bg-gray-100 bg-zinc-200 text-zinc-100 dark:text-zinc-800 sticky top-0 ">
-          <th className="p-4 font-medium border border-gray-300 text-zinc-900">
+        <tr className="bg-transparent text-zinc-800 dark:text-zinc-400 border-b border-zinc-300 dark:border-zinc-600 sticky top-0">
+          <th className="p-2 font-medium text-zinc-900 dark:text-zinc-100">
             <span >
               {
                 fileImage ? (
@@ -137,7 +137,7 @@ const TheadOperatorsCustom = ({moduleId, opers, setOpers, setIsNewOperator}) => 
             </span>
 
           </th>
-          <th className="p-4 font-medium border border-gray-300text-zinc-800 ">
+          <th className="p-2 font-medium dark:text-zinc-100">
 
            <span className="p-4">
               <FormDynamicField

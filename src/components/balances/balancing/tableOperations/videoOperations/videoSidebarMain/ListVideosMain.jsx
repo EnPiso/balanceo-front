@@ -6,8 +6,7 @@ import VideoObjMain from './VideoObjMain';
 import { CircularProgress } from '@nextui-org/react';
 import DashboardSearch from './DashboardSearch';
 import CustomPaginator from '../../../../../../ui/CustomPaginator';
-
-const totalPaginate = [10, 20, 30, 40, 50];
+import PerPageSelector from '../../../../../../ui/PerPageSelector';
 
 const ListVideosMain = () => {
 
@@ -59,21 +58,12 @@ const ListVideosMain = () => {
   }, [dataSearchList, currentPage, perPage]) // <-- Agrega las dependencias
 
 
-  const handlePerPageChange = (page) => { 
-
-    setPerPage(page);
-  }
-
   const handlePageChange = (page) => {
     setCurrentPage(page);
-
   };
 
   return (
-  
-    <div className="space-y-8">
-      <div className="overflow-x-auto">
-
+    <div>
       <DashboardSearch
         isFavorite={isFavorite}
         setIsFavorite={setIsFavorite}
@@ -85,60 +75,40 @@ const ListVideosMain = () => {
         setDataSearchList={setDataSearchList}
       />
 
-    {
-      isLoading ? 
+      {isLoading ? (
         <span className="flex justify-center items-center h-30">
-          <CircularProgress size="lg" color="success" />
-        </span> :
-        <table className="min-w-full border-collapse">
-          <thead className="text-zinc-800 sticky top-0 z-10">
-          <tr>
-            <th 
-              className="px-4 py-2 text-left dark:text-zinc-700 flex justify-between items-center uppercase">
-              Operación
-              <span className="flex space-x-2">
-                {totalPaginate.map((page, i) => (
-                  <span
-                    onClick={() => handlePerPageChange(page)}
-                    className={`cursor-pointer  ${perPage === page && 'text-secondary_two'}`}
-                    key={i}
-                  >
-                    {page}
-                  </span>
-                ))}
-              </span>
-            </th>
-              
-          </tr>
-          
-          </thead>
-          <tbody>
-          
-            {operationsVideos.map((operation, i) => {
-    
-              return (
-                <VideoObjMain 
+          <CircularProgress size="lg" color="default" />
+        </span>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100">
+            <thead className="sticky top-0 z-10 bg-white dark:bg-zinc-800">
+              <tr className="bg-transparent text-zinc-800 dark:text-zinc-400 border-b border-zinc-300 dark:border-zinc-600">
+                <th className="px-4 py-2 text-left font-medium uppercase">Operación</th>
+              </tr>
+            </thead>
+            <tbody>
+              {operationsVideos.map((operation, i) => (
+                <VideoObjMain
                   isFavorite={isFavorite}
                   operationTemp={operationTemp}
                   setOperationTemp={setOperationTemp}
-                  operation={operation} 
-                  key={i}/>
-              );
-            })}
-          
-          </tbody>
-        </table>
-    }
+                  operation={operation}
+                  key={i}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
-      <div className="flex justify-start py-4">
+      <div className="flex justify-end items-center gap-3 px-2 py-4">
         <CustomPaginator
           total={totalPages}
           initialPage={currentPage}
           onChange={handlePageChange}
-          // key={JSON.stringify(orders)}
         />
-      </div>
-       
+        <PerPageSelector perPage={perPage} onChange={(p) => { setPerPage(p); setCurrentPage(1); }} />
       </div>
     </div>
   )

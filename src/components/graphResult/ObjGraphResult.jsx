@@ -77,7 +77,9 @@ const ObjGraphResult = ({ i, oper, setOperShow, operShow, opers }) => {
                   <tbody>
                     {oper.samplings.map((value, index) => (
                       <tr key={index} className="hover:bg-zinc-100">
-                        <td className="p-2 border text-center">{value.machine}</td>
+                        <td className="p-2 border text-center">
+                          {typeof value.machine === 'object' ? value.machine?.machine : value.machine}
+                        </td>
                         <td className="p-2 border text-center">
                           <PercentSamplesZones value={value.average_percent} />
                         </td>

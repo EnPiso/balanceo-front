@@ -4,15 +4,11 @@ import { machinesList } from '../../infraestructure/states/states_machine';
 import { fetchGetData } from '../../infraestructure/call_api/crud';
 import { urlMain } from '../../infraestructure/data/const';
 import CustomPaginator from '../../ui/CustomPaginator';
-import SearchOpersMaster from '../opers_master/SearchOpersMaster';
+import PerPageSelector from '../../ui/PerPageSelector';
 import SearchMachinesMaster from './SearchMachinesMaster';
-import NewButtonOperMaster from '../opers_master/new_oper/NewButtonOperMaster';
 import NewButtonMachine from './NewButtonMachine';
 import EditMachineForm from './EditMachineForm';
 import { CircularProgress } from '@nextui-org/react';
-
-
-const totalPaginate = [5, 10, 20, 50];
 
 const ListMachinesMaster = () => {
 
@@ -53,7 +49,7 @@ const ListMachinesMaster = () => {
   return (
     <div>
       <div className="space-y-8">
-        <div className="flex justify-between items-center  bg-zinc-50 px-1 rounded-md shadow-sm py-1 mb-2">
+        <div className="flex justify-between items-center bg-zinc-50 dark:bg-zinc-800 px-1 rounded-md shadow-sm py-1 mb-2">
           <div>
             <NewButtonMachine/>
           </div>
@@ -70,28 +66,10 @@ const ListMachinesMaster = () => {
         
         
         <div className="overflow-x-auto">
-        <table className=" w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-md">
+        <table className="w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100 rounded-lg">
           <thead>
-            <tr className="text-zinc-800 uppercase">
-            <th className="hidden md:table-cell p-1 text-left font-medium ">
-              <span className="flex justify-between items-center">
-                <span>
-                  Máquina
-                </span>
-                <span className="flex justify-end space-x-4 mr-2"> {/* Alinea los elementos horizontalmente y agrega espacio */}
-                  {totalPaginate.map((page, i) => (
-                    <span
-                      onClick={() => setPerPage(page)}
-                      className={`cursor-pointer ${perPage === page && 'text-secondary_two'}`}
-                      key={i}
-                    >
-                      {page}
-                    </span>
-                  ))}
-                </span>
-              </span> 
-            </th>
-          
+            <tr className="bg-transparent text-zinc-800 dark:text-zinc-400 border-b border-zinc-300 dark:border-zinc-600">
+              <th className="p-2 text-left font-medium uppercase">Máquina</th>
             </tr>
           </thead>
           <tbody className='hidden md:table-row-group'>
@@ -105,43 +83,26 @@ const ListMachinesMaster = () => {
                   </td>
                 </tr>
               ) : (
-                <>
-                  {
-                    machines.map((machine,i)=> {
-                      return(
-                        <>
-                          <tr 
-                            key={i} 
-                            className="hover:text-secondary_two group capitalize">
-                          
-                              <EditMachineForm
-                                machine={machine}
-                              />  
-                      
-                            
-                          </tr>
-                        </>
-                      )
-                    })
-                  }
-                </>
+                machines.map((machine, i) => (
+                  <tr key={i} className="hover:bg-zinc-50 dark:hover:bg-zinc-600 transition-colors capitalize">
+                    <EditMachineForm machine={machine} />
+                  </tr>
+                ))
               )
             }
-
-            
           </tbody>
-        </table> 
-
+        </table>
 
         </div>
-        
-          <div className="flex justify-start py-4">
-            <CustomPaginator
-              total={totalPages}
-              initialPage={currentPage}
-              onChange={handlePageChange}
-            />
-          </div> 
+
+        <div className="flex justify-end items-center gap-3 px-2 py-4">
+          <CustomPaginator
+            total={totalPages}
+            initialPage={currentPage}
+            onChange={handlePageChange}
+          />
+          <PerPageSelector perPage={perPage} onChange={(p) => { setPerPage(p); setCurrentPage(1); }} />
+        </div>
       </div>
       
     </div>

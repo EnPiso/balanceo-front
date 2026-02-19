@@ -49,7 +49,7 @@ const FormNewPlantModules = ({listPlants, setListPlants}) => {
   return (
     <>
       <div
-        className="flex flex-col bg-zinc-200 border border-gray-300 shadow-lg rounded-lg p-4 hover:shadow-xl transition duration-300"
+        className="flex flex-col bg-zinc-200 dark:bg-zinc-700 border border-gray-300 dark:border-zinc-600 shadow-lg rounded-lg p-4 hover:shadow-xl transition duration-300"
       >
         <div className="">
           <h1 className="font-bold flex justify-between items-center">

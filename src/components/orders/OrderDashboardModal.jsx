@@ -94,24 +94,31 @@ const OrderDashboardModal = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                {
-                  isMultipleExcel ?  
-                      <>
-                        Ordenes de producción
-                      </>
-                    :
-                    (
-                      <>
-                        {
-                          operationsData.length < 1 && "Carga la orden de producción"
-                        }
-                        {
-                          orderProOpe && `Orden de producción: ${orderProOpe.order}`
-                        }
-                      </>
-                    )
-                }
+              <ModalHeader className="flex flex-col justify-start items-start gap-3">
+                <span className="flex items-center gap-3">
+                  <img
+                    className="w-10 h-10 object-contain"
+                    src="/icon/icon.jpeg"
+                    alt="Icono de Balance"
+                  />
+                  <div className="leading-tight">
+                    <p className="text-primary_two font-[900] text-lg m-0">
+                      <span className="text-secondary_two">En</span>Piso
+                    </p>
+                    <p className="text-slate-400 text-sm tracking-wide uppercase">Balanceos</p>
+                  </div>
+                </span>
+
+                <span className="text-lg font-semibold text-zinc-600 dark:text-zinc-100">
+                  {isMultipleExcel
+                    ? "Ordenes de producción"
+                    : operationsData.length < 1
+                      ? "Carga la orden de producción"
+                      : orderProOpe
+                        ? `Orden de producción: ${orderProOpe.order}`
+                        : ""
+                  }
+                </span>
               </ModalHeader>
               <ModalBody>
                 <div className="mt-2">

@@ -5,13 +5,12 @@ import { AiFillExperiment } from 'react-icons/ai';
 import TrOperationMaster from './TrOperationMaster';
 import { CircularProgress, Spinner, Tooltip } from '@nextui-org/react';
 import CustomPaginator from '../../ui/CustomPaginator';
+import PerPageSelector from '../../ui/PerPageSelector';
 import SearchManualProducts from '../orders/manual/SearchManualProducts';
 import { FaPlus } from 'react-icons/fa';
 import NewBtnOperationMaster from './NewBtnOperationMaster';
 import { operationsArrayMaster } from '../../infraestructure/states/operation_master_state';
 import { useRecoilState } from 'recoil';
-
-const totalPaginate = [10, 20, 30, 40, 50];
 
 const ListOperationsMaster = () => {
 
@@ -58,13 +57,9 @@ const ListOperationsMaster = () => {
   
   };
 
-  const handlePerPageChange = (page) => { 
-    setPerPage(page);
-  }
-
   return (
     <div>
-      <div className="flex justify-between items-center bg-zinc-50 px-1 rounded-md shadow-sm py-1 mb-2">
+      <div className="flex justify-between items-center bg-zinc-50 dark:bg-zinc-800 px-1 rounded-md shadow-sm py-1 mb-2">
         <div>
           <NewBtnOperationMaster/>
         </div>
@@ -78,30 +73,14 @@ const ListOperationsMaster = () => {
           />
         </div>
       </div>
-      <div className="space-y-8">
-        <div className="overflow-x-auto">
-        <table className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-md border border-gray-300">
+      <div className="overflow-x-auto">
+        <table className="w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100 rounded-lg">
           <thead>
-            <tr className="text-zinc-800">
-                <th className="p-1 text-left font-medium uppercase">Operaciones</th>
-                <th className="p-1 text-left font-medium uppercase">Máquina</th>
-                <th className="p-1 text-left font-medium uppercase">Sam</th>
-                <th className="p-1  font-medium">
-                  <span className="flex justify-end">
-                    <span className="flex space-x-2">
-                      {totalPaginate.map((page, i) => (
-                        <span
-                          onClick={() => handlePerPageChange(page)}
-                          className={`cursor-pointer  ${perPage === page && 'text-secondary_two'}`}
-                          key={i}
-                        >
-                          {page}
-                        </span>
-                      ))}
-                    </span>
-                  </span>
-                  
-                </th>
+            <tr className="bg-transparent text-zinc-800 dark:text-zinc-400 border-b border-zinc-300 dark:border-zinc-600">
+              <th className="p-2 text-left font-medium uppercase">Operaciones</th>
+              <th className="p-2 text-left font-medium uppercase">Máquina</th>
+              <th className="p-2 text-left font-medium uppercase">Sam</th>
+              <th className="p-2"></th>
             </tr>
           </thead>
           <tbody>
@@ -121,20 +100,16 @@ const ListOperationsMaster = () => {
               )
             }
           </tbody>
-        </table>  
-
-        </div>
-        
-          
+        </table>
       </div>
-      <div className="flex justify-start py-4">
-            <CustomPaginator
-              total={totalPages}
-              initialPage={currentPage}
-              onChange={handlePageChange}
-              // key={JSON.stringify(orders)}
-            />
-          </div>  
+      <div className="flex justify-end items-center gap-3 px-2 py-4">
+        <CustomPaginator
+          total={totalPages}
+          initialPage={currentPage}
+          onChange={handlePageChange}
+        />
+        <PerPageSelector perPage={perPage} onChange={(p) => { setPerPage(p); setCurrentPage(1); }} />
+      </div>
     </div>
   )
 }
