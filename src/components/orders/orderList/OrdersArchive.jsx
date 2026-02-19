@@ -75,10 +75,7 @@ const OrdersArchive = ({ setIsArchive, isArchive }) => {
             <table className="w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100 rounded-lg mt-2">
               <thead>
                 <tr className="bg-transparent text-zinc-800 dark:text-zinc-400 border-b border-zinc-300 dark:border-zinc-600">
-                  <th className="text-left font-medium uppercase">Orden de producción</th>
-                  <th className="text-left font-medium uppercase">Referencias</th>
-                  <th className="text-left font-medium flex justify-between items-center">
-                    <span className="uppercase">Creación</span>
+                  <th className="text-left font-medium uppercase">
                     <Tooltip content={desc ? "Más recientes primero" : "Más antiguos primero"}>
                       <button
                         onClick={() => setDesc(!desc)}
@@ -90,6 +87,11 @@ const OrdersArchive = ({ setIsArchive, isArchive }) => {
                         }
                       </button>
                     </Tooltip>
+                    Orden de producción
+                  </th>
+                  <th className="text-left font-medium uppercase">Referencias</th>
+                  <th className="text-left font-medium flex justify-between items-center">
+                    <span className="uppercase">Creación</span>
                   </th>
                 </tr>
               </thead>
