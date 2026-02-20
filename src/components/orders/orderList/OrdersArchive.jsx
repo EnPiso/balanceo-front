@@ -11,6 +11,7 @@ import { FaDownLong, FaUpLong } from "react-icons/fa6";
 import OrdersBreadcrumb from "./OrdersBreadcrumb.jsx";
 import SearchArchive from "./SearchArchive.jsx";
 import { AiFillDatabase, AiTwotoneStop } from "react-icons/ai";
+import ColumnFilter from '../../../ui/ColumnFilter.jsx';
 
 
 const OrdersArchive = ({ setIsArchive, isArchive }) => {
@@ -24,14 +25,32 @@ const OrdersArchive = ({ setIsArchive, isArchive }) => {
   const [desc, setDesc] = useState(true);
   const [queryString, setQueryString] = useState("");
   const [queryDate, setQueryDate] = useState("");
+  const [columnFilters, setColumnFilters] = useState({});
+
+  const applyColumnFilter = (key, op, val) => {
+    setColumnFilters(prev => ({ ...prev, [key]: { op, val } }));
+    setCurrentPage(1);
+  };
+
+  const clearColumnFilter = (key) => {
+    setColumnFilters(prev => {
+      const { [key]: _, ...rest } = prev;
+      return rest;
+    });
+    setCurrentPage(1);
+  };
 
   const fetchOrders = async (page, per_page, desc, is_order = true) => {
     setIsLoading(true);
 
     try {
       const formattedDate = queryDate ? queryDate.toString() : '';
+      const filterParams = Object.entries(columnFilters)
+        .filter(([_, f]) => f?.val)
+        .map(([key, { op, val }]) => `&q[${key}_${op}]=${encodeURIComponent(val)}`)
+        .join('');
       const result = await fetchGetData(
-        `${urlMain}orders?page=${page}&is_order=${is_order}&archive=${false}&per_page=${per_page}&desc=${desc}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_or_products_name_or_products_category_product_name_or_products_reference_cont]=${encodeURIComponent(queryString)}`
+        `${urlMain}orders?page=${page}&is_order=${is_order}&archive=${false}&per_page=${per_page}&desc=${desc}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_or_products_name_or_products_category_product_name_or_products_reference_cont]=${encodeURIComponent(queryString)}${filterParams}`
       );
 
       setOrders(result.orders);
@@ -46,7 +65,7 @@ const OrdersArchive = ({ setIsArchive, isArchive }) => {
 
   useEffect(() => {
     fetchOrders(currentPage, perPage, desc);
-  }, [queryDate, queryString, desc, currentPage]);
+  }, [queryDate, queryString, desc, currentPage, columnFilters]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -75,24 +94,44 @@ const OrdersArchive = ({ setIsArchive, isArchive }) => {
             <table className="w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100 rounded-lg mt-2">
               <thead>
                 <tr className="bg-transparent text-zinc-800 dark:text-zinc-400 border-b border-zinc-300 dark:border-zinc-600">
-                  <th className="text-left font-medium uppercase">
-                    <Tooltip content={desc ? "Más recientes primero" : "Más antiguos primero"}>
-                      <button
-                        onClick={() => setDesc(!desc)}
-                        className="p-1.5 rounded-md text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-secondary_two transition-colors"
-                      >
-                        {desc
-                          ? <FaDownLong size={14} className="text-secondary_two" />
-                          : <FaUpLong size={14} className="text-secondary_two" />
-                        }
-                      </button>
-                    </Tooltip>
-                    Orden de producción
+                  <th className="p-2 text-left font-medium uppercase">
+                    <div className="flex items-center gap-1">
+                      <Tooltip content={desc ? "Más recientes primero" : "Más antiguos primero"}>
+                        <button
+                          onClick={() => setDesc(!desc)}
+                          className="p-1.5 rounded-md text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-secondary_two transition-colors"
+                        >
+                          {desc
+                            ? <FaDownLong size={14} className="text-secondary_two" />
+                            : <FaUpLong size={14} className="text-secondary_two" />
+                          }
+                        </button>
+                      </Tooltip>
+                      Orden de producción
+                      <ColumnFilter
+                        column="Código"
+                        filterKey="code"
+                        onApply={applyColumnFilter}
+                        onClear={clearColumnFilter}
+                        active={!!columnFilters.code}
+                        currentFilter={columnFilters.code}
+                      />
+                    </div>
                   </th>
-                  <th className="text-left font-medium uppercase">Referencias</th>
-                  <th className="text-left font-medium flex justify-between items-center">
-                    <span className="uppercase">Creación</span>
+                  <th className="p-2 text-left font-medium uppercase">
+                    <div className="flex items-center gap-1">
+                      Referencias
+                      <ColumnFilter
+                        column="Referencias"
+                        filterKey="products_name"
+                        onApply={applyColumnFilter}
+                        onClear={clearColumnFilter}
+                        active={!!columnFilters.products_name}
+                        currentFilter={columnFilters.products_name}
+                      />
+                    </div>
                   </th>
+                  <th className="p-2 text-left font-medium uppercase">Creación</th>
                 </tr>
               </thead>
               <tbody>
