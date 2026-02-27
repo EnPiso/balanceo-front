@@ -29,6 +29,7 @@ const OrderDetail = () => {
 
   const [expandedProductIndices, setExpandedProductIndices] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [confirmExit, setConfirmExit] = useState(false);
 
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
   const [product, setProduct] = useRecoilState(selectProduct)
@@ -53,6 +54,8 @@ const OrderDetail = () => {
       setExpandedProductIndices([...expandedProductIndices, index]);
     }
   };
+
+  const handleBackward = () => setConfirmExit(true);
 
   const backward = () => {
     const showOrderProducts = showOrder.products
@@ -127,10 +130,40 @@ const OrderDetail = () => {
             </div>
           </div>
 
+          {confirmExit && (
+            <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+              <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-2xl p-6 max-w-sm w-full mx-4">
+                <h3 className="text-zinc-800 dark:text-zinc-100 font-semibold text-base mb-2">
+                  ¿Salir del balanceo?
+                </h3>
+                <p className="text-zinc-500 dark:text-zinc-400 text-sm mb-5">
+                  Los cambios que no hayas guardado se perderán.
+                </p>
+                <div className="flex gap-3 justify-end">
+                  <button
+                    onClick={() => setConfirmExit(false)}
+                    className="px-4 py-2 text-sm rounded-lg border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors"
+                  >
+                    Cancelar
+                  </button>
+                  <MyCustomButton
+                    icon={<FaBackward className="mt-1 mr-3" />}
+                    title={"Salir sin guardar"}
+                    handleClick={() => { setConfirmExit(false); backward(); }}
+                    value={null}
+                    bgButton={"bg-zinc-800"}
+                    textButton={"text-secondary_two"}
+                  />
+                  
+                </div>
+              </div>
+            </div>
+          )}
+
           {isLoading ? (
             <Spinner label="Cargando" color="default" labelColor="foreground" />
           ) : (
-            <BalancingDashboard backward={backward} showOrder={showOrder} />
+            <BalancingDashboard backward={handleBackward} showOrder={showOrder} />
           )}
         </>
       ) : (

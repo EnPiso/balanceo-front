@@ -27,7 +27,6 @@ import ModalVideoInput from "./videoOperations/ModalVideoInput.jsx";
 import TrDinamycVideo from "./videoOperations/TrDinamycVideo.jsx";
 import DraggableVideo from "./videoOperations/DraggableVideo.jsx";
 import {assignColorsToArray} from "../../../../ui/utils.js";
-import useGenerateZones from "../../../../hooks/balances/useGenerateZones.jsx";
 import {
   imageBalancePdf,
   isPDFGenerate,
@@ -90,8 +89,6 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
 
   const [imageUrl, setImageUrl] = useRecoilState(imageBalancePdf); // Estado para almacenar la URL de la imagen
 
-  // useGenerateZones({ opersSelect, balancing, zones });
-
   const [operaClock, setOperaClock] = useRecoilState(openOperaClock)
   const [isModalSample, setIsModalSample] = useRecoilState(isOpenModalSample)
   // isOpenModalSample
@@ -125,14 +122,6 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
     setClockGlobal(!clockGlobal)
   }
   
-
-  // Función centralizada para actualizar zonas**
-  const updateZones = (callback) => {
-    setZonesOpersData((prevData) => {
-      const result = callback(prevData);
-      return result; // Solo actualiza si el callback cambia algo
-    });
-  };
 
   useEffect(() => {
     const details = zones.map((zone, index) => {

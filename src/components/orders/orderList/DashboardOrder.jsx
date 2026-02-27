@@ -49,7 +49,7 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
   // Página actual
   const [totalPages, setTotalPages] = useState(1); // Total de páginas
   const [perPage, setPerPage] = useState(10); // Total de páginas
-  const [queryDate, setQueryDate] = useState(null); // Estado para el valor del input
+  const [queryDate, setQueryDate] = useState(null);
   const [queryString, setQueryString] = useState("");
   const [desc, setDesc] = useState(true);
   const [isSearchVisible, setIsSearchVisible] = useState(false); // Estado para controlar la visibilidad de SearchDateOrders
@@ -173,8 +173,6 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
                   setQueryString={setQueryString}
                   queryDate={queryDate}
                   setQueryDate={setQueryDate}
-                  isLoading={isLoading}
-                  setIsLoading={setIsLoading}
                 />
               </div>
             )}
@@ -185,6 +183,32 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
           <OrderDetail />
         ) : (
           <>
+            {/* Desktop: siempre montado para que SearchOrdersCustom no pierda su estado */}
+            <div className="hidden lg:block">
+              <SearchDateOrders
+                queryString={queryString}
+                setQueryString={setQueryString}
+                queryDate={queryDate}
+                setQueryDate={setQueryDate}
+                user={user}
+                isOrderOr={isOrderOr}
+                setIsOrderOr={setIsOrderOr}
+                setIsModalManualOrder={setIsModalManualOrder}
+                setIsShowCreate={setIsShowCreate}
+                setModalProdBalancing={setModalProdBalancing}
+              />
+              {Object.keys(columnFilters).length > 0 && (
+                <div className="flex justify-end mt-1 mb-1">
+                  <button
+                    onClick={() => { setColumnFilters({}); setCurrentPage(1); }}
+                    className="text-xs text-red-500 hover:text-red-600 flex items-center gap-1 transition-colors"
+                  >
+                    ✕ Limpiar filtros de columna
+                  </button>
+                </div>
+              )}
+            </div>
+
             {isLoading ? (
               <div className="flex items-center justify-center h-screen">
                 <Spinner color="default" size="lg" />
@@ -192,20 +216,6 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
             ) : (
               <div>
                 <div className="hidden lg:block">
-                  <SearchDateOrders
-                    queryString={queryString}
-                    setQueryString={setQueryString}
-                    queryDate={queryDate}
-                    setQueryDate={setQueryDate}
-                    isLoading={isLoading}
-                    setIsLoading={setIsLoading}
-                    user={user}
-                    isOrderOr={isOrderOr}
-                    setIsOrderOr={setIsOrderOr}
-                    setIsModalManualOrder={setIsModalManualOrder}
-                    setIsShowCreate={setIsShowCreate}
-                    setModalProdBalancing={setModalProdBalancing}
-                  />
                   <table className="w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100 rounded-lg mt-2">
                     <thead>
                       <tr className="bg-transparent text-zinc-800 dark:text-zinc-400 border-b border-zinc-300 dark:border-zinc-600">

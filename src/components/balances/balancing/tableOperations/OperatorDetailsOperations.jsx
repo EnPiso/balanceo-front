@@ -54,10 +54,6 @@ const OperatorDetailsOperations = ({ zone, index, zonesOperUpdate }) => {
     });
   }, [selectedOperDetails, totalMinutes, objBalancing]);
 
-  useEffect(()=> {
-
-  }, [])
-
   const handleClick = (operation, operDetails, isState) => {
     // Verificar que los parámetros necesarios existen
     if (!operation || !operDetails) {

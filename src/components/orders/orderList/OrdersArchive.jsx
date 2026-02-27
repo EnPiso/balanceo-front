@@ -50,7 +50,7 @@ const OrdersArchive = ({ setIsArchive, isArchive }) => {
         .map(([key, { op, val }]) => `&q[${key}_${op}]=${encodeURIComponent(val)}`)
         .join('');
       const result = await fetchGetData(
-        `${urlMain}orders?page=${page}&is_order=${is_order}&archive=${false}&per_page=${per_page}&desc=${desc}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_or_products_name_or_products_category_product_name_or_products_reference_cont]=${encodeURIComponent(queryString)}${filterParams}`
+        `${urlMain}orders?page=${page}&is_order=${is_order}&archive=${true}&per_page=${per_page}&desc=${desc}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_or_products_name_or_products_category_product_name_or_products_reference_cont]=${encodeURIComponent(queryString)}${filterParams}`
       );
 
       setOrders(result.orders);
@@ -87,7 +87,15 @@ const OrdersArchive = ({ setIsArchive, isArchive }) => {
           <div>
             <OrdersBreadcrumb isArchive={isArchive} setIsArchive={setIsArchive} />
 
-            <div className="flex justify-end px-4 pb-2">
+            <div className="flex justify-end items-center gap-4 px-4 pb-2">
+              {Object.keys(columnFilters).length > 0 && (
+                <button
+                  onClick={() => { setColumnFilters({}); setCurrentPage(1); }}
+                  className="text-xs text-red-500 hover:text-red-600 flex items-center gap-1 transition-colors"
+                >
+                  ✕ Limpiar filtros de columna
+                </button>
+              )}
               <SearchArchive setQueryString={setQueryString} />
             </div>
 

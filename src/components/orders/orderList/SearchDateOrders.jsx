@@ -16,16 +16,12 @@ const IconBtn = ({ onClick, tooltip, children }) => (
 );
 
 const SearchDateOrders = ({
-  queryDate, setQueryDate, queryString, setQueryString,
+  queryDate, setQueryDate,
+  queryString, setQueryString,
   user, isOrderOr, setIsOrderOr,
   setIsModalManualOrder, setIsShowCreate,
   setModalProdBalancing
 }) => {
-
-  const handleDateChange = (date) => {
-    setQueryString("")
-    setQueryDate(date);
-  };
 
   const isAdmin = user && (user.role === 'admin' || user.role === 'supervisor');
 
@@ -45,7 +41,6 @@ const SearchDateOrders = ({
             size="sm"
           />
         </span>
-
 
         {!isOrderOr && isAdmin && (
           <IconBtn
@@ -75,7 +70,7 @@ const SearchDateOrders = ({
             size="sm"
             label="Fecha"
             maxValue={today(getLocalTimeZone())}
-            onChange={handleDateChange}
+            onChange={(date) => { setQueryString(""); setQueryDate(date); }}
             value={queryDate}
           />
           {queryDate && (
