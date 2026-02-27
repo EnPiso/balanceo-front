@@ -48,7 +48,7 @@ const ColumnFilter = ({ column, filterKey, onApply, onClear, active, currentFilt
         className={`ml-1 p-0.5 rounded transition-colors ${
           active
             ? 'text-secondary_two'
-            : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200'
+            : 'text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-200'
         }`}
         title={`Filtrar por ${column}`}
       >
