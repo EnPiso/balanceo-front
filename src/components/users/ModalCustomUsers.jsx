@@ -1,66 +1,35 @@
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react'
-import React, { useState } from 'react'
-
-import { FaBackward } from 'react-icons/fa'
-import CustomButton from '../../ui/CustomButton'
+import React, { useState, useRef, useEffect } from 'react'
 import { currentUser } from '../../infraestructure/states/states_views'
 import { useRecoilState } from 'recoil'
-import { CloseSession } from '../views/CloseSession'
 import TabsUsers from './TabsUsers'
 
+const ModalCustomUsers = ({ setIsOpen }) => {
+  const [user] = useRecoilState(currentUser);
+  const [activeTab, setActiveTab] = useState("mi-usuario");
+  const ref = useRef(null);
 
-const ModalCustomUsers = ({isOpen, setIsOpen}) => {
-
-  const [isOpenClose, setIsOpenClose] = useState(false)
-
-  const [user, setUser] = useRecoilState(currentUser);
-
-  const [activeTab, setActiveTab] = useState("mi-usuario"); 
-
-  const handleClose = () => {
-    setIsOpen(false)
-  }
+  useEffect(() => {
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
 
   return (
-    
-        <Modal
-            placement="center"
-            size="5xl"
-            isOpen={isOpen}
-            scrollBehavior={"inside"}
-            onOpenChange={(isOpenState) => setIsOpen(isOpenState)} // Actualiza el estado
-        >
-            <ModalContent>
-                {(onClose) => (
-                    <>
-                        <ModalHeader className="flex justify-start items-center">
-                          {
-                            !(activeTab === "mi-usuario") && "Usuarios"
-                          }
-                          
-                        </ModalHeader>
-                        <ModalBody>
-                          <TabsUsers 
-                            activeTab={activeTab}
-                            setActiveTab={setActiveTab}
-                            setIsOpen={setIsOpen}/>
-                        </ModalBody>
-                        <ModalFooter>
-
-                            <CustomButton
-                                color="default"
-                                variant="bordered"
-                                startContent={<FaBackward />}
-                                onClick={handleClose}
-                                title="Regresar" 
-                            />
-
-                        </ModalFooter>
-                    </>
-                )}
-            </ModalContent>
-        </Modal>
-  )
-}
+    <div
+      ref={ref}
+      className="fixed right-4 top-[64px] w-[480px] max-h-[85vh] overflow-y-auto bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl shadow-2xl z-50 p-5"
+    >
+      <TabsUsers
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        setIsOpen={setIsOpen}
+      />
+    </div>
+  );
+};
 
 export default ModalCustomUsers

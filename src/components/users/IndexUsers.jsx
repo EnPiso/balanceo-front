@@ -94,9 +94,9 @@ const IndexUsers = () => {
           }
 
           <span className="flex justify-start">
-            <small className={`mt-1 mr-3 ${activate ? 'text-secondary_two' : 'text-red-500'} `}>
-              Ver usuarios {
-                activate ? "Activos" : "Archivados"
+            <small className={`mt-1 mr-3 ${activate ? 'text-red-500' : 'text-secondary_two'} `}>
+              Usuarios {
+                activate ? "Archivados" : "Activos"
               } 
             </small>
 

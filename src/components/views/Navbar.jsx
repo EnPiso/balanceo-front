@@ -73,7 +73,7 @@ const Navbar = ({toggleSidebar,isSidebarOpen}) => {
         
         <div className="flex items-center gap-2">
           <button className="text-2xl text-dark" onClick={toggleTheme}>
-            {theme === 'light' ? <FaMoon className="text-secondary_two" size={25}/> : <FaSun className="text-secondary_two" size={25}/>}
+            {theme === 'light' ? <FaMoon className="text-secondary_two" size={18}/> : <FaSun className="text-secondary_two" size={18}/>}
           </button>
 
           {
@@ -82,14 +82,14 @@ const Navbar = ({toggleSidebar,isSidebarOpen}) => {
               <>
                 {
                   user ? (
-                    <Tooltip content="Iniciar sesión" placement="bottom">
-                        <button onClick={() => setIsOpen(true)} className="cursor-pointer text-2xl">
+                    <Tooltip content="Detalles de usuario" placement="bottom">
+                        <button onClick={() => setIsOpen(prev => !prev)} className="cursor-pointer text-2xl">
                           <FaUserCircle className="text-secondary_two" size={25}/>
                         </button>                
                     </Tooltip>
                     
                   ) : (
-                    <Tooltip content="Detalles de usuario" placement="bottom">
+                    <Tooltip content="Iniciar sesión" placement="bottom">
                       <button className="text-2xl text-dark" onClick={() => setIsModalLogIn(!isModalLogIn)}>
                         <FaUser className="text-secondary_two" size={25} />
                       </button>
@@ -103,10 +103,7 @@ const Navbar = ({toggleSidebar,isSidebarOpen}) => {
         
         </div>
 
-        <ModalCustomUsers
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-        />    
+        {isOpen && <ModalCustomUsers setIsOpen={setIsOpen} />}    
         
         {
           isModalLogIn && 
