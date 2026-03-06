@@ -41,6 +41,7 @@ import CloneBalancingDashboard from './cloneBalancings/CloneBalancingDashboard.j
 import { BalancingSideBar } from './BalancingSideBar.jsx';
 import { currentUser } from '../../../infraestructure/states/states_views.js';
 import { allOperationsProduct } from '../../../infraestructure/states/operation_states.js';
+import { balancingData } from '../../../infraestructure/states/states_balancing.js';
 
 export const BalancingDashboard = ({backward}) => {
 
@@ -74,6 +75,7 @@ export const BalancingDashboard = ({backward}) => {
   
   const [user, setUser] = useRecoilState(currentUser);
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
+  const [balancing] = useRecoilState(balancingData);
   
   
 
@@ -275,6 +277,30 @@ export const BalancingDashboard = ({backward}) => {
   return (
       <>
         <div>
+          {/* Barra sticky de KPIs */}
+          {balancing && balancing.gol_hour > 0 && (
+            <div className="sticky top-0 z-30 bg-zinc-100 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700 py-2 px-4 flex gap-6 items-center flex-wrap">
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-xs text-zinc-500 dark:text-zinc-400 uppercase font-medium">Meta/hora</span>
+                <span className="text-xl font-black text-secondary_two">{balancing.gol_hour}</span>
+              </div>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-xs text-zinc-500 dark:text-zinc-400 uppercase font-medium">Meta/día</span>
+                <span className="text-xl font-black text-secondary_two">{balancing.gol_day}</span>
+              </div>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-xs text-zinc-500 dark:text-zinc-400 uppercase font-medium">SAM total</span>
+                <span className="text-sm font-bold text-zinc-700 dark:text-zinc-300">
+                  {!isNaN(balancing.samSum) && parseFloat(balancing.samSum).toFixed(2)}
+                </span>
+              </div>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-xs text-zinc-500 dark:text-zinc-400 uppercase font-medium">Min/hora</span>
+                <span className="text-sm font-bold text-zinc-700 dark:text-zinc-300">{balancing.minutesHour}</span>
+              </div>
+            </div>
+          )}
+
           <div className="pr-6 pb-2 flex justify-end fixed bottom-0 w-full z-50 left-1">
             <MyCustomButton
               icon={<FaBackward className=" mt-1 mr-3 "/>}

@@ -266,7 +266,26 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
                       {orders.map((order) => (
                         <tr key={order.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-600 transition-colors">
                           <td className="p-2 border border-gray-100 dark:border-transparent">
-                            <ShowOrder order={order} />
+                            <div className="flex items-center gap-2">
+                              <ShowOrder order={order} />
+                              {(() => {
+                                const balanced = order.products.filter(p => p.has_opers_balancing).length;
+                                const total = order.products.length;
+                                if (balanced === 0) return null;
+                                const allDone = balanced === total;
+                                return (
+                                  <Tooltip content={`${balanced} de ${total} producto${balanced !== 1 ? 's' : ''} balanceado${balanced !== 1 ? 's' : ''}`}>
+                                    <span className={`text-xs px-1.5 py-0.5 rounded font-semibold whitespace-nowrap cursor-default ${
+                                      allDone
+                                        ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400'
+                                        : 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400'
+                                    }`}>
+                                      {balanced}/{total}
+                                    </span>
+                                  </Tooltip>
+                                );
+                              })()}
+                            </div>
                           </td>
                           <td className="p-2 border border-gray-100 dark:border-transparent">
                             {order.products.map((product, i) => (

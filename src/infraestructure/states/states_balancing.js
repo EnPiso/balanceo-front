@@ -60,6 +60,11 @@ export const isShowButtonOpers = atom({
   default: false,
 });
 
+export const pendingExitConfirm = atom({
+  key: 'pendingExitConfirm',
+  default: false,
+});
+
 
 
 

@@ -15,7 +15,7 @@ import {
 } from "../../../infraestructure/states/opers_states.js";
 import {allOperationsProduct, samSumOperation} from "../../../infraestructure/states/operation_states.js";
 import {selectProduct} from "../../../infraestructure/states/states_product.js";
-import {detailOperOperations} from "../../../infraestructure/states/states_balancing.js";
+import {detailOperOperations, pendingExitConfirm} from "../../../infraestructure/states/states_balancing.js";
 import {checkOperationsBalancing} from "../../../infraestructure/states/states_videos.js";
 import {hourMinuteSecond, monthDayYear} from "../../../infraestructure/utils/dateFormat.js";
 import { zonesMobile } from "../../../infraestructure/states/states_mobile.js";
@@ -40,6 +40,7 @@ const OrderDetail = () => {
   const [product, setProduct] = useRecoilState(selectProduct)
   const [samSum, setSamSum] = useRecoilState(samSumOperation);
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
+  const [isPendingExit, setIsPendingExit] = useRecoilState(pendingExitConfirm);
   const [selOpeVideos, setSelOpeVideos] = useRecoilState(checkOperationsBalancing);
   const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
   const [zonesOperUpdate, setZonesOperUpdate] = useRecoilState(zonesMobile);
@@ -72,17 +73,13 @@ const OrderDetail = () => {
     }
   };
 
-  // Interceptar botón Atrás del navegador cuando hay un balanceo activo
+  // Mostrar confirm cuando OrdersTab detecta browser back desde el balanceo
   useEffect(() => {
-    if (!objBalancing) return;
-    const currentPath = window.location.pathname;
-    const handlePopState = () => {
-      window.history.pushState(null, '', currentPath); // restaurar URL
+    if (isPendingExit) {
       setConfirmExit(true);
-    };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [objBalancing]);
+      setIsPendingExit(false);
+    }
+  }, [isPendingExit]);
 
   const clearBalancingState = () => {
     const productsUpdate = showOrder.products.map(item =>

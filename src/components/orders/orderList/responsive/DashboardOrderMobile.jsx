@@ -60,8 +60,23 @@ const DashboardOrderMobile = ({totalPaginate,handlePerPageChange,perPage,setDesc
               <div>
                 <div>
                   <div className="flex justify-between items-center mb-1 rounded-md">
-                    <h3 className="text-md font-semibold flex justify-between items-center">
-                      <ShowOrder order={order} /> 
+                    <h3 className="text-md font-semibold flex items-center gap-2">
+                      <ShowOrder order={order} />
+                      {(() => {
+                        const balanced = order.products.filter(p => p.has_opers_balancing).length;
+                        const total = order.products.length;
+                        if (balanced === 0) return null;
+                        const allDone = balanced === total;
+                        return (
+                          <span className={`text-xs px-1.5 py-0.5 rounded font-semibold whitespace-nowrap ${
+                            allDone
+                              ? 'bg-green-100 text-green-700'
+                              : 'bg-yellow-100 text-yellow-700'
+                          }`}>
+                            {balanced}/{total}
+                          </span>
+                        );
+                      })()}
                     </h3>
                     <div className="text-end">
                       <p className="text-sm text-zinc-800">

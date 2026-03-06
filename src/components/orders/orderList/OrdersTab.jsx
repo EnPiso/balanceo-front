@@ -5,16 +5,19 @@ import OrdersArchive from "./OrdersArchive.jsx";
 import {useRecoilState} from "recoil";
 import {orderObjBalancing, showOrderObj} from "../../../infraestructure/states/order_states.js";
 import { videoOperation } from '../../../infraestructure/states/states_videos.js';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { fetchGetData } from '../../../infraestructure/call_api/crud.js';
 import { urlMain } from '../../../infraestructure/data/const.js';
+import { pendingExitConfirm } from '../../../infraestructure/states/states_balancing.js';
 
 const OrdersTab = () => {
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
   const [videoObjOperation, setVideoObjOperation] = useRecoilState(videoOperation);
+  const [, setIsPendingExit] = useRecoilState(pendingExitConfirm);
   const { orderId, productId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [isArchive, setIsArchive] = useState(false);
 
@@ -26,8 +29,10 @@ const OrdersTab = () => {
       setShowOrder(null);
       setObjBalancing(null);
     } else if (orderId && !productId && objBalancing) {
-      // Volvió a /orders/:id → limpiar solo el balanceo
-      setObjBalancing(null);
+      // Volvió a /orders/:id desde el balanceo (browser back):
+      // restaurar la URL y pedirle a OrderDetail que muestre el confirm
+      navigate(`/orders/${orderId}/products/${objBalancing.product.id}`, { replace: true });
+      setIsPendingExit(true);
     }
   }, [location.pathname]);
 
@@ -49,7 +54,6 @@ const OrdersTab = () => {
             isArchive={isArchive}
             setIsArchive={setIsArchive}/> :
           <DashboardOrder
-            key={JSON.stringify(showOrder)}
             isArchive={isArchive}
             setIsArchive={setIsArchive}/>
       }
