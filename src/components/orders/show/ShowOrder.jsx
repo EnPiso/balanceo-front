@@ -18,7 +18,7 @@ const ShowOrder = ({order}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(()=> {
-    if(toUpdateBalance){
+    if(toUpdateBalance && order.id === toUpdateBalance.orderId){
       handleShowOrder(toUpdateBalance.orderId)
     }
   }, [toUpdateBalance])

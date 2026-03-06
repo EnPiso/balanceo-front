@@ -105,7 +105,7 @@ const OrderDetail = () => {
   const backward = () => {
     const orderId = showOrder.order.id;
     clearBalancingState();
-    navigate(`/orders/${orderId}`);
+    navigate(`/orders/${orderId}`, { state: { intentional: true } });
   };
 
 

@@ -28,7 +28,7 @@ const OrdersTab = () => {
       // Volvió a / → limpiar todo
       setShowOrder(null);
       setObjBalancing(null);
-    } else if (orderId && !productId && objBalancing) {
+    } else if (orderId && !productId && objBalancing && !location.state?.intentional) {
       // Volvió a /orders/:id desde el balanceo (browser back):
       // restaurar la URL y pedirle a OrderDetail que muestre el confirm
       navigate(`/orders/${orderId}/products/${objBalancing.product.id}`, { replace: true });

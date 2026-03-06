@@ -1,90 +1,37 @@
 import { Button, Tooltip } from '@nextui-org/react'
-import React, { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { FaClone } from 'react-icons/fa'
-import ModalCloneNew from './ModalCloneNew'
 import { orderObjBalancing, showOrderObj } from '../../../../infraestructure/states/order_states'
 import { useRecoilState } from 'recoil'
 import toast from 'react-hot-toast'
-import { postData, postDataToken } from '../../../../infraestructure/call_api/crud'
+import { fetchGetData, postDataToken } from '../../../../infraestructure/call_api/crud'
 import { urlMain } from '../../../../infraestructure/data/const'
-import { goToBalance } from '../../../../infraestructure/states/operation_master_state'
 import { selectProduct } from '../../../../infraestructure/states/states_product'
 import { allOperationsProduct, samSumOperation } from '../../../../infraestructure/states/operation_states'
 import { detailOperOperations, goToUpdateBalance, isCloneModal } from '../../../../infraestructure/states/states_balancing'
 import { checkOperationsBalancing } from '../../../../infraestructure/states/states_videos'
-import { checkOpersPosition, selectProdPlantOriginal } from '../../../../infraestructure/states/opers_states'
+import { checkOpersPosition } from '../../../../infraestructure/states/opers_states'
 import { zonesMobile } from '../../../../infraestructure/states/states_mobile'
 import { tokenMemory } from '../../../../infraestructure/states/states_views'
 
 const CloneBalancingDashboard = () => {
 
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
-
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
-
-  const [isClone, setIsClone] = useRecoilState(isCloneModal)
-
-  const [product, setProduct] = useRecoilState(selectProduct)
-  
+  const [, setIsClone] = useRecoilState(isCloneModal)
+  const [, setProduct] = useRecoilState(selectProduct)
   const [samSum, setSamSum] = useRecoilState(samSumOperation);
-
-  const [toUpdateBalance, setToUpdateBalance] = useRecoilState(goToUpdateBalance)
-  
-  const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
-  const [selOpeVideos, setSelOpeVideos] = useRecoilState(checkOperationsBalancing);
+  const [, setToUpdateBalance] = useRecoilState(goToUpdateBalance)
+  const [, setDetailOperOpera] = useRecoilState(detailOperOperations);
+  const [, setSelOpeVideos] = useRecoilState(checkOperationsBalancing);
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
-  const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
-  const [zonesOperUpdate, setZonesOperUpdate] = useRecoilState(zonesMobile)
-  const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
-  
-  const [token, setToken] = useRecoilState(tokenMemory);
-
-
-
-  const backward = (goToBalance) => {
-    const showOrderProducts = showOrder.products
-
-    const data = {
-      operations: objBalancing.operations,
-      product: product,
-      total_sam: samSum
-    }
-
-    const product_id = product.id
-
-    const productsUpdate = showOrderProducts.map(item => {
-      // Compara el `product.id` del objeto actual con `product_id`
-      if (item.product.id === product_id) {
-        // Reemplaza el objeto completo con `data` si coincide
-        return { ...data };
-      }
-      // Si no coincide, devuelve el objeto original
-      return item;
-    });
-
-    const dataUpdate = {
-      order: showOrder.order,
-      products: productsUpdate
-    }
-
-    setShowOrder(dataUpdate)
-    setObjBalancing(null)
-    setSelectedOperDetails([])
-    setOperationsProduct([])
-    setProduct(null)
-    setSamSum(0)
-    setDetailOperOpera([])
-    setSelOpeVideos(null)
-    setZonesOperUpdate([])
-    setShowOrder(null)
-    setToUpdateBalance(goToBalance)
-  }
-
-  
+  const [, setZonesOperUpdate] = useRecoilState(zonesMobile)
+  const [, setSelectedOperDetails] = useRecoilState(checkOpersPosition);
+  const [token] = useRecoilState(tokenMemory);
 
   const handleClone = () => {
     setIsClone(true)
-    
+
     const product_id = objBalancing.product.id
     const formatOperation = (op, item) => ({
       ...op,
@@ -94,33 +41,28 @@ const CloneBalancingDashboard = () => {
       name: op.operation ? op.operation : op.name,
       sam: parseFloat(op.sam),
     });
-    
+
     const operations = showOrder.products.flatMap((item) => {
       return product_id === item.product.id
         ? operationsProduct.map((op) => formatOperation(op, item))
         : item.operations.map((op) => formatOperation(op, item));
     });
 
-
-    const data = {
+    cloneOrder({
       order_id: showOrder.order.id,
       operations: JSON.stringify(operations)
-    }
-
-    cloneOrder(data)
+    })
   }
 
-  const cloneOrder =  (data) => {
-
+  const cloneOrder = (data) => {
     const postDataOrder = async () => {
       try {
         const result = await postDataToken(urlMain + "/orders/create_order_clone", data, token)
         const product_name = objBalancing.product.name
         const resultFilter = result.products.find(prod => prod.product.name === product_name);
-        const updateOperations = resultFilter.operations.map((res)=> res.operation)
-        const operationsFormat = updateOperations.map(operation => ({
-          ...operation, // Conservar los parámetros existentes
-          name: `${operation.operation}` // Agregar el campo `name` con `operation.operation`
+        const operationsFormat = resultFilter.operations.map((res) => ({
+          ...res.operation,
+          name: `${res.operation.operation}`
         }));
         const updateGoTo = {
           operations: operationsFormat,
@@ -128,18 +70,31 @@ const CloneBalancingDashboard = () => {
           total_sam: samSum,
           orderId: result.order.id
         }
-        backward(updateGoTo) /// regresar para con go balancing actualizar el nuevo balancing
-        
+
+        // Fetch new order details directly — avoids flashing to the order list
+        const newOrderData = await fetchGetData(`${urlMain}orders/${result.order.id}/show_order_details/`)
+
+        // Transition directly to the new order's product list
+        setShowOrder(newOrderData)
+        setObjBalancing(null)
+        setSelectedOperDetails([])
+        setOperationsProduct([])
+        setProduct(null)
+        setSamSum(0)
+        setDetailOperOpera([])
+        setSelOpeVideos(null)
+        setZonesOperUpdate([])
+        setToUpdateBalance(updateGoTo)  // BalanceProduct auto-opens the matching balancing
+
         toast.success("Se ha clonado la orden y su productos correctamente")
-      
+
       } catch (error) {
         console.error('Error setting data', error);
-        
+        setIsClone(false)
       }
     };
 
     postDataOrder();
-
   };
 
 
