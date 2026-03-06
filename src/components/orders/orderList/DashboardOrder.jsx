@@ -83,6 +83,15 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
     fetchOrders(currentPage, perPage, desc, isOrderOr);
   }, [desc, isOrderOr]);
 
+  // Re-fetch orders when returning from order detail/balancing view
+  const prevShowOrder = useRef(showOrder);
+  useEffect(() => {
+    if (prevShowOrder.current && !showOrder) {
+      fetchOrders(currentPage, perPage, desc, isOrderOr);
+    }
+    prevShowOrder.current = showOrder;
+  }, [showOrder]);
+
   const fetchOrders = async (page, per_page, desc, is_order) => {
     setIsLoading(true);
 

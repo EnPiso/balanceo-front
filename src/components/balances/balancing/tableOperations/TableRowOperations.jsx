@@ -76,7 +76,7 @@ const TableRowOperations = ({
 
         const updatedItems = operationsProduct.map((item) => ({ ...item })); // Copia profunda
         updatedItems.forEach((item) => {
-          if (item.id === id) {
+          if (item.operation_balancing_id === id) {
             item.is_sam_minutes = result.is_sam_minutes;
           }
         });
