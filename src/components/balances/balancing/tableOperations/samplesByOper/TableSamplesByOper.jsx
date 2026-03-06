@@ -3,6 +3,7 @@ import { timeToSeconds } from '../../../../../ui/utils'
 import LastObjForPolyvalence from '../samples/LastObjForPolyvalence'
 import PercentSamplesZones from '../../../../../ui/PercentageBox'
 import TagCreateUserName from '../../../../../ui/TagCreateUserName'
+import SamplesStatsPanel from '../samples/SamplesStatsPanel'
 
 const TableSamplesByOper = ({
   samples,
@@ -97,6 +98,7 @@ const TableSamplesByOper = ({
                 </tbody>
               </table>
           </div>
+      <SamplesStatsPanel samples={samples} samSeg={samSeg} />
 
     </div>
   )

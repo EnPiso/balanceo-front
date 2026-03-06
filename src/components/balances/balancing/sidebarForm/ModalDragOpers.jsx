@@ -35,6 +35,8 @@ import MyCustomButton from "../../../../ui/MyCustomButton.jsx";
 import { useRef } from "react";
 import { tokenMemory } from "../../../../infraestructure/states/states_views.js";
 
+let _openHandled = false;
+
 const ModalDragOpers = () => {
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
 
@@ -78,6 +80,15 @@ const ModalDragOpers = () => {
     onOpen();
     setIsOpenModalOpers(false)
   };
+
+  useEffect(() => {
+    if (isOpenModalOpers && !isOpen && !_openHandled) {
+      _openHandled = true;
+      handleOpen('3xl');
+      setProdPlant(prodPlantOriginal);
+      setTimeout(() => { _openHandled = false; }, 0);
+    }
+  }, [isOpenModalOpers]);
 
   // Función para actualizar selectedOperDetails
   const updateSelectedOperDetails = (oper, isSelected) => {
@@ -160,19 +171,21 @@ const ModalDragOpers = () => {
     <>
     
       <div className={`flex justify-center`}>
-             <MyCustomButton
-                icon={(isOpenModalOpers || opersSelect.size < 1) && <FaUsers className="mt-1 mr-1"/>}
-                title={opersSelect.size >= 1 ? `Operarios ${opersSelect.size}` : "Operarios"}
-                handleClick={() => {
-                  handleOpen("3xl")
-                  setProdPlant(prodPlantOriginal)
-                }}
-                value={opersSelect.size >= 1 ? `Operarios ${opersSelect.size}` : "Operarios"}
-                bgButton={"bg-primary_one "}
-                textButton={`mt-1 mr-3 ${(isOpenModalOpers || opersSelect.size < 1) ? 'text-zinc-100 pulse-effect' : 'text-secondary_two'}`}
-              />
-   
-        
+        <Tooltip content={<span className="text-xs">Ctrl + O</span>} placement="bottom">
+          <span>
+            <MyCustomButton
+              icon={(isOpenModalOpers || opersSelect.size < 1) && <FaUsers className="mt-1 mr-1"/>}
+              title={opersSelect.size >= 1 ? `Operarios ${opersSelect.size}` : "Operarios"}
+              handleClick={() => {
+                handleOpen("3xl")
+                setProdPlant(prodPlantOriginal)
+              }}
+              value={opersSelect.size >= 1 ? `Operarios ${opersSelect.size}` : "Operarios"}
+              bgButton={"bg-primary_one "}
+              textButton={`mt-1 mr-3 ${(isOpenModalOpers || opersSelect.size < 1) ? 'text-zinc-100 pulse-effect' : 'text-secondary_two'}`}
+            />
+          </span>
+        </Tooltip>
       </div>
       <Modal scrollBehavior="inside" backdrop="blur" size={size} isOpen={isOpen} onClose={onClose}>
         <ModalContent>

@@ -41,7 +41,7 @@ import CloneBalancingDashboard from './cloneBalancings/CloneBalancingDashboard.j
 import { BalancingSideBar } from './BalancingSideBar.jsx';
 import { currentUser } from '../../../infraestructure/states/states_views.js';
 import { allOperationsProduct } from '../../../infraestructure/states/operation_states.js';
-import { balancingData } from '../../../infraestructure/states/states_balancing.js';
+import { balancingData, openModalOpers } from '../../../infraestructure/states/states_balancing.js';
 
 export const BalancingDashboard = ({backward}) => {
 
@@ -76,8 +76,34 @@ export const BalancingDashboard = ({backward}) => {
   const [user, setUser] = useRecoilState(currentUser);
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
   const [balancing] = useRecoilState(balancingData);
-  
-  
+  const [, setIsOpenModalOpers] = useRecoilState(openModalOpers);
+
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (!e.ctrlKey || (e.key !== 'o' && e.key !== 'O')) return;
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+      e.preventDefault();
+      setIsOpenModalOpers(true);
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, []);
+
+  const _downloadRef = useRef(null);
+  _downloadRef.current = () => {
+    if (opersSelect.size >= 1 && !isLoadPDF) setIsScreenShot(true);
+  };
+
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (!e.ctrlKey || (e.key !== 'd' && e.key !== 'D')) return;
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+      e.preventDefault();
+      _downloadRef.current();
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, []);
 
   useEffect(() => {
 
@@ -343,7 +369,7 @@ export const BalancingDashboard = ({backward}) => {
                           {
                             opersSelect.size >= 1 && (
                               <>
-                                <Tooltip content="Descargar PDF" placement="top">
+                                <Tooltip content={<span className="text-xs">Ctrl + D</span>} placement="top">
                                   <Button
                                     className={`${user && (user.role === 'admin' || user.role === 'supervisor') && 'ml-5'}  font-bold uppercase`}
                                     onPress={()=> {

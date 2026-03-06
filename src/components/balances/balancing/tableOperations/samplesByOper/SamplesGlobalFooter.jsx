@@ -41,10 +41,18 @@ const SamplesGlobalFooter = () => {
     const minutesHour = opersSelect.size * 60
     const golHour = parseInt(minutesHour / totalSeconds)
     const golDayNumber = parseInt((minutesHour / totalSeconds) * 8)
-    
+
     return golDayNumber
-    
+
   }
+
+  const cycleValuesMin = samplingsCircle.map(s => convertToSeconds(s.sample) / 60);
+  const n = cycleValuesMin.length;
+  const mean = totalSeconds; // already computed above
+  const variance = cycleValuesMin.reduce((acc, v) => acc + (v - mean) ** 2, 0) / n;
+  const stdDev = Math.sqrt(variance);
+  const target = parseFloat(objBalancing.total_sam);
+  const diff = mean - target;
 
   return (
     <div>
@@ -56,7 +64,27 @@ const SamplesGlobalFooter = () => {
         potentialUds={golDay()}
         handleFunction={false}
       />
-  
+
+      {n >= 2 && (
+        <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded px-3 py-2 mx-2">
+          <span className="flex items-center gap-1">
+            <span className="text-zinc-400">Media ciclo</span>
+            <span className="font-bold text-zinc-800 dark:text-zinc-100">{mean.toFixed(2)} min</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="text-zinc-400">Desv.</span>
+            <span className="font-semibold text-zinc-500 dark:text-zinc-300">± {stdDev.toFixed(2)} min</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="text-zinc-400">SAM</span>
+            <span className="font-bold text-secondary_one dark:text-secondary_two">{target.toFixed(2)} min</span>
+          </span>
+          <span className={`font-bold ${diff > 0 ? 'text-red-500' : 'text-green-600'}`}>
+            Δ {diff > 0 ? '+' : ''}{diff.toFixed(2)} min
+          </span>
+        </div>
+      )}
+
     </div>
   )
 }

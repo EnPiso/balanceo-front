@@ -27,12 +27,10 @@ const ModalCustomProduct = () => {
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
   const [opersSelect, setOpersSelect] = useRecoilState(selectOpers)
 
-
   const [selected, setSelected] = React.useState("agregar");
 
   const [operationCloneIs, setOperationCloneIs] = useRecoilState(isOperationClone);
   const [cloneOperations, setCloneOperations] = useRecoilState(searchOperations);
-
 
   const handleOpen = () => {
     onOpen()
@@ -40,14 +38,27 @@ const ModalCustomProduct = () => {
     setCloneOperations([])
   }
 
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (!e.ctrlKey || (e.key !== 'c' && e.key !== 'C')) return;
+      if (isOpen || opersSelect.size < 1) return;
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+      e.preventDefault();
+      handleOpen();
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [isOpen, opersSelect.size]);
+
   return (
     <>
       {
         opersSelect.size >= 1 && (
+          <Tooltip content={<span className="text-xs">Ctrl + C</span>} placement="bottom">
             <Button className=" font-bold uppercase" onPress={handleOpen}>
               Personalizar {objBalancing.product.name} <FaEdit className="text-secondary_two"/>
             </Button>
-
+          </Tooltip>
         )
       }
 

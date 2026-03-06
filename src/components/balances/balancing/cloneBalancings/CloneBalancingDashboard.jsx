@@ -1,5 +1,5 @@
 import { Button, Tooltip } from '@nextui-org/react'
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { FaClone } from 'react-icons/fa'
 import ModalCloneNew from './ModalCloneNew'
 import { orderObjBalancing, showOrderObj } from '../../../../infraestructure/states/order_states'
@@ -144,9 +144,23 @@ const CloneBalancingDashboard = () => {
 
 
 
+  const _cloneRef = useRef(null);
+  _cloneRef.current = handleClone;
+
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (!e.ctrlKey || (e.key !== 'v' && e.key !== 'V')) return;
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+      e.preventDefault();
+      _cloneRef.current();
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, []);
+
   return (
     <>
-      <Tooltip content="Clonar balanceo con su orden" placement="right">
+      <Tooltip content={<span className="text-xs">Ctrl + V</span>} placement="right">
         <Button
           className="ml-5 font-bold uppercase"
           onPress={handleClone}>
