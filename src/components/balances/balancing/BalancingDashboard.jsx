@@ -43,7 +43,7 @@ import { currentUser } from '../../../infraestructure/states/states_views.js';
 import { allOperationsProduct } from '../../../infraestructure/states/operation_states.js';
 import { balancingData, openModalOpers } from '../../../infraestructure/states/states_balancing.js';
 
-export const BalancingDashboard = ({backward}) => {
+const BalancingDashboard = ({backward}) => {
 
   const iconRef = useRef();
 
@@ -454,3 +454,5 @@ export const BalancingDashboard = ({backward}) => {
       </>
   )
 }
+
+export default BalancingDashboard;

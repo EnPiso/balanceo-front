@@ -3,7 +3,6 @@ import {FaBackward, FaRecordVinyl, FaSave} from "react-icons/fa";
 ;
 import React, { useState } from "react";
 import MyCustomButton from "../../../../../ui/MyCustomButton";
-import WebcamAndEditor from "../videoRecCamera/WebcamAndEditor";
 import { isOpenModalRec, operationRecVideo } from "../../../../../infraestructure/states/states_videos";
 import { useRecoilState } from "recoil";
 

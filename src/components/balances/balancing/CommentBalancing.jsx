@@ -1,4 +1,5 @@
 import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import React, {useEffect, useState} from "react";
 import CustomButton from "../../../ui/CustomButton.jsx";
 import {FaBackward, FaEye, FaEyeDropper, FaEyeSlash, FaPlusCircle, FaSave, FaWindowClose} from "react-icons/fa";

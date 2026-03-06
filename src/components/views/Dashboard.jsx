@@ -5,7 +5,7 @@ import DashboardTable from "./table/DashboardTable.jsx";
 import {useRecoilState} from "recoil";
 import {sideBarNav} from "../../infraestructure/states/states_navigation.js";
 import BalanceDashboard from "../balances/BalanceDashboard.jsx";
-import {BalancingDashboard} from "../balances/balancing/BalancingDashboard.jsx";
+import BalancingDashboard from "../balances/balancing/BalancingDashboard.jsx";
 import CreateBalancing from "../balances/create_balance/CreateBalancing.jsx";
 
 

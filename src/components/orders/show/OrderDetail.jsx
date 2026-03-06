@@ -1,10 +1,10 @@
 import {Spinner} from "@nextui-org/react";
 import { useRecoilState } from "recoil";
 import { orderObjBalancing, showOrderObj } from "../../../infraestructure/states/order_states.js";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense, lazy } from "react";
 import ImageLightbox from "../import/ImageLightBox.jsx";
 import { FaDownLong, FaUpLong } from "react-icons/fa6";
-import { BalancingDashboard } from "../../balances/balancing/BalancingDashboard.jsx";
+const BalancingDashboard = lazy(() => import("../../balances/balancing/BalancingDashboard.jsx"));
 import { FaBackward } from "react-icons/fa";
 import BalanceProduct from "./BalanceProduct.jsx";
 import MyCustomButton from "../../../ui/MyCustomButton.jsx";
@@ -155,7 +155,9 @@ const OrderDetail = () => {
           {isLoading ? (
             <Spinner label="Cargando" color="default" labelColor="foreground" />
           ) : (
-            <BalancingDashboard backward={backward} showOrder={showOrder} />
+            <Suspense fallback={<Spinner label="Cargando balanceo" color="default" labelColor="foreground" />}>
+              <BalancingDashboard backward={backward} showOrder={showOrder} />
+            </Suspense>
           )}
         </>
       ) : (

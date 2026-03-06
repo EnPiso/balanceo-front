@@ -1,8 +1,8 @@
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
 ;
-import React, { useState } from "react";
+import React, { useState, Suspense, lazy } from "react";
 
-import WebcamAndEditor from "../videoRecCamera/WebcamAndEditor";
+const WebcamAndEditor = lazy(() => import("../videoRecCamera/WebcamAndEditor"));
 import { isOpenModalRec, operationRecVideo } from "../../../../../infraestructure/states/states_videos";
 import { useRecoilState } from "recoil";
 import { FaX } from "react-icons/fa6";
@@ -32,10 +32,12 @@ export const  ModalRecOutside = () => {
                         <FaX size={25} className="text-secondary_two" />
                       </button>
                     </div>
-                      <WebcamAndEditor 
-                        operation={operationRec}
-                        setIsOpen={setIsOpen}
-                      />
+                      <Suspense fallback={<div className="flex items-center justify-center h-64"><p>Cargando cámara...</p></div>}>
+                        <WebcamAndEditor
+                          operation={operationRec}
+                          setIsOpen={setIsOpen}
+                        />
+                      </Suspense>
                     </ModalBody>
                     
                   </>

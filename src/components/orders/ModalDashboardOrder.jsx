@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React, {useState, Suspense, lazy} from "react";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
-import ExcelImageLoader from "./import/ExcelImageLoader.jsx";
+const ExcelImageLoader = lazy(() => import("./import/ExcelImageLoader.jsx"));
 import CustomButton from "../../ui/CustomButton.jsx";
 import {FaEraser} from "react-icons/fa6";
 import {FaBackward, FaSave} from "react-icons/fa";
@@ -58,12 +58,14 @@ const ModalDashboardOrder = () => {
 
                 <div className="mt-12">
 
-                  <ExcelImageLoader
-                    images={images}
-                    setImages={setImages}
-                    operationsData={operationsData}
-                    setOperationsData={setOperationsData}
-                  />
+                  <Suspense fallback={<p>Cargando...</p>}>
+                    <ExcelImageLoader
+                      images={images}
+                      setImages={setImages}
+                      operationsData={operationsData}
+                      setOperationsData={setOperationsData}
+                    />
+                  </Suspense>
                   <InputOrder/>
                 </div>
 

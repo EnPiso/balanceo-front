@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, Suspense, lazy } from "react";
 import { Spinner, Tooltip } from "@nextui-org/react";
 import PerPageSelector from "../../../ui/PerPageSelector.jsx";
 
@@ -12,7 +12,7 @@ import FileArchiver from "./FileArchiver.jsx";
 import { FaDownLong, FaFolderClosed, FaUpLong } from "react-icons/fa6";
 import { FaDoorClosed, FaSearch, FaSearchLocation, FaWindowClose } from "react-icons/fa";
 import ShowOrder from "../show/ShowOrder.jsx";
-import OrderDetail from "../show/OrderDetail.jsx";
+const OrderDetail = lazy(() => import("../show/OrderDetail.jsx"));
 import ErrorBoundary from '../../../ui/ErrorBoundary.jsx';
 import { AiFillCheckCircle, AiFillDatabase, AiFillStop, AiOutlineSortDescending, AiTwotoneStop } from "react-icons/ai";
 import GenerateImgPdf from "./GenerateImgPdf.jsx";
@@ -184,7 +184,9 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
 
         {showOrder ? (
           <ErrorBoundary>
-            <OrderDetail />
+            <Suspense fallback={<Spinner label="Cargando" color="default" labelColor="foreground" />}>
+              <OrderDetail />
+            </Suspense>
           </ErrorBoundary>
         ) : (
           <>

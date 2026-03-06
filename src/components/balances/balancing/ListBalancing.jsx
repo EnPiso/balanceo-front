@@ -8,7 +8,6 @@ import {selectProduct} from "../../../infraestructure/states/states_product.js";
 import TableOperations from "./TableOperations.jsx";
 import ExampleBalance from "./ExampleBalance.jsx";
 import BalancedOperationsTable from "./tableOperations/BalancedOperationsTable.jsx";
-import ExcelImageLoader from "../../orders/import/ExcelImageLoader.jsx";
 import {orderObjBalancing, showOrderObj} from "../../../infraestructure/states/order_states.js";
 import SaveBalance from "../../orders/show/SaveBalance.jsx";
 import {postData} from "../../../infraestructure/call_api/crud.js";

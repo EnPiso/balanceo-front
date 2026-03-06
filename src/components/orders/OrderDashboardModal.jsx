@@ -1,6 +1,6 @@
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, RadioGroup, Radio, Spinner, CircularProgress} from "@nextui-org/react";
-import React, {useState} from "react";
-import ExcelImageLoader from "./import/ExcelImageLoader.jsx";
+import React, {useState, Suspense, lazy} from "react";
+const ExcelImageLoader = lazy(() => import("./import/ExcelImageLoader.jsx"));
 import CustomButton from "../../ui/CustomButton.jsx";
 import {FaEraser, FaFileExcel} from "react-icons/fa6";
 import {FaBackward, FaChevronRight, FaRegFileExcel, FaSave} from "react-icons/fa";
@@ -10,7 +10,7 @@ import OrderSubmit from "./OrderSubmit.jsx";
 import SpinnerLoaderCustom from "../../ui/SpinnerLoaderCustom.jsx";
 import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../infraestructure/data/toastMessage.js";
-import ExcelImagesLoaders from "./import/ExcelImagesLoaders.jsx";
+const ExcelImagesLoaders = lazy(() => import("./import/ExcelImagesLoaders.jsx"));
 import OrderSubmitMultiple from "./OrderSubmitMultiple.jsx";
 import { BsFileExcel } from "react-icons/bs";
 import { RiFileExcelLine } from "react-icons/ri";
@@ -126,16 +126,19 @@ const OrderDashboardModal = () => {
                   
                 {
                   isMultipleExcel ? (
-                    <ExcelImagesLoaders
-                      setProcessData={setProcessData}
-                      filesData={filesData}
-                      setFilesData={setFilesData}
-                      fileMultiple={fileMultiple}
-                      setFileMultiple={setFileMultiple}
-                    
-                    />
+                    <Suspense fallback={<Spinner label="Cargando" color="default" />}>
+                      <ExcelImagesLoaders
+                        setProcessData={setProcessData}
+                        filesData={filesData}
+                        setFilesData={setFilesData}
+                        fileMultiple={fileMultiple}
+                        setFileMultiple={setFileMultiple}
+
+                      />
+                    </Suspense>
                   ) : (
-                    <ExcelImageLoader
+                    <Suspense fallback={<Spinner label="Cargando" color="default" />}>
+                      <ExcelImageLoader
                       images={images}
                       setImages={setImages}
                       operationsData={operationsData}
@@ -143,6 +146,7 @@ const OrderDashboardModal = () => {
                       orderProOpe={orderProOpe}
                       handleMultipleFile={handleMultipleFile}
                     />
+                    </Suspense>
                   )
                 }
                   
