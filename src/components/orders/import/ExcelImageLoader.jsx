@@ -13,6 +13,8 @@ import { formatearString } from './utils.js';
 
 const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData, orderProOpe, handleMultipleFile }) => {
 
+  const [importErrors, setImportErrors] = useState([]);
+
   const handleFileUpload = async (file) => {
     if (!file) return;
 
@@ -31,9 +33,22 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
         return;
       }
 
+      // Validación: Verificar que los encabezados coincidan con el formato esperado
+      if (!validateHeaders(worksheet)) {
+        toast.error(toastMessageCustom.invalid_columns);
+        return;
+      }
+
       // Extraer imágenes y operaciones
       const extractedImages = extractImages(workbook);
-      const extractedOperations = extractOperations(worksheet);
+      const { operations: extractedOperations, errors } = extractOperations(worksheet);
+
+      // Si todas las filas son inválidas
+      if (extractedOperations.length === 0 && errors.length > 0) {
+        toast.error(toastMessageCustom.all_rows_invalid);
+        setImportErrors(errors);
+        return;
+      }
 
       // Validación: Verificar si hay operaciones
       if (extractedOperations.length === 0) {
@@ -41,15 +56,20 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
         return;
       }
 
-      // Validación: Advertir si no hay imágenes
-      if (extractedImages.length === 0) {
-        toast.error(toastMessageCustom.no_images);
+      // Si hay filas descartadas, advertir
+      if (errors.length > 0) {
+        toast.error(toastMessageCustom.invalid_rows);
+        setImportErrors(errors);
+      } else {
+        setImportErrors([]);
       }
+
+      // Imagen es opcional, no mostrar error
 
       // Actualizar estados
       setImages(extractedImages);
       setOperationsData(extractedOperations);
-      
+
 
       toast.success(toastMessageCustom.file_upload)
     } catch (error) {
@@ -71,26 +91,62 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
     return images;
   };
 
+  const validateHeaders = (worksheet) => {
+    const headerRow = worksheet.getRow(1);
+    if (!headerRow) return false;
+
+    // Mapeo: columna → palabra clave que debe contener el encabezado
+    const expectedHeaders = {
+      1: "operaci",    // DESCRIPCIÓN DE LA OPERACIÓN
+      2: "quina",      // MÁQUINA
+      8: "sam",        // SAM
+    };
+
+    for (const [col, keyword] of Object.entries(expectedHeaders)) {
+      const cellValue = headerRow.getCell(Number(col)).value;
+      if (!cellValue || !String(cellValue).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(keyword)) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const extractOperations = (worksheet) => {
     const operations = [];
+    const errors = [];
 
     worksheet.eachRow((row, rowNumber) => {
       if (rowNumber > 1) { // Saltar encabezado
         const firstCell = row.getCell(1).value;
         const machine_name = row.getCell(2).value;
         const sam = row.getCell(8).value;
+        const garmentName = row.getCell(7).value;
+        const reference = row.getCell(10).value;
+        const category = row.getCell(11).value;
 
-        // Validar que sea una fila de operación real
-        const isValidRow =
-          typeof firstCell === "string" &&
-          firstCell.trim().length > 0 &&
-          typeof machine_name === "string" &&
-          machine_name.trim().length > 0 &&
-          typeof sam === "number";
+        // Campos obligatorios: operación, máquina, SAM
+        const rowErrors = [];
 
-        if (!isValidRow) return;
+        if (typeof firstCell !== "string" || firstCell.trim().length === 0) {
+          rowErrors.push("operación");
+        }
+        if (typeof machine_name !== "string" || machine_name.trim().length === 0) {
+          rowErrors.push("máquina");
+        }
+        if (typeof sam !== "number" || sam <= 0) {
+          rowErrors.push("SAM");
+        }
+
+        if (rowErrors.length > 0) {
+          errors.push({ row: rowNumber, fields: rowErrors });
+          return;
+        }
 
         const stringFormat = formatearString(firstCell);
+        const garment = garmentName ? String(garmentName).trim() : "";
+        const ref = reference ? String(reference).trim() : "";
+        const cat = category ? String(category).trim() : "";
 
         operations.push({
           operation: stringFormat,
@@ -99,15 +155,15 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
           observations: row.getCell(4).value,
           needleType: row.getCell(5).value,
           guideType: row.getCell(6).value,
-          garment: `${row.getCell(7).value} [${row.getCell(10).value}] {${row.getCell(11).value}}`,
+          garment: `${garment} [${ref}] {${cat}}`,
           sam,
           order: row.getCell(9).value,
-          reference: row.getCell(10).value
+          reference: ref
         });
       }
     });
 
-    return operations;
+    return { operations, errors };
   };
 
 
@@ -131,6 +187,7 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
   const eraseData = () => {
     setImages([]);
     setOperationsData([]);
+    setImportErrors([]);
   };
 
   const handleFileInputChange = (event) => {
@@ -147,6 +204,18 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
     <div>
       {operationsData.length > 0 ? (
         <>
+          {importErrors.length > 0 && (
+            <div className="mb-4 p-3 bg-amber-50 dark:bg-amber-900/30 border border-amber-300 dark:border-amber-600 rounded-lg">
+              <p className="text-amber-800 dark:text-amber-200 font-semibold text-sm mb-2">
+                {importErrors.length} fila(s) descartadas por datos incompletos:
+              </p>
+              <ul className="list-disc list-inside text-amber-700 dark:text-amber-300 text-xs max-h-32 overflow-y-auto">
+                {importErrors.map((err, i) => (
+                  <li key={i}>Fila {err.row}: falta {err.fields.join(", ")}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           {orderProOpe && (
             <>
               <ImageListImport images={images} />
@@ -156,6 +225,18 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
         </>
       ) : (
         <>
+          {importErrors.length > 0 && (
+            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-300 dark:border-red-600 rounded-lg">
+              <p className="text-red-800 dark:text-red-200 font-semibold text-sm mb-2">
+                Ninguna fila es válida. {importErrors.length} fila(s) con errores:
+              </p>
+              <ul className="list-disc list-inside text-red-700 dark:text-red-300 text-xs max-h-32 overflow-y-auto">
+                {importErrors.map((err, i) => (
+                  <li key={i}>Fila {err.row}: falta {err.fields.join(", ")}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div
             className="drop-container"
             onDrop={handleDrop}
@@ -171,7 +252,7 @@ const ExcelImageLoader = ({ images, setImages, operationsData, setOperationsData
             <span className="drop-title">Arrastra el archivo de Excel aquí</span>
             <p>o</p>
             <input
-              multiple 
+              multiple
               id="images"
               type="file"
               accept=".xlsx"

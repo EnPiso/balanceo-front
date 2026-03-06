@@ -26,5 +26,8 @@ export const toastMessageCustom = {
   updatePlant: "se actualizó el nombre de la planta correctamente",
   updateModule: "se actualizó el nombre del módulo correctamente",
   updateProductName: "se actualizó correctamente el nombre del producto",
-  updateCategory: "se actualizó la categoría correctamente"
+  updateCategory: "se actualizó la categoría correctamente",
+  invalid_rows: "Advertencia: Se descartaron filas con datos incompletos. Revisa los detalles.",
+  all_rows_invalid: "Error: Ninguna fila del archivo tiene los datos obligatorios (operación, máquina, SAM).",
+  invalid_columns: "Error: El formato del archivo no es válido. Las columnas no coinciden con el formato esperado."
 };
