@@ -8,13 +8,11 @@ import { videoOperation } from '../../../infraestructure/states/states_videos.js
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { fetchGetData } from '../../../infraestructure/call_api/crud.js';
 import { urlMain } from '../../../infraestructure/data/const.js';
-import { pendingExitConfirm } from '../../../infraestructure/states/states_balancing.js';
 
 const OrdersTab = () => {
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
   const [videoObjOperation, setVideoObjOperation] = useRecoilState(videoOperation);
-  const [, setIsPendingExit] = useRecoilState(pendingExitConfirm);
   const { orderId, productId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -28,11 +26,10 @@ const OrdersTab = () => {
       // Volvió a / → limpiar todo
       setShowOrder(null);
       setObjBalancing(null);
-    } else if (orderId && !productId && objBalancing && !location.state?.intentional) {
+    } else if (orderId && !productId && objBalancing) {
       // Volvió a /orders/:id desde el balanceo (browser back):
-      // restaurar la URL y pedirle a OrderDetail que muestre el confirm
-      navigate(`/orders/${orderId}/products/${objBalancing.product.id}`, { replace: true });
-      setIsPendingExit(true);
+      // limpiar estado del balanceo directamente
+      setObjBalancing(null);
     }
   }, [location.pathname]);
 

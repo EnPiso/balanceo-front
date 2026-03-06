@@ -1,7 +1,7 @@
 import {Spinner} from "@nextui-org/react";
 import { useRecoilState } from "recoil";
 import { orderObjBalancing, showOrderObj } from "../../../infraestructure/states/order_states.js";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ImageLightbox from "../import/ImageLightBox.jsx";
 import { FaDownLong, FaUpLong } from "react-icons/fa6";
 import { BalancingDashboard } from "../../balances/balancing/BalancingDashboard.jsx";
@@ -15,7 +15,7 @@ import {
 } from "../../../infraestructure/states/opers_states.js";
 import {allOperationsProduct, samSumOperation} from "../../../infraestructure/states/operation_states.js";
 import {selectProduct} from "../../../infraestructure/states/states_product.js";
-import {detailOperOperations, pendingExitConfirm} from "../../../infraestructure/states/states_balancing.js";
+import {detailOperOperations} from "../../../infraestructure/states/states_balancing.js";
 import {checkOperationsBalancing} from "../../../infraestructure/states/states_videos.js";
 import {hourMinuteSecond, monthDayYear} from "../../../infraestructure/utils/dateFormat.js";
 import { zonesMobile } from "../../../infraestructure/states/states_mobile.js";
@@ -34,18 +34,20 @@ const OrderDetail = () => {
 
   const [expandedProductIndices, setExpandedProductIndices] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [confirmExit, setConfirmExit] = useState(false);
 
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct)
   const [product, setProduct] = useRecoilState(selectProduct)
   const [samSum, setSamSum] = useRecoilState(samSumOperation);
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
-  const [isPendingExit, setIsPendingExit] = useRecoilState(pendingExitConfirm);
   const [selOpeVideos, setSelOpeVideos] = useRecoilState(checkOperationsBalancing);
   const [prodPlantOriginal, setProdPlantOriginal] = useRecoilState(selectProdPlantOriginal)
   const [zonesOperUpdate, setZonesOperUpdate] = useRecoilState(zonesMobile);
   const [isOrderOr, setIsOrderOr] = useRecoilState(isOrderOrProduct);
   const [prodPlant, setProdPlant] = useRecoilState(selectProdPlant)
+
+  // Guard: evita que el efecto de hidratación re-cargue el balanceo
+  // justo después de que backward() lo limpió
+  const backwardInProgress = useRef(false);
 
   useEffect(() => {
     if (showOrder) {
@@ -53,8 +55,12 @@ const OrderDetail = () => {
     }
   }, [showOrder]);
 
-  // Hidratación: si se entra directo a /orders/:orderId/products/:productId
+  // Hidratación: si se entra directo a /orders/:orderId/products/:productId (F5 o link)
   useEffect(() => {
+    if (backwardInProgress.current) {
+      backwardInProgress.current = false;
+      return;
+    }
     if (productId && showOrder && !objBalancing) {
       const productItem = showOrder.products.find(
         p => String(p.product.id) === String(productId)
@@ -73,21 +79,18 @@ const OrderDetail = () => {
     }
   };
 
-  // Mostrar confirm cuando OrdersTab detecta browser back desde el balanceo
-  useEffect(() => {
-    if (isPendingExit) {
-      setConfirmExit(true);
-      setIsPendingExit(false);
-    }
-  }, [isPendingExit]);
-
   const clearBalancingState = () => {
-    const productsUpdate = showOrder.products.map(item =>
-      item.product.id === product.id
-        ? { operations: objBalancing.operations, product, total_sam: samSum }
-        : item
-    );
-    setShowOrder({ order: showOrder.order, products: productsUpdate });
+    // Usar objBalancing.product como fuente de verdad — el átomo selectProduct
+    // puede estar null si otro componente lo limpió antes de que se llame backward()
+    const currentProduct = objBalancing?.product;
+    if (currentProduct) {
+      const productsUpdate = showOrder.products.map(item =>
+        item.product.id === currentProduct.id
+          ? { operations: objBalancing.operations, product: currentProduct, total_sam: samSum }
+          : item
+      );
+      setShowOrder({ order: showOrder.order, products: productsUpdate });
+    }
     setObjBalancing(null);
     setSelectedOperDetails([]);
     setOperationsProduct([]);
@@ -100,12 +103,11 @@ const OrderDetail = () => {
     setProdPlant(null);
   };
 
-  const handleBackward = () => setConfirmExit(true);
-
   const backward = () => {
-    const orderId = showOrder.order.id;
+    backwardInProgress.current = true;
+    const currentOrderId = showOrder.order.id;
     clearBalancingState();
-    navigate(`/orders/${orderId}`, { state: { intentional: true } });
+    navigate(`/orders/${currentOrderId}`);
   };
 
 
@@ -150,39 +152,10 @@ const OrderDetail = () => {
             </div>
           </div>
 
-          {confirmExit && (
-            <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
-              <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-2xl p-6 max-w-sm w-full mx-4">
-                <h3 className="text-zinc-800 dark:text-zinc-100 font-semibold text-base mb-2">
-                  ¿Salir del balanceo?
-                </h3>
-                <p className="text-zinc-500 dark:text-zinc-400 text-sm mb-5">
-                  Los cambios que no hayas guardado se perderán.
-                </p>
-                <div className="flex gap-3 justify-end">
-                  <button
-                    onClick={() => setConfirmExit(false)}
-                    className="px-4 py-2 text-sm rounded-lg border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors"
-                  >
-                    Cancelar
-                  </button>
-                  <MyCustomButton
-                    icon={<FaBackward className="mt-1 mr-3" />}
-                    title={"Salir sin guardar"}
-                    handleClick={() => { setConfirmExit(false); backward(); }}
-                    value={null}
-                    bgButton={"bg-zinc-800"}
-                    textButton={"text-secondary_two"}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
           {isLoading ? (
             <Spinner label="Cargando" color="default" labelColor="foreground" />
           ) : (
-            <BalancingDashboard backward={handleBackward} showOrder={showOrder} />
+            <BalancingDashboard backward={backward} showOrder={showOrder} />
           )}
         </>
       ) : (
