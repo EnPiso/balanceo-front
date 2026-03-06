@@ -13,6 +13,7 @@ import { FaDownLong, FaFolderClosed, FaUpLong } from "react-icons/fa6";
 import { FaDoorClosed, FaSearch, FaSearchLocation, FaWindowClose } from "react-icons/fa";
 import ShowOrder from "../show/ShowOrder.jsx";
 import OrderDetail from "../show/OrderDetail.jsx";
+import ErrorBoundary from '../../../ui/ErrorBoundary.jsx';
 import { AiFillCheckCircle, AiFillDatabase, AiFillStop, AiOutlineSortDescending, AiTwotoneStop } from "react-icons/ai";
 import GenerateImgPdf from "./GenerateImgPdf.jsx";
 import PdfBalancingImg from "./PdfBalancingImg.jsx";
@@ -180,7 +181,9 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
         )}
 
         {showOrder ? (
-          <OrderDetail />
+          <ErrorBoundary>
+            <OrderDetail />
+          </ErrorBoundary>
         ) : (
           <>
             {/* Desktop: siempre montado para que SearchOrdersCustom no pierda su estado */}
