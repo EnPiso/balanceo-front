@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { updateData } from "../../../../infraestructure/call_api/crud.js";
 import { urlMain } from "../../../../infraestructure/data/const.js";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { allOperationsProduct } from "../../../../infraestructure/states/operation_states.js";
 import PolyvalenceOperation from "./PolyvalenceOperation.jsx";
 import { checkOpersPosition } from "../../../../infraestructure/states/opers_states.js";
@@ -45,22 +45,22 @@ const TableRowOperations = ({
   const sam_seg = parseInt(item.sam * 60);
 
   const [operationsProduct, setOperationsProduct] = useRecoilState(allOperationsProduct);
-  const [selectedOperDetails] = useRecoilState(checkOpersPosition);
-  const [detailOperOpera] = useRecoilState(detailOperOperations);
+  const selectedOperDetails = useRecoilValue(checkOpersPosition);
+  const detailOperOpera = useRecoilValue(detailOperOperations);
 
   const [selOpeVideos, setSelOpeVideos] = useRecoilState(checkOperationsBalancing);
 
-  const [videosOperations, setVideosOperations] = useRecoilState(listVideosOperations)
-  const [OpersTags, setOpersTags] = useRecoilState(listVideosOpers)
+  const videosOperations = useRecoilValue(listVideosOperations);
+  const OpersTags = useRecoilValue(listVideosOpers);
 
-  const [isPDFMode, setIsPDFMode] = useRecoilState(isPDFGenerate);
+  const isPDFMode = useRecoilValue(isPDFGenerate);
 
-  const [isScreenShot, setIsScreenShot] = useRecoilState(isScreenShotImg)
+  const isScreenShot = useRecoilValue(isScreenShotImg);
 
   
 
 
-  const handleSam = (item, value) => {
+  const handleSam = useCallback((item, value) => {
     const data = {
       operationBalancing: {
         item: item,
@@ -87,14 +87,13 @@ const TableRowOperations = ({
     };
 
     postDataOrder(data);
-  };
+  }, [operationsProduct, setOperationsProduct]);
 
-  const handleOperationBalancing = (item) => {
-    
+  const handleOperationBalancing = useCallback((item) => {
     setSelOpeVideos(item)
     setShowVideos(item)
     setIsModalInput(true)
-  }
+  }, [setSelOpeVideos, setShowVideos, setIsModalInput])
 
   let samTotalItem = item.sam
   samTotalItem = parseFloat(samTotalItem)
@@ -218,4 +217,4 @@ const TableRowOperations = ({
   );
 };
 
-export default TableRowOperations;
+export default React.memo(TableRowOperations);

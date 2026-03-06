@@ -1,11 +1,11 @@
-import React from 'react';
-import { useRecoilState } from "recoil";
+import React, { useMemo } from 'react';
+import { useRecoilValue } from "recoil";
 import { balancingData } from "../../../infraestructure/states/states_balancing.js";
 import { selectOpers } from "../../../infraestructure/states/opers_states.js";
 
 const BalancedOperationsTable = ({ data, samSum }) => {
-  const [balancing, setBalancing] = useRecoilState(balancingData);
-  const [opersSelect, setOpersSelect] = useRecoilState(selectOpers);
+  const balancing = useRecoilValue(balancingData);
+  const opersSelect = useRecoilValue(selectOpers);
 
   // Función para balancear operaciones y crear un mapa de asignaciones
   const balanceOperations = (operations, numOperators) => {
@@ -61,7 +61,10 @@ const BalancedOperationsTable = ({ data, samSum }) => {
     };
   };
 
-  const { zones, operationMap } = balanceOperations(data, opersSelect.size);
+  const { zones, operationMap } = useMemo(
+    () => balanceOperations(data, opersSelect.size),
+    [data, opersSelect.size, balancing.gol_hour]
+  );
 
   return (
     <div className="space-y-8">

@@ -1,5 +1,5 @@
 // components/BalancedOperationsTable.jsx
-import React, {useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import { useRecoilState } from "recoil";
 
 import jsPDF from "jspdf";
@@ -67,7 +67,10 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
   const [detailOperOpera, setDetailOperOpera] = useRecoilState(detailOperOperations);
 
 
-  const { zones, operationMap } = balanceOperations(operationsProduct, opersSelect.size, balancing.gol_hour);
+  const { zones, operationMap } = useMemo(
+    () => balanceOperations(operationsProduct, opersSelect.size, balancing.gol_hour),
+    [operationsProduct, opersSelect.size, balancing.gol_hour]
+  );
 
   const [selectedOperDetails, setSelectedOperDetails] = useRecoilState(checkOpersPosition); // Array con los detalles de cada selección
 
@@ -118,9 +121,9 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
   }, []);
 
   
-  const handleGlobalClock = () => {
+  const handleGlobalClock = useCallback(() => {
     setClockGlobal(!clockGlobal)
-  }
+  }, [clockGlobal, setClockGlobal])
   
 
   useEffect(() => {
@@ -205,20 +208,52 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
 
 
 
-  const handleDragStart = (e, index) => {
+  const handleDragStart = useCallback((e, index) => {
     const draggedItem = operationsProduct[index]; // Obtén el objeto seleccionado
     e.dataTransfer.setData('application/json', JSON.stringify(draggedItem)); // Almacena como JSON
     e.target.classList.add('opacity-50'); // Indicador visual opcional
 
-  };
+  }, [operationsProduct]);
 
 
-  const handleDragOver = (e) => {
+  const handleDragOver = useCallback((e) => {
     e.preventDefault();
 
-  };
+  }, []);
 
-  const handleDrop = (e, targetIndex) => {
+  const handleApi = useCallback((operationsBalancings, operation_balancing_id, detailOperOpera, operationBalancingBefore) => {
+
+    const data = {
+      operationsBalancing: {
+        operations: JSON.stringify(operationsBalancings),
+        operation_balancing_id: operation_balancing_id,
+        opers_select: JSON.stringify(detailOperOpera),
+        operation_balancing_before: operationBalancingBefore,
+        zones: JSON.stringify(zonesOpersData)
+      }
+    }
+
+    const postDataOrder = async (data) => {
+      try {
+        const result = await updateData(urlMain + "/balancings/update_operations_balancing", data)
+
+        setOperationsProduct(result.sorted_operations)
+        const formatted_objects = assignColorsToArray(result.formatted_objects)
+
+        setDetailOperOpera(formatted_objects)
+
+        toast.success(toastMessageCustom.oper_drag)
+
+
+      } catch (error) {
+        console.error('Error setting data', error);
+      }
+    };
+
+    postDataOrder(data);
+  }, [zonesOpersData, setOperationsProduct, setDetailOperOpera]);
+
+  const handleDrop = useCallback((e, targetIndex) => {
     e.preventDefault();
 
     // Recupera el objeto arrastrado desde dataTransfer
@@ -246,48 +281,12 @@ const BalancedOperationsTable = ({ data, samSum, componentPDF, imagePdfRef }) =>
 
 
     handleApi(operationsBalancings, draggedItem.operation_balancing_id, detailOperOpera, operationBalancingBefore);
-  };
+  }, [operationsProduct, setOperationsProduct, detailOperOpera, handleApi]);
 
-
-
-
-  const handleApi = (operationsBalancings, operation_balancing_id, detailOperOpera, operationBalancingBefore) => {
-
-    const data = {
-      operationsBalancing: {
-        operations: JSON.stringify(operationsBalancings),
-        operation_balancing_id: operation_balancing_id,
-        opers_select: JSON.stringify(detailOperOpera),
-        operation_balancing_before: operationBalancingBefore,
-        zones: JSON.stringify(zonesOpersData)
-      }
-    }
-
-    const postDataOrder = async (data) => {
-      try {
-        const result = await updateData(urlMain + "/balancings/update_operations_balancing", data)
-     
-        setOperationsProduct(result.sorted_operations)
-        const formatted_objects = assignColorsToArray(result.formatted_objects)
-
-        setDetailOperOpera(formatted_objects)
-
-        toast.success(toastMessageCustom.oper_drag)
-
-
-      } catch (error) {
-        console.error('Error setting data', error);
-      }
-    };
-
-    postDataOrder(data);
-  }
-
-
-  const handleDragEnd = (e) => {
+  const handleDragEnd = useCallback((e) => {
     e.target.classList.remove('opacity-50');
 
-  };
+  }, []);
 
 
 
