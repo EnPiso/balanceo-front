@@ -10,7 +10,7 @@ import { RiFileExcel2Fill } from "react-icons/ri";
 import { formatearString } from './utils.js';
 
 
-const ExcelImagesLoaders = ({ fileMultiple, setFileMultiple, filesData, setFilesData, setProcessData }) => {
+const ExcelImagesLoaders = ({ fileMultiple, setFileMultiple, filesData, setFilesData, setProcessData, onAllFilesInvalid }) => {
   const [isProcessing, setIsProcessing] = useState(false);
 
 
@@ -30,24 +30,39 @@ const ExcelImagesLoaders = ({ fileMultiple, setFileMultiple, filesData, setFiles
 
   const extractOperations = (worksheet) => {
     const operations = [];
+    const errors = [];
 
     worksheet.eachRow((row, rowNumber) => {
       if (rowNumber > 1) { // Saltar encabezado
         const firstCell = row.getCell(1).value;
         const machine_name = row.getCell(2).value;
         const sam = row.getCell(8).value;
+        const garmentName = row.getCell(7).value;
+        const reference = row.getCell(10).value;
+        const category = row.getCell(11).value;
 
-        // Validar que sea una fila de operación real
-        const isValidRow =
-          typeof firstCell === "string" &&
-          firstCell.trim().length > 0 &&
-          typeof machine_name === "string" &&
-          machine_name.trim().length > 0 &&
-          typeof sam === "number";
+        // Campos obligatorios: operación, máquina, SAM
+        const rowErrors = [];
 
-        if (!isValidRow) return;
+        if (typeof firstCell !== "string" || firstCell.trim().length === 0) {
+          rowErrors.push("operación");
+        }
+        if (typeof machine_name !== "string" || machine_name.trim().length === 0) {
+          rowErrors.push("máquina");
+        }
+        if (typeof sam !== "number" || sam <= 0) {
+          rowErrors.push("SAM");
+        }
+
+        if (rowErrors.length > 0) {
+          errors.push({ row: rowNumber, fields: rowErrors });
+          return;
+        }
 
         const stringFormat = formatearString(firstCell);
+        const garment = garmentName ? String(garmentName).trim() : "";
+        const ref = reference ? String(reference).trim() : "";
+        const cat = category ? String(category).trim() : "";
 
         operations.push({
           operation: stringFormat,
@@ -56,15 +71,35 @@ const ExcelImagesLoaders = ({ fileMultiple, setFileMultiple, filesData, setFiles
           observations: row.getCell(4).value,
           needleType: row.getCell(5).value,
           guideType: row.getCell(6).value,
-          garment: `${row.getCell(7).value} [${row.getCell(10).value}] {${row.getCell(11).value}}`,
+          garment: `${garment} [${ref}] {${cat}}`,
           sam,
           order: row.getCell(9).value,
-          reference: row.getCell(10).value
+          reference: ref
         });
       }
     });
 
-    return operations;
+    return { operations, errors };
+  };
+
+  const validateHeaders = (worksheet) => {
+    const headerRow = worksheet.getRow(1);
+    if (!headerRow) return false;
+
+    const expectedHeaders = {
+      1: "operaci",
+      2: "quina",
+      8: "sam",
+    };
+
+    for (const [col, keyword] of Object.entries(expectedHeaders)) {
+      const cellValue = headerRow.getCell(Number(col)).value;
+      if (!cellValue || !String(cellValue).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(keyword)) {
+        return false;
+      }
+    }
+
+    return true;
   };
 
 
@@ -78,37 +113,49 @@ const ExcelImagesLoaders = ({ fileMultiple, setFileMultiple, filesData, setFiles
       for (const file of fileMultiple) {
         const workbook = new ExcelJS.Workbook();
         await workbook.xlsx.load(file);
-        
+
         const worksheet = workbook.getWorksheet(1);
-        
+
         if (!worksheet) {
           toast.error(`${file.name}: ${toastMessageCustom.error_invalid}`);
           continue;
         }
 
+        if (!validateHeaders(worksheet)) {
+          toast.error(`${file.name}: ${toastMessageCustom.invalid_columns}`);
+          continue;
+        }
+
         const extractedImages = extractImages(workbook);
-        const extractedOperations = extractOperations(worksheet);
+        const { operations: extractedOperations, errors } = extractOperations(worksheet);
+
+        if (extractedOperations.length === 0 && errors.length > 0) {
+          toast.error(`${file.name}: ${toastMessageCustom.all_rows_invalid}`);
+          continue;
+        }
 
         if (extractedOperations.length === 0) {
           toast.error(`${file.name}: ${toastMessageCustom.no_found}`);
           continue;
         }
 
-        if (extractedImages.length === 0) {
-          toast.error(`${file.name}: ${toastMessageCustom.no_images}`);
+        if (errors.length > 0) {
+          toast.error(`${file.name}: ${toastMessageCustom.invalid_rows}`);
         }
 
-        // Agregar el objeto con la estructura requerida
         processedFiles.push({
           images: extractedImages,
           operations: extractedOperations,
-          fileName: file.name  // Opcional: por si necesitas el nombre del archivo
+          fileName: file.name
         });
       }
 
       if (processedFiles.length > 0) {
         setFilesData(processedFiles);
         toast.success(toastMessageCustom.file_upload);
+      } else {
+        // Ningún archivo válido — resetear al drop zone
+        if (onAllFilesInvalid) onAllFilesInvalid();
       }
 
     } catch (error) {

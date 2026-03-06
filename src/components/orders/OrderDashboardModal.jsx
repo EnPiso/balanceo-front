@@ -68,6 +68,13 @@ const OrderDashboardModal = () => {
     onClose()
   }
 
+  const handleAllFilesInvalid = () => {
+    setIsMultipleExcel(false)
+    setFileMultiple(null)
+    setFilesData([])
+    setProcessData([])
+  }
+
 
   
   return (
@@ -133,7 +140,7 @@ const OrderDashboardModal = () => {
                         setFilesData={setFilesData}
                         fileMultiple={fileMultiple}
                         setFileMultiple={setFileMultiple}
-
+                        onAllFilesInvalid={handleAllFilesInvalid}
                       />
                     </Suspense>
                   ) : (
