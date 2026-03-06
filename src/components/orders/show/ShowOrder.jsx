@@ -8,32 +8,29 @@ import { goToBalance } from '../../../infraestructure/states/operation_master_st
 import { FaArrowCircleRight } from 'react-icons/fa';
 import { FaArrowRight, FaRightLong } from 'react-icons/fa6';
 import { goToUpdateBalance } from '../../../infraestructure/states/states_balancing.js';
+import { useNavigate } from 'react-router-dom';
 
 const ShowOrder = ({order}) => {
-  const [showOrder, setShowOrder] = useRecoilState(showOrderObj)
-  const [toUpdateBalance, setToUpdateBalance] = useRecoilState(goToUpdateBalance)
+  const [, setShowOrder] = useRecoilState(showOrderObj)
+  const [toUpdateBalance] = useRecoilState(goToUpdateBalance)
+  const navigate = useNavigate();
 
-  
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(()=> {
     if(toUpdateBalance){
       handleShowOrder(toUpdateBalance.orderId)
     }
-  },toUpdateBalance)
+  }, [toUpdateBalance])
 
   const handleShowOrder = (order_id) => {
     setIsLoading(true)
-    //setShowOrder(order)
     const getData = async () => {
       try {
-        //setLoading(true);
         const result = await fetchGetData(`${urlMain}orders/${order_id}/show_order_details/`);
 
         setShowOrder(result)
-        
-        //setOrders(result)
-        //setError(null);
+        navigate(`/orders/${order_id}`)
       } catch (error) {
         console.error('Error al obtener los datos:', error);
 

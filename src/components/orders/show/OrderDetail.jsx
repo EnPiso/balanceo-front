@@ -20,8 +20,13 @@ import {checkOperationsBalancing} from "../../../infraestructure/states/states_v
 import {hourMinuteSecond, monthDayYear} from "../../../infraestructure/utils/dateFormat.js";
 import { zonesMobile } from "../../../infraestructure/states/states_mobile.js";
 import { isOrderOrProduct } from "../../../infraestructure/states/states_manual_order.js";
+import { useNavigate, useParams } from 'react-router-dom';
+import { useLoadBalancing } from '../../../hooks/balances/useLoadBalancing.jsx';
 
 const OrderDetail = () => {
+  const navigate = useNavigate();
+  const { orderId, productId } = useParams();
+  const { loadBalancing } = useLoadBalancing();
   const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
 
   const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
@@ -47,6 +52,18 @@ const OrderDetail = () => {
     }
   }, [showOrder]);
 
+  // Hidratación: si se entra directo a /orders/:orderId/products/:productId
+  useEffect(() => {
+    if (productId && showOrder && !objBalancing) {
+      const productItem = showOrder.products.find(
+        p => String(p.product.id) === String(productId)
+      );
+      if (productItem) {
+        loadBalancing(productItem, Number(orderId));
+      }
+    }
+  }, [productId, showOrder]);
+
   const toggleCollapse = (index) => {
     if (expandedProductIndices.includes(index)) {
       setExpandedProductIndices(expandedProductIndices.filter((i) => i !== index));
@@ -55,39 +72,45 @@ const OrderDetail = () => {
     }
   };
 
+  // Interceptar botón Atrás del navegador cuando hay un balanceo activo
+  useEffect(() => {
+    if (!objBalancing) return;
+    const currentPath = window.location.pathname;
+    const handlePopState = () => {
+      window.history.pushState(null, '', currentPath); // restaurar URL
+      setConfirmExit(true);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [objBalancing]);
+
+  const clearBalancingState = () => {
+    const productsUpdate = showOrder.products.map(item =>
+      item.product.id === product.id
+        ? { operations: objBalancing.operations, product, total_sam: samSum }
+        : item
+    );
+    setShowOrder({ order: showOrder.order, products: productsUpdate });
+    setObjBalancing(null);
+    setSelectedOperDetails([]);
+    setOperationsProduct([]);
+    setProduct(null);
+    setSamSum(0);
+    setDetailOperOpera([]);
+    setSelOpeVideos(null);
+    setZonesOperUpdate([]);
+    setProdPlantOriginal(null);
+    setProdPlant(null);
+  };
+
   const handleBackward = () => setConfirmExit(true);
 
   const backward = () => {
-    const showOrderProducts = showOrder.products
-    const data = {
-      operations: objBalancing.operations,
-      product: product,
-      total_sam: samSum
-    }
-    const product_id = product.id
-    const productsUpdate = showOrderProducts.map(item => {
-      if (item.product.id === product_id) {
-        return { ...data };
-      }
-      return item;
-    });
-    const dataUpdate = {
-      order: showOrder.order,
-      products: productsUpdate
-    }
-    setShowOrder(dataUpdate)
-    setObjBalancing(null)
-    setSelectedOperDetails([])
-    setOperationsProduct([])
-    setProduct(null)
-    setSamSum(0)
-    setDetailOperOpera([])
-    setSelOpeVideos(null)
-    setZonesOperUpdate([])
-    setProdPlantOriginal(null)
-    setProdPlant(null)
-    setOperationsProduct([])
-  }
+    const orderId = showOrder.order.id;
+    clearBalancingState();
+    navigate(`/orders/${orderId}`);
+  };
+
 
   if (!showOrder) return <p>Loading...</p>;
 
@@ -154,7 +177,6 @@ const OrderDetail = () => {
                     bgButton={"bg-zinc-800"}
                     textButton={"text-secondary_two"}
                   />
-                  
                 </div>
               </div>
             </div>
@@ -174,7 +196,7 @@ const OrderDetail = () => {
               <MyCustomButton
                 icon={<FaBackward className="mt-1 mr-3" />}
                 title={"Regresar"}
-                handleClick={setShowOrder}
+                handleClick={() => { setShowOrder(null); navigate('/'); }}
                 value={null}
                 bgButton={"bg-zinc-800"}
                 textButton={"text-secondary_two"}
@@ -188,7 +210,7 @@ const OrderDetail = () => {
               <MyCustomButton
                 icon={<FaBackward className="mt-1 mr-3" />}
                 title={"Regresar"}
-                handleClick={setShowOrder}
+                handleClick={() => { setShowOrder(null); navigate('/'); }}
                 value={null}
                 bgButton={"bg-zinc-800"}
                 textButton={"text-secondary_two"}

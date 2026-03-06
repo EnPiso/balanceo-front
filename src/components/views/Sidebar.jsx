@@ -26,10 +26,12 @@ import { isOrderOrProduct } from '../../infraestructure/states/states_manual_ord
 import { GiSewingMachine  } from 'react-icons/gi';
 import MachinesMaster from '../machines/MachinesMaster.jsx';
 import { currentUser, isLoadingUser } from '../../infraestructure/states/states_views.js';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const Sidebar = ({toggleSidebar}) => {
+	const navigate = useNavigate();
 	const [sideArray,setSideArray] = useRecoilState(sideBarNav)
 	const [objBalancing, setObjBalancing] = useRecoilState(orderObjBalancing);
 	const [showOrder, setShowOrder] = useRecoilState(showOrderObj);
@@ -65,8 +67,9 @@ const Sidebar = ({toggleSidebar}) => {
 		setProduct(null)
 		setSamSum(0)
 		setDetailOperOpera([])
-		setSelOpeVideos(null)	
+		setSelOpeVideos(null)
 		setShowOrder(null)
+		navigate('/')
 	}
 
 

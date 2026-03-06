@@ -13,6 +13,8 @@ const RouterApp = () => {
     <Router>
       <Routes>
         <Route path="/" element={<RootApp/>} />
+        <Route path="/orders/:orderId" element={<RootApp/>} />
+        <Route path="/orders/:orderId/products/:productId" element={<RootApp/>} />
         <Route path="/camera" element={<WebcamAndEditor />} />
         <Route path="/chrono" element={<WatchChrono />} />
       </Routes>
