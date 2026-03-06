@@ -60,6 +60,7 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
 
   const [user, setUser] = useRecoilState(currentUser);
   const [columnFilters, setColumnFilters] = useState({});
+  const [balancingFilter, setBalancingFilter] = useState("");
 
   const applyColumnFilter = (key, op, val) => {
     setColumnFilters(prev => ({ ...prev, [key]: { op, val } }));
@@ -76,7 +77,7 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
 
   useEffect(() => {
     fetchOrders(currentPage, perPage, desc, isOrderOr);
-  }, [queryDate, queryString, columnFilters]);
+  }, [queryDate, queryString, columnFilters, balancingFilter]);
 
   useEffect(() => {
     fetchOrders(currentPage, perPage, desc, isOrderOr);
@@ -92,9 +93,10 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
         .filter(([_, f]) => f?.val)
         .map(([key, { op, val }]) => `&q[${key}_${op}]=${encodeURIComponent(val)}`)
         .join('');
+      const balancingParam = balancingFilter ? `&balancing_filter=${balancingFilter}` : '';
 
       const result = await fetchGetData(
-        `${urlMain}orders?page=${page}&is_order=${is_order}&archive=${false}&per_page=${per_page}&desc=${desc}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_or_products_name_or_products_category_product_name_or_products_reference_cont]=${encodeURIComponent(stringSearch)}${filterParams}`
+        `${urlMain}orders?page=${page}&is_order=${is_order}&archive=${false}&per_page=${per_page}&desc=${desc}&q[created_at_eq]=${encodeURIComponent(formattedDate)}&q[code_or_products_name_or_products_category_product_name_or_products_reference_cont]=${encodeURIComponent(stringSearch)}${filterParams}${balancingParam}`
       );
 
       setOrders(result.orders);
@@ -199,6 +201,8 @@ const DashboardOrder = ({ setIsArchive, isArchive, archive }) => {
                 setIsModalManualOrder={setIsModalManualOrder}
                 setIsShowCreate={setIsShowCreate}
                 setModalProdBalancing={setModalProdBalancing}
+                balancingFilter={balancingFilter}
+                setBalancingFilter={setBalancingFilter}
               />
               {Object.keys(columnFilters).length > 0 && (
                 <div className="flex justify-end mt-1 mb-1">

@@ -15,12 +15,19 @@ const IconBtn = ({ onClick, tooltip, children }) => (
   </Tooltip>
 );
 
+const BALANCING_OPTIONS = [
+  { value: "",               label: "Todos" },
+  { value: "with_opers",    label: "Con operarios" },
+  { value: "without_opers", label: "Sin operarios" },
+];
+
 const SearchDateOrders = ({
   queryDate, setQueryDate,
   queryString, setQueryString,
   user, isOrderOr, setIsOrderOr,
   setIsModalManualOrder, setIsShowCreate,
-  setModalProdBalancing
+  setModalProdBalancing,
+  balancingFilter, setBalancingFilter
 }) => {
 
   const isAdmin = user && (user.role === 'admin' || user.role === 'supervisor');
@@ -57,6 +64,24 @@ const SearchDateOrders = ({
         <IconBtn tooltip="Limpiar búsqueda" onClick={() => setQueryString("")}>
           <FaReplyAll size={16} />
         </IconBtn>
+
+        {setBalancingFilter && (
+          <div className="flex items-center rounded-md border border-zinc-300 dark:border-zinc-600 overflow-hidden text-xs">
+            {BALANCING_OPTIONS.map(({ value, label }) => (
+              <button
+                key={value}
+                onClick={() => setBalancingFilter(value)}
+                className={`px-2 py-1.5 transition-colors whitespace-nowrap ${
+                  balancingFilter === value
+                    ? 'bg-primary_one text-white font-semibold'
+                    : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
 
         <SearchOrdersCustom
           setQueryDate={setQueryDate}
