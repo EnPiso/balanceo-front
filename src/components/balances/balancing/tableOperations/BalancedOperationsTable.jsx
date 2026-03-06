@@ -2,9 +2,6 @@
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import { useRecoilState } from "recoil";
 
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-
 import {
   balancingData,
   detailOperOperations,

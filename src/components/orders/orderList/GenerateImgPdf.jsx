@@ -6,12 +6,9 @@ import toast from "react-hot-toast";
 import {toastMessageCustom} from "../../../infraestructure/data/toastMessage.js";
 import {useRecoilState} from "recoil";
 import {imageTableUrl} from "../../../infraestructure/states/states_product.js";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import {orderObjBalancing, showOrderObj} from "../../../infraestructure/states/order_states.js";
 import {nameImageDateNow} from "../../../infraestructure/utils/imagesFormat.js";
 import {Badge, Spinner, Tooltip} from "@nextui-org/react";
-import { PDFDocument } from "pdf-lib";
 import {FaClockRotateLeft, FaFilePdf} from "react-icons/fa6";
 import { FaClock, FaQuestion } from "react-icons/fa";
 import SamplesCountProduct from "./SamplesCountProduct.jsx";
@@ -71,6 +68,11 @@ const GenerateImgPdf = ({product, order, pdfDiv}) => {
         }
 
         try {
+            const [{ default: html2canvas }, { default: jsPDF }, { PDFDocument }] = await Promise.all([
+                import("html2canvas"),
+                import("jspdf"),
+                import("pdf-lib"),
+            ]);
             // Optimización de la captura
             const canvas = await html2canvas(element, {
                 scale: 1, // Reducido de 1.5 a 1
